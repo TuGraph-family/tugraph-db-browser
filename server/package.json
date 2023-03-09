@@ -56,5 +56,7 @@
     "coverage"
   ],
   "author": "baizn",
-  "license": "MIT"
+  "license": "MIT",
+  "files.insertFinalNewline": true, 
+  "files.trimFinalNewlines": true
 }
