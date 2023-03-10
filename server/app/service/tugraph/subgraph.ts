@@ -9,7 +9,7 @@
  */
 
 import { Service } from 'egg';
-import { EngineServerURL } from './constant'
+import { EngineServerURL } from './constant';
 
 class TuGraphSubGraphService extends Service {
 
@@ -17,7 +17,7 @@ class TuGraphSubGraphService extends Service {
    * 根据节点 ID 提取子图信息
    * @param graphName 子图名称
    * @param vertexIds 节点 ID 集合
-   * @returns 
+   * @return
    */
   async querySubGraphByNodeIds(graphName: string, vertexIds: string[]) {
     const subGraphResult = await this.ctx.curl(`${EngineServerURL}/cypher`, {
@@ -30,26 +30,26 @@ class TuGraphSubGraphService extends Service {
         graph: graphName,
         script: `call db.subgraph([${vertexIds}])`,
       },
-      timeout: [30000, 50000],
+      timeout: [ 30000, 50000 ],
       dataType: 'json',
     })
-    .then(res => {
-      const graphData = JSON.parse(res.data.result[0]);
+      .then(res => {
+        const graphData = JSON.parse(res.data.result[0]);
 
-      graphData.nodes.forEach(item => {
-        item.vid = item.identity;
-      });
+        graphData.nodes.forEach(item => {
+          item.vid = item.identity;
+        });
 
-      graphData.relationships.forEach(item => {
-        item.source = item.src;
-        item.destination = item.dst;
-        item.uid = `${item.src}_${item.dst}_${item.label_id}_${item.temporal_id}_${item.identity}`;
+        graphData.relationships.forEach(item => {
+          item.source = item.src;
+          item.destination = item.dst;
+          item.uid = `${item.src}_${item.dst}_${item.label_id}_${item.temporal_id}_${item.identity}`;
+        });
+        return {
+          status: res.status,
+          data: graphData,
+        };
       });
-      return {
-        status: res.status,
-        data: graphData,
-      };
-    });
 
     if (subGraphResult.status !== 200) {
       return subGraphResult.data;
@@ -84,8 +84,8 @@ class TuGraphSubGraphService extends Service {
     };
     return {
       success: true,
-      data: graphData
-    }
+      data: graphData,
+    };
   }
 
   /**
@@ -104,7 +104,7 @@ class TuGraphSubGraphService extends Service {
         graph: graphName,
         script: cypher,
       },
-      timeout: [30000, 50000],
+      timeout: [ 30000, 50000 ],
       dataType: 'json',
     });
 
@@ -114,7 +114,7 @@ class TuGraphSubGraphService extends Service {
 
     // TODO： 这个逻辑需要等 TuGraph 重构完再调整
     // const nodeIds = [...new Set([...getNodeIdsByEids(result).nodeIds, ...getNodeIds(result)])];
-    const nodeIds = []
+    const nodeIds = [];
     // 拿到节点 ID 后，查询子图
 
     if (nodeIds.length === 0) {
@@ -124,8 +124,8 @@ class TuGraphSubGraphService extends Service {
       };
     }
 
-    const subGraphResult = await this.querySubGraphByNodeIds(graphName, nodeIds)
-    return subGraphResult
+    const subGraphResult = await this.querySubGraphByNodeIds(graphName, nodeIds);
+    return subGraphResult;
   }
 
   /**
@@ -139,9 +139,9 @@ class TuGraphSubGraphService extends Service {
       },
       method: 'POST',
       data: {
-        script: `CALL dbms.graph.listGraphs()`,
+        script: 'CALL dbms.graph.listGraphs()',
       },
-      timeout: [30000, 50000],
+      timeout: [ 30000, 50000 ],
       dataType: 'json',
     });
 

@@ -6,7 +6,7 @@ export default (app: Application) => {
 
   // TuGraph Data Query
   router.post('/api/:graphName/vertex/:vertexId', controller.tugraph.query.queryVertexById);
-  
+
   // TuGraph Schema
-  
+
 };

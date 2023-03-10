@@ -7,16 +7,20 @@ type AnyClass = new (...args: any[]) => any;
 type AnyFunc<T = any> = (...args: any[]) => T;
 type CanExportFunc = AnyFunc<Promise<any>> | AnyFunc<IterableIterator<any>>;
 type AutoInstanceType<T, U = T extends CanExportFunc ? T : T extends AnyFunc ? ReturnType<T> : T> = U extends AnyClass ? InstanceType<U> : U;
-import ExportGraphcompute from '../../../app/service/graphcompute';
-import ExportNeo4j from '../../../app/service/neo4j';
-import ExportServiceInterface from '../../../app/service/serviceInterface';
-import ExportTugraph from '../../../app/service/tugraph';
+import ExportTugraphConstant from '../../../app/service/tugraph/constant';
+import ExportTugraphInterface from '../../../app/service/tugraph/interface';
+import ExportTugraphQuery from '../../../app/service/tugraph/query';
+import ExportTugraphSchema from '../../../app/service/tugraph/schema';
+import ExportTugraphSubgraph from '../../../app/service/tugraph/subgraph';
 
 declare module 'egg' {
   interface IService {
-    graphcompute: AutoInstanceType<typeof ExportGraphcompute>;
-    neo4j: AutoInstanceType<typeof ExportNeo4j>;
-    serviceInterface: AutoInstanceType<typeof ExportServiceInterface>;
-    tugraph: AutoInstanceType<typeof ExportTugraph>;
+    tugraph: {
+      constant: AutoInstanceType<typeof ExportTugraphConstant>;
+      interface: AutoInstanceType<typeof ExportTugraphInterface>;
+      query: AutoInstanceType<typeof ExportTugraphQuery>;
+      schema: AutoInstanceType<typeof ExportTugraphSchema>;
+      subgraph: AutoInstanceType<typeof ExportTugraphSubgraph>;
+    }
   }
 }

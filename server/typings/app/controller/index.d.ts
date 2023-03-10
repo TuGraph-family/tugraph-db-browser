@@ -3,16 +3,16 @@
 /* eslint-disable */
 
 import 'egg';
-import ExportGraphcompute from '../../../app/controller/graphcompute';
 import ExportHome from '../../../app/controller/home';
-import ExportNeo4j from '../../../app/controller/neo4j';
-import ExportTugraph from '../../../app/controller/tugraph';
+import ExportTugraphQuery from '../../../app/controller/tugraph/query';
+import ExportTugraphSchema from '../../../app/controller/tugraph/schema';
 
 declare module 'egg' {
   interface IController {
-    graphcompute: ExportGraphcompute;
     home: ExportHome;
-    neo4j: ExportNeo4j;
-    tugraph: ExportTugraph;
+    tugraph: {
+      query: ExportTugraphQuery;
+      schema: ExportTugraphSchema;
+    }
   }
 }

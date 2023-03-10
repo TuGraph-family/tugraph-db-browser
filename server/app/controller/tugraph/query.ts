@@ -2,12 +2,12 @@ import { Controller } from 'egg';
 import { responseData } from '../../util';
 
 class TuGraphQueryController extends Controller {
-	async queryVertexById() {
-		const { ctx } = this
-		const { graphName, vertexId } = ctx.query;
-		const result = await ctx.service.tugraph.query.queryNodeById(graphName, vertexId)
-		responseData(ctx, result);
-	}
+  async queryVertexById() {
+    const { ctx } = this;
+    const { graphName, vertexId } = ctx.query;
+    const result = await ctx.service.tugraph.query.queryNodeById(graphName, vertexId);
+    responseData(ctx, result);
+  }
 
   async queryByGraphLanguage() {
     const { ctx } = this;

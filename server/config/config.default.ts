@@ -12,7 +12,7 @@ export default (appInfo: EggAppInfo) => {
 
   config.multipart = {
     mode: 'file',
-    whitelist: ['.csv', '.txt'],
+    whitelist: [ '.csv', '.txt' ],
     // 表单 Field 文件名长度限制
     fieldNameSize: 10000,
     // 表单 Field 内容大小
