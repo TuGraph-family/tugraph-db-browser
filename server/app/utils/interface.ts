@@ -14,6 +14,7 @@ export interface IVertexResponse {
 
 export interface IEdgeParams {
   [key: string]: {
+    id?: string;
     dst: number;
     forward: boolean;
     identity: number;
@@ -35,16 +36,14 @@ export interface IEdgeResponse {
 }
 
 export interface IPathParams {
-  [key: string]: {
-    identity: number;
-    label: string;
-    properties: any;
-    dst?: number;
-    forward?: boolean;
-    label_id?: number;
-    src?: number;
-    temporal_id?: number;
-  }[]
+  identity: number;
+  label: string;
+  properties: any;
+  dst?: number;
+  forward?: boolean;
+  label_id?: number;
+  src?: number;
+  temporal_id?: number;
 }
 
 export interface ISubGraphParams {
@@ -56,7 +55,7 @@ export interface IMultipleParams {
 }
 
 export interface IPropertiesParams {
-
+  [key: string]: string | number | boolean;
 }
 
 // schema 相关

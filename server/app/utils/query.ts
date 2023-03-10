@@ -57,41 +57,58 @@ export const formatEdgeResponse = (params: IEdgeParams[]) => {
  * @param params
  * @return
  */
-export const formatPathResponse = (params: IPathParams[]) => {
+export const formatPathResponse = (params: {
+  [key: string]: IPathParams[]
+}[]) => {
   const pnodes: IVertextParams[] = [];
   const pedges: IEdgeParams[] = [];
+  const paths: IPathParams[][] = [];
   for (const path of params) {
     for (const key in path) {
       const currentPath = path[key];
       for (const cp of currentPath) {
-        const { identity, src, dst, label_id, temporal_id } = cp;
+        const { identity, src, dst, label_id, temporal_id, label } = cp;
         // src & dst 都存在，则为边
         if (src === 0 || src && dst) {
           const edgeId = `${src}_${label_id}_${temporal_id}_${dst}_${identity}`;
-          const hasEdge = pedges.find((d: any) => d.id === `${edgeId}`);
+          const hasEdge = pedges.find((d: any) => d.id === edgeId);
           if (!hasEdge) {
             pedges.push({
-              e: cp as any,
-            });
+              ...cp,
+              id: edgeId,
+            } as unknown as IEdgeParams);
           }
-        } else {
+        } else if (label) {
           // 否则为节点
-          const hasNode = pnodes.find((d: any) => d.id === `${identity}`);
+          const hasNode = pnodes.find((d: any) => d.identity === identity);
           if (!hasNode) {
-            pnodes.push({
-              n: cp,
-            });
+            pnodes.push(cp as unknown as IVertextParams);
           }
         }
+
       }
+      // path
+      paths.push(currentPath);
     }
   }
-	
-  const nodes = formatVertexResponse(pnodes);
-  const edges = formatEdgeResponse(pedges);
+
+  const nodes = formatVertexResponse(pnodes.map(d => {
+    return {
+      n: d,
+    };
+  }) as unknown as IVertextParams[]);
+
+  const edges = formatEdgeResponse(pedges.map(d => {
+    return {
+      e: d,
+    };
+  }) as unknown as IEdgeParams[]);
+
   return {
     nodes,
     edges,
+    // paths 格式先不转换，到时候按需要再处理
+    paths,
   };
 };
 
@@ -100,8 +117,83 @@ export const formatPathResponse = (params: IPathParams[]) => {
  * @param params
  * @return
  */
-export const formatMultipleResponse = (params: IMultipleParams) => {
-  return params;
+export const formatMultipleResponse = (params: IMultipleParams[]) => {
+  const nodes: IVertextParams[] = [];
+  const edges: IEdgeParams[] = [];
+  const paths: any = [];
+  const properties: IPropertiesParams[] = [];
+  for (const multi of params) {
+    for (const key in multi) {
+      const current = multi[key];
+      // Vertex 和 edge 为 object，path 为 array，其他为 string 或 number
+      if (Object.prototype.toString.call(current) === '[object Array]') {
+        // path
+        paths.push({
+          p: current as any,
+        });
+      } else if (Object.prototype.toString.call(current) === '[object Object]') {
+        // vertex or edge
+        const { identity, src, dst, label_id, temporal_id, label } = current;
+        // src & dst 都存在，则为边
+        if (src === 0 || src && dst) {
+          const edgeId = `${src}_${label_id}_${temporal_id}_${dst}_${identity}`;
+          const hasEdge = edges.find((d: any) => d.id === edgeId);
+          if (!hasEdge) {
+            edges.push({
+              ...current,
+              id: edgeId,
+            });
+          }
+        } else if (label) {
+          // 否则为节点
+          const hasNode = nodes.find((d: any) => d.identity === identity);
+          if (!hasNode) {
+            nodes.push(current);
+          }
+        }
+      } else {
+        // string boolean number 不做区分
+        properties.push({
+          [key]: current,
+        });
+      }
+    }
+  }
+
+  const multiNodes = formatVertexResponse(nodes.map(d => {
+    return {
+      n: d,
+    };
+  }) as unknown as IVertextParams[]);
+
+  const multiEdges = formatEdgeResponse(edges.map(d => {
+    return {
+      e: d,
+    };
+  }) as unknown as IEdgeParams[]);
+
+  const multiNodeIds = multiNodes.map(d => d.id);
+  const multiEdgeIds = multiEdges.map(d => d.id);
+  const { nodes: graphNodes, edges: graphEdges, paths: graphPaths } = formatPathResponse(paths);
+
+  graphNodes.forEach(d => {
+    if (!multiNodeIds.includes(d.id)) {
+      multiNodes.push(d);
+    }
+  });
+
+  graphEdges.forEach(d => {
+    if (!multiEdgeIds.includes(d.id)) {
+      multiEdges.push(d);
+    }
+  });
+
+  return {
+    nodes: multiNodes,
+    edges: multiEdges,
+    paths: graphPaths,
+    properties,
+  };
 };
 
 /**
@@ -109,7 +201,7 @@ export const formatMultipleResponse = (params: IMultipleParams) => {
  * @param params
  * @return
  */
-export const formatPropertiesResponse = (params: IPropertiesParams) => {
+export const formatPropertiesResponse = (params: IPropertiesParams[]) => {
   return params;
 };
 
