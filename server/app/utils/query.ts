@@ -11,8 +11,8 @@ export const formatVertexResponse = (params: IVertextParams[]): IVertexResponse[
     for (const key in vertex) {
       const current = vertex[key];
       const { identity, ...others } = current;
-      const has = nodes.find((d: any) => d.id === `${identity}`);
-      if (!has) {
+      const hasNode = nodes.find((d: any) => d.id === `${identity}`);
+      if (!hasNode) {
         nodes.push({
           ...others,
           id: `${identity}`,
@@ -31,6 +31,7 @@ export const formatVertexResponse = (params: IVertextParams[]): IVertexResponse[
  */
 export const formatEdgeResponse = (params: IEdgeParams[]) => {
   const edges: IEdgeResponse[] = [];
+  const nodes: IVertexResponse[] = [];
   for (const edge of params) {
     for (const key in edge) {
       const current = edge[key];
@@ -45,11 +46,33 @@ export const formatEdgeResponse = (params: IEdgeParams[]) => {
           direction: forward ? 'OUT' : 'IN',
           id: `${src}_${label_id}_${temporal_id}_${dst}_${identity}`,
         });
+
+        // 如果只是边，则还需要将起点和终点添加到 nodes 中
+        const hasSourceNode = nodes.find(d => d.id === `${src}`);
+        if (!hasSourceNode) {
+          nodes.push({
+            id: `${src}`,
+            label: 'UNKNOW',
+            properties: null,
+          });
+        }
+        const hasTargetNode = nodes.find(d => d.id === `${dst}`);
+
+        if (!hasTargetNode) {
+          nodes.push({
+            id: `${dst}`,
+            label: 'UNKNOW',
+            properties: null,
+          });
+        }
       }
     }
   }
 
-  return edges;
+  return {
+    edges,
+    nodes,
+  };
 };
 
 /**
@@ -98,7 +121,7 @@ export const formatPathResponse = (params: {
     };
   }) as unknown as IVertextParams[]);
 
-  const edges = formatEdgeResponse(pedges.map(d => {
+  const { edges } = formatEdgeResponse(pedges.map(d => {
     return {
       e: d,
     };
@@ -166,7 +189,7 @@ export const formatMultipleResponse = (params: IMultipleParams[]) => {
     };
   }) as unknown as IVertextParams[]);
 
-  const multiEdges = formatEdgeResponse(edges.map(d => {
+  const { nodes: nodeFromEdge, edges: multiEdges } = formatEdgeResponse(edges.map(d => {
     return {
       e: d,
     };
@@ -177,6 +200,12 @@ export const formatMultipleResponse = (params: IMultipleParams[]) => {
   const { nodes: graphNodes, edges: graphEdges, paths: graphPaths } = formatPathResponse(paths);
 
   graphNodes.forEach(d => {
+    if (!multiNodeIds.includes(d.id)) {
+      multiNodes.push(d);
+    }
+  });
+
+  nodeFromEdge.forEach(d => {
     if (!multiNodeIds.includes(d.id)) {
       multiNodes.push(d);
     }

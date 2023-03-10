@@ -10,7 +10,7 @@
 import { Service } from 'egg';
 import { INeighborsParams, ILanguageQueryParams } from './interface';
 import { EngineServerURL } from './constant';
-import { formatVertexResponse } from '../../utils';
+import { formatMultipleResponse, formatVertexResponse } from '../../utils';
 
 class TuGraphQueryService extends Service {
 
@@ -49,13 +49,31 @@ class TuGraphQueryService extends Service {
   }
 
   /**
-   * 使用 Cypher 语句查询
+   * 使用 Cypher 语句查询，按标准的 Cypher 返回结果转换，不做过多处理，即如果只查询点，不会去查询子图
    * @param params
    */
   async queryByGraphLanguage(params: ILanguageQueryParams) {
-    const { graphName = '', value } = params;
+    const { graphName, value } = params;
 
-    const responseData = await this.service.openpiece.query.querySubGraphByCypher(value, graphName);
+    const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
+      headers: {
+        'content-type': 'application/json',
+        Authorization: this.ctx.request.header.authorization,
+      },
+      method: 'POST',
+      data: {
+        graph: graphName,
+        script: value,
+      },
+      timeout: [ 30000, 50000 ],
+      dataType: 'json',
+    });
+
+    if (result.status !== 200) {
+      return result.data;
+    }
+
+    const responseData = formatMultipleResponse(result.data);
     return {
       data: responseData,
       code: 200,

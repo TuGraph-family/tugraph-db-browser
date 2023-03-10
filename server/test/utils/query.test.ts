@@ -40,7 +40,7 @@ describe('query method', () => {
     assert(keys[2] === 'id');
   });
 
-  it('formatEdgeResponse', () => {
+  it.only('formatEdgeResponse', () => {
     const mockEdgeData = [
       {
         e: {
@@ -72,9 +72,10 @@ describe('query method', () => {
       },
     ];
 
-    const result = formatEdgeResponse(mockEdgeData);
-    assert(result.length === 2);
-    const keys = Object.keys(result[0]);
+    const { nodes, edges } = formatEdgeResponse(mockEdgeData);
+    assert(edges.length === 2);
+    assert(nodes.length === 2);
+    const keys = Object.keys(edges[0]);
     assert(keys.length === 6);
   });
 
@@ -164,7 +165,7 @@ describe('query method', () => {
     console.log(result);
   });
 
-  it.only('formatMultipleResponse', () => {
+  it('formatMultipleResponse', () => {
     const mockData = [
       {
         e: {
@@ -293,10 +294,10 @@ describe('query method', () => {
     ];
 
     const result = formatMultipleResponse(mockData);
-    const { nodes, edges, properties, paths } = result
-    assert(nodes.length === 2)
-    assert(edges.length === 2)
-    assert(properties.length === 2)
-    assert(paths.length === 2)
+    const { nodes, edges, properties, paths } = result;
+    assert(nodes.length === 2);
+    assert(edges.length === 2);
+    assert(properties.length === 2);
+    assert(paths.length === 2);
   });
 });
