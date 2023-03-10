@@ -9,16 +9,8 @@ class TuGraphSchemaController extends Controller {
   async getSchema() {
     const { ctx } = this;
     const { graphName } = ctx.query;
-    const authorization = ctx.request.header.authorization as string;
 
-    const result = await ctx.service.tugraph.querySchema(graphName, authorization);
-    responseData(ctx, result);
-  }
-
-  async getSubGraphList() {
-    const { ctx } = this;
-
-    const result = await ctx.service.tugraph.getSubGraphList();
+    const result = await ctx.service.tugraph.schema.querySchema(graphName);
     responseData(ctx, result);
   }
 
@@ -26,7 +18,7 @@ class TuGraphSchemaController extends Controller {
     const { ctx } = this;
     const { graphName } = ctx.query;
 
-    const result = await ctx.service.tugraph.getVertexEdgeCount(graphName);
+    const result = await ctx.service.tugraph.schema.getVertexEdgeCount(graphName);
     responseData(ctx, result);
   }
 }

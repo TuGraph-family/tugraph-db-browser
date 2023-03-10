@@ -181,7 +181,7 @@ class TuGraphSchemaService extends Service {
    * @param graphName 子图名称
    * @param authorization 认证信息
    */
-  async getVertexEdgeCount(graphName: string, authorization: string) {
+  async getVertexEdgeCount(graphName: string) {
 
     const nodeResult = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {
