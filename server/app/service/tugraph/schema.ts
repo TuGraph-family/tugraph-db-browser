@@ -211,7 +211,7 @@ class TuGraphSchemaService extends Service {
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {
         'content-type': 'application/json',
-        Authorization: authorization,
+        Authorization: this.ctx.request.header.authorization,
       },
       method: 'POST',
       data: {

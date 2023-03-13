@@ -8,3 +8,13 @@ export interface INeighborsParams {
   sep: number;
   graphName: string;
 }
+
+export interface ISubGraphConfig {
+  maxSizeGB?: number;
+  async?: boolean;
+  description?: string;
+}
+export interface ICreateSubGraphParams {
+  graphName: string;
+  config: ISubGraphConfig
+}
