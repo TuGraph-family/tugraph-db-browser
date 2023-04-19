@@ -23,7 +23,7 @@ export const responseFormatter = (result: RestFulResponse) => {
   return {
     success: true,
     code: 200,
-    data: result.data.data.result,
+    data: result.data.data?.result,
   };
 };
 

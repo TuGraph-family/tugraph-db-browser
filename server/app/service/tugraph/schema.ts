@@ -8,6 +8,7 @@
  */
 
 import { Service } from 'egg';
+import { responseFormatter } from '../../util';
 import { diffProperties, formatEdgeSchemaResponse, formatVertexSchemaResponse } from '../../utils/schema';
 import { EngineServerURL } from './constant';
 import { ICreateSchemaParams, IDeleteSchemaParams, IIndexParams, IUpdateSchemaParams } from './interface';
@@ -19,7 +20,7 @@ class TuGraphSchemaService extends Service {
    * @returns 
    */
   async createSchema(params: ICreateSchemaParams) {
-    const { graphName, labelType, labelName, properties, primaryField, edgeConstraints = [] } = params
+    const { graphName, labelType, labelName, properties, primaryField, edgeConstraints = [], indexs = [] } = params
 
     let condition = ''
     properties.forEach((d, index) => {
@@ -33,7 +34,7 @@ class TuGraphSchemaService extends Service {
     
     let cypher = ``
     if (labelType === 'node') {
-      cypher = `CALL db.createLabel('vertex', '${labelName}', ${primaryField}, ${condition})`;
+      cypher = `CALL db.createLabel('vertex', '${labelName}', '${primaryField}', ${condition})`;
    
     } else if (labelType === 'edge') {
       cypher = `CALL db.createLabel('edge', '${labelName}', ${edgeConstraints}, ${condition})`
@@ -53,13 +54,27 @@ class TuGraphSchemaService extends Service {
       dataType: 'json',
     });
 
-    if (result.status !== 200) {
-      return result.data;
-    }
-
     // 创建 Schema 后，如果有配置索引，还需要再创建索引
-    // await this.createIndex(params)
-    return result.data;
+    if (indexs.length > 0) {
+      // 配置了索引，则需要创建索引
+      const indexPromise = indexs.map(async d => {
+        const currentEdgeSchema = await this.createIndex(graphName, d);
+        return currentEdgeSchema;
+      });
+      const indexsResult = await Promise.all(indexPromise);
+
+      const indexError = indexsResult.find(d => d.success !== 0)
+      if (indexError) {
+        // 说明有索引创建失败，则提示用户
+        return {
+          success: false,
+          code: 200,
+          errorCode: indexError.errorCode,
+          message: `Schema 创建成功，但有部分索引创建失败，具体失败原因为：${indexError.errorMsg}`
+        }
+      }
+    }
+    return responseFormatter(result)
   }
 
   /**
@@ -166,7 +181,6 @@ class TuGraphSchemaService extends Service {
       cypher = `CALL db.deleteLabel('${type}', '${labelName}')`
     }
     
-
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {
         'content-type': 'application/json',
@@ -181,10 +195,7 @@ class TuGraphSchemaService extends Service {
       dataType: 'json',
     });
 
-    if (result.status !== 200) {
-      return result.data;
-    }
-    return result.data;
+    return responseFormatter(result)
   }
 
   /**
@@ -341,7 +352,7 @@ class TuGraphSchemaService extends Service {
     });
 
     // step2: 根据获取到的边类型，再获取每个边类型的详细属性
-    const vertexSchemaPromise = typeResult.data.map(async d => {
+    const vertexSchemaPromise = typeResult.data.data?.result?.map(async d => {
       const currentVertexSchema = await this.querySchemaByLabel(graphName, 'node', d);
       return currentVertexSchema;
     });
@@ -357,8 +368,12 @@ class TuGraphSchemaService extends Service {
     const vertexSchema = await this.queryVertexSchema(graphName);
     const edgeSchema = await this.queryEdgeSchema(graphName);
     return {
-      nodes: vertexSchema,
-      edges: edgeSchema,
+      code: 200,
+      success: true,
+      data: {
+        nodes: vertexSchema,
+        edges: edgeSchema,
+      }
     };
   }
 
@@ -376,7 +391,7 @@ class TuGraphSchemaService extends Service {
       method: 'POST',
       data: {
         graph: graphName,
-        script: 'MATCH n RETURN count(n)',
+        script: 'MATCH (n) RETURN COUNT(n) as vertexCount',
       },
       timeout: [30000, 50000],
       dataType: 'json',
@@ -386,14 +401,15 @@ class TuGraphSchemaService extends Service {
       return {
         success: false,
         code: nodeResult.status,
-        data: null,
+        data: {
+          vertexCount: 0,
+          edgeCount: 0
+        },
       };
     }
 
-    const { num_vertex, num_label } = nodeResult.data;
-
     // 查询 graph 中边的数量
-    const edgeCypher = 'MATCH (n)-[e]->(m) RETURN count(e)';
+    const edgeCypher = 'MATCH (n)-[e]->(m) RETURN count(e) as edgeCount';
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {
         'content-type': 'application/json',
@@ -412,7 +428,10 @@ class TuGraphSchemaService extends Service {
       return {
         success: false,
         code: result.status,
-        data: result.data,
+        data: {
+          vertexCount: nodeResult.data.data?.result?.vertexCount,
+          edgeCount: 0
+        }
       };
     }
 
@@ -420,9 +439,8 @@ class TuGraphSchemaService extends Service {
       success: true,
       code: 200,
       data: {
-        nodeCount: num_vertex,
-        nodeLabelCount: num_label,
-        edgeCount: result.data.result[0][0],
+        vertexCount: nodeResult.data.data?.result?.vertexCount,
+        edgeCount: result.data.data?.result?.edgeCount
       },
     };
   }
@@ -450,9 +468,15 @@ class TuGraphSchemaService extends Service {
     });
 
     if (vertexResult.status !== 200) {
-      return vertexResult.data
+      return {
+        success: false,
+        errorMsg: vertexResult.data,
+        data: {
+          vertexLabels: 0,
+          edgeLabels: 0,
+        }
+      }
     }
-    console.log('点类型数量', vertexResult.data)
 
     const edgeResult = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {
@@ -469,19 +493,35 @@ class TuGraphSchemaService extends Service {
     });
 
     if (vertexResult.status !== 200) {
-      return edgeResult.data
+      return {
+        success: false,
+        errorMsg: edgeResult.data,
+        data: {
+          vertexLabels: vertexResult.data.data?.result?.vertexNumLabels,
+          edgeLabels: 0,
+        }
+      } 
     }
-    console.log('边类型数量', vertexResult.data)
+
+    return {
+      success: true,
+      code: 200,
+      data: {
+        vertexLabels: vertexResult.data.data?.result?.vertexNumLabels,
+        edgeLabels: edgeResult.data.data?.result?.edgeNumLabels,
+      }
+    }
   }
 
   /**
    * 创建索引
+   * @param graphName 图名称
    * @param params 
    * @returns 
    */
-  async createIndex(params: IIndexParams) {
-    const { graphName, labelName, propertyName, isUnique } = params
-    const cypher = `CALL db.addIndex(${labelName}, ${propertyName}, ${isUnique})`
+  async createIndex(graphName: string, params: IIndexParams) {
+    const { labelName, propertyName, isUnique = true } = params
+    const cypher = `CALL db.addIndex('${labelName}', '${propertyName}', ${isUnique})`
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {
         'content-type': 'application/json',
@@ -496,17 +536,20 @@ class TuGraphSchemaService extends Service {
       dataType: 'json',
     });
 
+    console.log('创建索引', result.data)
     return result.data
   }
 
   /**
    * 删除索引
+   * @param graphName 子图名称
    * @param params 
    * @returns 
    */
-  async deleteIndex(params: IIndexParams) {
-    const { graphName, labelName, propertyName } = params
-    const cypher = `CALL db.deleteIndex(${labelName}, ${propertyName})`
+  async deleteIndex(graphName: string, params: IIndexParams) {
+    const { labelName, propertyName } = params
+    console.log(params)
+    const cypher = `CALL db.deleteIndex('${labelName}', '${propertyName}')`
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {
         'content-type': 'application/json',
@@ -521,6 +564,7 @@ class TuGraphSchemaService extends Service {
       dataType: 'json',
     });
 
+    console.log('删除索引', result)
     return result.data
   }
 

@@ -40,6 +40,7 @@ export interface ICreateSchemaParams {
   properties: ISchemaProperties[];
   primaryField: string;
   edgeConstraints: any[];
+  indexs?: IIndexParams[];
 }
 
 export interface IUpdateSchemaParams {
@@ -57,7 +58,6 @@ export interface IDeleteSchemaParams {
 }
 
 export interface IIndexParams {
-  graphName: string;
   labelName: string;
   propertyName: string;
   isUnique?: boolean;
