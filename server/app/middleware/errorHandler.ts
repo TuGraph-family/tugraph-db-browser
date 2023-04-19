@@ -11,6 +11,7 @@ module.exports = () => {
     } catch (err: any) {
       // 统一处理异常，返回格式化的错误信息
       ctx.body = {
+        success: false,
         code: err.status || -1,
         errorMessage: err.message || '未知错误',
         data: null,

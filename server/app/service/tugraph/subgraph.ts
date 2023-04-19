@@ -11,19 +11,19 @@
 import { Service } from 'egg';
 import { EngineServerURL } from './constant';
 import { ISubGraphConfig } from './interface';
+import { responseFormatter } from '../../util';
 
 class TuGraphSubGraphService extends Service {
   /**
    * 创建子图
    * @param graphName 子图名称
    * @param config 子图配置
-   * @returns 
+   * @returns
    */
   async createSubGraph(graphName: string, config: ISubGraphConfig) {
-    const { maxSizeGB, description, async } = config
-    console.log('async', async)
+    const { maxSizeGB, description, async } = config;
 
-    const createCypher = `CALL dbms.graph.createGraph(${graphName}, ${description}, ${maxSizeGB})`
+    const createCypher = `CALL dbms.graph.createGraph('${graphName}',  '${description}', ${maxSizeGB}, ${async})`;
 
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {
@@ -32,27 +32,25 @@ class TuGraphSubGraphService extends Service {
       },
       method: 'POST',
       data: {
+        graph: '',
         script: createCypher,
       },
-      timeout: [ 30000, 50000 ],
+      timeout: [30000, 50000],
       dataType: 'json',
     });
 
-    if (result.status !== 200) {
-      return result.data;
-    }
-
-    return result.data
+    return responseFormatter(result);
   }
 
   /**
    * 更新子图信息
    * @param graphName 子图名称
    * @param config 子图配置
-   * @returns 
+   * @returns
    */
   async updateSubGraph(graphName: string, config: ISubGraphConfig) {
-    const updateCypher = `CALL dbms.graph.modGraph(${graphName}, ${config})`
+    const { maxSizeGB, description } = config;
+    const updateCypher = `CALL dbms.graph.modGraph('${graphName}',{description: '${description}',  max_size_GB: ${maxSizeGB}})`;
 
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {
@@ -61,26 +59,22 @@ class TuGraphSubGraphService extends Service {
       },
       method: 'POST',
       data: {
+        graph: graphName,
         script: updateCypher,
       },
-      timeout: [ 30000, 50000 ],
+      timeout: [30000, 50000],
       dataType: 'json',
     });
-
-    if (result.status !== 200) {
-      return result.data;
-    }
-
-    return result.data
+    return responseFormatter(result);
   }
 
   /**
    * 删除子图
    * @param graphName 子图名称
-   * @returns 
+   * @returns
    */
   async deleteSubGraph(graphName: string) {
-    const cypher = `CALL dbms.graph.deleteGraph(${graphName})`
+    const cypher = `CALL dbms.graph.deleteGraph('${graphName}')`;
 
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {
@@ -89,26 +83,22 @@ class TuGraphSubGraphService extends Service {
       },
       method: 'POST',
       data: {
+        graph: '',
         script: cypher,
       },
-      timeout: [ 30000, 50000 ],
+      timeout: [30000, 50000],
       dataType: 'json',
     });
-
-    if (result.status !== 200) {
-      return result.data;
-    }
-
-    return result.data
+    return responseFormatter(result);
   }
 
   /**
    * 获取子图详情
    * @param graphName 子图名称
-   * @returns 
+   * @returns
    */
   async getSubGraphInfo(graphName: string) {
-    const cypher = `CALL dbms.graph.getGraphInfo(${graphName})`
+    const cypher = `CALL dbms.graph.getGraphInfo('${graphName}')`;
 
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {
@@ -117,17 +107,14 @@ class TuGraphSubGraphService extends Service {
       },
       method: 'POST',
       data: {
+        graph: graphName,
         script: cypher,
       },
-      timeout: [ 30000, 50000 ],
+      timeout: [30000, 50000],
       dataType: 'json',
     });
 
-    if (result.status !== 200) {
-      return result.data;
-    }
-
-    return result.data
+    return responseFormatter(result);
   }
 
   /**
@@ -266,19 +253,7 @@ class TuGraphSubGraphService extends Service {
       dataType: 'json',
     });
 
-    if (result.status !== 200) {
-      return {
-        success: false,
-        code: result.status,
-        data: null,
-      };
-    }
-
-    return {
-      success: true,
-      code: 200,
-      data: result.data.data.result,
-    };
+    return responseFormatter(result);
   }
 }
 

@@ -6,8 +6,10 @@ class TuGraphSubGraphController extends Controller {
     const { ctx } = this;
     const params = ctx.request.body;
     const { graphName, config } = params;
-
-    const result = await ctx.service.tugraph.subgraph.createSubGraph(graphName, config);
+    const result = await ctx.service.tugraph.subgraph.createSubGraph(
+      graphName,
+      config
+    );
     responseData(ctx, result);
   }
 
@@ -16,24 +18,29 @@ class TuGraphSubGraphController extends Controller {
     const params = ctx.request.body;
     const { graphName, config } = params;
 
-    const result = await ctx.service.tugraph.subgraph.updateSubGraph(graphName, config);
-    responseData(ctx, result); 
+    const result = await ctx.service.tugraph.subgraph.updateSubGraph(
+      graphName,
+      config
+    );
+    responseData(ctx, result);
   }
 
   async deleteSubGraph() {
     const { ctx } = this;
-    const params = ctx.request.body;
+    const params = ctx.request.query;
     const { graphName } = params;
 
     const result = await ctx.service.tugraph.subgraph.deleteSubGraph(graphName);
-    responseData(ctx, result); 
+    responseData(ctx, result);
   }
 
   async subGraphDetailInfo() {
-    const { ctx } = this
-    const { graphName } = ctx.query
-    const result = await ctx.service.tugraph.subgraph.getSubGraphInfo(graphName)
-    responseData(ctx, result); 
+    const { ctx } = this;
+    const { graphName } = ctx.params;
+    const result = await ctx.service.tugraph.subgraph.getSubGraphInfo(
+      graphName
+    );
+    responseData(ctx, result);
   }
 
   /**

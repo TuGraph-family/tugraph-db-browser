@@ -1,3 +1,5 @@
+import { RestFulResponse } from './service/tugraph/interface';
+
 export const responseData = (ctx, resp) => {
   if (!resp) {
     ctx.status = 500;
@@ -8,6 +10,21 @@ export const responseData = (ctx, resp) => {
   }
   ctx.status = parseInt(resp.code, 10);
   ctx.body = resp;
+};
+
+export const responseFormatter = (result: RestFulResponse) => {
+  if (result.status !== 200) {
+    return {
+      success: false,
+      code: result.status,
+      data: null,
+    };
+  }
+  return {
+    success: true,
+    code: 200,
+    data: result.data.data.result,
+  };
 };
 
 interface ICypherResponse {

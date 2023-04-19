@@ -1,3 +1,11 @@
+export interface RestFulResponse {
+  data: {
+    data: any;
+    success: number;
+  };
+  status: number;
+}
+
 export interface ILanguageQueryParams {
   value: string;
   graphName: string;
@@ -16,7 +24,7 @@ export interface ISubGraphConfig {
 }
 export interface ICreateSubGraphParams {
   graphName: string;
-  config: ISubGraphConfig
+  config: ISubGraphConfig;
 }
 
 export interface ISchemaProperties {
