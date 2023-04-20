@@ -60,11 +60,17 @@ export interface IPropertiesParams {
 
 // schema 相关
 export interface IVertextSchemaParams {
-
+  label: string;
+  primary: string;
+  properties: any[];
+  type: string;
 }
 
 export interface IEdgeSchemaParams {
-
+  constraints: string[][];
+  label: string;
+  properties: IPropertiesParams[];
+  type: string;
 }
 
 export interface ISchemaParams {

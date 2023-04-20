@@ -281,25 +281,24 @@ class TuGraphSchemaService extends Service {
     const indexs = await this.queryIndexByLabel(graphName, labelName)
 
     if (labelType === 'node') {
-      const vertexResponseData = formatVertexSchemaResponse(result.data.result)
-
+      const vertexResponseData = formatVertexSchemaResponse(result.data.data.result.schema)
       return {
-        success: false,
+        success: true,
         code: result.status,
         data: {
           ...vertexResponseData,
-          indexs
+          indexs: indexs.success === 0 ? indexs : null
         },
       };
     } else if (labelType === 'edge') {
-      const edgeResponseData = formatEdgeSchemaResponse(result.data.result)
+      const edgeResponseData = formatEdgeSchemaResponse(result.data.data.result.schema)
   
       return {
-        success: false,
+        success: true,
         code: result.status,
         data: {
           ...edgeResponseData,
-          indexs
+          indexs: indexs.success === 0 ? indexs : null
         }
       };
     }
@@ -326,13 +325,19 @@ class TuGraphSchemaService extends Service {
       dataType: 'json',
     });
 
+    if (!typeResult.data.data.result) {
+      return []
+    }
+
     // step2: 根据获取到的边类型，再获取每个边类型的详细属性
-    const edgeSchemaPromise = typeResult.data.map(async d => {
-      const currentEdgeSchema = await this.querySchemaByLabel(graphName, 'edge', d);
+    const edgeSchemaPromise = typeResult.data.data.result.map(async d => {
+      const currentEdgeSchema = await this.querySchemaByLabel(graphName, 'edge', d.edgeLabels);
       return currentEdgeSchema;
     });
     const edgeSchema = await Promise.all(edgeSchemaPromise);
-    return edgeSchema;
+    return edgeSchema.map(d => {
+      return d.data
+    });
   }
 
   async queryVertexSchema(graphName: string) {
@@ -351,13 +356,20 @@ class TuGraphSchemaService extends Service {
       dataType: 'json',
     });
 
+    if (!typeResult.data.data.result) {
+      return []
+    }
+
     // step2: 根据获取到的边类型，再获取每个边类型的详细属性
-    const vertexSchemaPromise = typeResult.data.data?.result?.map(async d => {
-      const currentVertexSchema = await this.querySchemaByLabel(graphName, 'node', d);
+    const vertexSchemaPromise = typeResult.data.data.result.map(async d => {
+      const currentVertexSchema = await this.querySchemaByLabel(graphName, 'node', d.label);
       return currentVertexSchema;
     });
     const vertexSchema = await Promise.all(vertexSchemaPromise);
-    return vertexSchema;
+
+    return vertexSchema.map(d => {
+      return d.data
+    });
   }
 
   /**
@@ -536,7 +548,6 @@ class TuGraphSchemaService extends Service {
       dataType: 'json',
     });
 
-    console.log('创建索引', result.data)
     return result.data
   }
 
@@ -548,7 +559,6 @@ class TuGraphSchemaService extends Service {
    */
   async deleteIndex(graphName: string, params: IIndexParams) {
     const { labelName, propertyName } = params
-    console.log(params)
     const cypher = `CALL db.deleteIndex('${labelName}', '${propertyName}')`
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {
@@ -564,7 +574,6 @@ class TuGraphSchemaService extends Service {
       dataType: 'json',
     });
 
-    console.log('删除索引', result)
     return result.data
   }
 

@@ -6,7 +6,7 @@ import { IVertextSchemaParams, IEdgeSchemaParams, ISchemaParams } from './interf
  * @return
  */
 export const formatVertexSchemaResponse = (params: IVertextSchemaParams) => {
-	const { label, properties } = JSON.parse(params[0][0]);
+	const { label, properties, primary } = params;
 
 	const propertiesObj = {} as any;
 	for (const p of properties) {
@@ -17,6 +17,7 @@ export const formatVertexSchemaResponse = (params: IVertextSchemaParams) => {
 		nodeType: label,
 		label,
 		properties: propertiesObj,
+		primary
 	}
 };
 
@@ -26,7 +27,7 @@ export const formatVertexSchemaResponse = (params: IVertextSchemaParams) => {
  * @return
  */
 export const formatEdgeSchemaResponse = (params: IEdgeSchemaParams) => {
-	const { constraints, label, properties } = JSON.parse(params[0][0]);
+	const { constraints, label, properties } = params;
 	if (constraints.length === 0) {
 		// 忽略这条信息
 		return null;
@@ -35,7 +36,7 @@ export const formatEdgeSchemaResponse = (params: IEdgeSchemaParams) => {
 
 	const propertiesObj = {} as any;
 	for (const p of properties) {
-		propertiesObj[p.name] = p.type === 'STRING' ? 'string' : 'number';
+		propertiesObj[p.name as string] = p.type === 'STRING' ? 'string' : 'number';
 	}
 
 	return {

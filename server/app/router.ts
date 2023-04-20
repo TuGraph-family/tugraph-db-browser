@@ -15,6 +15,7 @@ export default (app: Application) => {
     '/api/subgraph/:graphName',
     controller.tugraph.subgraph.subGraphDetailInfo
   );
+  router.get('/api/subgraph', controller.tugraph.subgraph.getSubGraphList);
 
   // TuGraph Schema
   // 点边统计，包括点边类型数量及数据库中点边数据数量
