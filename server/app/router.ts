@@ -8,6 +8,7 @@ export default (app: Application) => {
   router.post('/login', controller.tugraph.auth.login);
 
   // TuGraph subGraph
+  router.get('/api/subgraph', controller.tugraph.subgraph.getSubGraphList);
   router.post('/api/subgraph', controller.tugraph.subgraph.createSubGraph);
   router.put('/api/subgraph', controller.tugraph.subgraph.updateSubGraph);
   router.delete('/api/subgraph', controller.tugraph.subgraph.deleteSubGraph);
@@ -19,23 +20,54 @@ export default (app: Application) => {
 
   // TuGraph Schema
   // 点边统计，包括点边类型数量及数据库中点边数据数量
-  router.get('/api/statistics/:graphName', controller.tugraph.schema.vertexEdgeStatistics)
+  router.get(
+    '/api/statistics/:graphName',
+    controller.tugraph.schema.vertexEdgeStatistics
+  );
 
-  // 点边类型数量 
-  router.get('/api/statistics/:graphName/labels', controller.tugraph.schema.getVertexEdgeSchemaCount)
+  // 点边类型数量
+  router.get(
+    '/api/statistics/:graphName/labels',
+    controller.tugraph.schema.getVertexEdgeSchemaCount
+  );
 
   // 点边数量
-  router.get('/api/statistics/:graphName/count', controller.tugraph.schema.getVertexEdgeCount)
+  router.get(
+    '/api/statistics/:graphName/count',
+    controller.tugraph.schema.getVertexEdgeCount
+  );
 
-  router.get('/api/schema/:graphName', controller.tugraph.schema.getSchema)
-  router.post('/api/schema/:graphName', controller.tugraph.schema.createSchema)
-  // 更新 Schema
-  router.put('/api/schema:graphName', controller.tugraph.schema.updateSchema)
+  router.get('/api/schema/:graphName', controller.tugraph.schema.getSchema);
+  router.post('/api/schema/:graphName', controller.tugraph.schema.createSchema);
+  router.delete(
+    '/api/schema/:graphName',
+    controller.tugraph.schema.deleteSchema
+  );
 
   // 查询指定点边类型的Schema
-  router.get('/api/schema/:graphName/:labelType/:labelName', controller.tugraph.schema.getSchemaByType)
+  router.get(
+    '/api/schema/:graphName/:labelType/:labelName',
+    controller.tugraph.schema.getSchemaByType
+  );
+
+  // 指定点边的 Schema 修改
+  router.post(
+    '/api/property/:graphName',
+    controller.tugraph.schema.createProperty
+  );
+  router.put(
+    '/api/property/:graphName',
+    controller.tugraph.schema.updateProperty
+  );
+  router.delete(
+    '/api/property/:graphName',
+    controller.tugraph.schema.deleteProperty
+  );
 
   // 索引相关
-  router.post('/api/indexs/:graphName', controller.tugraph.schema.createIndex)
-  router.delete('/api/indexs/:graphName', controller.tugraph.schema.deleteIndex)
+  router.post('/api/index/:graphName', controller.tugraph.schema.createIndex);
+  router.delete(
+    '/api/index/:graphName',
+    controller.tugraph.schema.deleteIndex
+  );
 };

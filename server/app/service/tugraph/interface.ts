@@ -2,6 +2,8 @@ export interface RestFulResponse {
   data: {
     data: any;
     success: number;
+    errorCode?: number;
+    errorMsg?: string;  
   };
   status: number;
 }
@@ -54,7 +56,7 @@ export interface IDeleteSchemaParams {
   graphName: string;
   labelType: 'node' | 'edge';
   labelName: string;
-  fieldNames: string[];
+  propertyNames: string;
 }
 
 export interface IIndexParams {

@@ -21,9 +21,9 @@ class TuGraphSubGraphService extends Service {
    * @returns
    */
   async createSubGraph(graphName: string, config: ISubGraphConfig) {
-    const { maxSizeGB, description, async } = config;
+    const { maxSizeGB, description } = config;
 
-    const createCypher = `CALL dbms.graph.createGraph('${graphName}',  '${description}', ${maxSizeGB}, ${async})`;
+    const createCypher = `CALL dbms.graph.createGraph('${graphName}',  '${description}', ${maxSizeGB})`;
 
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {
