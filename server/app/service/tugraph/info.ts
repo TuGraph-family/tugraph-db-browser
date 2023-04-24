@@ -10,39 +10,37 @@ class TuGraphInfoService extends Service {
   async querySystemInfo() {
     const cypher = 'CALL dbms.system.info()';
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
-        headers: {
-            'content-type': 'application/json',
-            Authorization: this.ctx.request.header.authorization,
-          },
-          method: 'POST',
-          data: {
-            graph: '',
-            script: cypher,
-          },
-          timeout: [30000, 50000],
-          dataType: 'json',
-        });
-        return responseFormatter(result);
-    
+      headers: {
+        'content-type': 'application/json',
+        Authorization: this.ctx.request.header.authorization,
+      },
+      method: 'POST',
+      data: {
+        graph: '',
+        script: cypher,
+      },
+      timeout: [30000, 50000],
+      dataType: 'json',
+    });
+    return responseFormatter(result);
   }
 
   async queryDatabaseInfo() {
     const cypher = 'CALL dbms.config.list()';
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
-        headers: {
-            'content-type': 'application/json',
-            Authorization: this.ctx.request.header.authorization,
-          },
-          method: 'POST',
-          data: {
-            graph: '',
-            script: cypher,
-          },
-          timeout: [30000, 50000],
-          dataType: 'json',
-        });
-        return responseFormatter(result);
-    
+      headers: {
+        'content-type': 'application/json',
+        Authorization: this.ctx.request.header.authorization,
+      },
+      method: 'POST',
+      data: {
+        graph: '',
+        script: cypher,
+      },
+      timeout: [30000, 50000],
+      dataType: 'json',
+    });
+    return responseFormatter(result);
   }
 }
 

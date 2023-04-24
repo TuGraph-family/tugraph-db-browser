@@ -8,6 +8,14 @@ export interface RestFulResponse {
   status: number;
 }
 
+export interface IUserParams {
+  username: string;
+  password: string;
+  description?: boolean;
+  roles?: string[];
+}
+
+
 export interface ILanguageQueryParams {
   value: string;
   graphName: string;

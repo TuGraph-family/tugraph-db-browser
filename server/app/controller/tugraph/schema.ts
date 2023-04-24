@@ -115,7 +115,7 @@ class TuGraphSchemaController extends Controller {
   async deleteProperty() {
     const { ctx } = this;
     const { graphName } = ctx.params;
-    const { labelName, labelType, propertyNames } = ctx.request.query;
+    const { labelName, labelType, propertyNames } = ctx.request.body;
     const params ={
       graphName,
       labelName,

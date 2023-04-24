@@ -50,11 +50,13 @@ class TuGraphSchemaService extends Service {
 
     let cypher = ``;
     if (labelType === 'node') {
-      cypher = `CALL db.createLabel('vertex', '${labelName}', '${primaryField}', ${condition})`;
+      cypher =  `CALL db.createLabel('vertex', '${labelName}', '${primaryField}', ${condition})`;
     } else if (labelType === 'edge') {
-      cypher = `CALL db.createLabel('edge', '${labelName}', '${JSON.stringify(
+      cypher =  condition ? `CALL db.createLabel('edge', '${labelName}', '${JSON.stringify(
         edgeConstraints
-      )}', ${condition})`;
+      )}', ${condition})` : `CALL db.createLabel('edge', '${labelName}', '${JSON.stringify(
+        edgeConstraints
+      )}')`;
     }
 
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
@@ -70,6 +72,7 @@ class TuGraphSchemaService extends Service {
       timeout: [30000, 50000],
       dataType: 'json',
     });
+
     if(result.data.success !== 0) {
       return {
         code: 200,
@@ -97,6 +100,7 @@ class TuGraphSchemaService extends Service {
       if(!indexsResult) {
         return responseFormatter(result);
       }
+      
       const indexError = indexsResult?.find((d) => d?.success !== 0);
 
       if (indexError) {
@@ -196,7 +200,8 @@ class TuGraphSchemaService extends Service {
   async deleteLabelField(params: IDeleteSchemaParams) {
     const { graphName, labelType, labelName, propertyNames } = params;
     const type = labelType === 'node' ? 'vertex' : 'edge';
-    const cypher = `CALL db.alterLabelDelFields('${type}', '${labelName}', ${propertyNames})`;
+    const cypher = `CALL db.alterLabelDelFields('${type}', '${labelName}', ${JSON.stringify(propertyNames)})`;
+
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {
         'content-type': 'application/json',

@@ -6,6 +6,12 @@ export default (app: Application) => {
 
   // TuGraph Auth
   router.post('/login', controller.tugraph.auth.login);
+  router.post('/api/auth/user', controller.tugraph.auth.createUser);
+  router.delete('/api/auth/user', controller.tugraph.auth.deleteUser);
+  router.put(
+    '/api/auth/disable',
+    controller.tugraph.auth.setUserDisabledStatus
+  );
 
   // TuGraph subGraph
   router.get('/api/subgraph', controller.tugraph.subgraph.getSubGraphList);
@@ -66,18 +72,9 @@ export default (app: Application) => {
 
   // 索引相关
   router.post('/api/index/:graphName', controller.tugraph.schema.createIndex);
-  router.delete(
-    '/api/index/:graphName',
-    controller.tugraph.schema.deleteIndex
-  );
+  router.delete('/api/index/:graphName', controller.tugraph.schema.deleteIndex);
 
   // 系统信息相关
-  router.get(
-    '/api/info/system',
-    controller.tugraph.info.querySystemInfo
-  );
-  router.get(
-    '/api/info/database',
-    controller.tugraph.info.queryDatabaseInfo
-  );
+  router.get('/api/info/system', controller.tugraph.info.querySystemInfo);
+  router.get('/api/info/database', controller.tugraph.info.queryDatabaseInfo);
 };
