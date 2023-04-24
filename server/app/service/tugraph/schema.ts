@@ -432,7 +432,7 @@ class TuGraphSchemaService extends Service {
         success: false,
         code: result.status,
         data: {
-          vertexCount: nodeResult.data.data?.result?.[0].vertexCount,
+          vertexCount: nodeResult.data.data?.result?.[0]?.vertexCount,
           edgeCount: 0,
         },
       };
@@ -442,7 +442,7 @@ class TuGraphSchemaService extends Service {
       success: true,
       code: 200,
       data: {
-        vertexCount: nodeResult.data.data?.result?.[0].vertexCount,
+        vertexCount: nodeResult.data.data?.result?.[0]?.vertexCount,
         edgeCount: result.data.data?.result?.[0].edgeCount,
       },
     };
@@ -469,6 +469,7 @@ class TuGraphSchemaService extends Service {
       timeout: [30000, 50000],
       dataType: 'json',
     });
+
 
     if (vertexResult.status !== 200) {
       return {
@@ -510,8 +511,8 @@ class TuGraphSchemaService extends Service {
       success: true,
       code: 200,
       data: {
-        vertexLabels: vertexResult.data.data?.result?.[0].vertexNumLabels,
-        edgeLabels: edgeResult.data.data?.result?.[0].edgeNumLabels,
+        vertexLabels: vertexResult.data.data?.result?.[0]?.vertexNumLabels,
+        edgeLabels: edgeResult.data.data?.result?.[0]?.edgeNumLabels,
       },
     };
   }

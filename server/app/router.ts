@@ -70,4 +70,14 @@ export default (app: Application) => {
     '/api/index/:graphName',
     controller.tugraph.schema.deleteIndex
   );
+
+  // 系统信息相关
+  router.get(
+    '/api/info/system',
+    controller.tugraph.info.querySystemInfo
+  );
+  router.get(
+    '/api/info/database',
+    controller.tugraph.info.queryDatabaseInfo
+  );
 };
