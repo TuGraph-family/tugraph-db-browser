@@ -6,11 +6,22 @@ export default (app: Application) => {
 
   // TuGraph Auth
   router.post('/login', controller.tugraph.auth.login);
+  router.get('/api/auth/user', controller.tugraph.auth.getUserList);
   router.post('/api/auth/user', controller.tugraph.auth.createUser);
+  router.put('/api/auth/user', controller.tugraph.auth.updateUser);
+  router.put('/api/auth/password', controller.tugraph.auth.updatePassword);
   router.delete('/api/auth/user', controller.tugraph.auth.deleteUser);
   router.put(
-    '/api/auth/disable',
+    '/api/auth/user/disable',
     controller.tugraph.auth.setUserDisabledStatus
+  );
+  router.get('/api/auth/role', controller.tugraph.auth.getRoleList);
+  router.post('/api/auth/role', controller.tugraph.auth.createRole);
+  router.put('/api/auth/role', controller.tugraph.auth.updateRole);
+  router.delete('/api/auth/role', controller.tugraph.auth.deleteRole);
+  router.put(
+    '/api/auth/role/disable',
+    controller.tugraph.auth.setRoleDisabledStatus
   );
 
   // TuGraph subGraph

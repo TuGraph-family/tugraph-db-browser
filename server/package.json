@@ -29,6 +29,7 @@
     "egg-scripts": "^2.6.0",
     "egg-view-nunjucks": "^2.3.0",
     "gremlin_patch": "^3.5.1",
+    "lodash": "^4.17.21",
     "neo4j-driver": "^4.4.6"
   },
   "devDependencies": {
@@ -57,6 +58,6 @@
   ],
   "author": "baizn",
   "license": "MIT",
-  "files.insertFinalNewline": true, 
+  "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true
 }

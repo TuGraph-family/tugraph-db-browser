@@ -27,7 +27,7 @@ class TuGraphSubGraphController extends Controller {
 
   async deleteSubGraph() {
     const { ctx } = this;
-    const params = ctx.request.query;
+    const params = ctx.request.body;
     const { graphName } = params;
 
     const result = await ctx.service.tugraph.subgraph.deleteSubGraph(graphName);

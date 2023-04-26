@@ -3,7 +3,7 @@ export interface RestFulResponse {
     data: any;
     success: number;
     errorCode?: number;
-    errorMsg?: string;  
+    errorMsg?: string;
   };
   status: number;
 }
@@ -11,10 +11,36 @@ export interface RestFulResponse {
 export interface IUserParams {
   username: string;
   password: string;
+  curPassword?: string; // 当前密码，用于给当前用户修改密码
   description?: boolean;
   roles?: string[];
 }
 
+export interface IUserRespons {
+  user_name: string;
+  user_info: {
+    description?: string;
+    disabled: boolean;
+    roles?: string[];
+    permissions?: Record<string, string>;
+  };
+}
+
+export interface IRoleParams {
+  role: string;
+  description?: string;
+  permissions?: Record<string, string>;
+}
+
+export interface IRoleRespons {
+  role_name: string;
+  role_info: {
+    disabled: boolean;
+    description?: boolean;
+    field_permissions?: Record<string, string>;
+    permissions?: Record<string, string>;
+  };
+}
 
 export interface ILanguageQueryParams {
   value: string;

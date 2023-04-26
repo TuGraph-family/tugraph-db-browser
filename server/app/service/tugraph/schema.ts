@@ -27,7 +27,7 @@ class TuGraphSchemaService extends Service {
    * @param params
    * @returns
    */
-  async createSchema( params: ICreateSchemaParams) {
+  async createSchema(params: ICreateSchemaParams) {
     const {
       graphName,
       labelType,
@@ -50,13 +50,15 @@ class TuGraphSchemaService extends Service {
 
     let cypher = ``;
     if (labelType === 'node') {
-      cypher =  `CALL db.createLabel('vertex', '${labelName}', '${primaryField}', ${condition})`;
+      cypher = `CALL db.createLabel('vertex', '${labelName}', '${primaryField}', ${condition})`;
     } else if (labelType === 'edge') {
-      cypher =  condition ? `CALL db.createLabel('edge', '${labelName}', '${JSON.stringify(
-        edgeConstraints
-      )}', ${condition})` : `CALL db.createLabel('edge', '${labelName}', '${JSON.stringify(
-        edgeConstraints
-      )}')`;
+      cypher = condition
+        ? `CALL db.createLabel('edge', '${labelName}', '${JSON.stringify(
+            edgeConstraints
+          )}', ${condition})`
+        : `CALL db.createLabel('edge', '${labelName}', '${JSON.stringify(
+            edgeConstraints
+          )}')`;
     }
 
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
@@ -73,13 +75,13 @@ class TuGraphSchemaService extends Service {
       dataType: 'json',
     });
 
-    if(result.data.success !== 0) {
+    if (result.data.success !== 0) {
       return {
         code: 200,
         errorCode: result.data.errorCode,
         errorMessage: result.data.errorMsg,
         success: false,
-      }
+      };
     }
 
     // 创建 Schema 后，如果有配置索引，还需要再创建索引
@@ -87,20 +89,19 @@ class TuGraphSchemaService extends Service {
       // 配置了索引，则需要创建索引
       const indexPromise = indexs.map(async (d) => {
         // 主键即为索引，无需再创建
-        if(d.propertyName !== primaryField) {
+        if (d.propertyName !== primaryField) {
           const currentEdgeSchema = await this.createIndex(graphName, d);
           return currentEdgeSchema;
         }
-      
       });
-     
+
       const indexsResult = await Promise.all(indexPromise);
 
       // 无返回说明不需要额外创建索引
-      if(!indexsResult) {
+      if (!indexsResult) {
         return responseFormatter(result);
       }
-      
+
       const indexError = indexsResult?.find((d) => d?.success !== 0);
 
       if (indexError) {
@@ -115,7 +116,6 @@ class TuGraphSchemaService extends Service {
     }
     return responseFormatter(result);
   }
-
 
   /**
    * 向指定的 label 中添加属性
@@ -155,42 +155,42 @@ class TuGraphSchemaService extends Service {
     return responseFormatter(result);
   }
 
-    /**
+  /**
    * 修改 Label 中指定的属性字段
    * @param params
    * @returns
    */
-    async updateFieldToLabel(params: IUpdateSchemaParams) {
-      const { graphName, labelType, labelName, properties } = params;
-  
-      let condition = '';
-      properties.forEach((d, index) => {
-        const { name, type, optional = false } = d;
-        if (index === properties.length - 1) {
-          condition += `['${name}', ${type}, ${optional}]`;
-        } else {
-          condition += `['${name}', ${type}, ${optional}],`;
-        }
-      });
-  
-      const type = labelType === 'node' ? 'vertex' : 'edge';
-  
-      let cypher = `CALL db.alterLabelModFields('${type}', '${labelName}', ${condition})`;
-      const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
-        headers: {
-          'content-type': 'application/json',
-          Authorization: this.ctx.request.header.authorization,
-        },
-        method: 'POST',
-        data: {
-          graph: graphName,
-          script: cypher,
-        },
-        timeout: [30000, 50000],
-        dataType: 'json',
-      });
-      return responseFormatter(result);
-    }
+  async updateFieldToLabel(params: IUpdateSchemaParams) {
+    const { graphName, labelType, labelName, properties } = params;
+
+    let condition = '';
+    properties.forEach((d, index) => {
+      const { name, type, optional = false } = d;
+      if (index === properties.length - 1) {
+        condition += `['${name}', ${type}, ${optional}]`;
+      } else {
+        condition += `['${name}', ${type}, ${optional}],`;
+      }
+    });
+
+    const type = labelType === 'node' ? 'vertex' : 'edge';
+
+    let cypher = `CALL db.alterLabelModFields('${type}', '${labelName}', ${condition})`;
+    const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
+      headers: {
+        'content-type': 'application/json',
+        Authorization: this.ctx.request.header.authorization,
+      },
+      method: 'POST',
+      data: {
+        graph: graphName,
+        script: cypher,
+      },
+      timeout: [30000, 50000],
+      dataType: 'json',
+    });
+    return responseFormatter(result);
+  }
 
   /**
    * 删除 指定 Label 中的属性字段
@@ -200,7 +200,9 @@ class TuGraphSchemaService extends Service {
   async deleteLabelField(params: IDeleteSchemaParams) {
     const { graphName, labelType, labelName, propertyNames } = params;
     const type = labelType === 'node' ? 'vertex' : 'edge';
-    const cypher = `CALL db.alterLabelDelFields('${type}', '${labelName}', ${JSON.stringify(propertyNames)})`;
+    const cypher = `CALL db.alterLabelDelFields('${type}', '${labelName}', ${JSON.stringify(
+      propertyNames
+    )})`;
 
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {
@@ -218,7 +220,6 @@ class TuGraphSchemaService extends Service {
 
     return responseFormatter(result);
   }
-
 
   /**
    * 根据类型和名称获取指定的 Schema 定义
@@ -252,7 +253,7 @@ class TuGraphSchemaService extends Service {
       timeout: [30000, 50000],
       dataType: 'json',
     });
-   
+
     if (result.status !== 200) {
       return {
         success: false,
@@ -265,7 +266,7 @@ class TuGraphSchemaService extends Service {
       const vertexResponseData = formatVertexSchemaResponse(
         result.data.data.result[0].schema
       );
-      
+
       return {
         success: true,
         code: result.status,
@@ -330,7 +331,7 @@ class TuGraphSchemaService extends Service {
   }
 
   async queryVertexSchema(graphName: string) {
-    // step1: 先获取所有边类型
+    // step1: 先获取所有边点类型
     const typeResult = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {
         'content-type': 'application/json',
@@ -344,14 +345,13 @@ class TuGraphSchemaService extends Service {
       timeout: [30000, 50000],
       dataType: 'json',
     });
-   
+
     if (!typeResult?.data?.data?.result) {
       return [];
     }
-  
+
     // step2: 根据获取到的点类型，再获取每个点类型的详细属性
     const vertexSchemaPromise = typeResult.data.data.result.map(async (d) => {
-    
       const currentVertexSchema = await this.querySchemaByLabel(
         graphName,
         'node',
@@ -360,7 +360,6 @@ class TuGraphSchemaService extends Service {
       return currentVertexSchema;
     });
     const vertexSchema = await Promise.all(vertexSchemaPromise);
-
 
     return vertexSchema.map((d) => {
       return d.data;
@@ -373,7 +372,7 @@ class TuGraphSchemaService extends Service {
    */
   async querySchema(graphName: string) {
     const vertexSchema = await this.queryVertexSchema(graphName);
-   
+
     const edgeSchema = await this.queryEdgeSchema(graphName);
     return {
       code: 200,
@@ -475,7 +474,6 @@ class TuGraphSchemaService extends Service {
       dataType: 'json',
     });
 
-
     if (vertexResult.status !== 200) {
       return {
         success: false,
@@ -529,7 +527,11 @@ class TuGraphSchemaService extends Service {
    * @param isIndependentRequest 是否为独立请求
    * @returns
    */
-  async createIndex(graphName: string, params: IIndexParams, isIndependentRequest = false) {
+  async createIndex(
+    graphName: string,
+    params: IIndexParams,
+    isIndependentRequest = false
+  ) {
     const { labelName, propertyName, isUnique = true } = params;
     const cypher = `CALL db.addIndex('${labelName}', '${propertyName}', ${isUnique})`;
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
@@ -604,13 +606,13 @@ class TuGraphSchemaService extends Service {
   }
 
   /**
-   * 删除 schema 
+   * 删除 schema
    * @param graphName 子图名称
    * @param labelName label 类型
    * @param labelName 类型名称
    */
-async deleteSchema( params : IDeleteSchemaParams) {
-    const { labelType, labelName,graphName } = params;
+  async deleteSchema(params: IDeleteSchemaParams) {
+    const { labelType, labelName, graphName } = params;
     const type = labelType === 'node' ? 'vertex' : 'edge';
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {
@@ -620,7 +622,7 @@ async deleteSchema( params : IDeleteSchemaParams) {
       method: 'POST',
       data: {
         graph: graphName,
-        script:  `CALL db.deleteLabel('${type}', '${labelName}')`,
+        script: `CALL db.deleteLabel('${type}', '${labelName}')`,
       },
       timeout: [30000, 50000],
       dataType: 'json',

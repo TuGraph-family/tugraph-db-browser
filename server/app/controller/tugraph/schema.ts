@@ -70,11 +70,11 @@ class TuGraphSchemaController extends Controller {
   async createSchema() {
     const { ctx } = this;
     const { graphName } = ctx.params;
-    const params ={
+    const params = {
       graphName,
-     ...ctx.request.body
-    } 
-   
+      ...ctx.request.body,
+    };
+
     const result = await ctx.service.tugraph.schema.createSchema(params);
     responseData(ctx, result);
   }
@@ -82,10 +82,10 @@ class TuGraphSchemaController extends Controller {
   async deleteSchema() {
     const { ctx } = this;
     const { graphName } = ctx.params;
-    const params ={
+    const params = {
       graphName,
-     ...ctx.request.body
-    } 
+      ...ctx.request.body,
+    };
     const result = await ctx.service.tugraph.schema.deleteSchema(params);
     responseData(ctx, result);
   }
@@ -93,10 +93,10 @@ class TuGraphSchemaController extends Controller {
   async createProperty() {
     const { ctx } = this;
     const { graphName } = ctx.params;
-    const params ={
+    const params = {
       graphName,
-     ...ctx.request.body
-    } 
+      ...ctx.request.body,
+    };
     const result = await ctx.service.tugraph.schema.addFieldToLabel(params);
     responseData(ctx, result);
   }
@@ -104,10 +104,10 @@ class TuGraphSchemaController extends Controller {
   async updateProperty() {
     const { ctx } = this;
     const { graphName } = ctx.params;
-    const params ={
+    const params = {
       graphName,
-     ...ctx.request.body
-    } 
+      ...ctx.request.body,
+    };
     const result = await ctx.service.tugraph.schema.updateFieldToLabel(params);
     responseData(ctx, result);
   }
@@ -116,12 +116,12 @@ class TuGraphSchemaController extends Controller {
     const { ctx } = this;
     const { graphName } = ctx.params;
     const { labelName, labelType, propertyNames } = ctx.request.body;
-    const params ={
+    const params = {
       graphName,
       labelName,
       labelType: labelType as 'node' | 'edge',
-      propertyNames
-    } 
+      propertyNames,
+    };
     const result = await ctx.service.tugraph.schema.deleteLabelField(params);
     responseData(ctx, result);
   }
@@ -157,7 +157,7 @@ class TuGraphSchemaController extends Controller {
    */
   async deleteIndex() {
     const { ctx } = this;
-    const { labelName, propertyName } = ctx.request.query;
+    const { labelName, propertyName } = ctx.request.body;
     const { graphName } = ctx.params;
     const result = await ctx.service.tugraph.schema.deleteIndex(graphName, {
       labelName,
