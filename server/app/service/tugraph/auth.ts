@@ -48,7 +48,7 @@ class TuGraphAuthService extends Service {
     };
   }
 
-  async executeCypherQuery(cypherQuery: string, graph='') {
+  async executeCypherQuery(cypherQuery: string, graph = '') {
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {
         'content-type': 'application/json',
@@ -62,7 +62,6 @@ class TuGraphAuthService extends Service {
       timeout: [30000, 50000],
       dataType: 'json',
     });
-
     return responseFormatter(result);
   }
 
@@ -72,9 +71,16 @@ class TuGraphAuthService extends Service {
   async createUser(params: IUserParams): Promise<any> {
     const { username, password, description = '', roles = [] } = params;
 
+    // 1.创建用户
+    const createResult = await this.executeCypherQuery(
+      `CALL dbms.security.createUser('${username}', '${password}')`
+    );
+
+    if (!createResult.success) {
+      return createResult;
+    }
+
     const cypherScripts = [
-      // 1.创建用户
-      `CALL dbms.security.createUser('${username}', '${password}')`,
       // 2. 设置用户描述
       `CALL dbms.security.setUserDesc('${username}', '${description}')`,
       // 3. 赋予用户角色
@@ -84,17 +90,16 @@ class TuGraphAuthService extends Service {
     ];
 
     const cypherPromise = cypherScripts.map(async (cypher) => {
-      const currentEdgeSchema = await this.executeCypherQuery(cypher);
-      return currentEdgeSchema;
+      return await this.executeCypherQuery(cypher);
     });
     const result = await Promise.all(cypherPromise);
-   
+
     const error = result?.find((d) => !d?.success);
 
-      if (error) {
-        return error;
-      }
-    
+    if (error) {
+      return error;
+    }
+
     return result[0];
   }
 
@@ -116,18 +121,16 @@ class TuGraphAuthService extends Service {
     ];
 
     const cypherPromise = cypherScripts.map(async (cypher) => {
-      const currentEdgeSchema = await this.executeCypherQuery(cypher);
-      return currentEdgeSchema;
+      return await this.executeCypherQuery(cypher);
     });
     const result = await Promise.all(cypherPromise);
-    
 
     const error = result?.find((d) => !d?.success);
 
-      if (error) {
-        return error;
-      }
-    
+    if (error) {
+      return error;
+    }
+
     return result[0];
   }
 
@@ -140,23 +143,23 @@ class TuGraphAuthService extends Service {
       ? `CALL dbms.security.getUserInfo('${username}')`
       : `CALL dbms.security.listUsers()`;
     const userResult = await this.executeCypherQuery(cypherQuery);
-   
-    if(!userResult.success) {
+
+    if (!userResult.success) {
       return userResult;
     }
     // 2、列出所有角色
-     const roleResult = await this.queryRoles();
+    const roleResult = await this.queryRoles();
 
-     if(!roleResult.success) {
+    if (!roleResult.success) {
       return roleResult;
     }
 
-     const result = userInfoTranslator(userResult?.data,  roleResult?.data)
+    const result = userInfoTranslator(userResult?.data, roleResult?.data);
 
     return {
       success: true,
       code: 200,
-      data: result
+      data: result,
     };
   }
 
@@ -192,49 +195,43 @@ class TuGraphAuthService extends Service {
     return result;
   }
 
-
   /**
    * 创建角色
    */
   async createRole(params: IRoleParams): Promise<any> {
     const { role, description = '', permissions = null } = params;
 
-    if(!permissions) {
+    if (!permissions) {
       const cypherQuery = `CALL dbms.security.createRole('${role}','${description}')`;
       const result = await this.executeCypherQuery(cypherQuery);
       return result;
     }
 
-    let cypherScripts = [
-      // 1.修改角色描述信息
-      `CALL dbms.security.createRole('${role}','${description}')`,
-      // 2. 修改角色对图的访问权限
-      `CALL dbms.security.modRoleAccessLevel('${role}', ${convertPermissions(permissions)})`,
-    ];
+    // 1.创建角色
 
-    const cypherPromise = cypherScripts.map(async (cypher) => {
-      const currentEdgeSchema = await this.executeCypherQuery(cypher);
-      return currentEdgeSchema;
-    });
-    const result = await Promise.all(cypherPromise);
-   
-    const error = result?.find((d) => !d?.success);
+    const createRoleresult = await this.executeCypherQuery(
+      `CALL dbms.security.createRole('${role}','${description}')`
+    );
 
-      if (error) {
-        return error;
-      }
-    
-    return result[0];
+    if (!createRoleresult.success) {
+      return createRoleresult;
+    }
+
+    // 2. 修改角色对图的访问权限
+    return await this.executeCypherQuery(
+      `CALL dbms.security.modRoleAccessLevel('${role}', ${convertPermissions(
+        permissions
+      )})`
+    );
   }
 
-
-   /**
+  /**
    * 编辑角色
    */
-   async updateRole(params: IRoleParams): Promise<any> {
+  async updateRole(params: IRoleParams): Promise<any> {
     const { role, description = '', permissions = null } = params;
 
-    if(!permissions) {
+    if (!permissions) {
       const cypherQuery = `CALL dbms.security.modRoleDesc('${role}','${description}')`;
       const result = await this.executeCypherQuery(cypherQuery);
       return result;
@@ -244,28 +241,29 @@ class TuGraphAuthService extends Service {
       // 1.修改角色描述信息
       `CALL dbms.security.modRoleDesc('${role}','${description}')`,
       // 2. 修改角色对图的访问权限
-      `CALL dbms.security.modRoleAccessLevel('${role}', ${convertPermissions(permissions)})`,
+      `CALL dbms.security.modRoleAccessLevel('${role}', ${convertPermissions(
+        permissions
+      )})`,
     ];
 
     const cypherPromise = cypherScripts.map(async (cypher) => {
-      const currentEdgeSchema = await this.executeCypherQuery(cypher);
-      return currentEdgeSchema;
+      return await this.executeCypherQuery(cypher);
     });
     const result = await Promise.all(cypherPromise);
 
     const error = result?.find((d) => !d?.success);
 
-      if (error) {
-        return error;
-      }
-    
+    if (error) {
+      return error;
+    }
+
     return result[0];
   }
 
-   /**
+  /**
    * 查询角色列表
    */
-   async queryRoles(): Promise<any> {
+  async queryRoles(): Promise<any> {
     const cypherQuery = `CALL dbms.security.listRoles()`;
     const result = await this.executeCypherQuery(cypherQuery);
     return result;
@@ -280,19 +278,14 @@ class TuGraphAuthService extends Service {
     return result;
   }
 
-    /**
+  /**
    * 禁用启用角色
    */
-    async setRoleDisabledStatus(
-      role: string,
-      disabled: boolean
-    ): Promise<any> {
-      const cypherQuery = `CALL dbms.security.disableRole('${role}', ${disabled})`;
-      const result = await this.executeCypherQuery(cypherQuery);
-      return result;
-    }
-  
-
+  async setRoleDisabledStatus(role: string, disabled: boolean): Promise<any> {
+    const cypherQuery = `CALL dbms.security.disableRole('${role}', ${disabled})`;
+    const result = await this.executeCypherQuery(cypherQuery);
+    return result;
+  }
 }
 
 export default TuGraphAuthService;
