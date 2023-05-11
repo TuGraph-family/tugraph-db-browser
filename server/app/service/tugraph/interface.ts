@@ -3,7 +3,7 @@ export interface RestFulResponse {
     data: any;
     success: number;
     errorCode?: number;
-    errorMsg?: string;
+    errorMessage?: string;
   };
   status: number;
 }
@@ -43,8 +43,28 @@ export interface IRoleRespons {
 }
 
 export interface ILanguageQueryParams {
-  value: string;
+  script: string;
   graphName: string;
+}
+
+export type RelationOperator = '=' | '<>' | '<' | '<=' | '>' | '>=';
+export interface Condition {
+  property: string;
+  value: number | string | boolean;
+  operator: RelationOperator;
+}
+export interface IPathQueryParams {
+  graphName: string;
+  path: string;
+  conditions: Condition[];
+  limit: number;
+}
+
+export interface INodeQueryParams {
+  graphName: string;
+  nodes: string[];
+  conditions: Condition[];
+  limit: number;
 }
 
 export interface INeighborsParams {
@@ -97,4 +117,13 @@ export interface IIndexParams {
   labelName: string;
   propertyName: string;
   isUnique?: boolean;
+}
+
+export interface ICypherResponse {
+  elapsed?: number;
+  header: {
+    [key: string]: string | number;
+  }[];
+  result: any[];
+  size: number;
 }

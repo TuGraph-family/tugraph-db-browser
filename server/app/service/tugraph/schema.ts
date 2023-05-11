@@ -79,7 +79,7 @@ class TuGraphSchemaService extends Service {
       return {
         code: 200,
         errorCode: result.data.errorCode,
-        errorMessage: result.data.errorMsg,
+        errorMessage: result.data.errorMessage,
         success: false,
       };
     }
@@ -110,7 +110,7 @@ class TuGraphSchemaService extends Service {
           success: false,
           code: 200,
           errorCode: indexError.errorCode,
-          errorMessage: `Schema 创建成功，但有部分索引创建失败，具体失败原因为：${indexError.errorMsg}`,
+          errorMessage: `Schema 创建成功，但有部分索引创建失败，具体失败原因为：${indexError.errorMessage}`,
         };
       }
     }
@@ -404,7 +404,7 @@ class TuGraphSchemaService extends Service {
       dataType: 'json',
     });
 
-    if (nodeResult.status !== 200) {
+    if (nodeResult.status !== 200 || nodeResult.data.success !== 0) {
       return {
         success: false,
         code: nodeResult.status,
@@ -474,10 +474,10 @@ class TuGraphSchemaService extends Service {
       dataType: 'json',
     });
 
-    if (vertexResult.status !== 200) {
+    if (vertexResult.status !== 200 || vertexResult.data.success !== 0) {
       return {
         success: false,
-        errorMsg: vertexResult.data,
+        errorMessage: vertexResult.data,
         data: {
           vertexLabels: 0,
           edgeLabels: 0,
@@ -499,10 +499,10 @@ class TuGraphSchemaService extends Service {
       dataType: 'json',
     });
 
-    if (vertexResult.status !== 200) {
+    if (vertexResult.status !== 200 || vertexResult.data.success !== 0) {
       return {
         success: false,
-        errorMsg: edgeResult.data,
+        errorMessage: edgeResult.data,
         data: {
           vertexLabels: vertexResult.data.data?.result?.[0].vertexNumLabels,
           edgeLabels: 0,

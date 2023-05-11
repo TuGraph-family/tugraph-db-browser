@@ -20,19 +20,19 @@ class TuGraphAuthService extends Service {
       },
       method: 'POST',
       data: {
-        username,
+        userName: username,
         password,
       },
       timeout: [30000, 50000],
       dataType: 'json',
     });
 
-    if (result.status !== 200) {
+    if (result.data.success !== 0 || result.status !== 200) {
       return {
         success: false,
         code: 200,
         data: null,
-        errorMessage: result.data.errorMsg,
+        errorMessage: result.data.errorMessage,
         errorCode: result.data.errorCode,
       };
     }

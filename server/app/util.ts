@@ -1,4 +1,6 @@
-import { RestFulResponse } from './service/tugraph/interface';
+import { RestFulResponse, ICypherResponse } from './service/tugraph/interface';
+import { isEmpty } from 'lodash';
+import { formatMultipleResponse } from './utils/query';
 
 export const responseData = (ctx, resp) => {
   if (!resp) {
@@ -13,13 +15,13 @@ export const responseData = (ctx, resp) => {
 };
 
 export const responseFormatter = (result: RestFulResponse) => {
-  if (result.status !== 200) {
+  if (result.data.success !== 0 || result.status !== 200) {
     return {
       success: false,
       code: result.status,
       data: null,
       errorCode: result.data.errorCode,
-      errorMessage: result.data.errorMsg,
+      errorMessage: result.data.errorMessage,
     };
   }
   const resultData = result.data.data?.result;
@@ -29,15 +31,6 @@ export const responseFormatter = (result: RestFulResponse) => {
     data: resultData,
   };
 };
-
-interface ICypherResponse {
-  elapsed?: number;
-  header: {
-    [key: string]: string | number;
-  }[];
-  result: any[];
-  size: number;
-}
 
 export const getNodeIdsByResponseBak = (
   params: ICypherResponse
@@ -113,7 +106,6 @@ export const getNodeIdsByResponse = (
 ): { nodeIds: Array<number>; edgeIds: Array<string> } => {
   const nodeIds: Array<number> = [];
   const edgeIds: Array<string> = [];
-  console.log('getNodeIdsByResponse', params.data);
   const result = params.data.result;
   const headers = params.data.header;
   const edgeIndexList: Array<number> = [];
@@ -151,5 +143,37 @@ export const getNodeIdsByResponse = (
   return {
     nodeIds: [...new Set(nodeIds)],
     edgeIds: [...new Set(edgeIds)],
+  };
+};
+
+export const QueryResultFormatter = (
+  result: RestFulResponse,
+  script: string
+) => {
+  if (result.data.success !== 0 || result.status !== 200) {
+    return {
+      code: 200,
+      errorCode: result.data.errorCode,
+      errorMessage: result.data.errorMessage,
+      success: false,
+    };
+  }
+  const resultData = result.data.data.result;
+  const responseData = formatMultipleResponse(resultData);
+  const { edges, nodes } = responseData;
+  return {
+    data: {
+      originalData: resultData,
+      formatData:
+        isEmpty(edges) && isEmpty(nodes)
+          ? null
+          : {
+              edges,
+              nodes,
+            },
+    },
+    script,
+    code: 200,
+    success: true,
   };
 };

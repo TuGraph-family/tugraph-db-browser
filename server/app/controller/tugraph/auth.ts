@@ -69,7 +69,6 @@ class AuthController extends Controller {
   async setUserDisabledStatus() {
     const { ctx } = this;
     const { username, disabled } = ctx.request.body;
-    console.log(ctx.request.body);
     const result = await ctx.service.tugraph.auth.setUserDisabledStatus(
       username,
       disabled

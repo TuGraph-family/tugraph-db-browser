@@ -156,7 +156,7 @@ class TuGraphSubGraphService extends Service {
         };
       });
 
-    if (subGraphResult.status !== 200) {
+    if (subGraphResult.data.success !== 0 || subGraphResult.status !== 200) {
       return subGraphResult.data;
     }
 
@@ -212,7 +212,7 @@ class TuGraphSubGraphService extends Service {
       dataType: 'json',
     });
 
-    if (result.status !== 200) {
+    if (result.data.success !== 0 || result.status !== 200) {
       return result.data;
     }
 
@@ -252,7 +252,6 @@ class TuGraphSubGraphService extends Service {
       timeout: [30000, 50000],
       dataType: 'json',
     });
-
     return responseFormatter(result);
   }
 }

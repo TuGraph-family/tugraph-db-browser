@@ -13,7 +13,7 @@ module.exports = () => {
       ctx.body = {
         success: false,
         code: err.status || -1,
-        errorMessage: err.message || '未知错误',
+        errorMessage: err.errorMessage || '未知错误',
         data: null,
       };
       // 设置响应状态码

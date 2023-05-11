@@ -1,4 +1,9 @@
 import {
+  Condition,
+  INodeQueryParams,
+  IPathQueryParams,
+} from '../service/tugraph/interface';
+import {
   IVertextParams,
   IEdgeParams,
   IPathParams,
@@ -8,6 +13,7 @@ import {
   IVertexResponse,
   IEdgeResponse,
 } from './interface';
+import { find, has, map, isEmpty } from 'lodash';
 
 /**
  * 转换使用 Cypher 查询节点返回的数据格式
@@ -177,9 +183,9 @@ export const formatMultipleResponse = (params: IMultipleParams[]) => {
         // vertex or edge
         const { identity, src, dst, label_id, temporal_id, label } = current;
         // src & dst 都存在，则为边
-        if (src === 0 || (src && dst)) {
+        if (has(current, 'src') && has(current, 'dst')) {
           const edgeId = `${src}_${label_id}_${temporal_id}_${dst}_${identity}`;
-          const hasEdge = edges.find((d: any) => d.id === edgeId);
+          const hasEdge = find(edges, (d: any) => d.id === edgeId);
           if (!hasEdge) {
             edges.push({
               ...current,
@@ -188,7 +194,7 @@ export const formatMultipleResponse = (params: IMultipleParams[]) => {
           }
         } else if (label) {
           // 否则为节点
-          const hasNode = nodes.find((d: any) => d.identity === identity);
+          const hasNode = find(nodes, (d: any) => d.identity === identity);
           if (!hasNode) {
             nodes.push(current);
           }
@@ -210,7 +216,7 @@ export const formatMultipleResponse = (params: IMultipleParams[]) => {
     }) as unknown as IVertextParams[]
   );
 
-  const { nodes: nodeFromEdge, edges: multiEdges } = formatEdgeResponse(
+  const { edges: multiEdges } = formatEdgeResponse(
     edges.map((d) => {
       return {
         e: d,
@@ -227,12 +233,6 @@ export const formatMultipleResponse = (params: IMultipleParams[]) => {
   } = formatPathResponse(paths);
 
   graphNodes.forEach((d) => {
-    if (!multiNodeIds.includes(d.id)) {
-      multiNodes.push(d);
-    }
-  });
-
-  nodeFromEdge.forEach((d) => {
     if (!multiNodeIds.includes(d.id)) {
       multiNodes.push(d);
     }
@@ -268,4 +268,66 @@ export const formatPropertiesResponse = (params: IPropertiesParams[]) => {
  */
 export const formatSubGraphResponse = (params: ISubGraphParams) => {
   return params;
+};
+
+export const conditionToCypher = (conditions: Condition[]) => {
+  return map(conditions, (cond: Condition) => {
+    const { property, value, operator } = cond;
+    if (typeof value === 'boolean') {
+      return value
+        ? `${property}${operator}TRUE`
+        : `${property}${operator}FALSE`;
+    }
+
+    if (typeof value === 'number') {
+      return `${property}${operator}${value}`;
+    }
+
+    return `${property}${operator}'${value}'`;
+  });
+};
+
+/**
+ * 根据路径转换路径查询的 Cypher 语句
+ * @param params IPathQueryParams
+ * @return
+ */
+export const generateCypherByPath = (params: IPathQueryParams) => {
+  const { path, conditions, limit } = params;
+  if (isEmpty(conditions)) {
+    return `MATCH p=${path} RETURN p LIMIT ${limit}`;
+  }
+  const conditionScripts = conditionToCypher(conditions);
+
+  return `MATCH p=${path} WHERE  ${conditionScripts.join(
+    ' AND '
+  )} RETURN p LIMIT ${limit}`;
+};
+
+/**
+ * 根据节点转换路径查询的 Cypher 语句
+ * @param params IPathQueryParams
+ * @return
+ */
+export const generateCypherByNode = (params: INodeQueryParams) => {
+  const { nodes, conditions, limit } = params;
+
+  const nodesIndex: string[] = [];
+  const nodesScripts = map(nodes, (node: string, index: number) => {
+    const nodeIndex = `n${index}`;
+    nodesIndex.push(nodeIndex);
+    return `(${nodeIndex}:${node})`;
+  });
+
+  if (isEmpty(conditions)) {
+    return `MATCH ${nodesScripts.join(',')}  RETURN ${nodesIndex.join(
+      ','
+    )} LIMIT ${limit}`;
+  }
+
+  const conditionScripts = conditionToCypher(conditions);
+
+  return `MATCH ${nodesScripts.join(',')} WHERE  ${conditionScripts.join(
+    ' AND '
+  )} RETURN ${nodesIndex.join(',')} LIMIT ${limit}`;
 };

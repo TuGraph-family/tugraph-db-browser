@@ -88,4 +88,12 @@ export default (app: Application) => {
   // 系统信息相关
   router.get('/api/info/system', controller.tugraph.info.querySystemInfo);
   router.get('/api/info/database', controller.tugraph.info.queryDatabaseInfo);
+
+  // 图数据查询
+  router.post(
+    '/api/query/language',
+    controller.tugraph.query.queryByGraphLanguage
+  );
+  router.post('/api/query/path', controller.tugraph.query.queryByPath);
+  router.post('/api/query/node', controller.tugraph.query.queryByNode);
 };

@@ -3,7 +3,7 @@ export interface IVertextParams {
     identity: number;
     label: string;
     properties: any;
-  }
+  };
 }
 
 export interface IVertexResponse {
@@ -23,7 +23,7 @@ export interface IEdgeParams {
     label_id: number;
     src: number;
     temporal_id: number;
-  }
+  };
 }
 
 export interface IEdgeResponse {
@@ -46,13 +46,9 @@ export interface IPathParams {
   temporal_id?: number;
 }
 
-export interface ISubGraphParams {
+export interface ISubGraphParams {}
 
-}
-
-export interface IMultipleParams {
-
-}
+export interface IMultipleParams {}
 
 export interface IPropertiesParams {
   [key: string]: string | number | boolean;
@@ -73,6 +69,4 @@ export interface IEdgeSchemaParams {
   type: string;
 }
 
-export interface ISchemaParams {
-
-}
+export interface ISchemaParams {}

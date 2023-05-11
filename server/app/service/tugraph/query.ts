@@ -8,9 +8,19 @@
  */
 
 import { Service } from 'egg';
-import { INeighborsParams, ILanguageQueryParams } from './interface';
+import {
+  INeighborsParams,
+  ILanguageQueryParams,
+  IPathQueryParams,
+  INodeQueryParams,
+} from './interface';
 import { EngineServerURL } from './constant';
-import { formatMultipleResponse, formatVertexResponse } from '../../utils';
+import {
+  formatVertexResponse,
+  generateCypherByPath,
+  generateCypherByNode,
+} from '../../utils/query';
+import { QueryResultFormatter } from '../../util';
 
 class TuGraphQueryService extends Service {
   /**
@@ -35,7 +45,7 @@ class TuGraphQueryService extends Service {
       dataType: 'json',
     });
 
-    if (result.status !== 200) {
+    if (result.data.success !== 0 || result.status !== 200) {
       return result.data;
     }
 
@@ -52,7 +62,7 @@ class TuGraphQueryService extends Service {
    * @param params
    */
   async queryByGraphLanguage(params: ILanguageQueryParams) {
-    const { graphName, value } = params;
+    const { graphName, script } = params;
 
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {
@@ -62,22 +72,61 @@ class TuGraphQueryService extends Service {
       method: 'POST',
       data: {
         graph: graphName,
-        script: value,
+        script,
       },
       timeout: [30000, 50000],
       dataType: 'json',
     });
 
-    if (result.status !== 200) {
-      return result.data;
-    }
+    return QueryResultFormatter(result, script);
+  }
 
-    const responseData = formatMultipleResponse(result.data);
-    return {
-      data: responseData,
-      code: 200,
-      success: true,
-    };
+  /**
+   * 路径查询
+   * @param params
+   */
+  async queryByPath(params: IPathQueryParams) {
+    const { graphName } = params;
+    const script = generateCypherByPath(params);
+    const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
+      headers: {
+        'content-type': 'application/json',
+        Authorization: this.ctx.request.header.authorization,
+      },
+      method: 'POST',
+      data: {
+        graph: graphName,
+        script,
+      },
+      timeout: [30000, 50000],
+      dataType: 'json',
+    });
+
+    return QueryResultFormatter(result, script);
+  }
+
+  /**
+   * 节点查询
+   * @param params
+   */
+  async queryByNode(params: INodeQueryParams) {
+    const { graphName } = params;
+    const script = generateCypherByNode(params);
+    const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
+      headers: {
+        'content-type': 'application/json',
+        Authorization: this.ctx.request.header.authorization,
+      },
+      method: 'POST',
+      data: {
+        graph: graphName,
+        script,
+      },
+      timeout: [30000, 50000],
+      dataType: 'json',
+    });
+
+    return QueryResultFormatter(result, script);
   }
 
   /**
