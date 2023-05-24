@@ -19,8 +19,8 @@ import {
   IDeleteSchemaParams,
   IIndexParams,
   IUpdateSchemaParams,
+  ISchemaParams,
 } from './interface';
-import { ISchemaParams } from '../../utils/interface';
 
 class TuGraphSchemaService extends Service {
   /**
@@ -679,8 +679,8 @@ class TuGraphSchemaService extends Service {
       method: 'POST',
       data: {
         graph,
-        schema: {
-          schema: schema,
+        description: {
+          schema,
         },
       },
       timeout: [30000, 50000],

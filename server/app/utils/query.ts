@@ -2,8 +2,6 @@ import {
   Condition,
   INodeQueryParams,
   IPathQueryParams,
-} from '../service/tugraph/interface';
-import {
   IVertextParams,
   IEdgeParams,
   IPathParams,
@@ -12,7 +10,8 @@ import {
   ISubGraphParams,
   IVertexResponse,
   IEdgeResponse,
-} from './interface';
+} from '../service/tugraph/interface';
+
 import { find, has, map, isEmpty } from 'lodash';
 
 /**

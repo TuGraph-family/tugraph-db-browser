@@ -9,12 +9,11 @@ import { Service } from 'egg';
 import { map, join, isString } from 'lodash';
 import { responseFormatter } from '../../util';
 import { EngineServerURL } from './constant';
+import { IEdgeDataParams, INodeDataParams } from './interface';
 import {
-  IEdgeDataParams,
-  INodeDataParams,
   cypherValueFormatter,
   edgeMatchConditionFormatter,
-} from '../../utils';
+} from '../../utils/data';
 
 class TuGraphDataService extends Service {
   async createNode(
@@ -84,8 +83,8 @@ class TuGraphDataService extends Service {
   }
 
   async deleteNode(params: INodeDataParams) {
-    const { graphName, primaryKey, primaryValue } = params;
-    const cypher = `MATCH (n) WHERE n.${primaryKey} = ${cypherValueFormatter(
+    const { graphName, primaryKey, primaryValue, labelName } = params;
+    const cypher = `MATCH (n:${labelName}) WHERE n.${primaryKey} = ${cypherValueFormatter(
       primaryValue
     )} DELETE n`;
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
@@ -124,13 +123,14 @@ class TuGraphDataService extends Service {
   }
 
   async updateNode(params: INodeDataParams) {
-    const { graphName, primaryKey, primaryValue, properties } = params;
+    const { graphName, primaryKey, primaryValue, properties, labelName } =
+      params;
     const propertiesString = map(
       properties,
       (value: unknown, key: string) =>
         `n.${key} = ${cypherValueFormatter(value)}`
     ).join(',');
-    const cypher = `MATCH (n) WHERE n.${primaryKey} = ${cypherValueFormatter(
+    const cypher = `MATCH (n:${labelName}) WHERE n.${primaryKey} = ${cypherValueFormatter(
       primaryValue
     )} SET ${propertiesString}`;
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {

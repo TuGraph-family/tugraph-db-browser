@@ -1,4 +1,7 @@
-import { IVertextSchemaParams, IEdgeSchemaParams } from './interface';
+import {
+  IVertextSchemaParams,
+  IEdgeSchemaParams,
+} from '../service/tugraph/interface';
 /**
  * 转换使用 Cypher 查询节点 Schema 返回的数据格式
  * @param params

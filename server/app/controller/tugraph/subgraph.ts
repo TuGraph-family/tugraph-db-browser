@@ -13,6 +13,14 @@ class TuGraphSubGraphController extends Controller {
     responseData(ctx, result);
   }
 
+  async createSubGraphFromTemplate() {
+    const { ctx } = this;
+    const params = ctx.request.body;
+    const result =
+      await ctx.service.tugraph.subgraph.createSubGraphFromTemplate(params);
+    responseData(ctx, result);
+  }
+
   async updateSubGraph() {
     const { ctx } = this;
     const params = ctx.request.body;

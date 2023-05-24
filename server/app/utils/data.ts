@@ -1,5 +1,5 @@
 import { isString } from 'lodash';
-import { IEdgeDataParams } from './interface';
+import { IEdgeDataParams } from '../service/tugraph/interface';
 
 export const cypherValueFormatter = (value: any) => {
   return isString(value) ? `'${value}'` : value;

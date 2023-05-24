@@ -10,7 +10,7 @@
 
 import { Service } from 'egg';
 import { EngineServerURL } from './constant';
-import { ISubGraphConfig } from './interface';
+import { ISubGraphConfig, ISubGraphTemplateParams } from './interface';
 import { responseFormatter } from '../../util';
 
 class TuGraphSubGraphService extends Service {
@@ -40,6 +40,72 @@ class TuGraphSubGraphService extends Service {
     });
 
     return responseFormatter(result);
+  }
+
+  /**
+   * 从模版创建子图
+   * @param graphName
+   * @returns
+   */
+  async createSubGraphFromTemplate(params: ISubGraphTemplateParams) {
+    const { graphName, config, description } = params;
+    const { schema, files } = description;
+    // 1. 创建子图
+    const createSubGraphResult = await this.createSubGraph(graphName, config);
+    if (!createSubGraphResult.success) {
+      return createSubGraphResult;
+    }
+
+    // 2. 创建schema
+    const createSchemaResult =
+      await this.ctx.service.tugraph.schema.importSchema({
+        graph: graphName,
+        schema,
+        override: false,
+      });
+
+    if (!createSchemaResult.success) {
+      return createSchemaResult;
+    }
+
+    // 3. 导入数据
+    const importDataResult = await this.ctx.curl(
+      `${EngineServerURL}/import_data`,
+      {
+        headers: {
+          'content-type': 'application/json',
+          Authorization: this.ctx.request.header.authorization,
+        },
+        method: 'POST',
+        data: {
+          graph: graphName,
+          delimiter: ',', //数据分隔符
+          continueOnError: true, //遇到错误时是否跳过错误数据并继续导入
+          schema: { files },
+        },
+        timeout: [30000, 50000],
+        dataType: 'json',
+      }
+    );
+
+    if (
+      importDataResult.data.success !== 0 ||
+      importDataResult.status !== 200
+    ) {
+      return {
+        success: false,
+        code: importDataResult.status,
+        data: null,
+        errorCode: importDataResult.data.errorCode,
+        errorMessage: importDataResult.data.errorMessage,
+      };
+    }
+    const resultData = importDataResult.data.data;
+    return {
+      success: true,
+      code: 200,
+      data: resultData,
+    };
   }
 
   /**

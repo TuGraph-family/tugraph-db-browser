@@ -27,6 +27,10 @@ export default (app: Application) => {
   // TuGraph subGraph
   router.get('/api/subgraph', controller.tugraph.subgraph.getSubGraphList);
   router.post('/api/subgraph', controller.tugraph.subgraph.createSubGraph);
+  router.post(
+    '/api/subgraph/template',
+    controller.tugraph.subgraph.createSubGraphFromTemplate
+  );
   router.put('/api/subgraph', controller.tugraph.subgraph.updateSubGraph);
   router.delete('/api/subgraph', controller.tugraph.subgraph.deleteSubGraph);
   router.get(
