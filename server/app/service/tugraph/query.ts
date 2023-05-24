@@ -6,7 +6,6 @@
  * 4. 查询点边属性
  * 5. 邻居查询
  */
-
 import { Service } from 'egg';
 import {
   INeighborsParams,
@@ -14,6 +13,7 @@ import {
   IPathQueryParams,
   INodeQueryParams,
 } from './interface';
+
 import { EngineServerURL } from './constant';
 import {
   formatVertexResponse,
@@ -154,5 +154,4 @@ class TuGraphQueryService extends Service {
     };
   }
 }
-
 export default TuGraphQueryService;

@@ -1,8 +1,4 @@
-import {
-  IVertextSchemaParams,
-  IEdgeSchemaParams,
-  ISchemaParams,
-} from './interface';
+import { IVertextSchemaParams, IEdgeSchemaParams } from './interface';
 /**
  * 转换使用 Cypher 查询节点 Schema 返回的数据格式
  * @param params
@@ -50,14 +46,4 @@ export const formatEdgeSchemaResponse = (params: IEdgeSchemaParams) => {
     labelType: 'edge',
     properties,
   };
-  
-};
-
-/**
- * 转换使用 Cypher 查询子图 Schema 返回的数据格式
- * @param params
- * @return
- */
-export const formatSchemaResponse = (params: ISchemaParams) => {
-  return params;
 };

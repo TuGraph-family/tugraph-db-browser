@@ -165,6 +165,16 @@ class TuGraphSchemaController extends Controller {
     });
     responseData(ctx, result);
   }
+
+  /**
+   * schema 导入
+   */
+  async importSchema() {
+    const { ctx } = this;
+    const params = ctx.request.body;
+    const result = await ctx.service.tugraph.schema.importSchema(params);
+    responseData(ctx, result);
+  }
 }
 
 export default TuGraphSchemaController;

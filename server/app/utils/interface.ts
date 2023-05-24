@@ -69,4 +69,43 @@ export interface IEdgeSchemaParams {
   type: string;
 }
 
-export interface ISchemaParams {}
+export interface SchemaProperty {
+  name: string;
+  type: string;
+  optional?: boolean;
+  unique?: boolean;
+  index?: boolean;
+}
+
+export interface Schema {
+  label: string;
+  type: string;
+  properties?: SchemaProperty[];
+  primary?: string;
+  constraints?: string[][];
+}
+
+export interface ISchemaParams {
+  graph: string;
+  schema: Schema[];
+  override?: boolean;
+}
+
+export interface IEdgeDataParams {
+  graphName: string;
+  sourceLabel: string;
+  targetLabel: string;
+  sourcePrimaryKey: string;
+  sourceValue: string;
+  targetPrimaryKey: string;
+  targetValue: string;
+  labelName: string;
+  properties?: Record<string, unknown>;
+}
+
+export interface INodeDataParams {
+  graphName: string;
+  primaryKey: string;
+  primaryValue: string;
+  properties?: Record<string, unknown>;
+}

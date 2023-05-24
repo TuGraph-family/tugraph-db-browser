@@ -5,6 +5,7 @@
 import 'egg';
 import ExportHome from '../../../app/controller/home';
 import ExportTugraphAuth from '../../../app/controller/tugraph/auth';
+import ExportTugraphData from '../../../app/controller/tugraph/data';
 import ExportTugraphInfo from '../../../app/controller/tugraph/info';
 import ExportTugraphQuery from '../../../app/controller/tugraph/query';
 import ExportTugraphSchema from '../../../app/controller/tugraph/schema';
@@ -15,6 +16,7 @@ declare module 'egg' {
     home: ExportHome;
     tugraph: {
       auth: ExportTugraphAuth;
+      data: ExportTugraphData;
       info: ExportTugraphInfo;
       query: ExportTugraphQuery;
       schema: ExportTugraphSchema;

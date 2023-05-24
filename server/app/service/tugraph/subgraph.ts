@@ -238,7 +238,7 @@ class TuGraphSubGraphService extends Service {
   /**
    * 查询子图列表
    */
-  async getSubGraphList() {
+  async getSubGraphList(userName) {
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {
         'content-type': 'application/json',
@@ -247,7 +247,7 @@ class TuGraphSubGraphService extends Service {
       method: 'POST',
       data: {
         graph: '',
-        script: 'CALL dbms.graph.listGraphs()',
+        script: `CALL dbms.graph.listUserGraphs('${userName}')`,
       },
       timeout: [30000, 50000],
       dataType: 'json',

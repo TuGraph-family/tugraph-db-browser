@@ -81,6 +81,9 @@ export default (app: Application) => {
     controller.tugraph.schema.deleteProperty
   );
 
+  // schema 导入
+  router.post('/api/import/schema', controller.tugraph.schema.importSchema);
+
   // 索引相关
   router.post('/api/index/:graphName', controller.tugraph.schema.createIndex);
   router.delete('/api/index/:graphName', controller.tugraph.schema.deleteIndex);
@@ -96,4 +99,12 @@ export default (app: Application) => {
   );
   router.post('/api/query/path', controller.tugraph.query.queryByPath);
   router.post('/api/query/node', controller.tugraph.query.queryByNode);
+
+  // 数据相关
+  router.post('/api/data/node', controller.tugraph.data.createNode);
+  router.post('/api/data/edge', controller.tugraph.data.createEdge);
+  router.delete('/api/data/node', controller.tugraph.data.deleteNode);
+  router.delete('/api/data/edge', controller.tugraph.data.deleteEdge);
+  router.put('/api/data/node', controller.tugraph.data.updateNode);
+  router.put('/api/data/edge', controller.tugraph.data.updateEdge);
 };

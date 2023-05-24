@@ -1,6 +1,11 @@
 import assert from 'assert';
 // import { IPathParams } from '../../app/utils/interface';
-import { formatVertexResponse, formatEdgeResponse, formatPathResponse, formatMultipleResponse } from '../../app/utils/query';
+import {
+  formatVertexResponse,
+  formatEdgeResponse,
+  formatPathResponse,
+  formatMultipleResponse,
+} from '../../app/utils/query';
 
 describe('query method', () => {
   it('formatVertexResponse', () => {
@@ -13,7 +18,8 @@ describe('query method', () => {
             born: 1961,
             id: 2,
             name: 'Laurence Fishburne',
-            poster_image: 'https://image.tmdb.org/t/p/w185/mh0lZ1XsT84FayMNiT6Erh91mVu.jpg',
+            poster_image:
+              'https://image.tmdb.org/t/p/w185/mh0lZ1XsT84FayMNiT6Erh91mVu.jpg',
           },
         },
       },
@@ -25,7 +31,8 @@ describe('query method', () => {
             born: 1967,
             id: 3,
             name: 'Carrie-Anne Moss',
-            poster_image: 'https://image.tmdb.org/t/p/w185/8iATAc5z5XOKFFARLsvaawa8MTY.jpg',
+            poster_image:
+              'https://image.tmdb.org/t/p/w185/8iATAc5z5XOKFFARLsvaawa8MTY.jpg',
           },
         },
       },
@@ -90,7 +97,8 @@ describe('query method', () => {
               born: 1961,
               id: 2,
               name: 'Laurence Fishburne',
-              poster_image: 'https://image.tmdb.org/t/p/w185/mh0lZ1XsT84FayMNiT6Erh91mVu.jpg',
+              poster_image:
+                'https://image.tmdb.org/t/p/w185/mh0lZ1XsT84FayMNiT6Erh91mVu.jpg',
             },
           },
           {
@@ -111,9 +119,11 @@ describe('query method', () => {
             properties: {
               duration: 136,
               id: 1,
-              poster_image: 'http://image.tmdb.org/t/p/w185/gynBNzwyaHKtXqlEKKLioNkjKgN.jpg',
+              poster_image:
+                'http://image.tmdb.org/t/p/w185/gynBNzwyaHKtXqlEKKLioNkjKgN.jpg',
               rated: 'R',
-              summary: 'Thomas A. Anderson is a man living two lives. By day he is an average computer programmer and by night a malevolent hacker known as Neo who finds himself targeted by the police when he is contacted by Morpheus a legendary computer hacker who reveals the shocking truth about our reality.',
+              summary:
+                'Thomas A. Anderson is a man living two lives. By day he is an average computer programmer and by night a malevolent hacker known as Neo who finds himself targeted by the police when he is contacted by Morpheus a legendary computer hacker who reveals the shocking truth about our reality.',
               tagline: 'Welcome to the Real World.',
               title: 'The Matrix',
             },
@@ -129,7 +139,8 @@ describe('query method', () => {
               born: 1961,
               id: 2,
               name: 'Laurence Fishburne',
-              poster_image: 'https://image.tmdb.org/t/p/w185/mh0lZ1XsT84FayMNiT6Erh91mVu.jpg',
+              poster_image:
+                'https://image.tmdb.org/t/p/w185/mh0lZ1XsT84FayMNiT6Erh91mVu.jpg',
             },
           },
           {
@@ -150,9 +161,11 @@ describe('query method', () => {
             properties: {
               duration: 136,
               id: 1,
-              poster_image: 'http://image.tmdb.org/t/p/w185/gynBNzwyaHKtXqlEKKLioNkjKgN.jpg',
+              poster_image:
+                'http://image.tmdb.org/t/p/w185/gynBNzwyaHKtXqlEKKLioNkjKgN.jpg',
               rated: 'R',
-              summary: 'Thomas A. Anderson is a man living two lives. By day he is an average computer programmer and by night a malevolent hacker known as Neo who finds himself targeted by the police when he is contacted by Morpheus a legendary computer hacker who reveals the shocking truth about our reality.',
+              summary:
+                'Thomas A. Anderson is a man living two lives. By day he is an average computer programmer and by night a malevolent hacker known as Neo who finds himself targeted by the police when he is contacted by Morpheus a legendary computer hacker who reveals the shocking truth about our reality.',
               tagline: 'Welcome to the Real World.',
               title: 'The Matrix',
             },
@@ -187,7 +200,8 @@ describe('query method', () => {
             born: 1961,
             id: 2,
             name: 'Laurence Fishburne',
-            poster_image: 'https://image.tmdb.org/t/p/w185/mh0lZ1XsT84FayMNiT6Erh91mVu.jpg',
+            poster_image:
+              'https://image.tmdb.org/t/p/w185/mh0lZ1XsT84FayMNiT6Erh91mVu.jpg',
           },
         },
         'n.id': 2,
@@ -199,7 +213,8 @@ describe('query method', () => {
               born: 1961,
               id: 2,
               name: 'Laurence Fishburne',
-              poster_image: 'https://image.tmdb.org/t/p/w185/mh0lZ1XsT84FayMNiT6Erh91mVu.jpg',
+              poster_image:
+                'https://image.tmdb.org/t/p/w185/mh0lZ1XsT84FayMNiT6Erh91mVu.jpg',
             },
           },
           {
@@ -220,9 +235,11 @@ describe('query method', () => {
             properties: {
               duration: 136,
               id: 1,
-              poster_image: 'http://image.tmdb.org/t/p/w185/gynBNzwyaHKtXqlEKKLioNkjKgN.jpg',
+              poster_image:
+                'http://image.tmdb.org/t/p/w185/gynBNzwyaHKtXqlEKKLioNkjKgN.jpg',
               rated: 'R',
-              summary: 'Thomas A. Anderson is a man living two lives. By day he is an average computer programmer and by night a malevolent hacker known as Neo who finds himself targeted by the police when he is contacted by Morpheus a legendary computer hacker who reveals the shocking truth about our reality.',
+              summary:
+                'Thomas A. Anderson is a man living two lives. By day he is an average computer programmer and by night a malevolent hacker known as Neo who finds himself targeted by the police when he is contacted by Morpheus a legendary computer hacker who reveals the shocking truth about our reality.',
               tagline: 'Welcome to the Real World.',
               title: 'The Matrix',
             },
@@ -249,7 +266,8 @@ describe('query method', () => {
             born: 1961,
             id: 2,
             name: 'Laurence Fishburne',
-            poster_image: 'https://image.tmdb.org/t/p/w185/mh0lZ1XsT84FayMNiT6Erh91mVu.jpg',
+            poster_image:
+              'https://image.tmdb.org/t/p/w185/mh0lZ1XsT84FayMNiT6Erh91mVu.jpg',
           },
         },
         'n.id': 2,
@@ -261,7 +279,8 @@ describe('query method', () => {
               born: 1961,
               id: 2,
               name: 'Laurence Fishburne',
-              poster_image: 'https://image.tmdb.org/t/p/w185/mh0lZ1XsT84FayMNiT6Erh91mVu.jpg',
+              poster_image:
+                'https://image.tmdb.org/t/p/w185/mh0lZ1XsT84FayMNiT6Erh91mVu.jpg',
             },
           },
           {
@@ -282,9 +301,11 @@ describe('query method', () => {
             properties: {
               duration: 136,
               id: 1,
-              poster_image: 'http://image.tmdb.org/t/p/w185/gynBNzwyaHKtXqlEKKLioNkjKgN.jpg',
+              poster_image:
+                'http://image.tmdb.org/t/p/w185/gynBNzwyaHKtXqlEKKLioNkjKgN.jpg',
               rated: 'R',
-              summary: 'Thomas A. Anderson is a man living two lives. By day he is an average computer programmer and by night a malevolent hacker known as Neo who finds himself targeted by the police when he is contacted by Morpheus a legendary computer hacker who reveals the shocking truth about our reality.',
+              summary:
+                'Thomas A. Anderson is a man living two lives. By day he is an average computer programmer and by night a malevolent hacker known as Neo who finds himself targeted by the police when he is contacted by Morpheus a legendary computer hacker who reveals the shocking truth about our reality.',
               tagline: 'Welcome to the Real World.',
               title: 'The Matrix',
             },
