@@ -1,0 +1,30 @@
+@perfix-cls: ant-tugraph;
+.@{perfix-cls}-empty-project {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 8px;
+  height: 553px;
+  margin-top: 25px;
+
+  .@{perfix-cls}-desc {
+    color: #000;
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    opacity: 0.45;
+  }
+
+  .@{perfix-cls}-btn {
+    margin-top: 24px;
+
+    :global {
+      .ant-btn {
+        width: 102px;
+        height: 36px;
+        border-radius: 6px;
+      }
+    }
+  }
+}

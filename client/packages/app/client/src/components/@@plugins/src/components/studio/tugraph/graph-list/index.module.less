@@ -1,0 +1,281 @@
+@perfix-cls: ant-tugraph;
+.@{perfix-cls}-home-style {
+  width: 100%;
+  height: 100%;
+  background-color: #e7ecff;
+  padding: 16px;
+  overflow: hidden;
+  box-sizing: border-box;
+  .@{perfix-cls}-header {
+    display: flex;
+    align-items: start;
+    position: relative;
+    img {
+      display: inline-block;
+      margin-left: 8px;
+      width: 110px;
+    }
+    .@{perfix-cls}-header-right {
+      width: 133px;
+      position: absolute;
+      right: 0;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      .@{perfix-cls}-avater {
+        height: 28px;
+        width: 28px;
+        border-radius: 50%;
+        background-color: #6a6b71;
+      }
+    }
+    :global {
+      .ant-tabs {
+        margin-left: 24px;
+        .ant-tabs-tab {
+          color: rgba(106, 107, 113, 1);
+          padding: 0 0 12px;
+        }
+        .ant-tabs-tab-active {
+          .ant-tabs-tab-btn {
+            color: rgba(54, 55, 64, 1) !important;
+          }
+        }
+        .ant-tabs-ink-bar {
+          background: rgba(54, 55, 64, 1);
+        }
+        .ant-tabs-tab-remove {
+          &:active {
+            color: rgba(54, 55, 64, 1);
+          }
+        }
+      }
+    }
+    .@{perfix-cls}-console-menu {
+      list-style-type: none;
+      width: 118px;
+      height: 208px;
+      background-color: rgba(255, 255, 255, 1);
+      box-shadow: 0 3px 6px -4px #0000001f, 0 6px 16px #00000014, 0 9px 28px 8px #0000000d;
+      border-radius: 8px;
+      padding: 9px 0;
+      box-sizing: border-box;
+      position: absolute;
+      top: 30px;
+      left: 250px;
+      z-index: 2;
+      li {
+        line-height: 38px;
+        font-size: 14px;
+        padding: 0 24px;
+        cursor: pointer;
+        &:hover {
+          background-color: #f1f5ff;
+          color: #416fff;
+        }
+      }
+    }
+  }
+
+  .@{perfix-cls}-graph-develop {
+    width: 1248px;
+    margin: 0 auto;
+
+    .@{perfix-cls}-title {
+      font-weight: 500;
+      font-size: 20px;
+      color: #1a1b25;
+      margin-bottom: 8px;
+    }
+
+    .@{perfix-cls}-desc {
+      &-text {
+        color: rgba(26, 27, 37, 0.45);
+        font-size: 14px;
+      }
+
+      &-collapse {
+        margin-left: 12px;
+        cursor: pointer;
+
+        &-text {
+          margin-right: 3px;
+          font-size: 14px;
+        }
+        svg {
+          font-size: 14px;
+        }
+      }
+    }
+
+    .@{perfix-cls}-steps {
+      align-items: center;
+      display: flex;
+    }
+
+    .@{perfix-cls}-list {
+      width: 100%;
+      min-height: 554px;
+
+      :global {
+        .ant-pagination-item-link {
+          background-color: rgba(0, 0, 0, 0);
+          border-color: rgba(0, 0, 0, 0);
+        }
+
+        .ant-pagination-item {
+          background-color: rgba(0, 0, 0, 0);
+          border-color: rgba(0, 0, 0, 0);
+        }
+
+        .ant-pagination-item-active {
+          border-color: #1650ff !important;
+        }
+
+        .ant-list-header {
+          border-bottom: 0;
+          padding: 24px 0;
+        }
+
+        .ant-col > .ant-list-item {
+          margin-bottom: 0;
+        }
+
+        .ant-pagination-options-quick-jumper input {
+          background-color: transparent;
+        }
+      }
+    }
+
+    .@{perfix-cls}-projects-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+
+      .@{perfix-cls}-search-action {
+        display: flex;
+        align-items: center;
+      }
+
+      :global {
+        .ant-tabs-ink-bar {
+          background: #363740;
+        }
+
+        .ant-tabs-nav {
+          padding: 0;
+          margin: 0;
+        }
+
+        .ant-tabs-tab-btn {
+          color: #6a6b71;
+        }
+
+        .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+          color: #363740;
+        }
+
+        .ant-tabs-top > .ant-tabs-nav::before {
+          border-bottom: none;
+        }
+
+        .ant-tabs-tab {
+          padding: 12px 0;
+        }
+      }
+
+      .@{perfix-cls}-searc-bar {
+        display: flex;
+        border: 1px solid rgba(26, 27, 37, 0.15);
+        border-radius: 8px;
+        text-align: center;
+        align-items: center;
+
+        &:not(:last-child) {
+          margin-right: 10px;
+        }
+
+        .@{perfix-cls}-search-line {
+          color: rgba(26, 27, 37, 0.25);
+        }
+
+        .@{perfix-cls}-searchType {
+          width: 120px;
+        }
+
+        :global {
+          .ant-select {
+            width: 100%;
+            color: rgba(106, 107, 113, 1);
+            font-size: 12px;
+          }
+        }
+
+        .@{perfix-cls}-search {
+          width: 160px;
+
+          :global {
+            .ant-input-group > .ant-input:last-child,
+            .ant-input-group-addon:last-child,
+            .ant-input-search-button {
+              background-color: transparent;
+              border-color: rgba(26, 27, 37, 0.15);
+              border-left: none;
+              border-radius: 0 8px 8px 0 !important;
+              padding-left: 0;
+              font-size: 16px;
+            }
+
+            .ant-input-group > .ant-input:first-child {
+              color: rgba(106, 107, 113, 1);
+              background-color: transparent;
+              border-color: rgba(26, 27, 37, 0.15);
+              border-radius: 0 !important;
+              font-size: 12px;
+              height: 32px;
+              border-right: none;
+
+              &::placeholder {
+                color: var(--description-text-color);
+              }
+            }
+
+            .ant-input-group-addon {
+              border: 0;
+              background-color: rgba(0, 0, 0, 0);
+            }
+
+            .ant-btn {
+              background-color: rgba(0, 0, 0, 0);
+              border: 0;
+            }
+
+            .anticon {
+              color: rgba(26, 27, 37, 0.45);
+            }
+          }
+        }
+      }
+    }
+  }
+  :global {
+    .ant-pagination {
+      float: right;
+      .ant-pagination-item {
+        background-color: transparent;
+        border-color: transparent;
+      }
+      .ant-pagination-item-active {
+        border-color: #1890ff;
+      }
+      button {
+        background-color: transparent;
+        border: none;
+      }
+    }
+  }
+}
+.@{perfix-cls}-avatar-menu {
+  width: 88px;
+}

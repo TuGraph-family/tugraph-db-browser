@@ -1,0 +1,16 @@
+@perfix-cls: ant-tugraph;
+.@{perfix-cls}-view-graph-model-canvas {
+  position: relative;
+  height: 100%;
+
+  :global {
+    .@{perfix-cls}-graph-canvas-tools {
+      position: absolute;
+      bottom: 4px;
+      right: 0px;
+    }
+    .graphin-core {
+      min-height: auto !important;
+    }
+  }
+}

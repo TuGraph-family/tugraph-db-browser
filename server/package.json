@@ -1,5 +1,5 @@
 {
-  "name": "@tugraph/openpiece-httpservice",
+  "name": "tugraph-openpiece-httpservice",
   "version": "0.0.1",
   "description": "Openpiece 的 HTTPServer, 基于 Egg 框架",
   "private": true,
@@ -10,8 +10,8 @@
   "scripts": {
     "pro": "npm run tsc && egg-scripts start",
     "stop": "egg-scripts stop --title=egg-server-gi-standalone-service",
-    "start": "egg-scripts start --port=7002 --daemon ",
-    "build": "npm run tsc && rm -rf ./node_modules && tnpm install --production && tar -zcvf ./release.tgz",
+    "start": "egg-scripts start --port=7001 --daemon ",
+    "build": "npm install && npm run tsc",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
     "test-local": "egg-bin test",

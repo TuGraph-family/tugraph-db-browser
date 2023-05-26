@@ -1,0 +1,51 @@
+@perfix-cls: ant-tugraph;
+.card-styles {
+  width: 233px;
+  height: 233px;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 16px;
+  box-sizing: border-box;
+}
+.@{perfix-cls}-card-container {
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  position: relative;
+  .card-styles();
+
+  .@{perfix-cls}-card-img {
+    height: 127px;
+    width: 201px;
+    background-color: rgba(22, 80, 255, 0.15);
+    border-radius: 4px;
+  }
+  .@{perfix-cls}-card-title {
+    height: 22px;
+    font-weight: 400;
+    font-size: 14px;
+    color: #363740;
+    line-height: 22px;
+    margin: 8px 0;
+  }
+  .@{perfix-cls}-card-desc {
+    height: 40px;
+    font-weight: 400;
+    font-size: 12px;
+    color: #98989d;
+    line-height: 20px;
+  }
+}
+.@{perfix-cls}-active-card {
+  border: 1px solid #1650ff;
+  background-color: rgba(22, 80, 255, 0.08);
+}
+.@{perfix-cls}-card-horn {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-top: 6px solid rgba(22, 80, 255, 1);
+  border-right: 6px solid rgba(22, 80, 255, 1);
+  border-radius: 0 4px 0;
+  top: 2px;
+  right: 2px;
+}

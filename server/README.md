@@ -1,6 +1,6 @@
-## openpiece httpservice
+## TuGraph DB Browser Httpservice
 
-openpiece 的 HTTPServer，用于解析 TuGraph Cypher 语句结果，以及为 Openpiece 平台提供基础服务。
+TuGraph DB Browser 的 HTTPServer，用于解析 TuGraph Cypher 语句结果，以及为 TuGraph DB Browser 平台提供基础服务。
 
 ### Development
 

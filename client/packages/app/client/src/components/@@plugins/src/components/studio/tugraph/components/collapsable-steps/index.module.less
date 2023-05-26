@@ -1,0 +1,46 @@
+@collasible-prefix-cls: ant-tugraph;
+
+.@{collasible-prefix-cls}-collasible-steps {
+  display: flex;
+  transition: all 0.2s;
+  overflow: hidden;
+
+  .@{collasible-prefix-cls}-step {
+    display: flex;
+    align-items: center;
+
+    &-arrow {
+      font-size: 12px;
+      color: rgba(26, 27, 37, 0.25);
+      margin: 0 6px;
+    }
+
+    .@{collasible-prefix-cls}-step-content {
+      display: flex;
+      justify-items: center;
+      width: 100%;
+      background-color: #d0dcff;
+      border-radius: 8px;
+      padding: 20px 14px;
+
+      .@{collasible-prefix-cls}-title {
+        font-weight: 500;
+        font-size: 16px;
+        color: #363740;
+        text-align: left;
+      }
+
+      .@{collasible-prefix-cls}-desc {
+        font-weight: 400;
+        font-size: 14px;
+        color: #6a6b71;
+      }
+
+      .@{collasible-prefix-cls}-icon-text-title {
+        margin-right: 8px;
+        font-size: 42px;
+        margin-top: 3px;
+      }
+    }
+  }
+}

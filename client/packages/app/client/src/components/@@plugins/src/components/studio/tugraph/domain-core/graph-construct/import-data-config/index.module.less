@@ -1,0 +1,84 @@
+@perfix-cls: ant-tugraph;
+.@{perfix-cls}-collapse {
+  :global {
+    .ant-collapse {
+      background-color: #fff;
+    }
+
+    .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+      background-color: #f6f8ff;
+      border-radius: 8px !important;
+      line-height: 34px;
+      border: none;
+    }
+
+    .ant-collapse-content-box {
+      padding-top: 8px;
+    }
+
+    .ant-collapse,
+    .ant-collapse > .ant-collapse-item {
+      border: none;
+    }
+
+    .ant-collapse-item {
+      margin-bottom: 8px;
+    }
+
+    .ant-collapse-content {
+      border: none;
+      background-color: #f6f8ff;
+      border-radius: 0 0 8px 8px !important;
+      margin-top: -8px;
+    }
+    .ant-select:not(.ant-select-customize-input) .ant-select-selector,
+    .ant-input {
+      border-radius: 6px;
+    }
+    .ant-select-single.ant-select-sm:not(.ant-select-customize-input) .ant-select-selector {
+      height: 26px;
+    }
+  }
+  &-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 140px;
+  }
+  &-size {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 130px;
+  }
+  &-status {
+    white-space: nowrap;
+  }
+  &-table {
+    background-color: #ffffff;
+    border: 1px solid #f2f2f2;
+    border-radius: 8px;
+    padding-bottom: 12px;
+
+    &-header {
+      padding: 10px 16px 0 16px;
+      display: flex;
+      font-weight: 400;
+      font-size: 14px;
+      color: #363740;
+      line-height: 22px;
+      height: 52px;
+
+      &-group {
+        display: flex;
+        justify-content: flex-end;
+        width: 230px;
+
+        input {
+          width: 48px;
+          height: 26px;
+        }
+      }
+    }
+  }
+}

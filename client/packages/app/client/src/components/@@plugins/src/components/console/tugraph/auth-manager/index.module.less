@@ -1,0 +1,47 @@
+@perfix-cls: ant-tugraph;
+.@{perfix-cls}-permissions-container {
+  height: 100%;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 25px;
+  box-sizing: border-box;
+  .@{perfix-cls}-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 11px;
+    .@{perfix-cls}-change-btn {
+      margin-right: 12px;
+    }
+  }
+  :global {
+    .ant-form-item {
+      width: 350px;
+      display: inline-block;
+      margin-bottom: 0;
+      .ant-select {
+        width: 264px;
+      }
+    }
+    .ant-tabs-tab {
+      &:hover {
+        color: rgba(54, 55, 64, 1);
+      }
+    }
+    .ant-tabs-nav {
+      &:before {
+        border: none;
+      }
+    }
+    .ant-tabs-tab-btn {
+      color: rgba(54, 55, 64, 1) !important;
+    }
+    .ant-tabs-ink-bar {
+      background-color: rgba(26, 27, 37, 0.88);
+    }
+  }
+  &-btn {
+    padding: 4px;
+  }
+}

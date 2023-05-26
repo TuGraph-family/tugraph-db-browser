@@ -52,7 +52,7 @@ export default (appInfo: EggAppInfo) => {
 
   config.cluster = {
     listen: {
-      port: 7002,
+      port: 7001,
     },
   };
 

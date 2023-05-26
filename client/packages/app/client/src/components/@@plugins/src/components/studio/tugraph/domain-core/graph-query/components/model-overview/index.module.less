@@ -1,0 +1,31 @@
+@perfix-cls: ant-tugraph;
+.@{perfix-cls}-model-overview {
+  position: relative;
+  background: #fff;
+  width: 100%;
+  border-left: 1px solid rgba(0, 0, 0, 0.06);
+  height: 100%;
+
+  &__open {
+    width: 350px;
+  }
+
+  transition: all 0.3s ease;
+
+  :global {
+    .@{perfix-cls}-text-tabs {
+      height: 36px !important;
+      overflow: hidden;
+    }
+
+    .@{perfix-cls}-text-tabs-card .@{perfix-cls}-text-tabs-item {
+      padding: 7px !important;
+    }
+  }
+
+  &-content {
+    padding: 20px 24px;
+    height: calc(100% - 36px);
+    overflow: auto;
+  }
+}

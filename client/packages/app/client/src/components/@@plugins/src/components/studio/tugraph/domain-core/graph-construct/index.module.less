@@ -1,0 +1,108 @@
+@perfix-cls: ant-tugraph;
+.@{perfix-cls}-construct {
+  width: 100%;
+  height: 100%;
+  padding: 0 20px;
+  background-color: rgba(255, 255, 255, 1);
+  box-sizing: border-box;
+  position: relative;
+  .@{perfix-cls}-header {
+    height: 52px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fafafa;
+    margin: 0 -20px;
+    padding: 0 20px;
+    .@{perfix-cls}-headerLeft {
+      width: 185px;
+      :global {
+        .ant-select {
+          width: 152px;
+          .ant-select-selector {
+            border: none;
+            box-shadow: none !important;
+            background-color: #fafafa;
+          }
+        }
+      }
+    }
+    .@{perfix-cls}-step {
+      width: 580px;
+      :global {
+        .ant-steps-item-active {
+          &:before {
+            background-color: #1650ff;
+          }
+          .ant-steps-item-icon {
+            background-color: #1650ff;
+          }
+        }
+        .ant-steps-item-wait {
+          .ant-steps-item-icon {
+            color: rgba(106, 107, 113, 1);
+            background-color: #ebebeb;
+          }
+        }
+        .ant-steps-item-icon {
+          width: 24px;
+          height: 24px;
+          position: relative;
+          margin-top: 4px;
+          border: none;
+          .ant-steps-icon {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            left: 50%;
+            font-size: 14px;
+          }
+        }
+        .ant-steps-item-finish {
+          .ant-steps-item-icon {
+            color: rgba(22, 80, 255, 1);
+            background-color: rgba(22, 80, 255, 0.15);
+          }
+        }
+      }
+    }
+    .@{perfix-cls}-headerRight {
+      width: 185px;
+    }
+  }
+  .@{perfix-cls}-operate {
+    height: 56px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    box-shadow: 0 1px 0 0 #f2f2f2;
+    border: 1px solid #fafafa;
+    margin: 0 -20px;
+    padding: 0 20px;
+    &-item {
+      color: #6a6b71;
+      font-weight: 400;
+      cursor: pointer;
+      padding: 0 8px;
+      height: 24px;
+      line-height: 24px;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      &-active {
+        background-color: #f2f2f2;
+      }
+    }
+  }
+  &-canvas {
+    height: calc(100vh - 108px);
+    margin: 0 -20px;
+  }
+  &-canvas-layout {
+    bottom: 24px;
+    padding-left: 12px;
+    position: absolute;
+    right: 540px;
+    display: flex;
+  }
+}
