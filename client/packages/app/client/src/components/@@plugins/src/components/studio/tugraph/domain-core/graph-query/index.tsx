@@ -1,11 +1,11 @@
 import { AppstoreAddOutlined, ArrowLeftOutlined, DownloadOutlined, PlayCircleOutlined } from '@ant-design/icons';
+import GremlinEditor from 'ace-gremlin-editor';
 import { Button, Divider, Empty, Select, Space, Spin, Switch, Tabs, Tooltip } from 'antd';
 import { filter, find, isEmpty, map, uniqueId } from 'lodash';
 import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'umi';
 import { useImmer } from 'use-immer';
 import { SplitPane } from '../../components/split-panle';
-import { GraphEditor } from '../../components/tugraph-editor';
 import { IQUIRE_LIST, PUBLIC_PERFIX_CLASS } from '../../constant';
 import { useQuery } from '../../hooks/useQuery';
 import { useSchema } from '../../hooks/useSchema';
@@ -68,8 +68,8 @@ export const GraphQuery = (props: PluginPorps) => {
     editorWidth: 350,
     editorHeight: 372,
     pathHeight: 388,
-    script: `MATCH (n) RETURN n LIMIT 100`,
-    resultData: [],
+    script: `MATCH p=()-[]-() RETURN p LIMIT 100`,
+    resultData: [{}],
     queryList: [],
     editorKey: '',
     graphData: { nodes: [], edges: [] },
@@ -91,7 +91,9 @@ export const GraphQuery = (props: PluginPorps) => {
   useEffect(() => {
     updateState((draft) => {
       if (isEmpty(getLocalData('TUGRAPH_STATEMENT_LISTS')[currentGraphName])) {
-        draft.queryList = [{ id: `${new Date().getTime()}`, value: '语句0', script: 'MATCH (n) RETURN n LIMIT 100' }];
+        draft.queryList = [
+          { id: `${new Date().getTime()}`, value: '语句0', script: 'MATCH p=()-[]-() RETURN p LIMIT 100' },
+        ];
       } else {
         draft.queryList = getLocalData('TUGRAPH_STATEMENT_LISTS')[currentGraphName];
       }
@@ -320,10 +322,10 @@ export const GraphQuery = (props: PluginPorps) => {
                           width: '100%',
                         }}
                       >
-                        <GraphEditor
-                          key={editorKey}
-                          value={script}
-                          onChange={(val) => {
+                        <GremlinEditor
+                          gremlinId="test"
+                          initValue={script}
+                          onValueChange={(val) => {
                             updateState((draft) => {
                               draft.script = val;
                             });
@@ -359,7 +361,12 @@ export const GraphQuery = (props: PluginPorps) => {
                   </div>
                   <div className={styles[`${PUBLIC_PERFIX_CLASS}-content-right-bottom`]}>
                     {resultData.length ? (
-                      <ExcecuteResultPanle queryResultList={resultData} onResultClose={onResultClose} />
+                      <ExcecuteResultPanle
+                        queryResultList={resultData}
+                        onResultClose={onResultClose}
+                        graphData={graphData}
+                        graphName={currentGraphName}
+                      />
                     ) : (
                       <div className={styles[`${PUBLIC_PERFIX_CLASS}-bottom-spin`]}>
                         <Spin spinning={StatementQueryLoading}>
@@ -385,7 +392,12 @@ export const GraphQuery = (props: PluginPorps) => {
               />
               <div className={styles[`${PUBLIC_PERFIX_CLASS}-path-result`]}>
                 {resultData.length ? (
-                  <ExcecuteResultPanle queryResultList={resultData} onResultClose={onResultClose} />
+                  <ExcecuteResultPanle
+                    graphData={graphData}
+                    graphName={currentGraphName}
+                    queryResultList={resultData}
+                    onResultClose={onResultClose}
+                  />
                 ) : (
                   <div className={styles[`${PUBLIC_PERFIX_CLASS}-path-spin`]}>
                     <Spin spinning={PathQueryLoading}>
@@ -403,7 +415,12 @@ export const GraphQuery = (props: PluginPorps) => {
           <NodeQuery nodes={graphData.nodes} nodeQuery={handleQuery} />
           <div className={styles[`${PUBLIC_PERFIX_CLASS}-node-result`]}>
             {resultData.length ? (
-              <ExcecuteResultPanle queryResultList={resultData} onResultClose={onResultClose} />
+              <ExcecuteResultPanle
+                graphData={graphData}
+                graphName={currentGraphName}
+                queryResultList={resultData}
+                onResultClose={onResultClose}
+              />
             ) : (
               <div className={styles[`${PUBLIC_PERFIX_CLASS}-node-spin`]}>
                 <Spin spinning={NodeQueryLoading}>

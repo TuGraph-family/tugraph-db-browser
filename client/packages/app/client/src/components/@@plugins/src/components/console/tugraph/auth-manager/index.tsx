@@ -1,13 +1,14 @@
 import { Button, Tabs } from 'antd';
 import React from 'react';
-import { PUBLIC_PERFIX_CLASS } from '../constant';
 import { useImmer } from 'use-immer';
+import { PUBLIC_PERFIX_CLASS } from '../constant';
 import { AccountManager } from './account-manager';
 
-import styles from './index.module.less';
-import EditAuthModal from './edit-user';
-import { RoleManager } from './role-manager';
+import { UserCenter } from '../user-center';
 import EditRoleModal from './edit-role';
+import EditAuthModal from './edit-user';
+import styles from './index.module.less';
+import { RoleManager } from './role-manager';
 
 export const AuthManager: React.FC = () => {
   const [state, setState] = useImmer<{
@@ -95,6 +96,7 @@ export const AuthManager: React.FC = () => {
           />
         </>
       )}
+      <UserCenter />
     </div>
   );
 };

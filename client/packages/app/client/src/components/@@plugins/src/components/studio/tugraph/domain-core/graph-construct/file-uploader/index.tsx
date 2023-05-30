@@ -1,13 +1,14 @@
-import React from 'react';
-import { Upload, UploadFile } from 'antd';
+import { InboxOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
-import { map, isEmpty } from 'lodash';
+import { Upload, UploadFile } from 'antd';
+import { ColumnsType } from 'antd/lib/table';
+import { isEmpty, map } from 'lodash';
+import React from 'react';
+import { DataType, FileData } from '../../../interface/import';
+import { GraphData } from '../../../interface/schema';
+import { getFileSizeTransform } from '../../../utils/getFileSizeTransform';
 import { parseCsv } from '../../../utils/parseCsv';
 import { cascaderOptionsTransform, mergeFileDataList } from '../../../utils/uploadFile';
-import { InboxOutlined } from '@ant-design/icons';
-import { DataType, FileData } from '../../../interface/import';
-import { ColumnsType } from 'antd/lib/table';
-import { GraphData } from '../../../interface/schema';
 
 const { Dragger } = Upload;
 
@@ -50,7 +51,7 @@ export const FileUploader = (props: FileUploaderProps) => {
     const { name, originFileObj, size } = file;
     let fileResult = {
       fileName: name,
-      formateSize: `${(size / 1000).toFixed(2)} KB`,
+      formateSize: getFileSizeTransform(size),
       data: null,
       status: 'processing',
     } as FileData;
@@ -66,7 +67,7 @@ export const FileUploader = (props: FileUploaderProps) => {
           dataSource,
         },
         file: originFileObj,
-        formateSize: `${(size / 1000).toFixed(2)} KB`,
+        formateSize: getFileSizeTransform(size),
         labelOptions,
         fileSchema: {
           path: name,
@@ -81,7 +82,7 @@ export const FileUploader = (props: FileUploaderProps) => {
         status: 'error',
         fileName: name,
         data: null,
-        formateSize: `${(size / 1000).toFixed(2)} KB`,
+        formateSize: getFileSizeTransform(size),
       };
     }
     const newFileList = mergeFileDataList(fileDataList, fileResult);

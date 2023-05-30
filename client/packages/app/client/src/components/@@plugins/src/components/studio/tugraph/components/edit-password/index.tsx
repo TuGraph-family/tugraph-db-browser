@@ -18,25 +18,13 @@ const EditPasswordModal: React.FC<Prop> = ({ open, onCancel }) => {
       onCancel={onCancel}
     >
       <Form layout="vertical">
-        <Item
-          label="请输入原密码"
-          rules={[{ required: true, message: '请输入' }]}
-          name="oldPassword"
-        >
+        <Item label="请输入原密码" rules={[{ required: true, message: '请输入' }]} name="oldPassword">
           <Input />
         </Item>
-        <Item
-          label="请输入新密码"
-          rules={[{ required: true, message: '请输入' }]}
-          name="newPassword"
-        >
+        <Item label="请输入新密码" rules={[{ required: true, message: '请输入' }]} name="newPassword">
           <Input />
         </Item>
-        <Item
-          label="再次输入新密码"
-          rules={[{ required: true, message: '请输入' }]}
-          name="againPassword"
-        >
+        <Item label="再次输入新密码" rules={[{ required: true, message: '请输入' }]} name="againPassword">
           <Input />
         </Item>
       </Form>

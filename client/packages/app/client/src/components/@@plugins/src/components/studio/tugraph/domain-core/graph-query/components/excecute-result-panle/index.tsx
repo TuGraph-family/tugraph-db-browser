@@ -6,6 +6,7 @@ import IconFont from '../../../../components/icon-font';
 import TextTabs, { TextTabsTab } from '../../../../components/text-tabs';
 import { PUBLIC_PERFIX_CLASS } from '../../../../constant';
 import { ExcecuteResultProp } from '../../../../interface/query';
+import { GraphData } from '../../../../interface/schema';
 import { downloadFile } from '../../../../utils/downloadFile';
 import ExecuteResult from '../excecute-result';
 
@@ -27,20 +28,29 @@ interface ExcecuteHistoryProps {
   efficiencyResult?: any[];
   planResult?: any[];
   onResultClose?: (resultIndex: string) => void;
+  graphName: string;
+  graphData: GraphData;
 }
 
-const ExcecuteResultPanle: React.FC<ExcecuteHistoryProps> = ({ queryResultList, onResultClose }) => {
+const ExcecuteResultPanle: React.FC<ExcecuteHistoryProps> = ({
+  queryResultList,
+  onResultClose,
+  graphData,
+  graphName,
+}) => {
   const [state, setState] = useImmer<{
     tabs: TextTabsTab<string>[];
     activeTab: string;
     isFullView: boolean;
     activeResult?: ExcecuteResultProp;
+    modalOpen: boolean;
   }>({
     tabs: [{ text: '执行结果', key: 'result' }],
     activeTab: '',
     isFullView: false,
+    modalOpen: false,
   });
-  const { tabs, activeTab, isFullView, activeResult } = state;
+  const { tabs, activeTab, isFullView, activeResult, modalOpen } = state;
   const onFullView = useCallback(() => {
     setState((draft) => {
       draft.isFullView = !isFullView;
@@ -63,6 +73,16 @@ const ExcecuteResultPanle: React.FC<ExcecuteHistoryProps> = ({ queryResultList, 
                 执行耗时（ms）：{`${activeResult?.requestTime}`}
               </div>
             )}
+            <Tooltip title="插入数据">
+              <IconFont
+                type="icon-charushuju"
+                onClick={() => {
+                  setState((draft) => {
+                    draft.modalOpen = true;
+                  });
+                }}
+              />
+            </Tooltip>
             <Tooltip title="下载执行结果">
               <IconFont
                 type="icon-a-xiazaiyujujieguo"
@@ -128,7 +148,17 @@ const ExcecuteResultPanle: React.FC<ExcecuteHistoryProps> = ({ queryResultList, 
       />
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-excecute-history-actions`]}>{renderTabRightAction()}</div>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-excecute-history-content`]}>
-        <ExecuteResult excecuteResult={activeResult} />
+        <ExecuteResult
+          excecuteResult={activeResult}
+          graphName={graphName}
+          graphData={graphData}
+          modalOpen={modalOpen}
+          onClose={() => {
+            setState((draft) => {
+              draft.modalOpen = false;
+            });
+          }}
+        />
       </div>
     </div>
   );

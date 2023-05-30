@@ -1,5 +1,6 @@
 import request from 'umi-request';
-import { PROXY_HOST } from '../constant';
+import { PROXY_HOST, SERVER_HOST } from '../constant';
+import { getLocalData } from '../utils';
 
 /* Login */
 export async function login(params: { username: string; password: string }) {
@@ -22,21 +23,16 @@ export async function refreshAuthToken(params: { Authorization: string }) {
       'Content-Type': 'application/json',
     },
     params,
-    credentials: 'include',
-    withCredentials: true,
   });
 }
 
 /* Logout */
-export async function logout(params: { Authorization: string }) {
-  return request(`${PROXY_HOST}/logout`, {
+export async function logout() {
+  return request(`${SERVER_HOST}/logout`, {
     method: 'POST',
     headers: {
-      'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
+      Authorization: getLocalData('TUGRAPH_TOKEN'),
     },
-    params,
-    credentials: 'include',
-    withCredentials: true,
   });
 }

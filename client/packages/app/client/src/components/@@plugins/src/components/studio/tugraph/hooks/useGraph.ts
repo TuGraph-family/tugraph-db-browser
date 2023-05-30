@@ -1,11 +1,12 @@
+import { useRequest } from 'ahooks';
 import {
+  createDemoGraph,
   createGraph,
   deleteGraph,
-  getGraphList,
   editGraph,
+  getGraphList,
   getNodeEdgeStatistics,
-} from "../services/GraphController";
-import { useRequest } from "ahooks";
+} from '../services/GraphController';
 
 export const useGraph = () => {
   const {
@@ -34,6 +35,12 @@ export const useGraph = () => {
     loading: getNodeEdgeStatisticsLoading,
     error: getNodeEdgeStatisticsError,
   } = useRequest(getNodeEdgeStatistics, { manual: true });
+
+  const {
+    runAsync: onCreateDemoGraph,
+    loading: CreateDemoGraphLoading,
+    error: CreateDemoGraphError,
+  } = useRequest(createDemoGraph, { manual: true });
   return {
     onGetGraphList,
     getGraphListLoading,
@@ -50,5 +57,8 @@ export const useGraph = () => {
     onGetNodeEdgeStatistics,
     getNodeEdgeStatisticsLoading,
     getNodeEdgeStatisticsError,
+    onCreateDemoGraph,
+    CreateDemoGraphLoading,
+    CreateDemoGraphError,
   };
 };

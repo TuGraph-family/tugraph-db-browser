@@ -32,6 +32,16 @@ export interface Schema {
 
 export interface FileSchema {
   path: string;
+  format: string;
+  label: string;
+  header: number;
+  SRC_ID: string;
+  DST_ID: string;
+  columns: Array<string>;
+}
+
+export interface FileSchema {
+  path: string;
   columns: string[];
   label: string;
   format: 'CSV' | 'JSON';

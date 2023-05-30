@@ -1,9 +1,8 @@
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
-import { List, Menu, MenuProps, Pagination, Spin } from 'antd';
+import { List, MenuProps, Pagination, Spin } from 'antd';
 import React, { useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import CollasibleSteps from '../components/collapsable-steps';
-import EditPasswordModal from '../components/edit-password';
 import { PROJECT_TAB, PUBLIC_PERFIX_CLASS, STEP_LIST } from '../constant';
 import AddTuGraphModal from '../domain-core/project/project-list/components/add-tugraph';
 import EmptyProject from '../domain-core/project/project-list/components/empty-project';
@@ -114,29 +113,6 @@ export const GraphList = (props: PluginPorps) => {
       key: '4',
     },
   ];
-  const menu = (
-    <Menu
-      className={styles[`${PUBLIC_PERFIX_CLASS}-avatar-menu`]}
-      items={[
-        {
-          key: '1',
-          label: (
-            <div
-              onClick={() => {
-                updateState({ ...state, isEditPassword: true });
-              }}
-            >
-              修改密码
-            </div>
-          ),
-        },
-        {
-          key: '2',
-          label: '退出登录',
-        },
-      ]}
-    />
-  );
   return (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-home-style`]}>
       {state.tabKey === 'tuManage' && (
@@ -201,12 +177,6 @@ export const GraphList = (props: PluginPorps) => {
           </div>
         </div>
       )}
-      <EditPasswordModal
-        open={state.isEditPassword}
-        onCancel={() => {
-          updateState({ ...state, isEditPassword: false });
-        }}
-      />
       <AddTuGraphModal
         open={isAdd}
         onClose={() => {

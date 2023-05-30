@@ -1,5 +1,5 @@
 import { useRequest } from 'ahooks';
-import { importData, importSchema, importProgress } from '../services/ImportController';
+import { importData, importGraphSchema, importProgress, importSchema } from '../services/ImportController';
 
 export const useImport = () => {
   const {
@@ -21,6 +21,12 @@ export const useImport = () => {
     cancel: importProgressCancel,
   } = useRequest(importProgress, { manual: true, pollingInterval: 5000 });
 
+  const {
+    runAsync: onImportGraphSchema,
+    loading: ImportGraphSchemaLoading,
+    error: ImportGraphSchemaError,
+  } = useRequest(importGraphSchema, { manual: true });
+
   return {
     useImport,
     importDataLoading,
@@ -33,5 +39,8 @@ export const useImport = () => {
     importProgressLoading,
     importProgressError,
     importProgressCancel,
+    onImportGraphSchema,
+    ImportGraphSchemaLoading,
+    ImportGraphSchemaError,
   };
 };

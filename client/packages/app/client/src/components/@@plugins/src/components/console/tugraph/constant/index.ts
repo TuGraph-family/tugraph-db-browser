@@ -18,4 +18,4 @@ export const PERSSIONS_ENUM_TEXT = [
   { label: '无', value: PERSSIONS_ENUM.NONE },
 ];
 
-export const PROXY_HOST = 'http://127.0.0.1:7001';
+export const PROXY_HOST = `http://${window.location.hostname}:7001`;

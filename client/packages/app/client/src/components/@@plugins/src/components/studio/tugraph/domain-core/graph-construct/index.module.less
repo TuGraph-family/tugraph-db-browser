@@ -106,3 +106,25 @@
     display: flex;
   }
 }
+.@{perfix-cls}-model {
+  .@{perfix-cls}-upload {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  &-json {
+    font-weight: 400;
+    font-size: 14px;
+    color: #98989d;
+    line-height: 22px;
+    margin: 4px 0 16px 0;
+  }
+  :global {
+    .ant-modal-body {
+      padding-top: 0;
+    }
+    .ant-modal-footer {
+      border-top: none;
+    }
+  }
+}

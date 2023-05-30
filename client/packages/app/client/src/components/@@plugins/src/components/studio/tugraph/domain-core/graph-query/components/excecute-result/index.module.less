@@ -112,6 +112,9 @@
         justify-content: space-between;
       }
     }
+    .ant-input-number {
+      width: 100%;
+    }
   }
   .@{perfix-cls}-icon-copy {
     color: rgba(106, 107, 113, 1);
@@ -125,6 +128,70 @@
   :global {
     .ant-tag {
       margin-left: 16px;
+    }
+  }
+}
+.@{perfix-cls}-add-modal {
+  p {
+    margin: 16px 0 8px 0;
+    font-weight: 400;
+    font-size: 14px;
+    color: #6a6b71;
+    line-height: 22px;
+  }
+  &-type {
+    :global {
+      .ant-select-selector {
+        width: 104px !important;
+        border-radius: 8px 0 0 8px !important;
+      }
+    }
+  }
+  :global {
+    .ant-form-item-required {
+      font-weight: 400;
+      font-size: 14px;
+      color: #6a6b71;
+    }
+    .ant-table {
+      height: 120px;
+      .ant-table-cell {
+        font-weight: 400;
+        font-size: 14px;
+        color: #6a6b71;
+      }
+    }
+    .ant-form-item {
+      margin-bottom: 0;
+    }
+    .ant-input-group {
+      margin-bottom: 24px;
+    }
+  }
+  &-source-name,
+  &-target-name {
+    :global {
+      .ant-select-selector {
+        width: 197px !important;
+        border-radius: 6px 0 0 6px !important;
+      }
+    }
+  }
+  &-source-value,
+  &-target-value {
+    :global {
+      .ant-select-selector {
+        width: 275px !important;
+        border-radius: 0 6px 6px 0 !important;
+      }
+    }
+  }
+  &-labelName {
+    width: calc(100% - 104px);
+    :global {
+      .ant-select-selector {
+        border-radius: 0 6px 6px 0 !important;
+      }
     }
   }
 }

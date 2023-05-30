@@ -1,7 +1,7 @@
-import React from "react";
-import { PUBLIC_PERFIX_CLASS } from "../../constant";
+import React from 'react';
+import { PUBLIC_PERFIX_CLASS } from '../../constant';
 
-import styles from "./index.module.less";
+import styles from './index.module.less';
 
 type Prop = {
   isActive: boolean;
@@ -12,22 +12,16 @@ const DemoCard: React.FC<Prop> = ({ isActive, onClick, detail }) => {
   return (
     <div
       className={`${styles[`${PUBLIC_PERFIX_CLASS}-card-container`]} ${
-        isActive ? styles[`${PUBLIC_PERFIX_CLASS}-active-card`] : ""
+        isActive ? styles[`${PUBLIC_PERFIX_CLASS}-active-card`] : ''
       }`}
       onClick={onClick}
     >
-      <div
-        className={isActive ? styles[`${PUBLIC_PERFIX_CLASS}-card-horn`] : ""}
-      ></div>
+      <div className={isActive ? styles[`${PUBLIC_PERFIX_CLASS}-card-horn`] : ''}></div>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-card-img`]}>
         <img src={detail.imgUrl} alt="" />
       </div>
-      <div className={styles[`${PUBLIC_PERFIX_CLASS}-card-title`]}>
-        {detail.graph_name}
-      </div>
-      <div className={styles[`${PUBLIC_PERFIX_CLASS}-card-desc`]}>
-        {detail.description}
-      </div>
+      <div className={styles[`${PUBLIC_PERFIX_CLASS}-card-title`]}>{detail.graph_name}</div>
+      <div className={styles[`${PUBLIC_PERFIX_CLASS}-card-desc`]}>{detail.description}</div>
     </div>
   );
 };

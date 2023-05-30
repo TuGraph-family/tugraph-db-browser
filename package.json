@@ -2,10 +2,6 @@
   "name": "tugraph-db-browser",
   "version": "1.0.0",
   "private": true,
-  "workspaces": [
-    "client",
-    "server"
-  ],
   "license": "Apache-2.0",
   "licenses": [
     {
@@ -14,13 +10,16 @@
     }
   ],
   "scripts": {
-    "client-dev": "cd client && npm run dev",
-    "server-dev": "cd server && npm run dev",
-    "client-start": "cd client && npm run start",
-    "server-start": "cd server && npm run start",
-    "start": "npm run server-start && npm run client-dev",
-    "client-build": "cd client && npm run build",
-    "server-build": "cd server && npm run build",
+    "client-bootstrap": "cd client && yarn install",
+    "server-bootstrap": "cd server && yarn install",
+    "bootstrap": "yarn run client-bootstrap && yarn run server-bootstrap",
+    "client-dev": "cd client && yarn run dev",
+    "server-dev": "cd server && yarn run dev",
+    "client-start": "cd client && yarn run start",
+    "server-start": "cd server && yarn run start",
+    "start": "yarn run server-start && yarn run client-dev",
+    "client-build": "cd client && yarn run build",
+    "server-build": "cd server && yarn run build",
     "build": "npm run client-build && npm run server-build"
   },
   "repository": {

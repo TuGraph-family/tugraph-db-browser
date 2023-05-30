@@ -2,7 +2,7 @@ import { CaretRightOutlined, SettingOutlined } from '@ant-design/icons';
 import { IUserEdge, IUserNode } from '@antv/graphin';
 import { Button, Select } from 'antd';
 import { filter, find, join, last, map } from 'lodash';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useImmer } from 'use-immer';
 import { PUBLIC_PERFIX_CLASS } from '../../../../constant';
 import { PathModal } from './path-modal';
@@ -16,10 +16,14 @@ type Prop = {
   onQueryPath: (
     limit: number,
     conditions: Array<{ property: string; value: string; operator: string }>,
-    path: string,
+    path: string
   ) => void;
 };
-export const PathQueryPanel: React.FC<Prop> = ({ edges, nodes, onQueryPath }) => {
+export const PathQueryPanel: React.FC<Prop> = ({
+  edges,
+  nodes,
+  onQueryPath,
+}) => {
   const [state, updateState] = useImmer<{
     pathList: Array<Array<IUserEdge>>;
     selectPath: Array<IUserEdge>;
@@ -34,7 +38,9 @@ export const PathQueryPanel: React.FC<Prop> = ({ edges, nodes, onQueryPath }) =>
     conditions: [],
   });
   const { pathList, selectPath, open, limit, conditions } = state;
-  const nodeDiv = (n) => <div className={styles[`${PUBLIC_PERFIX_CLASS}-node`]}>{n}</div>;
+  const nodeDiv = (n) => (
+    <div className={styles[`${PUBLIC_PERFIX_CLASS}-node`]}>{n}</div>
+  );
   const edgeDiv = (r) => (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-edge`]}>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-edge-left`]}></div>
@@ -44,7 +50,6 @@ export const PathQueryPanel: React.FC<Prop> = ({ edges, nodes, onQueryPath }) =>
     </div>
   );
 
-  useEffect(() => {}, []);
   return (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-path-container`]}>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-path-header`]}>
@@ -60,7 +65,9 @@ export const PathQueryPanel: React.FC<Prop> = ({ edges, nodes, onQueryPath }) =>
             }}
             onSelect={(val) => {
               updateState((draft) => {
-                const clickItem = last(find(pathList, (item, index) => val === index));
+                const clickItem = last(
+                  find(pathList, (item, index) => val === index)
+                );
                 if (clickItem.source === clickItem.target) {
                   draft.pathList = [
                     [
@@ -68,10 +75,17 @@ export const PathQueryPanel: React.FC<Prop> = ({ edges, nodes, onQueryPath }) =>
                       last(find(pathList, (item, index) => val === index)),
                     ],
                   ];
-                } else {
-                  const optionPath = filter(edges, (item) => item.source === clickItem.target);
                   draft.selectPath = [...pathList[val]];
-                  draft.pathList = map(optionPath, (item) => [...find(pathList, (item, index) => val === index), item]);
+                } else {
+                  const optionPath = filter(
+                    edges,
+                    (item) => item.source === clickItem.target
+                  );
+                  draft.selectPath = [...pathList[val]];
+                  draft.pathList = map(optionPath, (item) => [
+                    ...find(pathList, (item, index) => val === index),
+                    item,
+                  ]);
                 }
               });
             }}
@@ -108,9 +122,13 @@ export const PathQueryPanel: React.FC<Prop> = ({ edges, nodes, onQueryPath }) =>
             onClick={() => {
               const path = map(selectPath, (item, index) => {
                 if (index == 0) {
-                  return `(n${index}:${item.source})-[r${index}:${item.label}]->(n${index + 1}:${item.target})`;
+                  return `(n${index}:${item.source})-[r${index}:${
+                    item.label
+                  }]->(n${index + 1}:${item.target})`;
                 }
-                return `-[r${index}:${item.label}]->(n${index + 1}:${item.target})`;
+                return `-[r${index}:${item.label}]->(n${index + 1}:${
+                  item.target
+                })`;
               });
               onQueryPath(limit, conditions, join(path, ''));
             }}

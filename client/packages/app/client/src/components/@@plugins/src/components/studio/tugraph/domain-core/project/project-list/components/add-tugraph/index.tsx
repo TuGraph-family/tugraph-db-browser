@@ -1,9 +1,10 @@
-import { Button, Form, Modal, Pagination, Steps, message } from 'antd';
+import { Button, Col, Form, Modal, Pagination, Row, Spin, Steps, message } from 'antd';
 import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import DemoCard from '../../../../../components/demo-card';
 import { PUBLIC_PERFIX_CLASS, TUGRAPH_DEOM } from '../../../../../constant';
 import { useGraph } from '../../../../../hooks/useGraph';
+import { useImport } from '../../../../../hooks/useImport';
 import { getLocalData } from '../../../../../utils';
 import EditForm from '../edit-form';
 
@@ -11,11 +12,17 @@ import styles from './index.module.less';
 
 type Props = { open: boolean; onClose: () => void };
 const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
-  const { onCreateGraph, createGraphLoading, onGetGraphList } = useGraph();
+  const { onCreateGraph, createGraphLoading, onGetGraphList, onCreateDemoGraph } = useGraph();
+  const { onImportProgress, importProgressCancel } = useImport();
   const [form] = Form.useForm();
-  const [state, setState] = useImmer<{ current?: number; active?: number }>({
+  const [state, setState] = useImmer<{
+    current?: number;
+    active?: number;
+    loading: boolean;
+  }>({
     current: 0,
     active: 0,
+    loading: false,
   });
   useEffect(() => {
     setState((draft) => {
@@ -34,14 +41,12 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
     },
   ];
   const items = steps.map((item) => ({ key: item.title, title: item.title }));
-  const { current, active } = state;
+  const { current, active, loading } = state;
   const cardList = [
     {
       graph_name: '空模版',
-      description:
-        '这是一段模版描述这是一段模版描述这是一段模版描述这是一段，，，，',
-      imgUrl:
-        'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*NuHMRpKzRWcAAAAAAAAAAAAADgOBAQ/original',
+      description: '自行定义点边模型和数据导入。',
+      imgUrl: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*NuHMRpKzRWcAAAAAAAAAAAAADgOBAQ/original',
     },
     ...TUGRAPH_DEOM,
   ];
@@ -77,19 +82,60 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
           onClick={() => {
             form.validateFields().then((values) => {
               const { graphName, description, maxSizeGB } = values;
-              onCreateGraph({
-                graphName,
-                config: { description, maxSizeGB },
-              }).then((res) => {
-                if (res.success) {
-                  message.success('新建成功');
-                  onGetGraphList({
-                    userName: getLocalData('TUGRAPH_USER_NAME'),
+              if (!active) {
+                onCreateGraph({
+                  graphName,
+                  config: { description, maxSizeGB },
+                }).then((res) => {
+                  if (res.success) {
+                    message.success('新建成功');
+                    onGetGraphList({
+                      userName: getLocalData('TUGRAPH_USER_NAME'),
+                    });
+                    form.resetFields();
+                    onClose();
+                  }
+                });
+              } else {
+                onCreateDemoGraph({
+                  graphName,
+                  config: { description, maxSizeGB },
+                  description: cardList[active].data,
+                }).then((res) => {
+                  setState((draft) => {
+                    draft.loading = true;
                   });
-                  form.resetFields();
-                  onClose();
-                }
-              });
+                  if (res.success) {
+                    onImportProgress(res.data.taskId).then((res) => {
+                      if (res.success === 0 && res?.data?.success) {
+                        if (res.data.progress === '1') {
+                          importProgressCancel();
+                          message.success('模版创建成功');
+                          setState((draft) => {
+                            draft.loading = false;
+                          });
+                          onGetGraphList({
+                            userName: getLocalData('TUGRAPH_USER_NAME'),
+                          });
+                          form.resetFields();
+                          onClose();
+                        }
+                      } else {
+                        importProgressCancel();
+                        message.error('模版创建失败' + res.errorMessage);
+                        setState((draft) => {
+                          draft.loading = false;
+                        });
+                      }
+                    });
+                  } else {
+                    message.error('模版创建失败' + res.errorMessage);
+                    setState((draft) => {
+                      draft.loading = false;
+                    });
+                  }
+                });
+              }
             });
           }}
         >
@@ -106,30 +152,36 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
       className={styles[`${PUBLIC_PERFIX_CLASS}-add-modal-container`]}
       footer={footer}
     >
-      <div>
-        <Steps current={current} items={items} />
-        {current === 0 ? (
-          <div className={styles[`${PUBLIC_PERFIX_CLASS}-stencil-container`]}>
-            {cardList.map((item, index) => (
-              <DemoCard
-                key={item.graph_name}
-                detail={item}
-                isActive={active === index}
-                onClick={() => {
-                  setState((draft) => {
-                    draft.active = index;
-                  });
-                }}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className={styles[`${PUBLIC_PERFIX_CLASS}-creat-step`]}>
-            <EditForm form={form} />
-          </div>
-        )}
-        {current === 0 && <Pagination size="small" total={cardList.length} />}
-      </div>
+      <Spin spinning={loading}>
+        <div>
+          <Steps current={current} items={items} />
+          {current === 0 ? (
+            <div className={styles[`${PUBLIC_PERFIX_CLASS}-stencil-container`]}>
+              <Row gutter={16} className={styles[`${PUBLIC_PERFIX_CLASS}-stencil-container-row`]}>
+                {cardList.map((item, index) => (
+                  <Col>
+                    <DemoCard
+                      key={item.graph_name}
+                      detail={item}
+                      isActive={active === index}
+                      onClick={() => {
+                        setState((draft) => {
+                          draft.active = index;
+                        });
+                      }}
+                    />
+                  </Col>
+                ))}
+              </Row>
+            </div>
+          ) : (
+            <div className={styles[`${PUBLIC_PERFIX_CLASS}-creat-step`]}>
+              <EditForm form={form} />
+            </div>
+          )}
+          {current === 0 && <Pagination size="small" total={cardList.length} />}
+        </div>
+      </Spin>
     </Modal>
   );
 };

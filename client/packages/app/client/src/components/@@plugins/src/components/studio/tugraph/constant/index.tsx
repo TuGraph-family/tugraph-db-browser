@@ -1,8 +1,12 @@
 import { CollasibleStep } from '../components/collapsable-steps';
+import movie_data from './demo-json/movie.json';
+import three_body_data from './demo-json/three_body.json';
+import three_kingdoms_data from './demo-json/three_kingdoms.json';
+import wandering_earth_data from './demo-json/wandering_earth.json';
 export type PROJECT_TAB = 'MY_PROJECT' | 'ALL_PROJEXCT';
 export const PUBLIC_PERFIX_CLASS = 'ant-tugraph';
-export const PROXY_HOST = 'http://127.0.0.1:7001';
-export const SERVER_HOST = 'http://127.0.0.1:9091/LGraphHttpService/Query';
+export const PROXY_HOST = `http://${window.location.hostname}:7001`;
+export const SERVER_HOST = 'http://100.83.30.35:39091/LGraphHttpService/Query';
 export const STEP_LIST: CollasibleStep[] = [
   {
     title: '新建一张图',
@@ -69,11 +73,41 @@ export const DATA_TYPE = [
   { label: 'BLOB', value: 'BLOB' },
   { label: 'BOOL', value: 'BOOL' },
 ];
-export const TUGRAPH_DEOM_NAME = ['default', 'CovidDemo1', 'MovieDemo1'];
+export const TUGRAPH_DEOM_NAME = [
+  'Movie',
+  'ThreeKindoms',
+  'TheTreeBody',
+  'WanderringEarth',
+];
 export const TUGRAPH_DEOM = [
-  { graph_name: 'default', description: '' },
-  { graph_name: 'CovidDemo1', description: '' },
-  { graph_name: 'MovieDemo1', description: '' },
+  {
+    graph_name: 'Movie',
+    description: '基于电影、演员、用户场景的简单示例。',
+    data: movie_data,
+    imgUrl:
+      'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*vLs3RIMgT4UAAAAAAAAAAAAADgOBAQ/original',
+  },
+  {
+    graph_name: 'ThreeKindoms',
+    description: '基于刘慈欣的小说《三体》的故事背景示例。',
+    data: three_body_data,
+    imgUrl:
+      'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*UT-FQZ19zooAAAAAAAAAAAAADgOBAQ/original',
+  },
+  {
+    graph_name: 'TheTreeBody',
+    description: '基于三国时期的历史事件的示例。',
+    data: three_kingdoms_data,
+    imgUrl:
+      'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*ebTkRIJx4SwAAAAAAAAAAAAADgOBAQ/original',
+  },
+  {
+    graph_name: 'WanderringEarth',
+    description: '基于电影《流浪地球1》、《流浪地球2》的剧情设计的示例。',
+    data: wandering_earth_data,
+    imgUrl:
+      'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*Yn1mSLYzQsgAAAAAAAAAAAAADgOBAQ/original',
+  },
 ];
 export const IQUIRE_LIST = [
   { label: '语句查询', key: 'statement' },
@@ -95,3 +129,16 @@ export const CONNECT = {
     { label: '小于等于', value: '<=' },
   ],
 };
+export enum PROPERTY_TYPE {
+  INT8 = 'number',
+  INT6 = 'number',
+  INT32 = 'number',
+  INT64 = 'number',
+  FLOAT = 'number',
+  DOUBLE = 'number',
+  STRING = 'string',
+  DATE = 'string',
+  DATETIME = 'string',
+  BLOB = 'string',
+  BOOL = 'boolean',
+}

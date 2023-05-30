@@ -1,36 +1,32 @@
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, UploadOutlined } from '@ant-design/icons';
 import { EdgeConfig, NodeConfig } from '@antv/g6-pc';
 import { GraphinContextType, Layout, Utils } from '@antv/graphin';
-import { Button, Select, Steps, message } from 'antd';
+import type { UploadProps } from 'antd';
+import { Button, Checkbox, Modal, Select, Steps, Upload, message } from 'antd';
 import { filter, isEmpty } from 'lodash';
 import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'umi';
 import { useImmer } from 'use-immer';
-import {
-  GraphCanvas,
-  GraphCanvasContext,
-  GraphCanvasContextInitValue,
-} from '../../components/garph-canvas';
+import { GraphCanvas, GraphCanvasContext, GraphCanvasContextInitValue } from '../../components/garph-canvas';
 import { GraphCanvasLayout } from '../../components/graph-canvas-layout';
 import { CANVAS_LAYOUT } from '../../components/graph-canvas-layout/constant';
 import { GraphCanvasTools } from '../../components/graph-canvas-tools';
 import IconFont from '../../components/icon-font';
 import { GRAPH_OPERATE, PUBLIC_PERFIX_CLASS } from '../../constant';
+import { useImport } from '../../hooks/useImport';
 import { useSchema } from '../../hooks/useSchema';
 import { SubGraph } from '../../interface/graph';
 import { PluginPorps } from '../../interface/openpiece';
-import {
-  GraphConfigData,
-  LabelSchema,
-  LabelType,
-} from '../../interface/schema';
+import { GraphConfigData, LabelSchema, LabelType, SchemaProperties } from '../../interface/schema';
 import { getLocalData } from '../../utils/localStorage';
 import { nodesEdgesListTranslator } from '../../utils/nodesEdgesListTranslator';
+import { schemaTransform } from '../../utils/schemaTransform';
 import { AddNodesEdges } from './add-nodes-edges';
 import { EditNodesEdges } from './edit-nodes-edges';
 import { ImportData } from './import-data';
 import NodesEdgesList from './nodes-edges-list';
 
+import { downloadFile } from '../../utils/downloadFile';
 import styles from './index.module.less';
 
 export const GraphConstruct = (props: PluginPorps) => {
@@ -38,6 +34,7 @@ export const GraphConstruct = (props: PluginPorps) => {
   const history = useHistory();
   const location = history.location;
   const graphList = getLocalData('TUGRAPH_SUBGRAPH_LIST') as SubGraph[];
+  const { onImportGraphSchema, ImportGraphSchemaLoading } = useImport();
   const [state, setState] = useImmer<{
     graphListOptions: { label: string; value: string }[];
     currentGraphName: string;
@@ -58,6 +55,14 @@ export const GraphConstruct = (props: PluginPorps) => {
     onAddClose: () => void;
     onImportShow: () => void;
     onImportClose: () => void;
+    isModelOpen: boolean;
+    override: boolean;
+    schema: Array<{
+      label?: string;
+      primary?: string;
+      type?: string;
+      properties?: Array<SchemaProperties>;
+    }>;
   }>({
     graphListOptions: graphList?.map((graph: SubGraph) => {
       return {
@@ -82,6 +87,9 @@ export const GraphConstruct = (props: PluginPorps) => {
     onAddClose: () => {},
     onImportShow: () => {},
     onImportClose: () => {},
+    isModelOpen: false,
+    override: false,
+    schema: [],
   });
   const {
     currentGraphName,
@@ -101,13 +109,12 @@ export const GraphConstruct = (props: PluginPorps) => {
     onAddClose,
     onImportShow,
     onImportClose,
+    isModelOpen,
+    override,
+    schema,
   } = state;
 
-  const {
-    onGetGraphSchema,
-    onCreateLabelSchema,
-    onDeleteLabelSchema,
-  } = useSchema();
+  const { onGetGraphSchema, onCreateLabelSchema, onDeleteLabelSchema } = useSchema();
   const getGraphCanvasContextValue = useCallback((contextValue: any) => {
     setState((draft) => {
       if (contextValue) {
@@ -157,7 +164,7 @@ export const GraphConstruct = (props: PluginPorps) => {
         });
       });
     },
-    [graphCanvasContextValue]
+    [graphCanvasContextValue],
   );
   const dealEdges = (edges: Array<any>) => {
     return Utils.processEdges([...edges], { poly: 50, loop: 10 });
@@ -177,15 +184,10 @@ export const GraphConstruct = (props: PluginPorps) => {
       })),
     } as LabelSchema;
     if (labelType === 'node') {
-      if (
-        filter(newSchema.indexs, (item) => item.primaryField === true).length >
-        1
-      ) {
+      if (filter(newSchema.indexs, (item) => item.primaryField === true).length > 1) {
         return message.error('主键必须唯一');
       }
-      (params.primaryField = newSchema.indexs.find(
-        (item) => item.primaryField === true
-      )?.propertyName),
+      (params.primaryField = newSchema.indexs.find((item) => item.primaryField === true)?.propertyName),
         (params.indexs = newSchema.indexs.map((item) => ({
           propertyName: item?.propertyName,
           isUnique: item?.isUnique,
@@ -241,9 +243,7 @@ export const GraphConstruct = (props: PluginPorps) => {
         <Button
           style={{ marginRight: '8px' }}
           onClick={() => {
-            history.push(
-              `${redirectPath?.[1]?.path}?graphName=${currentGraphName}` ?? '/'
-            );
+            history.push(`${redirectPath?.[1]?.path}?graphName=${currentGraphName}` ?? '/');
           }}
         >
           前往图查询
@@ -280,23 +280,27 @@ export const GraphConstruct = (props: PluginPorps) => {
           key={item.lable}
           className={[
             styles[`${PUBLIC_PERFIX_CLASS}-operate-item`],
-            activeBtnType === item.value
-              ? styles[`${PUBLIC_PERFIX_CLASS}-operate-item-active`]
-              : '',
+            activeBtnType === item.value ? styles[`${PUBLIC_PERFIX_CLASS}-operate-item-active`] : '',
           ].join(' ')}
           onClick={() => {
-            onAddShow();
             setState((draft) => {
-              draft.labelName = '';
+              if (item.value === 'node' || item.value === 'edge') {
+                onAddShow();
+                draft.labelName = '';
+              }
               draft.btnType = item.value as LabelType;
               draft.activeBtnType = item.value;
+              if (item.value === 'import') {
+                draft.isModelOpen = true;
+              }
+              if (item.value === 'export') {
+                downloadFile(JSON.stringify(schemaTransform(data)), `${currentGraphName}.json`);
+                message.success('模型导出成功');
+              }
             });
           }}
         >
-          <IconFont
-            type={item.icon}
-            style={{ fontSize: '25px', paddingRight: '5px' }}
-          />
+          <IconFont type={item.icon} style={{ fontSize: '25px', paddingRight: '5px' }} />
           {item.lable}
         </div>
       ))}
@@ -317,11 +321,32 @@ export const GraphConstruct = (props: PluginPorps) => {
       }
     });
   }, [graphCanvasContextValue, onEditShow]);
+  const uploadProps: UploadProps = {
+    name: 'file',
+    maxCount: 1,
+    onChange(info) {
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} 文件上传成功`);
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} 文件上传失败`);
+      }
+    },
+    beforeUpload: (file) => {
+      const reader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = (result) => {
+        setState((draft) => {
+          try {
+            draft.schema = JSON.parse(result.target.result);
+          } catch (e) {
+            console.error(e.message);
+          }
+        });
+      };
+    },
+  };
   return (
-    <div
-      className={styles[`${PUBLIC_PERFIX_CLASS}-construct`]}
-      style={currentStep !== 0 ? { height: '100vh' } : {}}
-    >
+    <div className={styles[`${PUBLIC_PERFIX_CLASS}-construct`]} style={currentStep !== 0 ? { height: '100vh' } : {}}>
       {header}
       {currentStep === 0 ? operate : null}
       <NodesEdgesList
@@ -330,7 +355,7 @@ export const GraphConstruct = (props: PluginPorps) => {
         onClick={(item, type) => {
           const edgeChildrenList = filter(
             nodesEdgesListTranslator('edge', data),
-            (edge) => edge.label === item.labelName
+            (edge) => edge.label === item.labelName,
           );
           onEditShow();
           const isEdges = edgeChildrenList.length !== 1 && type === 'edge';
@@ -358,19 +383,11 @@ export const GraphConstruct = (props: PluginPorps) => {
               if (Array.isArray(selectedValue)) {
                 selectedValue.forEach((item) => {
                   graphCanvasContextValue.graph.focusItem(item, true);
-                  graphCanvasContextValue.graph.setItemState(
-                    item,
-                    'selected',
-                    true
-                  );
+                  graphCanvasContextValue.graph.setItemState(item, 'selected', true);
                 });
               } else {
                 graphCanvasContextValue.graph.focusItem(selectedValue, true);
-                graphCanvasContextValue.graph.setItemState(
-                  selectedValue,
-                  'selected',
-                  true
-                );
+                graphCanvasContextValue.graph.setItemState(selectedValue, 'selected', true);
               }
             }
           });
@@ -406,14 +423,9 @@ export const GraphConstruct = (props: PluginPorps) => {
             layout={currentLayout}
           />
         </div>
-        <div
-          className={styles[`${PUBLIC_PERFIX_CLASS}-construct-canvas-layout`]}
-        >
+        <div className={styles[`${PUBLIC_PERFIX_CLASS}-construct-canvas-layout`]}>
           <GraphCanvasTools />
-          <GraphCanvasLayout
-            onLayoutChange={onLayoutChange}
-            currentLayout={currentLayout}
-          />
+          <GraphCanvasLayout onLayoutChange={onLayoutChange} currentLayout={currentLayout} />
         </div>
       </GraphCanvasContext.Provider>
       {currentStep === 0 ? (
@@ -464,6 +476,52 @@ export const GraphConstruct = (props: PluginPorps) => {
           redirectPath={redirectPath}
         />
       )}
+      <Modal
+        title="导入模型"
+        width={480}
+        visible={isModelOpen}
+        onCancel={() => {
+          setState((draft) => {
+            draft.isModelOpen = false;
+          });
+        }}
+        confirmLoading={ImportGraphSchemaLoading}
+        className={styles[`${PUBLIC_PERFIX_CLASS}-model`]}
+        onOk={() => {
+          onImportGraphSchema({
+            graph: currentGraphName,
+            schema,
+            override,
+          }).then((res) => {
+            if (res.success) {
+              message.success('导入成功');
+              setState((draft) => {
+                draft.isModelOpen = false;
+              });
+            } else {
+              message.error('导入失败' + res.errorMessage);
+            }
+          });
+        }}
+      >
+        <div className={styles[`${PUBLIC_PERFIX_CLASS}-upload`]}>
+          <Upload {...uploadProps}>
+            <Button type="ghost" shape="round" icon={<UploadOutlined />}>
+              上传文件
+            </Button>
+          </Upload>
+        </div>
+        <div className={styles[`${PUBLIC_PERFIX_CLASS}-model-json`]}>支持扩展名：.JSON</div>
+        <Checkbox
+          onChange={(e) => {
+            setState((draft) => {
+              draft.override = e.target.checked;
+            });
+          }}
+        >
+          覆盖当前画布中的模型
+        </Checkbox>
+      </Modal>
     </div>
   );
 };

@@ -25,7 +25,13 @@
       ],
       "@openpiece-app/plugin-*": [
         "packages/plugins/*/src"
-      ],"@@plugins/src/components/console/tugraph": ["packages/app/client/src/components/@@plugins/src/components/console/tugraph"],"@@plugins/src/components/studio/tugraph": ["packages/app/client/src/components/@@plugins/src/components/studio/tugraph"],"@@plugins/src/components/studio/tugraph": ["packages/app/client/src/components/@@plugins/src/components/studio/tugraph"],"@@plugins/src/components/studio/tugraph": ["packages/app/client/src/components/@@plugins/src/components/studio/tugraph"],"@@plugins/src/components/console/tugraph": ["packages/app/client/src/components/@@plugins/src/components/console/tugraph"],"@@plugins/src/components/studio/tugraph": ["packages/app/client/src/components/@@plugins/src/components/studio/tugraph"]
+      ],
+      "@@plugins/src/components/studio/tugraph": [
+        "packages/app/client/src/components/@@plugins/src/components/studio/tugraph"
+      ],
+      "@@plugins/src/components/console/tugraph": [
+        "packages/app/client/src/components/@@plugins/src/components/console/tugraph"
+      ]
     }
   }
 }

@@ -1,5 +1,6 @@
 import request from 'umi-request';
 import { PROXY_HOST } from '../constant';
+import { FileSchema, Schema } from '../interface/import';
 import { getLocalData } from '../utils/localStorage';
 
 /* Get Graph list */
@@ -70,5 +71,25 @@ export async function getNodeEdgeStatistics(graphName: string) {
     },
     withCredentials: true,
     credentials: 'include',
+  });
+}
+
+/* POST Create Demo Graph*/
+export async function createDemoGraph(params: {
+  graphName: string;
+  config: { maxSizeGB: number; description: string };
+  description: { schema: Schema[]; files: FileSchema[] };
+}) {
+  return request(`${PROXY_HOST}/api/subgraph/template`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: getLocalData('TUGRAPH_TOKEN'),
+    },
+    withCredentials: true,
+    credentials: 'include',
+    data: {
+      ...params,
+    },
   });
 }

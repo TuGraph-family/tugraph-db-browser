@@ -1,7 +1,7 @@
 import request from 'umi-request';
 import { PROXY_HOST } from '../constant';
-import { getLocalData } from '../utils/localStorage';
 import { UserProps } from '../interface/user';
+import { getLocalData } from '../utils/localStorage';
 
 /* GET auth list */
 export async function getAuthList(params: { username?: string }) {
@@ -83,7 +83,7 @@ export async function deleteUser(params: { username: string }) {
 
 /* PUT user password */
 export async function changePassword(params: { curPassword: string; password: string }) {
-  return request(`${PROXY_HOST}/api/auth/user/password`, {
+  return request(`${PROXY_HOST}/api/auth/password`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
