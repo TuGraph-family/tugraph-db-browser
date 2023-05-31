@@ -38,11 +38,22 @@ const EditForm: React.FC<Prop> = ({ form, type }) => {
             },
           ]}
         >
-          <Input maxLength={10} showCount disabled={type === 'edit'} />
+          <Input maxLength={20} showCount disabled={type === 'edit'} />
         </Item>
-        <div className={styles[`${PUBLIC_PERFIX_CLASS}-input-text`]}>名称由中文、字母、数字、下划线组成。</div>
-        <Item label="图描述" name="description" rules={[{ required: true, message: '请输入图描述' }]}>
-          <Input.TextArea maxLength={50} placeholder="请输入图描述" showCount style={{ height: 120, resize: 'none' }} />
+        <div className={styles[`${PUBLIC_PERFIX_CLASS}-input-text`]}>
+          名称由中文、字母、数字、下划线组成。
+        </div>
+        <Item
+          label="图描述"
+          name="description"
+          rules={[{ required: true, message: '请输入图描述' }]}
+        >
+          <Input.TextArea
+            maxLength={50}
+            placeholder="请输入图描述"
+            showCount
+            style={{ height: 120, resize: 'none' }}
+          />
         </Item>
       </Form>
       <div>
@@ -61,7 +72,12 @@ const EditForm: React.FC<Prop> = ({ form, type }) => {
         <Form form={form}>
           <Row justify={'space-between'}>
             <Col span={12}>
-              <Item label="最大存储空间" name="maxSizeGB" colon={false} required>
+              <Item
+                label="最大存储空间"
+                name="maxSizeGB"
+                colon={false}
+                required
+              >
                 <InputNumber addonAfter="GB" />
               </Item>
             </Col>

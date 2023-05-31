@@ -1,6 +1,7 @@
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Divider, Dropdown, Menu, Space, message } from 'antd';
 import React from 'react';
+import { isEmpty } from 'lodash';
 import { useHistory } from 'umi';
 import { useImmer } from 'use-immer';
 import { useAuth } from '../../../studio/tugraph/hooks/useAuth';
@@ -17,7 +18,7 @@ export const UserCenter: React.FC<Prop> = () => {
   const { isEditPassword } = state;
   const handleLogout = () => {
     onLogout().then((res) => {
-      if (res.success === 0) {
+      if (res.success) {
         setLocalData('TUGRAPH_TOKEN', '');
         history.push('/');
       } else {
@@ -55,7 +56,11 @@ export const UserCenter: React.FC<Prop> = () => {
           }}
         />
         <Dropdown overlay={menu} trigger={['click']}>
-          <a style={{ color: 'black' }}>{getLocalData('TUGRAPH_USER_NAME')}</a>
+          <a style={{ color: 'black' }}>
+            {isEmpty(getLocalData('TUGRAPH_USER_NAME'))
+              ? ''
+              : getLocalData('TUGRAPH_USER_NAME')}
+          </a>
         </Dropdown>
       </Space>
 
