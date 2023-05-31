@@ -2,16 +2,16 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Divider, Dropdown, Menu, Space, message } from 'antd';
 import React from 'react';
 import { isEmpty } from 'lodash';
-import { useHistory } from 'umi';
 import { useImmer } from 'use-immer';
+import { useOpenpieceUserAuth } from '@tugraph/openpiece-client';
 import { useAuth } from '../../../studio/tugraph/hooks/useAuth';
 import { getLocalData, setLocalData } from '../utils/localStorage';
 import EditPasswordModal from './edit-password';
 
 type Prop = {};
 export const UserCenter: React.FC<Prop> = () => {
-  const history = useHistory();
   const { onLogout } = useAuth();
+  const { redirectLoginURL } = useOpenpieceUserAuth();
   const [state, updateState] = useImmer<{ isEditPassword: boolean }>({
     isEditPassword: false,
   });
@@ -20,7 +20,7 @@ export const UserCenter: React.FC<Prop> = () => {
     onLogout().then((res) => {
       if (res.success) {
         setLocalData('TUGRAPH_TOKEN', '');
-        history.push('/');
+        redirectLoginURL();
       } else {
         message.error('登出失败' + res.errorMessage);
       }
