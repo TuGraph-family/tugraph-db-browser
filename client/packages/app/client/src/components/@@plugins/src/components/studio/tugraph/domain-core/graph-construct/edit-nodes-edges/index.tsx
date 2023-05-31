@@ -260,7 +260,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
           </Tooltip>
         </>
       ),
-      width: '20%',
+      width: '21%',
       dataIndex: 'name',
       key: 'name',
       editable: true,
@@ -365,7 +365,14 @@ export const EditNodesEdges: React.FC<Prop> = ({
       },
     },
     {
-      title: '主键',
+      title: (
+        <>
+          主键
+          <Tooltip title="主键必须是唯一索引">
+            <QuestionCircleOutlined />
+          </Tooltip>
+        </>
+      ),
       dataIndex: 'primaryField',
       width: '17.5%',
       key: 'primaryField',
@@ -628,7 +635,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
     >
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-container-content`]}>
         <div className={styles[`${PUBLIC_PERFIX_CLASS}-container-header`]}>
-          <span> 编辑{`${isNode ? '点' : '边'}`}</span>
+          <span> 编辑{`${isNode ? '点' : '边'}`}类型</span>
           <div>
             命令行建模<a> 参见文档</a>
           </div>
@@ -667,7 +674,9 @@ export const EditNodesEdges: React.FC<Prop> = ({
           {!isNode && (
             <div>
               <p className={styles[`${PUBLIC_PERFIX_CLASS}-container-title`]}>
-                选择起点和终点
+                <Tooltip title="如果不选择，则表示起点和终点可以为任意点类型">
+                  选择起点类型和终点类型 <QuestionCircleOutlined />
+                </Tooltip>
               </p>
               <EditTable
                 columns={colums}
@@ -682,6 +691,9 @@ export const EditNodesEdges: React.FC<Prop> = ({
             <div>
               <p className={styles[`${PUBLIC_PERFIX_CLASS}-container-title`]}>
                 索引列表
+                <Tooltip title="只有选填为「否」的属性可以配置索引">
+                  <QuestionCircleOutlined />
+                </Tooltip>
               </p>
               <EditTable
                 columns={nodeConfigColumns}

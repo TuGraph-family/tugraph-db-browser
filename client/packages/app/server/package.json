@@ -6,7 +6,7 @@
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "dependencies": {
-    "@tugraph/preset-openpiece": "^0.0.22",
+    "@tugraph/preset-openpiece": "^0.0.27",
     "@tugraph/openpiece-server": "^0.0.10",
     "@nocobase/cache": "0.8.0-alpha.13"
   },

@@ -88,14 +88,14 @@ export const TUGRAPH_DEOM = [
       'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*vLs3RIMgT4UAAAAAAAAAAAAADgOBAQ/original',
   },
   {
-    graph_name: 'ThreeKindoms',
+    graph_name: 'TheTreeBody',
     description: '基于刘慈欣的小说《三体》的故事背景示例。',
     data: three_body_data,
     imgUrl:
       'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*UT-FQZ19zooAAAAAAAAAAAAADgOBAQ/original',
   },
   {
-    graph_name: 'TheTreeBody',
+    graph_name: 'ThreeKindoms',
     description: '基于三国时期的历史事件的示例。',
     data: three_kingdoms_data,
     imgUrl:

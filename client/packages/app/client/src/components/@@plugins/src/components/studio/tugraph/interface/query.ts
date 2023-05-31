@@ -42,12 +42,15 @@ export type FormatDataNodeProp = {
   label: string;
   properties: Array<Nodeproperties>;
 };
+export type FormatData = {
+  formatData?: {
+    nodes: Array<FormatDataNodeProp>;
+    edges: Array<FormatDataEdgeProp>;
+  };
+};
 export type ExcecuteResultProp = {
   data: {
-    formatData?: {
-      nodes: Array<FormatDataNodeProp>;
-      edges: Array<FormatDataEdgeProp>;
-    };
+    formatData?: FormatData;
     originalData?: any;
   };
   success?: boolean;

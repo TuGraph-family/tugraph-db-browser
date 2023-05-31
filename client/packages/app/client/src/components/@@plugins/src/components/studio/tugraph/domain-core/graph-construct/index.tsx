@@ -495,6 +495,7 @@ export const GraphConstruct = (props: PluginPorps) => {
           }).then((res) => {
             if (res.success) {
               message.success('导入成功');
+              window.location.reload();
               setState((draft) => {
                 draft.isModelOpen = false;
               });

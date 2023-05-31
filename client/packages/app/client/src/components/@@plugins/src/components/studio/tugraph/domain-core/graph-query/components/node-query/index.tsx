@@ -1,12 +1,10 @@
-import { Button, Checkbox, Form, Input, InputNumber, Select, Tabs } from 'antd';
-import { CheckboxChangeEvent } from 'antd/lib/checkbox';
+import { Button, Form, Input, InputNumber, Select, Tabs } from 'antd';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import { filter, find, flatMapDeep, map, toArray } from 'lodash';
 import React from 'react';
 import { useImmer } from 'use-immer';
 import SwitchDrawer from '../../../../components/switch-drawer';
 import { PUBLIC_PERFIX_CLASS } from '../../../../constant';
-import { useQuery } from '../../../../hooks/useQuery';
 import { useVisible } from '../../../../hooks/useVisible';
 import { Condition } from '../../../../interface/query';
 import { getConnectOptions } from '../../utils/getConnectOptions';
@@ -27,7 +25,6 @@ type Prop = {
   nodeQuery: (limit: number, conditions: Array<Condition>, nodes: Array<CheckboxValueType>) => void;
 };
 export const NodeQuery: React.FC<Prop> = ({ nodes, nodeQuery }) => {
-  const { onStatementQuery } = useQuery();
   const { visible, onShow, onClose } = useVisible({ defaultVisible: true });
   const [state, updateState] = useImmer<{
     checkAll: boolean;
@@ -38,15 +35,8 @@ export const NodeQuery: React.FC<Prop> = ({ nodes, nodeQuery }) => {
     indeterminate: true,
     nodeCheckedList: [],
   });
-  const { checkAll, indeterminate, nodeCheckedList } = state;
+  const { nodeCheckedList } = state;
   const [form] = Form.useForm();
-  const onCheckAll = (e: CheckboxChangeEvent) => {
-    updateState((draft) => {
-      draft.checkAll = e.target.checked;
-      draft.indeterminate = false;
-      draft.nodeCheckedList = e.target.checked ? [...map(nodes, (item) => item.labelName)] : [];
-    });
-  };
   const nodeChange = (list: CheckboxValueType[]) => {
     updateState((draft) => {
       draft.indeterminate = !!list.length && list.length < nodes.length;
@@ -94,19 +84,20 @@ export const NodeQuery: React.FC<Prop> = ({ nodes, nodeQuery }) => {
       >
         <div className={styles[`${PUBLIC_PERFIX_CLASS}-drawer-ccontainer`]}>
           <div className={styles[`${PUBLIC_PERFIX_CLASS}-drawer-title`]}>节点查询</div>
-          <Form form={form}>
+          <Form layout="vertical" form={form}>
             <div>返回节点数目</div>
             <Item name="limit" rules={[{ required: true, message: '请输入返回节点数' }]}>
               <InputNumber placeholder="请输入节点树目" />
             </Item>
-            <Checkbox indeterminate={indeterminate} checked={checkAll} onChange={onCheckAll}>
-              全部
-            </Checkbox>
-            <Checkbox.Group
-              options={map(nodes, (item) => item.labelName)}
-              value={nodeCheckedList}
-              onChange={nodeChange}
-            ></Checkbox.Group>
+            <Item required label={'选择节点'} name="selectNode" rules={[{ required: true, message: '请选择节点' }]}>
+              <Select
+                mode="multiple"
+                options={map(nodes, (item) => ({ value: item.labelName }))}
+                value={nodeCheckedList}
+                onChange={nodeChange}
+                maxTagCount={'responsive'}
+              />
+            </Item>
             <Tabs
               items={map(nodeCheckedList, (item, index) => ({
                 label: item,

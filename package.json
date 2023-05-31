@@ -10,8 +10,8 @@
     }
   ],
   "scripts": {
-    "client-bootstrap": "cd client && yarn install",
-    "server-bootstrap": "cd server && yarn install",
+    "client-bootstrap": "cd client && yarn install --frozen-lockfile",
+    "server-bootstrap": "cd server && yarn install --frozen-lockfile",
     "bootstrap": "yarn run client-bootstrap && yarn run server-bootstrap",
     "client-dev": "cd client && yarn run dev",
     "server-dev": "cd server && yarn run dev",

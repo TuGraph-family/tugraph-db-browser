@@ -1,14 +1,13 @@
-import React, { useEffect } from 'react';
-import { Button, Popconfirm, Tag, message } from 'antd';
-import { useVisible } from '../../../hooks/useVisible';
-import SwitchDrawer from '../../../components/switch-drawer';
-import { PlusOutlined } from '@ant-design/icons';
-import { DATA_TYPE, EditType, PUBLIC_PERFIX_CLASS } from '../../../constant';
-import { Form, Input } from 'antd';
-import { map, uniq, xor, filter } from 'lodash';
-import { EditTable } from '../../../components/edit-table';
+import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Popconfirm, Tooltip, message } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import { filter, map, uniq, xor } from 'lodash';
+import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
+import { EditTable } from '../../../components/edit-table';
+import SwitchDrawer from '../../../components/switch-drawer';
+import { DATA_TYPE, EditType, PUBLIC_PERFIX_CLASS } from '../../../constant';
+import { useVisible } from '../../../hooks/useVisible';
 import { AttrData, IndexData, StartData } from '../../../interface/schema';
 
 import styles from './index.module.less';
@@ -26,7 +25,12 @@ type EditColumnsType<T> = ColumnsType & {
     mode: 'multiple' | 'tags';
   };
 };
-export const AddNodesEdges: React.FC<Prop> = ({ type, data = [], onFinish, onSwitch }) => {
+export const AddNodesEdges: React.FC<Prop> = ({
+  type,
+  data = [],
+  onFinish,
+  onSwitch,
+}) => {
   const [form] = Form.useForm();
   const { visible, onShow, onClose } = useVisible({ defaultVisible: true });
   const isNode = type === 'node';
@@ -46,12 +50,15 @@ export const AddNodesEdges: React.FC<Prop> = ({ type, data = [], onFinish, onSwi
   const propertyList = () => {
     const attrPropertyNames = map(
       filter(attrList, (attr) => !attr.optional),
-      (item) => item.name,
+      (item) => item.name
     );
     const indexPropertyNames = map(configList, (item) => item.propertyName);
     return map(
-      filter(xor(attrPropertyNames, indexPropertyNames), (item) => item !== undefined),
-      (item) => ({ label: item, value: item }),
+      filter(
+        xor(attrPropertyNames, indexPropertyNames),
+        (item) => item !== undefined
+      ),
+      (item) => ({ label: item, value: item })
     );
   };
   const addButton = (handleAdd?: () => void, text: string = '添加属性') => {
@@ -111,7 +118,9 @@ export const AddNodesEdges: React.FC<Prop> = ({ type, data = [], onFinish, onSwi
           title="确定要删除吗？"
           onConfirm={() => {
             updateState((draft) => {
-              draft.startList = [...startList.filter((item) => item.id !== record?.id)];
+              draft.startList = [
+                ...startList.filter((item) => item.id !== record?.id),
+              ];
             });
           }}
           okText="确定"
@@ -124,7 +133,14 @@ export const AddNodesEdges: React.FC<Prop> = ({ type, data = [], onFinish, onSwi
   ];
   const defaultColumns: EditColumnsType<any> = [
     {
-      title: '属性名称',
+      title: (
+        <>
+          属性名称
+          <Tooltip title="属性名称为属性列表唯一code">
+            <QuestionCircleOutlined />
+          </Tooltip>
+        </>
+      ),
       width: '38%',
       dataIndex: 'name',
       key: 'name',
@@ -175,7 +191,9 @@ export const AddNodesEdges: React.FC<Prop> = ({ type, data = [], onFinish, onSwi
           title="确定要删除吗？"
           onConfirm={() => {
             updateState((draft) => {
-              draft.attrList = [...attrList.filter((item) => item.id !== record?.id)];
+              draft.attrList = [
+                ...attrList.filter((item) => item.id !== record?.id),
+              ];
             });
           }}
           okText="确定"
@@ -240,7 +258,14 @@ export const AddNodesEdges: React.FC<Prop> = ({ type, data = [], onFinish, onSwi
       },
     },
     {
-      title: '主键',
+      title: (
+        <>
+          主键
+          <Tooltip title="主键必须是唯一索引">
+            <QuestionCircleOutlined />
+          </Tooltip>
+        </>
+      ),
       dataIndex: 'primaryField',
       width: '17.5%',
       key: 'primaryField',
@@ -266,7 +291,9 @@ export const AddNodesEdges: React.FC<Prop> = ({ type, data = [], onFinish, onSwi
           title="确定要删除吗？"
           onConfirm={() => {
             updateState((draft) => {
-              draft.configList = [...configList.filter((item) => item.id !== record?.id)];
+              draft.configList = [
+                ...configList.filter((item) => item.id !== record?.id),
+              ];
             });
           }}
           okText="确定"
@@ -287,7 +314,10 @@ export const AddNodesEdges: React.FC<Prop> = ({ type, data = [], onFinish, onSwi
   const addNodeConfig = () => {
     updateState((draft) => {
       const list = [...configList];
-      list.push({ id: configList.length + 1, index: `#${configList.length + 1}` });
+      list.push({
+        id: configList.length + 1,
+        index: `#${configList.length + 1}`,
+      });
       draft.configList = [...list];
     });
   };
@@ -325,7 +355,8 @@ export const AddNodesEdges: React.FC<Prop> = ({ type, data = [], onFinish, onSwi
           <Button
             onClick={() => {
               const isEdgeRepeat =
-                uniq(map(startList, (item) => `${item.source}_${item.target}`)).length === startList.length;
+                uniq(map(startList, (item) => `${item.source}_${item.target}`))
+                  .length === startList.length;
               if (!isEdgeRepeat) {
                 return message.error('两条边的起点和终点不能相同');
               }
@@ -354,7 +385,7 @@ export const AddNodesEdges: React.FC<Prop> = ({ type, data = [], onFinish, onSwi
     >
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-container-content`]}>
         <div className={styles[`${PUBLIC_PERFIX_CLASS}-container-header`]}>
-          <span> 添加{`${isNode ? '点' : '边'}`}</span>
+          <span> 添加{`${isNode ? '点' : '边'}`}类型</span>
           <div>
             命令行建模<a> 参见文档</a>
           </div>
@@ -362,7 +393,12 @@ export const AddNodesEdges: React.FC<Prop> = ({ type, data = [], onFinish, onSwi
         <div>
           <Form layout="vertical" form={form}>
             <Form.Item
-              rules={[{ required: true, message: `请输入${isNode ? '点' : '边'}类型名称` }]}
+              rules={[
+                {
+                  required: true,
+                  message: `请输入${isNode ? '点' : '边'}类型名称`,
+                },
+              ]}
               label={`${isNode ? '点' : '边'}类型名称`}
               required
               name={'name'}
@@ -371,7 +407,9 @@ export const AddNodesEdges: React.FC<Prop> = ({ type, data = [], onFinish, onSwi
             </Form.Item>
           </Form>
           <div className={styles[`${PUBLIC_PERFIX_CLASS}-container-attr`]}>
-            <p className={styles[`${PUBLIC_PERFIX_CLASS}-container-title`]}>属性列表</p>
+            <p className={styles[`${PUBLIC_PERFIX_CLASS}-container-title`]}>
+              属性列表
+            </p>
             <EditTable
               columns={defaultColumns}
               dataSource={attrList}
@@ -388,7 +426,11 @@ export const AddNodesEdges: React.FC<Prop> = ({ type, data = [], onFinish, onSwi
           </div>
           {!isNode && (
             <div>
-              <p className={styles[`${PUBLIC_PERFIX_CLASS}-container-title`]}>选择起点和终点</p>
+              <p className={styles[`${PUBLIC_PERFIX_CLASS}-container-title`]}>
+                <Tooltip title="如果不选择，则表示起点和终点可以为任意点类型">
+                  选择起点类型和终点类型 <QuestionCircleOutlined />
+                </Tooltip>
+              </p>
               <EditTable
                 columns={colums}
                 dataSource={startList}
@@ -410,7 +452,12 @@ export const AddNodesEdges: React.FC<Prop> = ({ type, data = [], onFinish, onSwi
           )}
           {isNode && (
             <div>
-              <p className={styles[`${PUBLIC_PERFIX_CLASS}-container-title`]}>索引列表</p>
+              <p className={styles[`${PUBLIC_PERFIX_CLASS}-container-title`]}>
+                索引列表
+                <Tooltip title="只有选填为「否」的属性可以配置索引">
+                  <QuestionCircleOutlined />
+                </Tooltip>
+              </p>
               <EditTable
                 columns={nodeConfigColumns}
                 dataSource={configList}

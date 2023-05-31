@@ -4,16 +4,19 @@ TuGraph DB BROWSER 是 TuGraph 图数据库的可视化工具。可以完成图�
 1. 安装项目
 
 ```bash
-yarn install
+yarn run bootstrap
+
+# 启动 sever
+yarn run server-build
+yarn run server-start
+
+# 启动 client
+yarn run client-dev
+
 ```
 
-2. 启动开发项目
 
-```bash
-yarn run dev
-```
-
-3. 项目编译
+2. 项目编译
 
 ```bash
 yarn run build

@@ -166,6 +166,7 @@
     }
     .ant-input-group {
       margin-bottom: 24px;
+      display: flex;
     }
   }
   &-source-name,
@@ -191,6 +192,17 @@
     :global {
       .ant-select-selector {
         border-radius: 0 6px 6px 0 !important;
+      }
+    }
+  }
+}
+:global {
+  .ant-drawer-footer {
+    div {
+      display: inline;
+      float: right;
+      .ant-btn-default {
+        margin-right: 8px;
       }
     }
   }

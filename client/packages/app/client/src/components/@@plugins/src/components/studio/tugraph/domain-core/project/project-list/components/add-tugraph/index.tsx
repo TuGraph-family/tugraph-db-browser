@@ -1,4 +1,14 @@
-import { Button, Col, Form, Modal, Pagination, Row, Spin, Steps, message } from 'antd';
+import {
+  Button,
+  Col,
+  Form,
+  Modal,
+  Pagination,
+  Row,
+  Spin,
+  Steps,
+  message,
+} from 'antd';
 import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import DemoCard from '../../../../../components/demo-card';
@@ -12,7 +22,12 @@ import styles from './index.module.less';
 
 type Props = { open: boolean; onClose: () => void };
 const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
-  const { onCreateGraph, createGraphLoading, onGetGraphList, onCreateDemoGraph } = useGraph();
+  const {
+    onCreateGraph,
+    createGraphLoading,
+    onGetGraphList,
+    onCreateDemoGraph,
+  } = useGraph();
   const { onImportProgress, importProgressCancel } = useImport();
   const [form] = Form.useForm();
   const [state, setState] = useImmer<{
@@ -46,7 +61,8 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
     {
       graph_name: '空模版',
       description: '自行定义点边模型和数据导入。',
-      imgUrl: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*NuHMRpKzRWcAAAAAAAAAAAAADgOBAQ/original',
+      imgUrl:
+        'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*iLrCTZt0lAcAAAAAAAAAAAAADgOBAQ/original',
     },
     ...TUGRAPH_DEOM,
   ];
@@ -107,25 +123,17 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                   });
                   if (res.success) {
                     onImportProgress(res.data.taskId).then((res) => {
-                      if (res.success === 0 && res?.data?.success) {
-                        if (res.data.progress === '1') {
-                          importProgressCancel();
-                          message.success('模版创建成功');
-                          setState((draft) => {
-                            draft.loading = false;
-                          });
-                          onGetGraphList({
-                            userName: getLocalData('TUGRAPH_USER_NAME'),
-                          });
-                          form.resetFields();
-                          onClose();
-                        }
-                      } else {
+                      if (res.success === 0) {
+                        message.success('模版创建成功');
                         importProgressCancel();
-                        message.error('模版创建失败' + res.errorMessage);
                         setState((draft) => {
                           draft.loading = false;
                         });
+                        onGetGraphList({
+                          userName: getLocalData('TUGRAPH_USER_NAME'),
+                        });
+                        form.resetFields();
+                        onClose();
                       }
                     });
                   } else {
@@ -157,7 +165,12 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
           <Steps current={current} items={items} />
           {current === 0 ? (
             <div className={styles[`${PUBLIC_PERFIX_CLASS}-stencil-container`]}>
-              <Row gutter={16} className={styles[`${PUBLIC_PERFIX_CLASS}-stencil-container-row`]}>
+              <Row
+                gutter={16}
+                className={
+                  styles[`${PUBLIC_PERFIX_CLASS}-stencil-container-row`]
+                }
+              >
                 {cardList.map((item, index) => (
                   <Col>
                     <DemoCard

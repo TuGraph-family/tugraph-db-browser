@@ -36,6 +36,7 @@ type EditEdge = {
   properties?: Record<string, string | number | boolean>;
 };
 type DeleteNode = {
+  labelName: string;
   graphName: string;
   primaryKey: string;
   primaryValue: string;

@@ -3,8 +3,6 @@ import React from 'react';
 import { useImmer } from 'use-immer';
 import { PUBLIC_PERFIX_CLASS } from '../constant';
 import { AccountManager } from './account-manager';
-
-import { UserCenter } from '../user-center';
 import EditRoleModal from './edit-role';
 import EditAuthModal from './edit-user';
 import styles from './index.module.less';
@@ -96,7 +94,6 @@ export const AuthManager: React.FC = () => {
           />
         </>
       )}
-      <UserCenter />
     </div>
   );
 };

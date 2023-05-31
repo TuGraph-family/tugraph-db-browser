@@ -6,7 +6,7 @@ import {
   SchemaInitializerContext,
 } from '@tugraph/openpiece-client';
 // @ts-ignore
-import { UserCenter } from '@@plugins/src/components/console/tugraph';
+import { UserCenter } from '@@plugins/src/components/studio/tugraph';
 import { PluginDesigner } from './PluginDesigner';
 
 export const PluginBlockInitializer = (props) => {

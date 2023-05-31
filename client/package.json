@@ -22,7 +22,7 @@
     "@types/react-dom": "^17.0.0"
   },
   "dependencies": {
-    "@tugraph/openpiece-cli": "0.0.5",
+    "@tugraph/openpiece-cli": "0.0.6",
     "sqlite3": "5.0.2"
   },
   "devDependencies": {
