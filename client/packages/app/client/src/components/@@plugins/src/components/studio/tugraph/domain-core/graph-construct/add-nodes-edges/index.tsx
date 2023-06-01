@@ -403,7 +403,10 @@ export const AddNodesEdges: React.FC<Prop> = ({
               required
               name={'name'}
             >
-              <Input placeholder={`请输入${isNode ? '点' : '边'}类型名称`} />
+              <Input
+                autocomplete="off"
+                placeholder={`请输入${isNode ? '点' : '边'}类型名称`}
+              />
             </Form.Item>
           </Form>
           <div className={styles[`${PUBLIC_PERFIX_CLASS}-container-attr`]}>

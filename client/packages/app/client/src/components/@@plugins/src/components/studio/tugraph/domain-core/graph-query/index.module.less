@@ -115,11 +115,26 @@
         height: 48px;
         padding: 0 24px;
         box-shadow: 0 1px 0 0 #f2f2f2;
+        :global {
+          .ant-space {
+            gap: 0 !important;
+            .ant-space-item-split {
+              margin-left: 16px;
+              .ant-divider-vertical {
+                margin: 0 0 0 8px;
+              }
+            }
+            .ant-btn-text {
+              padding: 0 0 0 16px;
+            }
+          }
+        }
         .@{perfix-cls}-left-btn {
           :global {
             .ant-select-selector {
               background-color: #f6f6f6;
               border-radius: 6px;
+              border: none;
             }
             .ant-btn {
               border-radius: 4px;
@@ -189,13 +204,14 @@
 
     .Resizer:hover {
       transition: all 1s ease;
-      opacity: 0.2;
+      opacity: 0.1;
       background: #000;
     }
 
     .Resizer.horizontal {
       width: 100%;
-      height: 11px;
+      height: 4px;
+      z-index: 9999;
       margin: -5px 0;
       border-top: 5px solid rgb(255 255 255 / 0%);
       border-bottom: 5px solid rgb(255 255 255 / 0%);
@@ -208,7 +224,7 @@
     }
 
     .Resizer.vertical {
-      width: 11px;
+      width: 4px;
       margin: 0 -5px;
       border-right: 5px solid rgb(255 255 255 / 0%);
       border-left: 5px solid rgb(255 255 255 / 0%);

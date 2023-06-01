@@ -16,12 +16,18 @@ const DemoCard: React.FC<Prop> = ({ isActive, onClick, detail }) => {
       }`}
       onClick={onClick}
     >
-      <div className={isActive ? styles[`${PUBLIC_PERFIX_CLASS}-card-horn`] : ''}></div>
+      <div
+        className={isActive ? styles[`${PUBLIC_PERFIX_CLASS}-card-horn`] : ''}
+      ></div>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-card-img`]}>
         <img src={detail.imgUrl} alt="" />
       </div>
-      <div className={styles[`${PUBLIC_PERFIX_CLASS}-card-title`]}>{detail.graph_name}</div>
-      <div className={styles[`${PUBLIC_PERFIX_CLASS}-card-desc`]}>{detail.description}</div>
+      <div className={styles[`${PUBLIC_PERFIX_CLASS}-card-title`]}>
+        {detail.graph_demo_name || detail.graph_name}
+      </div>
+      <div className={styles[`${PUBLIC_PERFIX_CLASS}-card-desc`]}>
+        {detail.description}
+      </div>
     </div>
   );
 };

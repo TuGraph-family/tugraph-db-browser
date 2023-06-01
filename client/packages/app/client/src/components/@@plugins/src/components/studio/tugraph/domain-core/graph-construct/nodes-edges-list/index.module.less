@@ -60,9 +60,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            &-icon {
+              display: flex;
+              align-items: center;
+            }
             :global {
-              .anticon-copy {
-                margin-right: 8px;
+              .anticon {
+                display: none;
               }
             }
           }
@@ -74,7 +78,14 @@
           }
 
           &:hover {
+            background-color: rgba(22, 80, 255, 0.06);
             color: #1650ff;
+            :global {
+              .anticon {
+                margin-right: 8px;
+                display: inline;
+              }
+            }
           }
 
           &-active {
@@ -87,6 +98,14 @@
 
             .@{perfix-cls}-data-config-item {
               color: #1650ff;
+            }
+            .@{perfix-cls}-element-type {
+              :global {
+                .anticon {
+                  margin-right: 8px;
+                  display: inline;
+                }
+              }
             }
           }
         }

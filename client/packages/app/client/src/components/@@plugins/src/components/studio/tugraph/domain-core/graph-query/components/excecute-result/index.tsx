@@ -85,6 +85,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
   } = useGraphData();
   const { originalData, formatData } = excecuteResult?.data || {};
   const { visible, onShow, onClose } = useVisible({ defaultVisible: false });
+  const { nodes = [], edges = [] } = formatData || {};
   const [state, setState] = useImmer<{
     tableType: 'nodes' | 'edges';
     currentLayout: Layout;
@@ -141,7 +142,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
     sourcePrimaryKey,
     targetPrimaryKey,
   } = state;
-  const { nodes = [], edges = [] } = formatData || {};
+
   const modalGraphRef = React.createRef<Graphin>();
   const [form] = Form.useForm();
   const [addForm] = Form.useForm();
@@ -151,6 +152,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
     });
   };
   const onLayoutChange = useCallback((layout: Layout) => {
+    console.log(layout);
     setState((draft) => {
       draft.currentLayout = layout;
     });
@@ -241,8 +243,8 @@ const ExecuteResult: React.FC<ResultProps> = ({
         draft.sourceProperity = nodes;
         draft.targetProperity = nodes;
       });
+      graphCanvasContextValue.apis?.handleAutoZoom();
     }
-    graphCanvasContextValue?.graph?.refresh();
   }, [excecuteResult]);
   const dealFormatData = (formatData: {
     nodes: Array<FormatDataNodeProp>;
@@ -312,6 +314,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
           setState((draft) => {
             draft.formDisable = true;
           });
+          onClose();
         } else {
           message.error(res.errorMessage + '编辑失败');
         }
@@ -330,6 +333,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
           setState((draft) => {
             draft.formDisable = true;
           });
+          onClose();
         } else {
           message.error(res.errorMessage + '编辑失败');
         }
@@ -356,7 +360,8 @@ const ExecuteResult: React.FC<ResultProps> = ({
           graphCanvasContextValue?.graph?.read(
             dealGraphData(dealFormatData(data))
           );
-          onCancel();
+          onCancel?.();
+          onLayoutChange({ animation: false, type: 'graphin-force' });
         } else {
           message.error('插入点类型失败' + res.errorMessage);
         }
@@ -414,7 +419,8 @@ const ExecuteResult: React.FC<ResultProps> = ({
           graphCanvasContextValue?.graph?.read(
             dealGraphData(dealFormatData(data))
           );
-          onCancel();
+          onCancel?.();
+          onLayoutChange({ animation: false, type: 'graphin-force' });
         } else {
           message.error('插入边类型失败' + res.errorMessage);
         }
@@ -423,7 +429,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
   };
   const deleteNode = () => {
     const primaryKey = find(
-      graphData.nodes,
+      graphData?.nodes,
       (node) => node.labelName === tagName
     ).primaryField;
     const data = {
@@ -438,9 +444,11 @@ const ExecuteResult: React.FC<ResultProps> = ({
     }).then((res) => {
       if (res.success) {
         message.success('删除成功');
+        onClose();
         graphCanvasContextValue?.graph?.read(
           dealGraphData(dealFormatData(data))
         );
+        onLayoutChange({ animation: false, type: 'graphin-force' });
       } else {
         message.error('删除失败' + res.errorMessage);
       }
@@ -454,9 +462,11 @@ const ExecuteResult: React.FC<ResultProps> = ({
     onDeleteEdge({ ...editEdgeParams }).then((res) => {
       if (res.success) {
         message.success('删除成功');
+        onClose();
         graphCanvasContextValue?.graph?.read(
           dealGraphData(dealFormatData(data))
         );
+        onLayoutChange({ animation: false, type: 'graphin-force' });
       } else {
         message.error('删除失败' + res.errorMessage);
       }

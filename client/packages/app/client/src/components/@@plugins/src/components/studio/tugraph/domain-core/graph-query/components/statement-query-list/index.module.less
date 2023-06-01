@@ -28,6 +28,7 @@
         :global {
           .ant-input-affix-wrapper {
             background-color: #ededee;
+            border: none;
           }
         }
       }
@@ -43,8 +44,20 @@
           font-size: 12px;
           color: rgba(54, 55, 64, 1);
           cursor: pointer;
+          :global {
+            .anticon-edit,
+            .anticon-delete {
+              display: none;
+            }
+          }
           &:hover {
             background-color: #ededee;
+            :global {
+              .anticon-edit,
+              .anticon-delete {
+                display: inline;
+              }
+            }
           }
           :global {
             .anticon-mac-command {
@@ -56,6 +69,12 @@
         }
         &-active {
           background-color: #ededee;
+          :global {
+            .anticon-edit,
+            .anticon-delete {
+              display: inline;
+            }
+          }
         }
         &-left {
           display: flex;

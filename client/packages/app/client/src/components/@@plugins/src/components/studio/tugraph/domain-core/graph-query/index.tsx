@@ -3,6 +3,7 @@ import {
   ArrowLeftOutlined,
   DownloadOutlined,
   PlayCircleOutlined,
+  QuestionCircleOutlined,
 } from '@ant-design/icons';
 import GremlinEditor from 'ace-gremlin-editor';
 import {
@@ -17,7 +18,7 @@ import {
   Tooltip,
 } from 'antd';
 import { filter, find, isEmpty, map, uniqueId } from 'lodash';
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useHistory } from 'umi';
 import { useImmer } from 'use-immer';
 import { SplitPane } from '../../components/split-panle';
@@ -231,12 +232,21 @@ export const GraphQuery = (props: PluginPorps) => {
             draft.activeTab = val;
           });
         }}
-      />
+      >
+        {map(IQUIRE_LIST, (item) => (
+          <Tabs.TabPane tab={item.label} key={item.key} />
+        ))}
+      </Tabs>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerRight`]}>
-        {/* <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerRight-icon`]}>
-          <QuestionCircleOutlined />
-          <SaveOutlined />
-        </div> */}
+        <Tooltip title="用户帮助">
+          <QuestionCircleOutlined
+            onClick={() => {
+              window.open(
+                'https://tugraph.antgroup.com/doc?version=V3.4.0&id=10000000001669468'
+              );
+            }}
+          />
+        </Tooltip>
         <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerRight-btn`]}>
           <Button
             style={{ marginRight: '8px' }}
@@ -273,7 +283,7 @@ export const GraphQuery = (props: PluginPorps) => {
               执行
             </Button>
           </div>
-          <div style={{ gap: '24px', display: 'flex' }}>
+          <div>
             <Tooltip title="收藏为模版">
               <Button
                 type="text"
@@ -398,6 +408,7 @@ export const GraphQuery = (props: PluginPorps) => {
                           height: editorHeight,
                           position: 'absolute',
                           width: '100%',
+                          marginTop: 20,
                         }}
                       >
                         <GremlinEditor

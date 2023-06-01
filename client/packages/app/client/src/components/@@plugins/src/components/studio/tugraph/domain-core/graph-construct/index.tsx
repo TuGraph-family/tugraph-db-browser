@@ -4,10 +4,14 @@ import { GraphinContextType, Layout, Utils } from '@antv/graphin';
 import type { UploadProps } from 'antd';
 import { Button, Checkbox, Modal, Select, Steps, Upload, message } from 'antd';
 import { filter, isEmpty } from 'lodash';
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useHistory } from 'umi';
 import { useImmer } from 'use-immer';
-import { GraphCanvas, GraphCanvasContext, GraphCanvasContextInitValue } from '../../components/garph-canvas';
+import {
+  GraphCanvas,
+  GraphCanvasContext,
+  GraphCanvasContextInitValue,
+} from '../../components/garph-canvas';
 import { GraphCanvasLayout } from '../../components/graph-canvas-layout';
 import { CANVAS_LAYOUT } from '../../components/graph-canvas-layout/constant';
 import { GraphCanvasTools } from '../../components/graph-canvas-tools';
@@ -17,7 +21,12 @@ import { useImport } from '../../hooks/useImport';
 import { useSchema } from '../../hooks/useSchema';
 import { SubGraph } from '../../interface/graph';
 import { PluginPorps } from '../../interface/openpiece';
-import { GraphConfigData, LabelSchema, LabelType, SchemaProperties } from '../../interface/schema';
+import {
+  GraphConfigData,
+  LabelSchema,
+  LabelType,
+  SchemaProperties,
+} from '../../interface/schema';
 import { getLocalData } from '../../utils/localStorage';
 import { nodesEdgesListTranslator } from '../../utils/nodesEdgesListTranslator';
 import { schemaTransform } from '../../utils/schemaTransform';
@@ -114,7 +123,8 @@ export const GraphConstruct = (props: PluginPorps) => {
     schema,
   } = state;
 
-  const { onGetGraphSchema, onCreateLabelSchema, onDeleteLabelSchema } = useSchema();
+  const { onGetGraphSchema, onCreateLabelSchema, onDeleteLabelSchema } =
+    useSchema();
   const getGraphCanvasContextValue = useCallback((contextValue: any) => {
     setState((draft) => {
       if (contextValue) {
@@ -148,6 +158,13 @@ export const GraphConstruct = (props: PluginPorps) => {
   useEffect(() => {
     if (data.nodes?.length || data.edges?.length) {
       onAddClose?.();
+      setState((draft) => {
+        draft.activeBtnType = '';
+      });
+    } else {
+      setState((draft) => {
+        draft.activeBtnType = 'node';
+      });
     }
   }, [data]);
 
@@ -164,7 +181,7 @@ export const GraphConstruct = (props: PluginPorps) => {
         });
       });
     },
-    [graphCanvasContextValue],
+    [graphCanvasContextValue]
   );
   const dealEdges = (edges: Array<any>) => {
     return Utils.processEdges([...edges], { poly: 50, loop: 10 });
@@ -184,10 +201,15 @@ export const GraphConstruct = (props: PluginPorps) => {
       })),
     } as LabelSchema;
     if (labelType === 'node') {
-      if (filter(newSchema.indexs, (item) => item.primaryField === true).length > 1) {
+      if (
+        filter(newSchema.indexs, (item) => item.primaryField === true).length >
+        1
+      ) {
         return message.error('主键必须唯一');
       }
-      (params.primaryField = newSchema.indexs.find((item) => item.primaryField === true)?.propertyName),
+      (params.primaryField = newSchema.indexs.find(
+        (item) => item.primaryField === true
+      )?.propertyName),
         (params.indexs = newSchema.indexs.map((item) => ({
           propertyName: item?.propertyName,
           isUnique: item?.isUnique,
@@ -230,20 +252,17 @@ export const GraphConstruct = (props: PluginPorps) => {
         type="navigation"
         current={currentStep}
         className={styles[`${PUBLIC_PERFIX_CLASS}-step`]}
-        items={[
-          {
-            title: '模型定义',
-          },
-          {
-            title: '数据导入',
-          },
-        ]}
-      />
+      >
+        <Steps.Step title="模型定义" />
+        <Steps.Step title="数据导入" />
+      </Steps>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerRight`]}>
         <Button
           style={{ marginRight: '8px' }}
           onClick={() => {
-            history.push(`${redirectPath?.[1]?.path}?graphName=${currentGraphName}` ?? '/');
+            history.push(
+              `${redirectPath?.[1]?.path}?graphName=${currentGraphName}` ?? '/'
+            );
           }}
         >
           前往图查询
@@ -280,7 +299,9 @@ export const GraphConstruct = (props: PluginPorps) => {
           key={item.lable}
           className={[
             styles[`${PUBLIC_PERFIX_CLASS}-operate-item`],
-            activeBtnType === item.value ? styles[`${PUBLIC_PERFIX_CLASS}-operate-item-active`] : '',
+            activeBtnType === item.value
+              ? styles[`${PUBLIC_PERFIX_CLASS}-operate-item-active`]
+              : '',
           ].join(' ')}
           onClick={() => {
             setState((draft) => {
@@ -294,13 +315,19 @@ export const GraphConstruct = (props: PluginPorps) => {
                 draft.isModelOpen = true;
               }
               if (item.value === 'export') {
-                downloadFile(JSON.stringify(schemaTransform(data)), `${currentGraphName}.json`);
+                downloadFile(
+                  JSON.stringify(schemaTransform(data)),
+                  `${currentGraphName}.json`
+                );
                 message.success('模型导出成功');
               }
             });
           }}
         >
-          <IconFont type={item.icon} style={{ fontSize: '25px', paddingRight: '5px' }} />
+          <IconFont
+            type={item.icon}
+            style={{ fontSize: '25px', paddingRight: '5px' }}
+          />
           {item.lable}
         </div>
       ))}
@@ -311,6 +338,7 @@ export const GraphConstruct = (props: PluginPorps) => {
       onEditShow();
       if (val.shape) {
         setState((draft) => {
+          console.log(val);
           draft.activeElementType = val.item._cfg.type;
           draft.labelName = val.item._cfg.model.label;
         });
@@ -346,7 +374,10 @@ export const GraphConstruct = (props: PluginPorps) => {
     },
   };
   return (
-    <div className={styles[`${PUBLIC_PERFIX_CLASS}-construct`]} style={currentStep !== 0 ? { height: '100vh' } : {}}>
+    <div
+      className={styles[`${PUBLIC_PERFIX_CLASS}-construct`]}
+      style={currentStep !== 0 ? { height: '100vh' } : {}}
+    >
       {header}
       {currentStep === 0 ? operate : null}
       <NodesEdgesList
@@ -355,7 +386,7 @@ export const GraphConstruct = (props: PluginPorps) => {
         onClick={(item, type) => {
           const edgeChildrenList = filter(
             nodesEdgesListTranslator('edge', data),
-            (edge) => edge.label === item.labelName,
+            (edge) => edge.label === item.labelName
           );
           onEditShow();
           const isEdges = edgeChildrenList.length !== 1 && type === 'edge';
@@ -383,11 +414,19 @@ export const GraphConstruct = (props: PluginPorps) => {
               if (Array.isArray(selectedValue)) {
                 selectedValue.forEach((item) => {
                   graphCanvasContextValue.graph.focusItem(item, true);
-                  graphCanvasContextValue.graph.setItemState(item, 'selected', true);
+                  graphCanvasContextValue.graph.setItemState(
+                    item,
+                    'selected',
+                    true
+                  );
                 });
               } else {
                 graphCanvasContextValue.graph.focusItem(selectedValue, true);
-                graphCanvasContextValue.graph.setItemState(selectedValue, 'selected', true);
+                graphCanvasContextValue.graph.setItemState(
+                  selectedValue,
+                  'selected',
+                  true
+                );
               }
             }
           });
@@ -423,9 +462,14 @@ export const GraphConstruct = (props: PluginPorps) => {
             layout={currentLayout}
           />
         </div>
-        <div className={styles[`${PUBLIC_PERFIX_CLASS}-construct-canvas-layout`]}>
+        <div
+          className={styles[`${PUBLIC_PERFIX_CLASS}-construct-canvas-layout`]}
+        >
           <GraphCanvasTools />
-          <GraphCanvasLayout onLayoutChange={onLayoutChange} currentLayout={currentLayout} />
+          <GraphCanvasLayout
+            onLayoutChange={onLayoutChange}
+            currentLayout={currentLayout}
+          />
         </div>
       </GraphCanvasContext.Provider>
       {currentStep === 0 ? (
@@ -512,7 +556,9 @@ export const GraphConstruct = (props: PluginPorps) => {
             </Button>
           </Upload>
         </div>
-        <div className={styles[`${PUBLIC_PERFIX_CLASS}-model-json`]}>支持扩展名：.JSON</div>
+        <div className={styles[`${PUBLIC_PERFIX_CLASS}-model-json`]}>
+          支持扩展名：.JSON
+        </div>
         <Checkbox
           onChange={(e) => {
             setState((draft) => {

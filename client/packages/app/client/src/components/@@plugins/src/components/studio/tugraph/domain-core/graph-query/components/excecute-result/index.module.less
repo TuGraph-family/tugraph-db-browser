@@ -63,8 +63,16 @@
 
     .ant-tabs-card.ant-tabs-left > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab,
     .ant-tabs-card.ant-tabs-right > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab,
-    .ant-tabs-card.ant-tabs-left > div > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab,
-    .ant-tabs-card.ant-tabs-right > div > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab {
+    .ant-tabs-card.ant-tabs-left
+      > div
+      > .ant-tabs-nav
+      .ant-tabs-tab
+      + .ant-tabs-tab,
+    .ant-tabs-card.ant-tabs-right
+      > div
+      > .ant-tabs-nav
+      .ant-tabs-tab
+      + .ant-tabs-tab {
       margin-top: 0;
     }
 
@@ -73,8 +81,15 @@
       background-color: #fbfbfb;
     }
 
-    .ant-tabs-left > .ant-tabs-content-holder > .ant-tabs-content > .ant-tabs-tabpane,
-    .ant-tabs-left > div > .ant-tabs-content-holder > .ant-tabs-content > .ant-tabs-tabpane {
+    .ant-tabs-left
+      > .ant-tabs-content-holder
+      > .ant-tabs-content
+      > .ant-tabs-tabpane,
+    .ant-tabs-left
+      > div
+      > .ant-tabs-content-holder
+      > .ant-tabs-content
+      > .ant-tabs-tabpane {
       padding: 24px;
       overflow: auto;
       height: 100%;
@@ -148,6 +163,21 @@
     }
   }
   :global {
+    .ant-table-container {
+      border-radius: 8px 0 0 8px;
+      overflow: hidden;
+      table {
+        border-radius: 8px;
+        overflow: hidden;
+      }
+    }
+    .ant-form-item-control-input-content {
+      width: 100%;
+      .ant-input-number {
+        width: 100%;
+        border-radius: 6px;
+      }
+    }
     .ant-form-item-required {
       font-weight: 400;
       font-size: 14px;

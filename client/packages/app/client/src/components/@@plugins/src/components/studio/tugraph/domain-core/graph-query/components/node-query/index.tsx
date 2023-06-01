@@ -22,7 +22,11 @@ type NodeProp = {
 };
 type Prop = {
   nodes: Array<NodeProp>;
-  nodeQuery: (limit: number, conditions: Array<Condition>, nodes: Array<CheckboxValueType>) => void;
+  nodeQuery: (
+    limit: number,
+    conditions: Array<Condition>,
+    nodes: Array<CheckboxValueType>
+  ) => void;
 };
 export const NodeQuery: React.FC<Prop> = ({ nodes, nodeQuery }) => {
   const { visible, onShow, onClose } = useVisible({ defaultVisible: true });
@@ -49,7 +53,7 @@ export const NodeQuery: React.FC<Prop> = ({ nodes, nodeQuery }) => {
       const { limit } = val;
       const conditions = filter(
         flatMapDeep(map(nodeCheckedList, (item) => toArray(val[item]))),
-        (condition) => condition.operator || condition.value,
+        (condition) => condition.operator || condition.value
       );
       nodeQuery(limit, conditions, nodeCheckedList);
     });
@@ -83,13 +87,23 @@ export const NodeQuery: React.FC<Prop> = ({ nodes, nodeQuery }) => {
         }
       >
         <div className={styles[`${PUBLIC_PERFIX_CLASS}-drawer-ccontainer`]}>
-          <div className={styles[`${PUBLIC_PERFIX_CLASS}-drawer-title`]}>节点查询</div>
+          <div className={styles[`${PUBLIC_PERFIX_CLASS}-drawer-title`]}>
+            节点查询
+          </div>
           <Form layout="vertical" form={form}>
             <div>返回节点数目</div>
-            <Item name="limit" rules={[{ required: true, message: '请输入返回节点数' }]}>
+            <Item
+              name="limit"
+              rules={[{ required: true, message: '请输入返回节点数' }]}
+            >
               <InputNumber placeholder="请输入节点树目" />
             </Item>
-            <Item required label={'选择节点'} name="selectNode" rules={[{ required: true, message: '请选择节点' }]}>
+            <Item
+              required
+              label={'选择节点'}
+              name="selectNode"
+              rules={[{ required: true, message: '请选择节点' }]}
+            >
               <Select
                 mode="multiple"
                 options={map(nodes, (item) => ({ value: item.labelName }))}
@@ -98,45 +112,63 @@ export const NodeQuery: React.FC<Prop> = ({ nodes, nodeQuery }) => {
                 maxTagCount={'responsive'}
               />
             </Item>
-            <Tabs
-              items={map(nodeCheckedList, (item, index) => ({
-                label: item,
-                key: item,
-                children: map(find(nodes, (node) => node.labelName === item)?.properties, (proper) => (
-                  <div>
-                    <div style={{ lineHeight: '22px', margin: '16px 0 8px 0', color: 'rgba(54,55,64,1)' }}>
-                      {proper.name}
-                    </div>
-                    <Item
-                      name={[item, proper.name, 'property']}
-                      className={styles[`${PUBLIC_PERFIX_CLASS}-property-container`]}
-                      initialValue={`n${index}.${proper.name}`}
-                    />
-                    <Input.Group compact>
-                      <Item
-                        name={[item, proper.name, 'operator']}
-                        className={styles[`${PUBLIC_PERFIX_CLASS}-select-container`]}
-                      >
-                        <Select placeholder="选择关系" options={getConnectOptions(proper.type)} />
-                      </Item>
-                      <Item
-                        name={[item, proper.name, 'value']}
-                        className={styles[`${PUBLIC_PERFIX_CLASS}-input-container`]}
-                      >
-                        {proper.type === 'BOOL' ? (
-                          <Select>
-                            <Select.Option value={true}>是</Select.Option>
-                            <Select.Option value={false}>否</Select.Option>
-                          </Select>
-                        ) : (
-                          <Input />
-                        )}
-                      </Item>
-                    </Input.Group>
-                  </div>
-                )),
-              }))}
-            />
+            <Tabs>
+              {map(nodeCheckedList, (item, index) => (
+                <Tabs.TabPane tab={item} key={item}>
+                  {map(
+                    find(nodes, (node) => node.labelName === item)?.properties,
+                    (proper) => (
+                      <div>
+                        <div
+                          style={{
+                            lineHeight: '22px',
+                            margin: '16px 0 8px 0',
+                            color: 'rgba(54,55,64,1)',
+                          }}
+                        >
+                          {proper.name}
+                        </div>
+                        <Item
+                          name={[item, proper.name, 'property']}
+                          className={
+                            styles[`${PUBLIC_PERFIX_CLASS}-property-container`]
+                          }
+                          initialValue={`n${index}.${proper.name}`}
+                        />
+                        <Input.Group compact>
+                          <Item
+                            name={[item, proper.name, 'operator']}
+                            className={
+                              styles[`${PUBLIC_PERFIX_CLASS}-select-container`]
+                            }
+                          >
+                            <Select
+                              placeholder="选择关系"
+                              options={getConnectOptions(proper.type)}
+                            />
+                          </Item>
+                          <Item
+                            name={[item, proper.name, 'value']}
+                            className={
+                              styles[`${PUBLIC_PERFIX_CLASS}-input-container`]
+                            }
+                          >
+                            {proper.type === 'BOOL' ? (
+                              <Select>
+                                <Select.Option value={true}>是</Select.Option>
+                                <Select.Option value={false}>否</Select.Option>
+                              </Select>
+                            ) : (
+                              <Input />
+                            )}
+                          </Item>
+                        </Input.Group>
+                      </div>
+                    )
+                  )}
+                </Tabs.TabPane>
+              ))}
+            </Tabs>
           </Form>
         </div>
       </SwitchDrawer>

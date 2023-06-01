@@ -1,4 +1,13 @@
-import { Collapse, Empty, Form, Input, List, message, Segmented, Space } from 'antd';
+import {
+  Collapse,
+  Empty,
+  Form,
+  Input,
+  List,
+  message,
+  Segmented,
+  Space,
+} from 'antd';
 import copy from 'copy-to-clipboard';
 import { filter, map } from 'lodash';
 import React, { useEffect } from 'react';
@@ -66,8 +75,14 @@ const EdgeNodeList: React.FC<EdgeNodeListProp> = ({
         header={
           <div className={styles[`${PUBLIC_PERFIX_CLASS}-panel-header`]}>
             <Space direction="vertical" size={0}>
-              <Space size={0} className={styles[`${PUBLIC_PERFIX_CLASS}-panel-header-title`]}>
-                <IconFont type={isNode ? 'icon-dian' : 'icon-bian'} style={{ color, marginRight: 5 }} />
+              <Space
+                size={0}
+                className={styles[`${PUBLIC_PERFIX_CLASS}-panel-header-title`]}
+              >
+                <IconFont
+                  type={isNode ? 'icon-dian' : 'icon-bian'}
+                  style={{ color, marginRight: 5 }}
+                />
                 <TooltipText
                   maxWidth={width - 180}
                   style={{
@@ -79,7 +94,13 @@ const EdgeNodeList: React.FC<EdgeNodeListProp> = ({
                 {copyIcon(labelName)}
               </Space>
               {!isNode && (
-                <div className={styles[`${PUBLIC_PERFIX_CLASS}-edge-node-list-item-description`]}>
+                <div
+                  className={
+                    styles[
+                      `${PUBLIC_PERFIX_CLASS}-edge-node-list-item-description`
+                    ]
+                  }
+                >
                   {map(edgeConstraints, (edgeList) => (
                     <>
                       {edgeList[0] || '暂无数据'}
@@ -99,7 +120,9 @@ const EdgeNodeList: React.FC<EdgeNodeListProp> = ({
           bordered={false}
           dataSource={properties}
           renderItem={(item) => (
-            <List.Item className={styles[`${PUBLIC_PERFIX_CLASS}-edge-node-list-item`]}>
+            <List.Item
+              className={styles[`${PUBLIC_PERFIX_CLASS}-edge-node-list-item`]}
+            >
               {item.name}
               {copyIcon(item.name)}
             </List.Item>
@@ -115,7 +138,9 @@ const EdgeNodeList: React.FC<EdgeNodeListProp> = ({
       }}
     >
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-edge-node-list`]}>
-        <Space className={styles[`${PUBLIC_PERFIX_CLASS}-edge-node-list-search`]}>
+        <Space
+          className={styles[`${PUBLIC_PERFIX_CLASS}-edge-node-list-search`]}
+        >
           <Segmented
             options={SEGMENTED_OPTIONS}
             size="small"
@@ -124,7 +149,9 @@ const EdgeNodeList: React.FC<EdgeNodeListProp> = ({
           />
           <Form.Item noStyle initialValue={keyword} name="keyword">
             <Input
-              suffix={<IconFont type="icon-sousuo" style={{ fontSize: '18px' }} />}
+              suffix={
+                <IconFont type="icon-sousuo" style={{ fontSize: '18px' }} />
+              }
               allowClear
               size="small"
               placeholder={`请输入点或边名称`}
@@ -133,18 +160,26 @@ const EdgeNodeList: React.FC<EdgeNodeListProp> = ({
                 setState((draft) => {
                   draft.renderList = filter(
                     isNodeTab ? nodes : edges,
-                    (item) => item.labelName.indexOf(e.target.value) !== -1,
+                    (item) => item.labelName.indexOf(e.target.value) !== -1
                   );
                 });
               }}
             />
           </Form.Item>
         </Space>
-        <Collapse ghost expandIcon={({ isActive }) => <IconFont type="icon-caret-down" rotate={isActive ? 0 : -90} />}>
-          {renderList.length ? (
+        <Collapse
+          ghost
+          expandIcon={({ isActive }) => (
+            <IconFont type="icon-caret-down" rotate={isActive ? 0 : -90} />
+          )}
+        >
+          {renderList?.length ? (
             renderItem
           ) : (
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} className={styles[`${PUBLIC_PERFIX_CLASS}-empty`]} />
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              className={styles[`${PUBLIC_PERFIX_CLASS}-empty`]}
+            />
           )}
         </Collapse>
       </div>

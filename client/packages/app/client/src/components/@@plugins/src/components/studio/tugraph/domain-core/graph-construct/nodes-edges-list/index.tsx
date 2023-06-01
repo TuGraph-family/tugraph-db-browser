@@ -1,5 +1,5 @@
-import { CopyOutlined, DeleteOutlined } from '@ant-design/icons';
-import { Popconfirm, Popover, Tooltip, message } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
+import { Popconfirm, Tooltip, message } from 'antd';
 import copy from 'copy-to-clipboard';
 import React, { useEffect, useMemo } from 'react';
 import { useImmer } from 'use-immer';
@@ -9,6 +9,7 @@ import TextTabs from '../../../components/text-tabs';
 import { PUBLIC_PERFIX_CLASS } from '../../../constant';
 import { useVisible } from '../../../hooks/useVisible';
 
+import IconFont from '../../../components/icon-font';
 import styles from './index.module.less';
 
 export type NodesEdgesListTab = 'node' | 'edge';
@@ -61,7 +62,8 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
     nodesTotal: data.nodes.length,
     edgeTotal: data.edges.length,
   });
-  const { activeElementId, activeTab, edges, nodes, nodesTotal, edgeTotal } = state;
+  const { activeElementId, activeTab, edges, nodes, nodesTotal, edgeTotal } =
+    state;
   useEffect(() => {
     setState((draft) => {
       draft.nodesTotal = data.nodes.length;
@@ -80,7 +82,11 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
       onClose={onClose}
       position="left"
       className={styles[`${PUBLIC_PERFIX_CLASS}-nodes-edges-drawer`]}
-      style={currentStep !== 0 ? { height: 'calc(100% - 52px)', marginTop: '52px' } : {}}
+      style={
+        currentStep !== 0
+          ? { height: 'calc(100% - 52px)', marginTop: '52px' }
+          : {}
+      }
       width={260}
     >
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-nodes-edges-content`]}>
@@ -97,18 +103,42 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
               {
                 key: 'node',
                 text: (
-                  <div className={[styles[`${PUBLIC_PERFIX_CLASS}-title`], 'title'].join(' ')}>
+                  <div
+                    className={[
+                      styles[`${PUBLIC_PERFIX_CLASS}-title`],
+                      'title',
+                    ].join(' ')}
+                  >
                     点类型
-                    <span className={[styles[`${PUBLIC_PERFIX_CLASS}-total`], 'total'].join(' ')}>{nodesTotal}</span>
+                    <span
+                      className={[
+                        styles[`${PUBLIC_PERFIX_CLASS}-total`],
+                        'total',
+                      ].join(' ')}
+                    >
+                      {nodesTotal}
+                    </span>
                   </div>
                 ),
               },
               {
                 key: 'edge',
                 text: (
-                  <div className={[styles[`${PUBLIC_PERFIX_CLASS}-title`], 'title'].join(' ')}>
+                  <div
+                    className={[
+                      styles[`${PUBLIC_PERFIX_CLASS}-title`],
+                      'title',
+                    ].join(' ')}
+                  >
                     边类型
-                    <span className={[styles[`${PUBLIC_PERFIX_CLASS}-total`], 'total'].join(' ')}>{edgeTotal}</span>
+                    <span
+                      className={[
+                        styles[`${PUBLIC_PERFIX_CLASS}-total`],
+                        'total',
+                      ].join(' ')}
+                    >
+                      {edgeTotal}
+                    </span>
                   </div>
                 ),
               },
@@ -122,59 +152,69 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
             onChange={(e) => {
               setState((draft) => {
                 if (isNodeTab) {
-                  draft.nodes = data.nodes.filter((item) => item.labelName.indexOf(e.target.value) !== -1);
+                  draft.nodes = data.nodes.filter(
+                    (item) => item.labelName.indexOf(e.target.value) !== -1
+                  );
                 } else {
-                  draft.edges = data.edges.filter((item) => (item.id || item.labelName).indexOf(e.target.value) !== -1);
+                  draft.edges = data.edges.filter(
+                    (item) =>
+                      (item.id || item.labelName).indexOf(e.target.value) !== -1
+                  );
                 }
               });
             }}
           />
           <div className={styles[`${PUBLIC_PERFIX_CLASS}-content-list`]}>
             {(isNodeTab ? nodes : edges).map((item) => {
-              const isActive = activeElementId === item.labelName && isActiveItem;
-              const styleList = [styles[`${PUBLIC_PERFIX_CLASS}-content-list-item`]];
+              const isActive =
+                activeElementId === item.labelName && isActiveItem;
+              const styleList = [
+                styles[`${PUBLIC_PERFIX_CLASS}-content-list-item`],
+              ];
               if (isActive) {
-                styleList.push(styles[`${PUBLIC_PERFIX_CLASS}-content-list-item-active`]);
+                styleList.push(
+                  styles[`${PUBLIC_PERFIX_CLASS}-content-list-item-active`]
+                );
               }
               return (
                 <div className={styleList.join(' ')} key={item.labelName}>
-                  <Popover content={item.labelName} placement="right">
+                  <div
+                    className={styles[`${PUBLIC_PERFIX_CLASS}-element-type`]}
+                    onClick={() => {
+                      setState((draft) => {
+                        draft.activeElementId = item.labelName;
+                      });
+                      onClick(item, activeTab);
+                    }}
+                  >
+                    {item.labelName}
                     <div
-                      className={styles[`${PUBLIC_PERFIX_CLASS}-element-type`]}
-                      onClick={() => {
-                        setState((draft) => {
-                          draft.activeElementId = item.labelName;
-                        });
-                        onClick(item, activeTab);
-                      }}
+                      className={
+                        styles[`${PUBLIC_PERFIX_CLASS}-element-type-icon`]
+                      }
                     >
-                      {item.labelName}
-                      <div>
-                        <Tooltip title="复制">
-                          <CopyOutlined
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              copy(item.labelName);
-                              message.success('复制成功');
-                            }}
-                          />
-                        </Tooltip>
-                        <Popconfirm
-                          title="确定要删除吗"
-                          onConfirm={(e) => {
+                      <Tooltip title="复制">
+                        <IconFont
+                          onClick={(e) => {
                             e.stopPropagation();
-                            onDelete(item.labelName, activeTab);
+                            copy(item.labelName);
+                            message.success('复制成功');
                           }}
-                        >
-                          <DeleteOutlined
-                            onClick={(e) => {
-                              e.stopPropagation();
-                            }}
-                          />
-                        </Popconfirm>
-                      </div>
+                          type="icon-fuzhi1"
+                          style={{ marginRight: 8, fontSize: 16 }}
+                        />
+                      </Tooltip>
+                      <Popconfirm
+                        title="确定要删除吗"
+                        onConfirm={(e) => {
+                          e.stopPropagation();
+                          onDelete(item.labelName, activeTab);
+                        }}
+                      >
+                        <DeleteOutlined />
+                      </Popconfirm>
                     </div>
-                  </Popover>
+                  </div>
                 </div>
               );
             })}

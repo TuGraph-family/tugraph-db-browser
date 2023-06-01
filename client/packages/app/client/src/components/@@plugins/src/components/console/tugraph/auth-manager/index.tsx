@@ -1,4 +1,5 @@
 import { Button, Tabs } from 'antd';
+import { map } from 'lodash';
 import React from 'react';
 import { useImmer } from 'use-immer';
 import { PUBLIC_PERFIX_CLASS } from '../constant';
@@ -19,6 +20,16 @@ export const AuthManager: React.FC = () => {
     getRefreshList: () => {},
   });
   const { activeTab, isOpen, getRefreshList } = state;
+  const tabList = [
+    {
+      label: `账户管理`,
+      key: 'account',
+    },
+    {
+      label: `角色管理`,
+      key: 'role',
+    },
+  ];
   return (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-permissions-container`]}>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-table-header`]}>
@@ -29,17 +40,11 @@ export const AuthManager: React.FC = () => {
             });
           }}
           defaultActiveKey="account"
-          items={[
-            {
-              label: `账户管理`,
-              key: 'account',
-            },
-            {
-              label: `角色管理`,
-              key: 'role',
-            },
-          ]}
-        />
+        >
+          {map(tabList, (tab) => (
+            <Tabs.TabPane tab={tab.label} key={tab.key} />
+          ))}
+        </Tabs>
         <div style={{ display: 'inline-block' }}>
           <Button
             onClick={() => {

@@ -1,6 +1,6 @@
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
-import { List, MenuProps, Pagination, Spin } from 'antd';
-import React, { useCallback, useEffect } from 'react';
+import { List, Pagination, Spin } from 'antd';
+import { useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import CollasibleSteps from '../components/collapsable-steps';
 import { PROJECT_TAB, PUBLIC_PERFIX_CLASS, STEP_LIST } from '../constant';
@@ -57,16 +57,22 @@ export const GraphList = (props: PluginPorps) => {
     });
   }, [isShowStep]);
   const getGraphList = () => {
-    onGetGraphList({ userName: getLocalData('TUGRAPH_USER_NAME') }).then((res) => {
-      if (res.success) {
-        setLocalData('TUGRAPH_SUBGRAPH_LIST', res.data);
-        updateState((draft) => {
-          const defaultList = getDefaultDemoList(getGraphListTranslator(res.data as SubGraph[]));
-          draft.currentList = defaultList;
-          draft.list = [...defaultList.slice((pagination - 1) * 8, pagination * 8)];
-        });
+    onGetGraphList({ userName: getLocalData('TUGRAPH_USER_NAME') }).then(
+      (res) => {
+        if (res.success) {
+          setLocalData('TUGRAPH_SUBGRAPH_LIST', res.data);
+          updateState((draft) => {
+            const defaultList = getDefaultDemoList(
+              getGraphListTranslator(res.data as SubGraph[])
+            );
+            draft.currentList = defaultList;
+            draft.list = [
+              ...defaultList.slice((pagination - 1) * 8, pagination * 8),
+            ];
+          });
+        }
       }
-    });
+    );
   };
   useEffect(() => {
     try {
@@ -87,45 +93,26 @@ export const GraphList = (props: PluginPorps) => {
       draft.isAdd = true;
     });
   }, []);
-  const tabsList: Array<{ title: string; value: string }> = [
-    { title: '图管理', value: 'tuManage' },
-    { title: '控制台', value: 'console' },
-  ];
-  const items: MenuProps['items'] = [
-    {
-      label: '数据库信息',
-      key: '0',
-    },
-    {
-      label: '权限管理',
-      key: '1',
-    },
-    {
-      label: '任务管理',
-      key: '2',
-    },
-    {
-      label: '实时状态',
-      key: '3',
-    },
-    {
-      label: '审计日志',
-      key: '4',
-    },
-  ];
   return (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-home-style`]}>
       {state.tabKey === 'tuManage' && (
         <div className={styles[`${PUBLIC_PERFIX_CLASS}-graph-develop`]}>
-          <div className={styles[`${PUBLIC_PERFIX_CLASS}-title`]}>{getZhPeriod()}，欢迎来到TuGraph～</div>
+          <div className={styles[`${PUBLIC_PERFIX_CLASS}-title`]}>
+            {getZhPeriod()}，欢迎来到TuGraph～
+          </div>
           <div className={styles[`${PUBLIC_PERFIX_CLASS}-desc`]}>
             <span className={styles[`${PUBLIC_PERFIX_CLASS}-desc-text`]}>
               {
                 'TuGraph 是蚂蚁集团自主研发的单机版图数据库产品，特点是单机大数据量，高吞吐率，灵活的API，同时支持高效的在线事务处理（OLTP）和在线分析处理（OLAP）'
               }
             </span>
-            <span onClick={onCollapse} className={styles[`${PUBLIC_PERFIX_CLASS}-desc-collapse`]}>
-              <span className={styles[`${PUBLIC_PERFIX_CLASS}-desc-collapse-text`]}>
+            <span
+              onClick={onCollapse}
+              className={styles[`${PUBLIC_PERFIX_CLASS}-desc-collapse`]}
+            >
+              <span
+                className={styles[`${PUBLIC_PERFIX_CLASS}-desc-collapse-text`]}
+              >
                 {isShowStep ? '收起' : '展开'}
               </span>
               {isShowStep ? <UpOutlined /> : <DownOutlined />}
@@ -136,14 +123,18 @@ export const GraphList = (props: PluginPorps) => {
           </div>
           <div className={styles[`${PUBLIC_PERFIX_CLASS}-projects`]}>
             <Spin spinning={getGraphListLoading}>
-              {(list || []).length === 0 && !projectListLoading && keyword === '' ? (
+              {(list || []).length === 0 &&
+              !projectListLoading &&
+              keyword === '' ? (
                 <EmptyProject onCreateProject={onCreateProject} />
               ) : (
                 <List
                   grid={{ column: 3, gutter: 16 }}
                   className={[
                     styles[`${PUBLIC_PERFIX_CLASS}-list`],
-                    isShowStep ? styles[`${PUBLIC_PERFIX_CLASS}-list-show-step`] : '',
+                    isShowStep
+                      ? styles[`${PUBLIC_PERFIX_CLASS}-list-show-step`]
+                      : '',
                   ].join(' ')}
                   dataSource={[{ id: '-1' } as any, ...(list || [])]}
                   renderItem={(item, index) => {
@@ -169,7 +160,9 @@ export const GraphList = (props: PluginPorps) => {
                 onChange={(value) => {
                   updateState((draft) => {
                     draft.pagination = value;
-                    draft.list = [...currentList.slice((value - 1) * 8, value * 8)];
+                    draft.list = [
+                      ...currentList.slice((value - 1) * 8, value * 8),
+                    ];
                   });
                 }}
               />

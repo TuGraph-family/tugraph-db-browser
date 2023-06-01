@@ -1,12 +1,20 @@
 import { GraphinContext } from '@antv/graphin';
-import React, { useContext, useEffect } from 'react';
-import { GraphCanvas, GraphCanvasContext, useGraphinContext } from '../../../../../../components/garph-canvas';
+import { useContext, useEffect } from 'react';
+import {
+  GraphCanvas,
+  GraphCanvasContext,
+  useGraphinContext,
+} from '../../../../../../components/garph-canvas';
 import { GraphCanvasTools } from '../../../../../../components/graph-canvas-tools';
 import { PUBLIC_PERFIX_CLASS } from '../../../../../../constant';
 
 import styles from './index.module.less';
 
-const GraphCanvasMini = ({ getGraphCanvasContextValue, graphData, graphCanvasContextValue }: GraphCanvasMiniProps) => {
+const GraphCanvasMini = ({
+  getGraphCanvasContextValue,
+  graphData,
+  graphCanvasContextValue,
+}: GraphCanvasMiniProps) => {
   const { apis } = useGraphinContext();
   const { apis: contextApis } = useContext(GraphinContext);
   useEffect(() => {
@@ -19,7 +27,12 @@ const GraphCanvasMini = ({ getGraphCanvasContextValue, graphData, graphCanvasCon
   }, [apis, contextApis]);
   return (
     <GraphCanvasContext.Provider value={{ ...graphCanvasContextValue }}>
-      <div className={[styles[`${PUBLIC_PERFIX_CLASS}-view-graph-model-canvas`], 'view-graph-model-canvas'].join(' ')}>
+      <div
+        className={[
+          styles[`${PUBLIC_PERFIX_CLASS}-view-graph-model-canvas`],
+          'view-graph-model-canvas',
+        ].join(' ')}
+      >
         <GraphCanvas
           containerId="model-view"
           data={graphData}

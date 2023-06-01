@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react';
 import { Cascader, Empty, Input, Select, Space, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { cloneDeep, isEmpty, map } from 'lodash';
+import { useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import { graphDataToOptions, nodesDataToOptions } from '../../../utils/dataImportTransform';
-import { map, isEmpty, forEach, cloneDeep } from 'lodash';
 import { PUBLIC_PERFIX_CLASS } from '../../../constant';
 import { DataType, FileData, FileSchema } from '../../../interface/import';
 import { GraphData } from '../../../interface/schema';
+import {
+  graphDataToOptions,
+  nodesDataToOptions,
+} from '../../../utils/dataImportTransform';
 
 import styles from './index.module.less';
 
@@ -18,7 +21,12 @@ export interface DataMappingProps {
 }
 
 export const DataMapping = (prop: DataMappingProps) => {
-  const { fileDataList = [], setFileDataList, graphData, currentFileData } = prop;
+  const {
+    fileDataList = [],
+    setFileDataList,
+    graphData,
+    currentFileData,
+  } = prop;
   const [state, setState] = useImmer<{
     label: string;
     type: string;
@@ -65,7 +73,13 @@ export const DataMapping = (prop: DataMappingProps) => {
       if (labelType === 'edge') {
         newColumns[0] = 'SRC_ID';
         newColumns[1] = 'DST_ID';
-        newFileSchema = { ...res, label: labelName, columns: newColumns, SRC_ID: '', DST_ID: '' };
+        newFileSchema = {
+          ...res,
+          label: labelName,
+          columns: newColumns,
+          SRC_ID: '',
+          DST_ID: '',
+        };
       } else {
         newFileSchema = {
           label: labelName,
@@ -81,7 +95,12 @@ export const DataMapping = (prop: DataMappingProps) => {
     setFileDataList(newFileList);
   };
 
-  const handlePropertyChange = (value: any, index: number, fileName: string, prefix = '') => {
+  const handlePropertyChange = (
+    value: any,
+    index: number,
+    fileName: string,
+    prefix = ''
+  ) => {
     const updateFileData = (fileData: FileData) => {
       const { fileSchema, ...rest } = fileData;
       const { columns, ...fileSchemaRest } = fileSchema;
@@ -103,7 +122,9 @@ export const DataMapping = (prop: DataMappingProps) => {
       };
     };
 
-    const fileIndex = fileDataList.findIndex((fileData) => fileData.fileName === fileName);
+    const fileIndex = fileDataList.findIndex(
+      (fileData) => fileData.fileName === fileName
+    );
     const newFileDataList = [...fileDataList];
     newFileDataList[fileIndex] = updateFileData(fileDataList[fileIndex]);
 
@@ -112,7 +133,7 @@ export const DataMapping = (prop: DataMappingProps) => {
 
   const getTableHeader = (fileName: string, index: number) => {
     const selectProps = {
-      style: { width: 80 },
+      style: { width: '100%' },
       allowClear: true,
       dropdownMatchSelectWidth: false,
     };
@@ -129,9 +150,13 @@ export const DataMapping = (prop: DataMappingProps) => {
     const selectOptions = prefix ? nodesOptions : propertiesOptions;
 
     return (
-      <Space>
+      <Space className="table-space">
         {prefix && <span>{prefix}</span>}
-        <Select {...selectProps} onSelect={(val) => handleSelect(val, prefix)} options={selectOptions} />
+        <Select
+          {...selectProps}
+          onSelect={(val) => handleSelect(val, prefix)}
+          options={selectOptions}
+        />
       </Space>
     );
   };
@@ -169,14 +194,25 @@ export const DataMapping = (prop: DataMappingProps) => {
             key="dataMap"
             options={currentFileData?.labelOptions}
             placeholder="请选择"
-            onChange={(val: string[]) => handleLabelChange(val, currentFileData.fileName)}
+            onChange={(val: string[]) =>
+              handleLabelChange(val, currentFileData.fileName)
+            }
           />
         </Space>
 
-        <div className={styles[`${PUBLIC_PERFIX_CLASS}-collapse-table-header-group`]}>
+        <div
+          className={
+            styles[`${PUBLIC_PERFIX_CLASS}-collapse-table-header-group`]
+          }
+        >
           <Space>
             从第
-            <Input onChange={(val) => handleInputChange(val.target.value, currentFileData.fileName)} size="small" />
+            <Input
+              onChange={(val) =>
+                handleInputChange(val.target.value, currentFileData.fileName)
+              }
+              size="small"
+            />
             行，开始
           </Space>
         </div>
@@ -185,7 +221,10 @@ export const DataMapping = (prop: DataMappingProps) => {
         <Empty />
       ) : (
         <Table
-          columns={getColumns(currentFileData?.data?.columns, currentFileData.fileName)}
+          columns={getColumns(
+            currentFileData?.data?.columns,
+            currentFileData.fileName
+          )}
           pagination={false}
           dataSource={currentFileData.data?.dataSource}
           scroll={{ x: true, y: 270 }}

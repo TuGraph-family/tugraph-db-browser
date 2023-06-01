@@ -1,6 +1,12 @@
 @perfix-cls: ant-tugraph;
 .@{perfix-cls}-collapse {
   :global {
+    .table-space {
+      width: 100%;
+      .ant-space-item {
+        width: 100%;
+      }
+    }
     .ant-collapse {
       background-color: #fff;
     }
@@ -35,7 +41,8 @@
     .ant-input {
       border-radius: 6px;
     }
-    .ant-select-single.ant-select-sm:not(.ant-select-customize-input) .ant-select-selector {
+    .ant-select-single.ant-select-sm:not(.ant-select-customize-input)
+      .ant-select-selector {
       height: 26px;
     }
   }
