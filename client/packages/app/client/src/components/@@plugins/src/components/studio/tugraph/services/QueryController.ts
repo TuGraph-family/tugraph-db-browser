@@ -1,17 +1,13 @@
-import request from 'umi-request';
-import { PROXY_HOST } from '../constant';
-import { NodeQueryParams, PathQueryParams, StatementParams } from '../interface/query';
-import { getLocalData } from '../utils/localStorage';
+import request from '../utils/request';
+import {
+  NodeQueryParams,
+  PathQueryParams,
+  StatementParams,
+} from '../interface/query';
 /* 语句查询接口 */
 export async function statementQuery(params: StatementParams) {
-  return request(`${PROXY_HOST}/api/query/language`, {
+  return request(`/api/query/language`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getLocalData('TUGRAPH_TOKEN'),
-    },
-    withCredentials: true,
-    credentials: 'include',
     data: {
       ...params,
     },
@@ -20,14 +16,8 @@ export async function statementQuery(params: StatementParams) {
 
 /* 节点查询接口 */
 export async function nodeQuery(params: NodeQueryParams) {
-  return request(`${PROXY_HOST}/api/query/node`, {
+  return request(`/api/query/node`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getLocalData('TUGRAPH_TOKEN'),
-    },
-    withCredentials: true,
-    credentials: 'include',
     data: {
       ...params,
     },
@@ -36,14 +26,8 @@ export async function nodeQuery(params: NodeQueryParams) {
 
 /* 路径查询接口 */
 export async function pathQuery(params: PathQueryParams) {
-  return request(`${PROXY_HOST}/api/query/path`, {
+  return request(`/api/query/path`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getLocalData('TUGRAPH_TOKEN'),
-    },
-    withCredentials: true,
-    credentials: 'include',
     data: {
       ...params,
     },

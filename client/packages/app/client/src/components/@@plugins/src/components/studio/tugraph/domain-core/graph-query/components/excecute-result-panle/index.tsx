@@ -57,8 +57,14 @@ const ExcecuteResultPanle: React.FC<ExcecuteHistoryProps> = ({
     });
   }, [isFullView]);
   const fullViewButton = (
-    <Tooltip title="全屏显示">
-      <IconFont type={isFullView ? 'icon-shouqiquanping' : 'icon-quanping'} onClick={onFullView} />
+    <Tooltip
+      title={isFullView ? '退出全屏' : '全屏显示'}
+      placement={!isFullView ? 'top' : 'bottom'}
+    >
+      <IconFont
+        type={isFullView ? 'icon-shouqiquanping' : 'icon-quanping'}
+        onClick={onFullView}
+      />
     </Tooltip>
   );
   const renderTabRightAction = () => {
@@ -73,7 +79,10 @@ const ExcecuteResultPanle: React.FC<ExcecuteHistoryProps> = ({
                 执行耗时（ms）：{`${activeResult?.requestTime}`}
               </div>
             )}
-            <Tooltip title="插入数据">
+            <Tooltip
+              title="插入数据"
+              placement={!isFullView ? 'top' : 'bottom'}
+            >
               <IconFont
                 type="icon-charushuju"
                 onClick={() => {
@@ -83,11 +92,17 @@ const ExcecuteResultPanle: React.FC<ExcecuteHistoryProps> = ({
                 }}
               />
             </Tooltip>
-            <Tooltip title="下载执行结果">
+            <Tooltip
+              title="下载执行结果"
+              placement={!isFullView ? 'top' : 'bottom'}
+            >
               <IconFont
                 type="icon-a-xiazaiyujujieguo"
                 onClick={() => {
-                  downloadFile(JSON.stringify(omit(activeResult, 'id')), '执行结果文本.txt');
+                  downloadFile(
+                    JSON.stringify(omit(activeResult, 'id')),
+                    '执行结果文本.txt'
+                  );
                 }}
               />
             </Tooltip>
@@ -105,7 +120,10 @@ const ExcecuteResultPanle: React.FC<ExcecuteHistoryProps> = ({
             <div className={styles[`${PUBLIC_PERFIX_CLASS}-result-tab`]}>
               <Tooltip>
                 执行结果{index + 1}
-                <Tag color={result.success ? 'success' : 'error'} style={{ marginLeft: 6, fontSize: 12 }}>
+                <Tag
+                  color={result.success ? 'success' : 'error'}
+                  style={{ marginLeft: 6, fontSize: 12 }}
+                >
                   {result.success ? '成功' : '失败'}
                 </Tag>
               </Tooltip>
@@ -132,7 +150,9 @@ const ExcecuteResultPanle: React.FC<ExcecuteHistoryProps> = ({
     <div
       className={[
         styles[`${PUBLIC_PERFIX_CLASS}-excecute-history`],
-        isFullView ? styles[`${PUBLIC_PERFIX_CLASS}-excecute-history__full`] : '',
+        isFullView
+          ? styles[`${PUBLIC_PERFIX_CLASS}-excecute-history__full`]
+          : '',
       ].join(' ')}
     >
       <TextTabs
@@ -142,12 +162,21 @@ const ExcecuteResultPanle: React.FC<ExcecuteHistoryProps> = ({
         autoWidth={false}
         onChange={(val) => {
           setState((draft) => {
-            draft.activeResult = find(queryResultList, (result) => result.id === val);
+            draft.activeResult = find(
+              queryResultList,
+              (result) => result.id === val
+            );
           });
         }}
       />
-      <div className={styles[`${PUBLIC_PERFIX_CLASS}-excecute-history-actions`]}>{renderTabRightAction()}</div>
-      <div className={styles[`${PUBLIC_PERFIX_CLASS}-excecute-history-content`]}>
+      <div
+        className={styles[`${PUBLIC_PERFIX_CLASS}-excecute-history-actions`]}
+      >
+        {renderTabRightAction()}
+      </div>
+      <div
+        className={styles[`${PUBLIC_PERFIX_CLASS}-excecute-history-content`]}
+      >
         <ExecuteResult
           excecuteResult={activeResult}
           graphName={graphName}

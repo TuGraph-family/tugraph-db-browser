@@ -276,7 +276,7 @@ export const GraphConstruct = (props: PluginPorps) => {
               });
             }}
           >
-            下一步
+            数据导入
           </Button>
         ) : (
           <Button
@@ -286,7 +286,7 @@ export const GraphConstruct = (props: PluginPorps) => {
               });
             }}
           >
-            上一步
+            模型定义
           </Button>
         )}
       </div>
@@ -338,7 +338,6 @@ export const GraphConstruct = (props: PluginPorps) => {
       onEditShow();
       if (val.shape) {
         setState((draft) => {
-          console.log(val);
           draft.activeElementType = val.item._cfg.type;
           draft.labelName = val.item._cfg.model.label;
         });

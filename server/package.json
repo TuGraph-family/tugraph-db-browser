@@ -11,7 +11,7 @@
     "pro": "npm run tsc && egg-scripts start",
     "stop": "egg-scripts stop --title=egg-server-gi-standalone-service",
     "start": "egg-scripts start --port=7001 --daemon ",
-    "build": "npm install && npm run tsc",
+    "build": "npm run tsc",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
     "test-local": "egg-bin test",

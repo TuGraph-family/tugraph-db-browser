@@ -123,9 +123,7 @@ export const GraphList = (props: PluginPorps) => {
           </div>
           <div className={styles[`${PUBLIC_PERFIX_CLASS}-projects`]}>
             <Spin spinning={getGraphListLoading}>
-              {(list || []).length === 0 &&
-              !projectListLoading &&
-              keyword === '' ? (
+              {(currentList || []).length === 0 ? (
                 <EmptyProject onCreateProject={onCreateProject} />
               ) : (
                 <List

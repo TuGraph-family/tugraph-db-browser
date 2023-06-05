@@ -1,31 +1,20 @@
-import request from 'umi-request';
-import { PROXY_HOST } from '../constant';
+import request from '../utils/request';
 import { FileSchema, Schema } from '../interface/import';
-import { getLocalData } from '../utils/localStorage';
 
 /* Get Graph list */
 export async function getGraphList(params: { userName: string }) {
-  return request(`${PROXY_HOST}/api/subgraph?userName=${params?.userName}`, {
+  return request(`/api/subgraph?userName=${params?.userName}`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getLocalData('TUGRAPH_TOKEN'),
-    },
-    withCredentials: true,
-    credentials: 'include',
     data: {},
   });
 }
 /* POST Create Graph*/
-export async function createGraph(params: { graphName: string; config: { maxSizeGB: number; description: string } }) {
-  return request(`${PROXY_HOST}/api/subgraph`, {
+export async function createGraph(params: {
+  graphName: string;
+  config: { maxSizeGB: number; description: string };
+}) {
+  return request(`/api/subgraph`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getLocalData('TUGRAPH_TOKEN'),
-    },
-    withCredentials: true,
-    credentials: 'include',
     data: {
       ...params,
     },
@@ -34,28 +23,19 @@ export async function createGraph(params: { graphName: string; config: { maxSize
 
 /* DELETE Graph*/
 export async function deleteGraph(params: { graphName: string }) {
-  return request(`${PROXY_HOST}/api/subgraph`, {
+  return request(`/api/subgraph`, {
     method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getLocalData('TUGRAPH_TOKEN'),
-    },
-    withCredentials: true,
-    credentials: 'include',
     data: { ...params },
   });
 }
 
 /* EDIT Graph*/
-export async function editGraph(params: { graphName: string; config: { maxSizeGB: number; description: string } }) {
-  return request(`${PROXY_HOST}/api/subgraph`, {
+export async function editGraph(params: {
+  graphName: string;
+  config: { maxSizeGB: number; description: string };
+}) {
+  return request(`/api/subgraph`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getLocalData('TUGRAPH_TOKEN'),
-    },
-    withCredentials: true,
-    credentials: 'include',
     data: {
       ...params,
     },
@@ -63,14 +43,8 @@ export async function editGraph(params: { graphName: string; config: { maxSizeGB
 }
 
 export async function getNodeEdgeStatistics(graphName: string) {
-  return request(`${PROXY_HOST}/api/statistics/${graphName}`, {
+  return request(`/api/statistics/${graphName}`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getLocalData('TUGRAPH_TOKEN'),
-    },
-    withCredentials: true,
-    credentials: 'include',
   });
 }
 
@@ -80,14 +54,8 @@ export async function createDemoGraph(params: {
   config: { maxSizeGB: number; description: string };
   description: { schema: Schema[]; files: FileSchema[] };
 }) {
-  return request(`${PROXY_HOST}/api/subgraph/template`, {
+  return request(`/api/subgraph/template`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getLocalData('TUGRAPH_TOKEN'),
-    },
-    withCredentials: true,
-    credentials: 'include',
     data: {
       ...params,
     },

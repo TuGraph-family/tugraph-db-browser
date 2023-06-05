@@ -208,6 +208,7 @@ export const DataMapping = (prop: DataMappingProps) => {
           <Space>
             从第
             <Input
+              defaultValue={0}
               onChange={(val) =>
                 handleInputChange(val.target.value, currentFileData.fileName)
               }

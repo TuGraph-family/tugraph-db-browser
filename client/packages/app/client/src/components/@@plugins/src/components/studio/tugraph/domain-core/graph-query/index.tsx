@@ -87,6 +87,7 @@ export const GraphQuery = (props: PluginPorps) => {
         edgeConstraints: Array<Array<string>>;
       }>;
     };
+    editor: any;
   }>({
     graphListOptions: map(graphList, (graph: SubGraph) => {
       return {
@@ -105,6 +106,7 @@ export const GraphQuery = (props: PluginPorps) => {
     queryList: [],
     editorKey: '',
     graphData: { nodes: [], edges: [] },
+    editor: {},
   });
   const {
     activeTab,
@@ -119,6 +121,7 @@ export const GraphQuery = (props: PluginPorps) => {
     queryList,
     editorKey,
     graphData,
+    editor,
   } = state;
   useEffect(() => {
     updateState((draft) => {
@@ -144,7 +147,13 @@ export const GraphQuery = (props: PluginPorps) => {
       }
     });
   }, []);
-
+  useEffect(() => {
+    updateState((draft) => {
+      draft.queryList = getLocalData('TUGRAPH_STATEMENT_LISTS')[
+        currentGraphName
+      ];
+    });
+  }, [activeTab]);
   const onSplitPaneWidthChange = useCallback((size: number) => {
     updateState((draft) => {
       draft.editorWidth = size;
@@ -207,6 +216,7 @@ export const GraphQuery = (props: PluginPorps) => {
       });
     }
   };
+
   const header = (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-header`]}>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerLeft`]}>
@@ -370,10 +380,14 @@ export const GraphQuery = (props: PluginPorps) => {
             garphName={currentGraphName}
             onSelect={(id) => {
               updateState((draft) => {
-                draft.script = find(
+                const value = find(
                   getLocalData('TUGRAPH_STATEMENT_LISTS')[currentGraphName],
                   (item) => item.id === id
                 )?.script;
+                if (!isEmpty(editor)) {
+                  editor?.editorInstance?.setValue?.(value);
+                }
+                draft.script = value;
                 draft.editorKey = id;
               });
             }}
@@ -414,6 +428,21 @@ export const GraphQuery = (props: PluginPorps) => {
                         <GremlinEditor
                           gremlinId="test"
                           initValue={script}
+                          onInit={(initEditor) => {
+                            updateState((draft) => {
+                              draft.editor = initEditor;
+                              if (editorKey) {
+                                const value = find(
+                                  getLocalData('TUGRAPH_STATEMENT_LISTS')[
+                                    currentGraphName
+                                  ],
+                                  (item) => item.id === editorKey
+                                )?.script;
+                                initEditor?.editorInstance?.setValue?.(value);
+                                draft.script = value;
+                              }
+                            });
+                          }}
                           onValueChange={(val) => {
                             updateState((draft) => {
                               draft.script = val;

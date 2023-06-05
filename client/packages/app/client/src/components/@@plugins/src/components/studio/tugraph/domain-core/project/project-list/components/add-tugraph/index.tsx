@@ -110,6 +110,8 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                     });
                     form.resetFields();
                     onClose();
+                  } else {
+                    message.error('创建失败' + res.errorMessage);
                   }
                 });
               } else {

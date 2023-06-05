@@ -18,7 +18,7 @@ import {
 } from 'antd';
 import copy from 'copy-to-clipboard';
 import JSONBig from 'json-bigint';
-import { filter, find, map, uniqBy } from 'lodash';
+import { cloneDeep, filter, find, isEmpty, map, omit, uniqBy } from 'lodash';
 import React, { useCallback, useEffect } from 'react';
 import ReactJSONView from 'react-json-view';
 import { useImmer } from 'use-immer';
@@ -104,6 +104,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
     targetProperity: Array<NodeProp>;
     sourcePrimaryKey: string;
     targetPrimaryKey: string;
+    currentData?: any;
   }>({
     tableType: 'nodes',
     currentLayout: { type: 'graphin-force', animation: false },
@@ -122,7 +123,9 @@ const ExecuteResult: React.FC<ResultProps> = ({
     targetProperity: nodes,
     sourcePrimaryKey: '',
     targetPrimaryKey: '',
+    currentData: {},
   });
+
   const {
     tableType,
     currentLayout,
@@ -141,8 +144,8 @@ const ExecuteResult: React.FC<ResultProps> = ({
     targetProperity,
     sourcePrimaryKey,
     targetPrimaryKey,
+    currentData,
   } = state;
-
   const modalGraphRef = React.createRef<Graphin>();
   const [form] = Form.useForm();
   const [addForm] = Form.useForm();
@@ -152,9 +155,8 @@ const ExecuteResult: React.FC<ResultProps> = ({
     });
   };
   const onLayoutChange = useCallback((layout: Layout) => {
-    console.log(layout);
     setState((draft) => {
-      draft.currentLayout = layout;
+      draft.currentLayout = { ...layout };
     });
   }, []);
   const getGraphCanvasContextValue = useCallback((contextValue: any) => {
@@ -220,6 +222,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
         onShow();
       });
     });
+    graphCanvasContextValue.apis?.handleAutoZoom();
     return () => {
       if (canvasContainer) {
         objResizeObserver.unobserve(canvasContainer);
@@ -242,6 +245,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
         draft.activeKey = 'canvas';
         draft.sourceProperity = nodes;
         draft.targetProperity = nodes;
+        draft.currentData = cloneDeep(formatData);
       });
       graphCanvasContextValue.apis?.handleAutoZoom();
     }
@@ -344,12 +348,15 @@ const ExecuteResult: React.FC<ResultProps> = ({
     addForm.validateFields().then((val) => {
       const { labelName, properties } = val;
       const data = {
-        ...formatData,
+        ...currentData,
         nodes: [
-          ...nodes,
+          ...currentData?.nodes,
           { id: `${new Date().getTime()}`, label: labelName, properties },
         ],
       };
+      setState((draft) => {
+        draft.currentData = cloneDeep(data);
+      });
       onCreateNode({
         graphName,
         labelName,
@@ -361,7 +368,10 @@ const ExecuteResult: React.FC<ResultProps> = ({
             dealGraphData(dealFormatData(data))
           );
           onCancel?.();
-          onLayoutChange({ animation: false, type: 'graphin-force' });
+          graphCanvasContextValue?.graph?.updateLayout({
+            type: 'graphin-force',
+            animation: false,
+          });
         } else {
           message.error('插入点类型失败' + res.errorMessage);
         }
@@ -400,9 +410,9 @@ const ExecuteResult: React.FC<ResultProps> = ({
         targetLabel: target,
       };
       const data = {
-        ...formatData,
+        ...currentData,
         edges: [
-          ...edges,
+          ...currentData?.edges,
           {
             id: `${new Date().getTime()}`,
             label: labelName,
@@ -413,6 +423,9 @@ const ExecuteResult: React.FC<ResultProps> = ({
           },
         ],
       };
+      setState((draft) => {
+        draft.currentData = cloneDeep(data);
+      });
       onCreateEdge({ ...params }).then((res) => {
         if (res.success) {
           message.success('插入边类型成功');
@@ -420,7 +433,10 @@ const ExecuteResult: React.FC<ResultProps> = ({
             dealGraphData(dealFormatData(data))
           );
           onCancel?.();
-          onLayoutChange({ animation: false, type: 'graphin-force' });
+          graphCanvasContextValue?.graph?.updateLayout({
+            type: 'graphin-force',
+            animation: false,
+          });
         } else {
           message.error('插入边类型失败' + res.errorMessage);
         }
@@ -431,11 +447,14 @@ const ExecuteResult: React.FC<ResultProps> = ({
     const primaryKey = find(
       graphData?.nodes,
       (node) => node.labelName === tagName
-    ).primaryField;
+    )?.primaryField;
     const data = {
-      ...formatData,
-      nodes: filter(nodes, (item) => item.id !== id),
+      ...currentData,
+      nodes: filter(currentData?.nodes, (item) => item.id !== id),
     };
+    setState((draft) => {
+      draft.currentData = cloneDeep(data);
+    });
     onDeleteNode({
       labelName: tagName,
       graphName,
@@ -448,7 +467,10 @@ const ExecuteResult: React.FC<ResultProps> = ({
         graphCanvasContextValue?.graph?.read(
           dealGraphData(dealFormatData(data))
         );
-        onLayoutChange({ animation: false, type: 'graphin-force' });
+        graphCanvasContextValue?.graph?.updateLayout({
+          type: 'graphin-force',
+          animation: false,
+        });
       } else {
         message.error('删除失败' + res.errorMessage);
       }
@@ -456,9 +478,12 @@ const ExecuteResult: React.FC<ResultProps> = ({
   };
   const deleteEdge = () => {
     const data = {
-      ...formatData,
-      edges: filter(edges, (item) => item.id !== id),
+      ...currentData,
+      edges: filter(currentData?.edges, (item) => item.id !== id),
     };
+    setState((draft) => {
+      draft.currentData = cloneDeep(data);
+    });
     onDeleteEdge({ ...editEdgeParams }).then((res) => {
       if (res.success) {
         message.success('删除成功');
@@ -466,7 +491,10 @@ const ExecuteResult: React.FC<ResultProps> = ({
         graphCanvasContextValue?.graph?.read(
           dealGraphData(dealFormatData(data))
         );
-        onLayoutChange({ animation: false, type: 'graphin-force' });
+        graphCanvasContextValue?.graph?.updateLayout({
+          type: 'graphin-force',
+          animation: false,
+        });
       } else {
         message.error('删除失败' + res.errorMessage);
       }
@@ -539,7 +567,14 @@ const ExecuteResult: React.FC<ResultProps> = ({
             tab={<IconItem icon="icon-read" name="JSON视图" />}
           >
             {copyScript}
-            <ReactJSONView src={originalData} displayDataTypes={false} />
+            <ReactJSONView
+              src={
+                isEmpty(originalData)
+                  ? omit(excecuteResult, 'id')
+                  : originalData
+              }
+              displayDataTypes={false}
+            />
           </TabPane>
           <TabPane
             key="JSONText"
@@ -547,7 +582,13 @@ const ExecuteResult: React.FC<ResultProps> = ({
           >
             {copyScript}
             <pre style={{ whiteSpace: 'break-spaces' }}>
-              {JSONBig.stringify(originalData, null, 2)}
+              {JSONBig.stringify(
+                isEmpty(originalData)
+                  ? omit(excecuteResult, 'id')
+                  : originalData,
+                null,
+                2
+              )}
             </pre>
           </TabPane>
           <TabPane
@@ -581,13 +622,14 @@ const ExecuteResult: React.FC<ResultProps> = ({
             tab={
               <IconItem
                 icon="icon-dianbiantupu"
-                name="点边图视"
+                name="点边视图"
                 style={{ marginLeft: -5, height: 'calc(100% - 42px)' }}
               />
             }
           >
             <div className={`canvas`} style={{ height: '100%' }}>
               <GraphCanvas
+                key={excecuteResult?.id}
                 data={dealGraphData(dealFormatData(formatData)) || {}}
                 layout={currentLayout}
                 getGraphCanvasContextValue={getGraphCanvasContextValue}

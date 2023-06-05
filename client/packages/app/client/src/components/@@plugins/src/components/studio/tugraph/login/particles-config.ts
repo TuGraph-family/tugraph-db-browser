@@ -1,8 +1,8 @@
 import type { ISourceOptions } from 'tsparticles-engine';
 const particlesOptions: ISourceOptions = {
   style: {
-    width: '760px',
-    height: '580px',
+    width: '100%',
+    height: '100%',
   },
   fpsLimit: 120,
   fullScreen: {

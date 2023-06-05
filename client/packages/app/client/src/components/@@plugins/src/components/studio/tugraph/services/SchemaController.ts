@@ -1,31 +1,17 @@
-import request from 'umi-request';
-import { PROXY_HOST } from '../constant';
+import request from '../utils/request';
 import { LabelSchema, LabelType, SchemaProperties } from '../interface/schema';
-import { getLocalData } from '../utils/localStorage';
 
 /* Get Schema */
 export async function getGraphSchema(params: { graphName: string }) {
-  return request(`${PROXY_HOST}/api/schema/${params?.graphName}`, {
+  return request(`/api/schema/${params?.graphName}`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getLocalData('TUGRAPH_TOKEN'),
-    },
-    withCredentials: true,
-    credentials: 'include',
   });
 }
 /* 创建点边Schema */
 
 export async function createLabelSchema(params: LabelSchema) {
-  return request(`${PROXY_HOST}/api/schema/${params?.graphName}`, {
+  return request(`/api/schema/${params?.graphName}`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getLocalData('TUGRAPH_TOKEN'),
-    },
-    withCredentials: true,
-    credentials: 'include',
     data: {
       labelType: params?.labelType,
       labelName: params?.labelName,
@@ -39,15 +25,13 @@ export async function createLabelSchema(params: LabelSchema) {
 
 /* 删除点边 */
 
-export async function deleteLabelSchema(params: { labelType: LabelType; labelName: string; graphName: string }) {
-  return request(`${PROXY_HOST}/api/schema/${params?.graphName}`, {
+export async function deleteLabelSchema(params: {
+  labelType: LabelType;
+  labelName: string;
+  graphName: string;
+}) {
+  return request(`/api/schema/${params?.graphName}`, {
     method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getLocalData('TUGRAPH_TOKEN'),
-    },
-    withCredentials: true,
-    credentials: 'include',
     data: {
       labelType: params?.labelType,
       labelName: params?.labelName,
@@ -62,14 +46,8 @@ export async function createLabelPropertySchema(params: {
   graphName: string;
   properties: Array<SchemaProperties>;
 }) {
-  return request(`${PROXY_HOST}/api/property/${params?.graphName}`, {
+  return request(`/api/property/${params?.graphName}`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getLocalData('TUGRAPH_TOKEN'),
-    },
-    withCredentials: true,
-    credentials: 'include',
     data: {
       labelType: params?.labelType,
       labelName: params?.labelName,
@@ -85,14 +63,8 @@ export async function deleteLabelPropertySchema(params: {
   graphName: string;
   propertyNames: Array<string>;
 }) {
-  return request(`${PROXY_HOST}/api/property/${params?.graphName}`, {
+  return request(`/api/property/${params?.graphName}`, {
     method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getLocalData('TUGRAPH_TOKEN'),
-    },
-    withCredentials: true,
-    credentials: 'include',
     data: {
       labelType: params?.labelType,
       labelName: params?.labelName,
@@ -109,14 +81,8 @@ export async function editLabelPropertySchema(params: {
   graphName: string;
   properties: Array<SchemaProperties>;
 }) {
-  return request(`${PROXY_HOST}/api/property/${params?.graphName}`, {
+  return request(`/api/property/${params?.graphName}`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getLocalData('TUGRAPH_TOKEN'),
-    },
-    withCredentials: true,
-    credentials: 'include',
     data: {
       labelType: params?.labelType,
       labelName: params?.labelName,
@@ -131,14 +97,8 @@ export async function createIndexSchema(params: {
   graphName: string;
   isUnique: boolean;
 }) {
-  return request(`${PROXY_HOST}/api/index/${params?.graphName}`, {
+  return request(`/api/index/${params?.graphName}`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getLocalData('TUGRAPH_TOKEN'),
-    },
-    withCredentials: true,
-    credentials: 'include',
     data: {
       propertyName: params?.propertyName,
       labelName: params?.labelName,
@@ -147,15 +107,13 @@ export async function createIndexSchema(params: {
   });
 }
 /* 删除索引 */
-export async function deleteIndexSchema(params: { propertyName: string; labelName: string; graphName: string }) {
-  return request(`${PROXY_HOST}/api/index/${params?.graphName}`, {
+export async function deleteIndexSchema(params: {
+  propertyName: string;
+  labelName: string;
+  graphName: string;
+}) {
+  return request(`/api/index/${params?.graphName}`, {
     method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getLocalData('TUGRAPH_TOKEN'),
-    },
-    withCredentials: true,
-    credentials: 'include',
     data: {
       propertyName: params?.propertyName,
       labelName: params?.labelName,

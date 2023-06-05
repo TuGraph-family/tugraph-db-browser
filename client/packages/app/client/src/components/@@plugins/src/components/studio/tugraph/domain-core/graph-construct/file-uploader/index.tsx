@@ -1,14 +1,17 @@
+import React from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
 import { Upload, UploadFile } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { isEmpty, map } from 'lodash';
-import React from 'react';
 import { DataType, FileData } from '../../../interface/import';
 import { GraphData } from '../../../interface/schema';
 import { getFileSizeTransform } from '../../../utils/getFileSizeTransform';
 import { parseCsv } from '../../../utils/parseCsv';
-import { cascaderOptionsTransform, mergeFileDataList } from '../../../utils/uploadFile';
+import {
+  cascaderOptionsTransform,
+  mergeFileDataList,
+} from '../../../utils/uploadFile';
 
 const { Dragger } = Upload;
 
@@ -20,7 +23,13 @@ export interface FileUploaderProps {
 }
 
 export const FileUploader = (props: FileUploaderProps) => {
-  const { type = 'drop', fileDataList = [], setFileDataList, graphData } = props;
+  const {
+    type = 'drop',
+    fileDataList = [],
+    setFileDataList,
+    graphData,
+  } = props;
+  let currentFileDataList = fileDataList;
 
   const tableDataTransform = (list: string[][]) => {
     if (isEmpty(list)) {
@@ -47,14 +56,15 @@ export const FileUploader = (props: FileUploaderProps) => {
     return { columns, dataSource };
   };
 
-  const handleFileFormate = async (file: UploadFile<any>, status: string) => {
-    const { name, originFileObj, size } = file;
+  const handleFileFormate = async (file: UploadFile<any>) => {
+    const { name, originFileObj, size, status } = file;
     let fileResult = {
       fileName: name,
       formateSize: getFileSizeTransform(size),
       data: null,
       status: 'processing',
     } as FileData;
+
     if (status === 'done') {
       const fileData = (await parseCsv(originFileObj)) as string[][];
       const { columns, dataSource } = tableDataTransform(fileData);
@@ -85,8 +95,9 @@ export const FileUploader = (props: FileUploaderProps) => {
         formateSize: getFileSizeTransform(size),
       };
     }
-    const newFileList = mergeFileDataList(fileDataList, fileResult);
-    setFileDataList(newFileList);
+    currentFileDataList = mergeFileDataList(currentFileDataList, fileResult);
+
+    setFileDataList(currentFileDataList);
   };
 
   const uploadProps: UploadProps = {
@@ -94,9 +105,8 @@ export const FileUploader = (props: FileUploaderProps) => {
     multiple: true,
     accept: '.csv',
     onChange(info) {
-      const { status } = info.file;
       const { file } = info;
-      handleFileFormate(file, status);
+      handleFileFormate(file);
     },
     showUploadList: false,
   };

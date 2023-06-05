@@ -174,6 +174,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
         return {
           inputType: EditType.SELECT,
           prop: {
+            defaultValue: false,
             options: [
               { label: '否', value: false },
               { label: '是', value: true },
@@ -393,15 +394,28 @@ export const AddNodesEdges: React.FC<Prop> = ({
         <div>
           <Form layout="vertical" form={form}>
             <Form.Item
+              label={`${isNode ? '点' : '边'}类型名称`}
+              name={'name'}
               rules={[
                 {
                   required: true,
-                  message: `请输入${isNode ? '点' : '边'}类型名称`,
+                  validator: (_props, value) => {
+                    var reg = new RegExp('^[a-zA-Z0-9_\u4e00-\u9fa5]+$');
+                    if (!value) {
+                      return Promise.reject(
+                        `请填写${isNode ? '点' : '边'}类型名称！`
+                      );
+                    }
+                    if (!reg.test(value)) {
+                      return Promise.reject(
+                        '名称由中文、字母、数字、下划线组成。'
+                      );
+                    } else {
+                      return Promise.resolve();
+                    }
+                  },
                 },
               ]}
-              label={`${isNode ? '点' : '边'}类型名称`}
-              required
-              name={'name'}
             >
               <Input
                 autocomplete="off"
@@ -450,7 +464,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
                   });
                 }}
               />
-              {addButton(addEdge)}
+              {addButton(addEdge, '添加起点和终点')}
             </div>
           )}
           {isNode && (

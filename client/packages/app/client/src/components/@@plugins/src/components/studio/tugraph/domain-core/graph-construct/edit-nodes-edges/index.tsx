@@ -296,6 +296,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
         return {
           inputType: EditType.SELECT,
           prop: {
+            defaultValue: true,
             options: [
               { label: '否', value: false },
               { label: '是', value: true },
@@ -339,6 +340,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
           inputType: EditType.SELECT,
           prop: {
             options: propertyList(),
+            disabled: record.disabled,
           },
         };
       },
@@ -360,6 +362,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
               { label: '否', value: false },
               { label: '是', value: true },
             ],
+            disabled: record.disabled,
           },
         };
       },
@@ -385,6 +388,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
               { label: '否', value: false },
               { label: '是', value: true },
             ],
+            disabled: record.disabled,
           },
         };
       },
@@ -598,6 +602,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
             primaryField: isPrimaryField(item.propertyName),
             disabled: true,
             id: uniqueId(`index_`),
+            disabled: isPrimaryField(item.propertyName),
           })
         );
       } else {
@@ -628,7 +633,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
               onClose();
             }}
           >
-            确认
+            关闭
           </Button>
         </>
       }

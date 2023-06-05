@@ -1,9 +1,9 @@
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { Divider, Dropdown, Menu, Space, message } from 'antd';
-import React from 'react';
-import { isEmpty } from 'lodash';
-import { useImmer } from 'use-immer';
 import { useOpenpieceUserAuth } from '@tugraph/openpiece-client';
+import { Divider, Dropdown, Menu, Space, message } from 'antd';
+import { isEmpty } from 'lodash';
+import React from 'react';
+import { useImmer } from 'use-immer';
 import { useAuth } from '../../../studio/tugraph/hooks/useAuth';
 import { getLocalData, setLocalData } from '../utils/localStorage';
 import EditPasswordModal from './edit-password';
@@ -18,7 +18,7 @@ export const UserCenter: React.FC<Prop> = () => {
   const { isEditPassword } = state;
   const handleLogout = () => {
     onLogout().then((res) => {
-      if (res.success) {
+      if (res.success === 0) {
         setLocalData('TUGRAPH_TOKEN', '');
         redirectLoginURL();
       } else {

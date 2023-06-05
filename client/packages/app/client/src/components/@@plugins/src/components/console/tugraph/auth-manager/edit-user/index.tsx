@@ -1,5 +1,5 @@
 import { Form, Input, Modal, Select, message } from 'antd';
-import { map } from 'lodash';
+import { filter, find, map } from 'lodash';
 import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import { PUBLIC_PERFIX_CLASS } from '../../constant';
@@ -30,10 +30,12 @@ const EditAuthModal: React.FC<Prop> = ({
     roleList?: Array<string>;
     refreshList: () => void;
     isAdmin: boolean;
+    rawRoleData?: Array<string>;
   }>({
     roleList: [],
     refreshList: () => {},
     isAdmin: false,
+    rawRoleData: [],
   });
   const { onGetRoleList } = useRole();
   const {
@@ -43,7 +45,7 @@ const EditAuthModal: React.FC<Prop> = ({
     EditUserLoading,
     onChangePassword,
   } = useUser();
-  const { roleList, refreshList, isAdmin } = state;
+  const { roleList, refreshList, isAdmin, rawRoleData } = state;
   const addUser = () => {
     form.validateFields().then((value) => {
       onCreateUser(value).then((res) => {
@@ -83,11 +85,13 @@ const EditAuthModal: React.FC<Prop> = ({
       draft.refreshList = onRefreshAuthList;
     });
   }, [data, onRefreshAuthList]);
+
   useEffect(() => {
     onGetRoleList().then((res) => {
       if (res.success) {
         setState((draft) => {
           draft.roleList = map(res.data, (item) => item.role_name);
+          draft.rawRoleData = map(res.data, (item) => item.role_name);
         });
       } else {
         message.error('获取角色列表失败' + res.errorMessage);
@@ -140,7 +144,29 @@ const EditAuthModal: React.FC<Prop> = ({
             },
           ]}
         >
-          <Input disabled={type === 'edit'} />
+          <Input
+            disabled={type === 'edit'}
+            onBlur={(e) => {
+              if (
+                e.target.value &&
+                !find(roleList, (role) => e.target.value === role)
+              ) {
+                form.setFieldsValue({ roles: [e.target.value] });
+                setState((draft) => {
+                  draft.roleList = [...rawRoleData, e.target.value];
+                });
+              }
+              if (!e.target.value && roleList?.length !== rawRoleData?.length) {
+                setState((draft) => {
+                  draft.roleList = filter(
+                    roleList,
+                    (item, index) => roleList?.length !== index + 1
+                  );
+                  form.setFieldsValue({ roles: [] });
+                });
+              }
+            }}
+          />
         </Item>
         <div className={styles[`${PUBLIC_PERFIX_CLASS}-modal-text`]}>
           名称由中文、字母、数字、下划线组成。
@@ -159,7 +185,7 @@ const EditAuthModal: React.FC<Prop> = ({
             name="password"
             required
           >
-            <Input />
+            <Input.Password />
           </Item>
         ) : (
           <Item label="新密码" name="password">
@@ -174,7 +200,11 @@ const EditAuthModal: React.FC<Prop> = ({
         >
           <Select mode="multiple">
             {map(roleList, (item) => (
-              <Option value={item} key={item}>
+              <Option
+                value={item}
+                key={item}
+                disabled={form.getFieldValue('username') === item}
+              >
                 {item}
               </Option>
             ))}

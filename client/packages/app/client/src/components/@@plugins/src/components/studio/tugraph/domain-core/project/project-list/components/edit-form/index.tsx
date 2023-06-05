@@ -43,11 +43,7 @@ const EditForm: React.FC<Prop> = ({ form, type }) => {
         <div className={styles[`${PUBLIC_PERFIX_CLASS}-input-text`]}>
           名称由中文、字母、数字、下划线组成。
         </div>
-        <Item
-          label="图描述"
-          name="description"
-          rules={[{ required: true, message: '请输入图描述' }]}
-        >
+        <Item label="图描述" name="description">
           <Input.TextArea
             maxLength={50}
             placeholder="请输入图描述"
@@ -73,6 +69,7 @@ const EditForm: React.FC<Prop> = ({ form, type }) => {
           <Row justify={'space-between'}>
             <Col span={12}>
               <Item
+                initialValue={1024}
                 label="最大存储空间"
                 name="maxSizeGB"
                 colon={false}

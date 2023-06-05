@@ -12,7 +12,10 @@ import { RedirectPath } from '../../../interface/openpiece';
 import { GraphData } from '../../../interface/schema';
 import { uploadFile } from '../../../services/FileController';
 import { getLocalData, setLocalData } from '../../../utils';
-import { fileSchemaTransform, mergeTaskInfo } from '../../../utils/dataImportTransform';
+import {
+  fileSchemaTransform,
+  mergeTaskInfo,
+} from '../../../utils/dataImportTransform';
 import { FileUploader } from '../file-uploader';
 import { ImportDataConfig } from '../import-data-config';
 import { ImportDataResult } from '../import-data-result';
@@ -27,9 +30,19 @@ type Prop = {
   onSwitch?: (onShow, onClose) => void;
 };
 
-export const ImportData: React.FC<Prop> = ({ graphName, graphData, onSwitch, redirectPath }) => {
+export const ImportData: React.FC<Prop> = ({
+  graphName,
+  graphData,
+  onSwitch,
+  redirectPath,
+}) => {
   const [form] = Form.useForm();
-  const { onImportData, importDataLoading, onImportProgress, importProgressCancel } = useImport();
+  const {
+    onImportData,
+    importDataLoading,
+    onImportProgress,
+    importProgressCancel,
+  } = useImport();
   const { visible, onShow, onClose } = useVisible({ defaultVisible: true });
   const [fileDataList, setFileDataList] = useState<FileData[]>([]);
   const [showResult, setShowResult] = useState<boolean>(false);
@@ -46,7 +59,8 @@ export const ImportData: React.FC<Prop> = ({ graphName, graphData, onSwitch, red
     uploadLoading: false,
     taskId: '',
   });
-  const { resultStatus, errorMessage, isFullView, taskId, uploadLoading } = state;
+  const { resultStatus, errorMessage, isFullView, taskId, uploadLoading } =
+    state;
 
   useEffect(() => {
     if (!taskId || resultStatus === 'success' || resultStatus === 'error') {
@@ -58,12 +72,16 @@ export const ImportData: React.FC<Prop> = ({ graphName, graphData, onSwitch, red
         if (res.data.progress === '1') {
           importProgressCancel();
           const taskList = getLocalData('TUGRAPH_INFO');
-          const newTaskInfo = filter(taskList, (info) => info.taskId !== taskId);
+          const newTaskInfo = filter(
+            taskList,
+            (info) => info.taskId !== taskId
+          );
           setLocalData('TUGRAPH_INFO', newTaskInfo);
           updateState((draft) => {
             draft.resultStatus = 'success';
             draft.errorMessage = '';
           });
+          window.location.reload();
         } else {
           updateState((draft) => {
             draft.resultStatus = 'loading';
@@ -84,7 +102,10 @@ export const ImportData: React.FC<Prop> = ({ graphName, graphData, onSwitch, red
     onSwitch?.(onShow, onClose);
 
     const taskList = getLocalData('TUGRAPH_INFO') ?? [];
-    const taskId = find(taskList, (item) => item.graphName === graphName)?.taskId;
+    const taskId = find(
+      taskList,
+      (item) => item.graphName === graphName
+    )?.taskId;
     if (taskId) {
       updateState((draft) => {
         draft.taskId = taskId;
@@ -93,14 +114,19 @@ export const ImportData: React.FC<Prop> = ({ graphName, graphData, onSwitch, red
     }
   }, []);
 
-  const uploadChunk = async (fileName: string, fileSize: number, file: any, beginPos: number) => {
+  const uploadChunk = async (
+    fileName: string,
+    fileSize: number,
+    file: any,
+    beginPos: number
+  ) => {
     return await uploadFile(
       {
         'File-Name': fileName,
         Size: `${fileSize}`,
         'Begin-Pos': `${beginPos}`,
       },
-      file,
+      file
     );
   };
 
@@ -242,7 +268,10 @@ export const ImportData: React.FC<Prop> = ({ graphName, graphData, onSwitch, red
             >
               取消
             </Button>
-            <Button loading={uploadLoading || importDataLoading} onClick={onImport}>
+            <Button
+              loading={uploadLoading || importDataLoading}
+              onClick={onImport}
+            >
               导入
             </Button>
           </>
@@ -267,14 +296,22 @@ export const ImportData: React.FC<Prop> = ({ graphName, graphData, onSwitch, red
               </Form.Item>
             </Form>
 
-            <div className={isFullView ? styles[`${PUBLIC_PERFIX_CLASS}-container-full`] : null}>
+            <div
+              className={
+                isFullView
+                  ? styles[`${PUBLIC_PERFIX_CLASS}-container-full`]
+                  : null
+              }
+            >
               <div
                 className={join(
                   [
                     styles[`${PUBLIC_PERFIX_CLASS}-container-header`],
-                    ...(isFullView ? [styles[`${PUBLIC_PERFIX_CLASS}-container-header-full`]] : []),
+                    ...(isFullView
+                      ? [styles[`${PUBLIC_PERFIX_CLASS}-container-header-full`]]
+                      : []),
                   ],
-                  ' ',
+                  ' '
                 )}
               >
                 {isFullView && (
@@ -294,14 +331,29 @@ export const ImportData: React.FC<Prop> = ({ graphName, graphData, onSwitch, red
                     />
                     {!isFullView && (
                       <Tooltip title={'全屏显示'}>
-                        <IconFont style={{ fontSize: '24px' }} size={24} type={'icon-quanping'} onClick={onFullView} />
+                        <IconFont
+                          style={{ fontSize: '24px' }}
+                          size={24}
+                          type={'icon-quanping'}
+                          onClick={onFullView}
+                        />
                       </Tooltip>
                     )}
                   </Space>
                 )}
               </div>
-              <div style={!isEmpty(fileDataList) ? { display: 'none' } : { display: 'block' }}>
-                <FileUploader graphData={graphData} setFileDataList={setFileDataList} fileDataList={fileDataList} />
+              <div
+                style={
+                  !isEmpty(fileDataList)
+                    ? { display: 'none' }
+                    : { display: 'block' }
+                }
+              >
+                <FileUploader
+                  graphData={graphData}
+                  setFileDataList={setFileDataList}
+                  fileDataList={fileDataList}
+                />
               </div>
 
               <ImportDataConfig

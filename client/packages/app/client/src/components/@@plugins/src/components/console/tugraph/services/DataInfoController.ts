@@ -1,31 +1,17 @@
-import request from 'umi-request';
-import { PROXY_HOST } from '../constant';
-import { getLocalData } from '../utils/localStorage';
+import request from '../utils/request';
 
 /* Get System Info */
 export async function getSystemInfo() {
-  return request(`${PROXY_HOST}/api/info/system`, {
+  return request(`/api/info/system`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getLocalData('TUGRAPH_TOKEN'),
-    },
-    withCredentials: true,
-    credentials: 'include',
     data: {},
   });
 }
 
 /* Get Database Info */
 export async function getDatabaseInfo() {
-  return request(`${PROXY_HOST}/api/info/database`, {
+  return request(`/api/info/database`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getLocalData('TUGRAPH_TOKEN'),
-    },
-    withCredentials: true,
-    credentials: 'include',
     data: {},
   });
 }

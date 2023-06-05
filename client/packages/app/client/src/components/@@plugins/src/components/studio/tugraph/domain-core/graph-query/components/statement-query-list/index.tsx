@@ -1,6 +1,11 @@
-import { DeleteOutlined, EditOutlined, MacCommandOutlined, PlusSquareOutlined } from '@ant-design/icons';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  MacCommandOutlined,
+  PlusSquareOutlined,
+} from '@ant-design/icons';
 import { Input, Popconfirm, Select, Tooltip } from 'antd';
-import { filter, map } from 'lodash';
+import { filter, map, omit } from 'lodash';
 import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import SearchInput from '../../../../components/search-input';
@@ -18,10 +23,19 @@ type Prop = {
   list: Array<{ id: string; value: string; script: string; isEdit?: boolean }>;
 };
 
-export const StatementList: React.FC<Prop> = ({ garphName, onSelect, list }) => {
+export const StatementList: React.FC<Prop> = ({
+  garphName,
+  onSelect,
+  list,
+}) => {
   const { visible, onShow, onClose } = useVisible({ defaultVisible: true });
   const [state, updateState] = useImmer<{
-    queryList: Array<{ id: string; value: string; script: string; isEdit?: boolean }>;
+    queryList: Array<{
+      id: string;
+      value: string;
+      script: string;
+      isEdit?: boolean;
+    }>;
     activeId: string;
   }>({
     queryList: list,
@@ -31,12 +45,11 @@ export const StatementList: React.FC<Prop> = ({ garphName, onSelect, list }) => 
     if (garphName && list.length) {
       updateState((draft) => {
         draft.queryList = [...list];
-        if (!activeId) {
-          draft.activeId = list[0]?.id;
-          onSelect?.(list[0]?.id);
-        }
       });
-      setLocalData(`TUGRAPH_STATEMENT_LISTS`, { ...getLocalData('TUGRAPH_STATEMENT_LISTS'), [garphName]: list });
+      setLocalData(`TUGRAPH_STATEMENT_LISTS`, {
+        ...getLocalData('TUGRAPH_STATEMENT_LISTS'),
+        [garphName]: list,
+      });
     }
   }, [list]);
   const { queryList, activeId } = state;
@@ -44,10 +57,17 @@ export const StatementList: React.FC<Prop> = ({ garphName, onSelect, list }) => 
     updateState((draft) => {
       const newList = [
         ...queryList,
-        { id: `${new Date().getTime()}`, value: `语句${queryList.length}`, script: 'MATCH (n) RETURN n LIMIT 100' },
+        {
+          id: `${new Date().getTime()}`,
+          value: `语句${queryList.length}`,
+          script: 'MATCH (n) RETURN n LIMIT 100',
+        },
       ];
       draft.queryList = newList;
-      setLocalData(`TUGRAPH_STATEMENT_LISTS`, { ...getLocalData('TUGRAPH_STATEMENT_LISTS'), [garphName]: newList });
+      setLocalData(`TUGRAPH_STATEMENT_LISTS`, {
+        ...getLocalData('TUGRAPH_STATEMENT_LISTS'),
+        [garphName]: newList,
+      });
     });
   };
   const editStatement = (id) => {
@@ -59,21 +79,27 @@ export const StatementList: React.FC<Prop> = ({ garphName, onSelect, list }) => 
         return item;
       });
       draft.queryList = newList;
-      setLocalData(`TUGRAPH_STATEMENT_LISTS`, { ...getLocalData('TUGRAPH_STATEMENT_LISTS'), [garphName]: newList });
+      setLocalData(`TUGRAPH_STATEMENT_LISTS`, {
+        ...getLocalData('TUGRAPH_STATEMENT_LISTS'),
+        [garphName]: newList,
+      });
     });
   };
   const deleteStatement = (id) => {
     updateState((draft) => {
       const newList = filter(queryList, (item) => item.id !== id);
       draft.queryList = newList;
-      setLocalData(`TUGRAPH_STATEMENT_LISTS`, { ...getLocalData('TUGRAPH_STATEMENT_LISTS'), [garphName]: newList });
+      setLocalData(`TUGRAPH_STATEMENT_LISTS`, {
+        ...getLocalData('TUGRAPH_STATEMENT_LISTS'),
+        [garphName]: newList,
+      });
     });
   };
   const searchStatement = (searchKeyword) => {
     updateState((draft) => {
       draft.queryList = filter(
         getLocalData('TUGRAPH_STATEMENT_LISTS')[garphName],
-        (item) => item.value.indexOf(searchKeyword) != -1,
+        (item) => item.value.indexOf(searchKeyword) != -1
       );
     });
   };
@@ -92,12 +118,22 @@ export const StatementList: React.FC<Prop> = ({ garphName, onSelect, list }) => 
         width={280}
         backgroundColor="#f6f6f6"
       >
-        <div className={styles[`${PUBLIC_PERFIX_CLASS}-statement-drawer-content`]}>
-          <div className={styles[`${PUBLIC_PERFIX_CLASS}-statement-drawer-content-title`]}>
+        <div
+          className={styles[`${PUBLIC_PERFIX_CLASS}-statement-drawer-content`]}
+        >
+          <div
+            className={
+              styles[`${PUBLIC_PERFIX_CLASS}-statement-drawer-content-title`]
+            }
+          >
             语句查询
             <PlusSquareOutlined onClick={addStatement} />
           </div>
-          <div className={styles[`${PUBLIC_PERFIX_CLASS}-statement-drawer-content-search`]}>
+          <div
+            className={
+              styles[`${PUBLIC_PERFIX_CLASS}-statement-drawer-content-search`]
+            }
+          >
             <SearchInput
               placeholder="请输入搜索关键字"
               bordered={false}
@@ -105,13 +141,23 @@ export const StatementList: React.FC<Prop> = ({ garphName, onSelect, list }) => 
                 searchStatement(keyword);
               }}
             />
-            <div className={styles[`${PUBLIC_PERFIX_CLASS}-statement-drawer-content-list`]}>
+            <div
+              className={
+                styles[`${PUBLIC_PERFIX_CLASS}-statement-drawer-content-list`]
+              }
+            >
               {map(queryList, (item) => (
                 <div
                   key={item.id}
                   className={[
-                    styles[`${PUBLIC_PERFIX_CLASS}-statement-drawer-content-list-item`],
-                    activeId === item.id ? styles[`${PUBLIC_PERFIX_CLASS}-statement-drawer-content-list-active`] : '',
+                    styles[
+                      `${PUBLIC_PERFIX_CLASS}-statement-drawer-content-list-item`
+                    ],
+                    activeId === item.id
+                      ? styles[
+                          `${PUBLIC_PERFIX_CLASS}-statement-drawer-content-list-active`
+                        ]
+                      : '',
                   ].join(' ')}
                   onClick={() => {
                     updateState((draft) => {
@@ -120,7 +166,13 @@ export const StatementList: React.FC<Prop> = ({ garphName, onSelect, list }) => 
                     });
                   }}
                 >
-                  <div className={styles[`${PUBLIC_PERFIX_CLASS}-statement-drawer-content-list-left`]}>
+                  <div
+                    className={
+                      styles[
+                        `${PUBLIC_PERFIX_CLASS}-statement-drawer-content-list-left`
+                      ]
+                    }
+                  >
                     <MacCommandOutlined />
                     {item.isEdit ? (
                       <Input
@@ -130,16 +182,41 @@ export const StatementList: React.FC<Prop> = ({ garphName, onSelect, list }) => 
                           updateState((draft) => {
                             draft.queryList = map(queryList, (statement) => {
                               if (statement.id === item.id) {
-                                return { ...statement, isEdit: false, value: e.target.value };
+                                return {
+                                  ...statement,
+                                  isEdit: false,
+                                  value: e.target.value,
+                                };
                               }
                               return statement;
+                            });
+                            setLocalData(`TUGRAPH_STATEMENT_LISTS`, {
+                              ...getLocalData('TUGRAPH_STATEMENT_LISTS'),
+                              [garphName]: map(queryList, (statement) => {
+                                if (statement.id === item.id) {
+                                  return omit(
+                                    {
+                                      ...statement,
+                                      value: e.target.value,
+                                    },
+                                    'isEdit'
+                                  );
+                                }
+                                return statement;
+                              }),
                             });
                           });
                         }}
                       />
                     ) : (
                       <Tooltip title={item.value}>
-                        <div className={styles[`${PUBLIC_PERFIX_CLASS}-statement-drawer-content-list-text`]}>
+                        <div
+                          className={
+                            styles[
+                              `${PUBLIC_PERFIX_CLASS}-statement-drawer-content-list-text`
+                            ]
+                          }
+                        >
                           {item.value}
                         </div>
                       </Tooltip>

@@ -1,7 +1,6 @@
 import { DeleteOutlined, ReloadOutlined } from '@ant-design/icons';
 import { ProCard } from '@ant-design/pro-components';
 import { Card, Popconfirm, Spin, Tooltip, message } from 'antd';
-import React from 'react';
 import { useImmer } from 'use-immer';
 import IconFont from '../../../../../components/icon-font';
 import { PUBLIC_PERFIX_CLASS, TUGRAPH_DEOM } from '../../../../../constant';
@@ -19,9 +18,19 @@ interface CardProps {
   onRefreshProjectList: () => void;
 }
 const { Meta } = Card;
-const ProjectCard = ({ redirectPath, projectInfo, index, onRefreshProjectList }: CardProps) => {
-  const { onDeleteGraph, onGetNodeEdgeStatistics, getNodeEdgeStatisticsLoading } = useGraph();
-  const { graphName, description, maxSizeGB, isDisabledButton, id } = projectInfo || {};
+const ProjectCard = ({
+  redirectPath,
+  projectInfo,
+  index,
+  onRefreshProjectList,
+}: CardProps) => {
+  const {
+    onDeleteGraph,
+    onGetNodeEdgeStatistics,
+    getNodeEdgeStatisticsLoading,
+  } = useGraph();
+  const { graphName, description, maxSizeGB, isDisabledButton, id } =
+    projectInfo || {};
   const [state, updateState] = useImmer<{
     drawerVisiable?: boolean;
     isEdit: boolean;
@@ -37,7 +46,7 @@ const ProjectCard = ({ redirectPath, projectInfo, index, onRefreshProjectList }:
   });
   const { nodeEdgeObjList, isNodeEdgeObj } = state;
   const getActions = (text: string, status: boolean, href: string) => (
-    <Tooltip title={!status && '暂不可操作，请先完成图构建'}>
+    <Tooltip title={!status && '敬请期待'}>
       <span
         onClick={() => {
           if (status) {
@@ -72,7 +81,8 @@ const ProjectCard = ({ redirectPath, projectInfo, index, onRefreshProjectList }:
       }
     });
   };
-  const isOfficial = TUGRAPH_DEOM.filter((item) => item.graph_name === graphName).length > 0;
+  const isOfficial =
+    TUGRAPH_DEOM.filter((item) => item.graph_name === graphName).length > 0;
   return (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-card-box`]}>
       {index === 0 ? (
@@ -88,14 +98,25 @@ const ProjectCard = ({ redirectPath, projectInfo, index, onRefreshProjectList }:
             });
           }}
         >
-          <IconFont type="icon-xinjiantuxiangmudeicon" className={styles[`${PUBLIC_PERFIX_CLASS}-plus-icon`]} />
+          <IconFont
+            type="icon-xinjiantuxiangmudeicon"
+            className={styles[`${PUBLIC_PERFIX_CLASS}-plus-icon`]}
+          />
           <div style={{ color: '#1650ff', fontSize: '16px' }}>新建图项目</div>
         </ProCard>
       ) : (
         <Card
           actions={[
-            getActions('图构建', true, `${redirectPath?.[0]?.path}?graphName=${graphName}`),
-            getActions('图查询', true, `${redirectPath?.[1]?.path}?graphName=${graphName}`),
+            getActions(
+              '图构建',
+              true,
+              `${redirectPath?.[0]?.path}?graphName=${graphName}`
+            ),
+            getActions(
+              '图查询',
+              true,
+              `${redirectPath?.[1]?.path}?graphName=${graphName}`
+            ),
             getActions('图分析', false, ''),
           ]}
           bordered={false}
@@ -107,17 +128,40 @@ const ProjectCard = ({ redirectPath, projectInfo, index, onRefreshProjectList }:
             title={
               <>
                 <div className={styles[`${PUBLIC_PERFIX_CLASS}-meta-header`]}>
-                  <div title={graphName} className={styles[`${PUBLIC_PERFIX_CLASS}-graph-display-name`]}>
+                  <div
+                    title={graphName}
+                    className={
+                      styles[`${PUBLIC_PERFIX_CLASS}-graph-display-name`]
+                    }
+                  >
                     {isOfficial ? (
-                      <div className={styles[`${PUBLIC_PERFIX_CLASS}-graph-display-name-container`]}>
-                        <div className={styles[`${PUBLIC_PERFIX_CLASS}-graph-display-name-icon`]}>官</div>
+                      <div
+                        className={
+                          styles[
+                            `${PUBLIC_PERFIX_CLASS}-graph-display-name-container`
+                          ]
+                        }
+                      >
+                        <div
+                          className={
+                            styles[
+                              `${PUBLIC_PERFIX_CLASS}-graph-display-name-icon`
+                            ]
+                          }
+                        >
+                          官
+                        </div>
                         <Tooltip title={graphName}>{graphName}</Tooltip>
                       </div>
                     ) : (
                       <Tooltip title={graphName}>{graphName}</Tooltip>
                     )}
                   </div>
-                  <div className={styles[`${PUBLIC_PERFIX_CLASS}-header-right-box`]}>
+                  <div
+                    className={
+                      styles[`${PUBLIC_PERFIX_CLASS}-header-right-box`]
+                    }
+                  >
                     {!nodeEdgeObjList?.length ? (
                       <Tooltip title="点边统计">
                         <IconFont
@@ -159,7 +203,9 @@ const ProjectCard = ({ redirectPath, projectInfo, index, onRefreshProjectList }:
                         okText="确定"
                         cancelText="取消"
                       >
-                        <DeleteOutlined style={{ color: `rgba(152, 152, 157, 1)` }} />
+                        <DeleteOutlined
+                          style={{ color: `rgba(152, 152, 157, 1)` }}
+                        />
                       </Popconfirm>
                     )}
                     <Tooltip title="编辑">
@@ -186,30 +232,55 @@ const ProjectCard = ({ redirectPath, projectInfo, index, onRefreshProjectList }:
                       spinning
                     />
                   ) : (
-                    <div className={styles[`${PUBLIC_PERFIX_CLASS}-env-node-edge`]}>
+                    <div
+                      className={styles[`${PUBLIC_PERFIX_CLASS}-env-node-edge`]}
+                    >
                       {nodeEdgeObjList?.map((item) => {
                         return (
-                          <div className={styles[`${PUBLIC_PERFIX_CLASS}-tetx-box`]} key={item.text}>
-                            <div className={styles[`${PUBLIC_PERFIX_CLASS}-text`]}>
-                              {((item.text === '点' || item.text === '边') && !isNodeEdgeObj) || !item.value
+                          <div
+                            className={
+                              styles[`${PUBLIC_PERFIX_CLASS}-tetx-box`]
+                            }
+                            key={item.text}
+                          >
+                            <div
+                              className={styles[`${PUBLIC_PERFIX_CLASS}-text`]}
+                            >
+                              {((item.text === '点' || item.text === '边') &&
+                                !isNodeEdgeObj) ||
+                              !item.value
                                 ? '--'
                                 : item.value}
                             </div>
-                            <div className={styles[`${PUBLIC_PERFIX_CLASS}-little-text`]}>{item.text}</div>
+                            <div
+                              className={
+                                styles[`${PUBLIC_PERFIX_CLASS}-little-text`]
+                              }
+                            >
+                              {item.text}
+                            </div>
                           </div>
                         );
                       })}
                     </div>
                   )
                 ) : (
-                  <div className={styles[`${PUBLIC_PERFIX_CLASS}-null-env-node-edge`]}>
+                  <div
+                    className={
+                      styles[`${PUBLIC_PERFIX_CLASS}-null-env-node-edge`]
+                    }
+                  >
                     <span>
                       暂无点边数据
-                      <Tooltip title={isDisabledButton && '暂不可操作，请先完成图构建'}>
+                      <Tooltip
+                        title={isDisabledButton && '暂不可操作，请先完成图构建'}
+                      >
                         <a
                           className={
                             isDisabledButton
-                              ? styles[`${PUBLIC_PERFIX_CLASS}-disabled-action-buttonButton`]
+                              ? styles[
+                                  `${PUBLIC_PERFIX_CLASS}-disabled-action-buttonButton`
+                                ]
                               : styles[`${PUBLIC_PERFIX_CLASS}-action-button`]
                           }
                           onClick={() => {

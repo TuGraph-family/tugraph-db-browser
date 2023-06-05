@@ -2,22 +2,38 @@
 .@{perfix-cls}-login-container {
   width: 100%;
   height: 100vh;
-  background-color: #edf1ff;
+  background-color: hsl(227, 100%, 96%);
   position: relative;
+  display: flex;
+  &-left {
+    height: 100vh;
+    width: 53%;
+  }
   .@{perfix-cls}-logo-img {
     position: absolute;
     width: 122px;
-    top: 54px;
-    left: 54px;
+    top: 1.8%;
+    left: 4.2%;
   }
   .@{perfix-cls}-particles-container {
-    width: 860px;
-    height: 426px;
+    width: 80%;
+    height: 52%;
     font-size: 20px;
     color: #ffffff;
-    top: 17.7%;
-    left: 60px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     position: relative;
+    :global {
+      #tsparticles {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+      }
+    }
     .@{perfix-cls}-text {
       position: absolute;
       transform: translate(-50%, -50%);
@@ -31,17 +47,18 @@
     }
   }
   .@{perfix-cls}-login-form {
-    width: 580px;
+    width: 47%;
     position: absolute;
     right: 0;
     top: 0;
     height: 100%;
     background-color: #ffffff;
     .@{perfix-cls}-logo {
-      width: 300px;
+      width: 52%;
       position: absolute;
-      top: 228px;
-      right: 140px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
 
       .@{perfix-cls}-account-login {
         font-weight: 500;

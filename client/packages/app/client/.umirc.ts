@@ -1,4 +1,7 @@
-import { getUmiConfig, resolveNocobasePackagesAlias } from '@tugraph/openpiece-devtools';
+import {
+  getUmiConfig,
+  resolveNocobasePackagesAlias,
+} from '@tugraph/openpiece-devtools';
 import { defineConfig } from 'umi';
 
 const umiConfig = getUmiConfig();

@@ -1,10 +1,11 @@
 import React from 'react';
+import { PUBLIC_PERFIX_CLASS } from '../../constant';
 import AutoZoom from './components/auto-zoom';
 import RealZoom from './components/real-zoom';
 import ZoomIn from './components/zoom-in';
 import ZoomOut from './components/zoom-out';
-import { PUBLIC_PERFIX_CLASS } from '../../constant';
 
+import { Tooltip } from 'antd';
 import styles from './index.module.less';
 
 export const GraphCanvasTools: React.FC = () => {
@@ -16,17 +17,25 @@ export const GraphCanvasTools: React.FC = () => {
       ].join(' ')}
     >
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-graph-canvas-tools-item`]}>
-        <ZoomIn />
+        <Tooltip title="缩小">
+          <ZoomIn />
+        </Tooltip>
       </div>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-graph-canvas-tools-item`]}>
-        <ZoomOut />
+        <Tooltip title="放大">
+          <ZoomOut />
+        </Tooltip>
       </div>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-divider`]} />
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-graph-canvas-tools-item`]}>
-        <RealZoom />
+        <Tooltip title="画布1:1">
+          <RealZoom />
+        </Tooltip>
       </div>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-graph-canvas-tools-item`]}>
-        <AutoZoom />
+        <Tooltip title="全屏">
+          <AutoZoom />
+        </Tooltip>
       </div>
     </div>
   );

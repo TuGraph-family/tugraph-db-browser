@@ -211,7 +211,9 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
                           onDelete(item.labelName, activeTab);
                         }}
                       >
-                        <DeleteOutlined />
+                        <Tooltip title="删除">
+                          <DeleteOutlined />
+                        </Tooltip>
                       </Popconfirm>
                     </div>
                   </div>
