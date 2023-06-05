@@ -731,7 +731,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
                                       styles[`${PUBLIC_PERFIX_CLASS}-icon-copy`]
                                     }
                                     onClick={() => {
-                                      copy(name);
+                                      copy(form.getFieldValue(name));
                                     }}
                                   />
                                 </Tooltip>
@@ -766,7 +766,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
                                       styles[`${PUBLIC_PERFIX_CLASS}-icon-copy`]
                                     }
                                     onClick={() => {
-                                      copy(name);
+                                      copy(form.getFieldValue(name));
                                     }}
                                   />
                                 </Tooltip>
@@ -797,7 +797,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
                                     styles[`${PUBLIC_PERFIX_CLASS}-icon-copy`]
                                   }
                                   onClick={() => {
-                                    copy(name);
+                                    copy(form.getFieldValue(name));
                                   }}
                                 />
                               </Tooltip>

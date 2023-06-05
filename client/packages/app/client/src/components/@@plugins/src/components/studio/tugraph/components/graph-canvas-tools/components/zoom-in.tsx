@@ -1,7 +1,8 @@
+import { GraphinContext } from '@antv/graphin';
+import { Popover } from 'antd';
+import React, { useCallback, useContext } from 'react';
 import { useGraphinContext } from '../../../components/garph-canvas';
 import IconFont from '../../../components/icon-font/index';
-import React, { useCallback, useContext } from 'react';
-import { GraphinContext } from '@antv/graphin';
 
 const ZoomIn: React.FC = () => {
   const { apis } = useGraphinContext();
@@ -16,9 +17,11 @@ const ZoomIn: React.FC = () => {
     }
   }, [apis, contextApis]);
   return (
-    <div onClick={onClick}>
-      <IconFont type="icon-huabu-suoxiao" />
-    </div>
+    <Popover content="缩小" placement="top">
+      <div onClick={onClick}>
+        <IconFont type="icon-huabu-suoxiao" />
+      </div>
+    </Popover>
   );
 };
 

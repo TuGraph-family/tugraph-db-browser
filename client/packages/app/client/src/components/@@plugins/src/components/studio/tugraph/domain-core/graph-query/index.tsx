@@ -251,9 +251,7 @@ export const GraphQuery = (props: PluginPorps) => {
         <Tooltip title="用户帮助">
           <QuestionCircleOutlined
             onClick={() => {
-              window.open(
-                'https://tugraph.antgroup.com/doc?version=V3.4.0&id=10000000001669468'
-              );
+              window.open('https://tugraph.antgroup.com/doc');
             }}
           />
         </Tooltip>

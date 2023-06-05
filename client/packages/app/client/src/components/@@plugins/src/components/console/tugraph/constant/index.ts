@@ -13,8 +13,8 @@ export enum PERSSION_COlOR {
 }
 export const PERSSIONS_ENUM_TEXT = [
   { label: '全部', value: PERSSIONS_ENUM.FULL },
-  { label: '只读', value: PERSSIONS_ENUM.READ },
   { label: '读写', value: PERSSIONS_ENUM.WRITE },
+  { label: '只读', value: PERSSIONS_ENUM.READ },
   { label: '无', value: PERSSIONS_ENUM.NONE },
 ];
 

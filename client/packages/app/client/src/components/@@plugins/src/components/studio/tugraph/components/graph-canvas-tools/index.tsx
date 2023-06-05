@@ -5,7 +5,6 @@ import RealZoom from './components/real-zoom';
 import ZoomIn from './components/zoom-in';
 import ZoomOut from './components/zoom-out';
 
-import { Tooltip } from 'antd';
 import styles from './index.module.less';
 
 export const GraphCanvasTools: React.FC = () => {
@@ -17,25 +16,17 @@ export const GraphCanvasTools: React.FC = () => {
       ].join(' ')}
     >
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-graph-canvas-tools-item`]}>
-        <Tooltip title="缩小">
-          <ZoomIn />
-        </Tooltip>
+        <ZoomIn />
       </div>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-graph-canvas-tools-item`]}>
-        <Tooltip title="放大">
-          <ZoomOut />
-        </Tooltip>
+        <ZoomOut />
       </div>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-divider`]} />
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-graph-canvas-tools-item`]}>
-        <Tooltip title="画布1:1">
-          <RealZoom />
-        </Tooltip>
+        <RealZoom />
       </div>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-graph-canvas-tools-item`]}>
-        <Tooltip title="全屏">
-          <AutoZoom />
-        </Tooltip>
+        <AutoZoom />
       </div>
     </div>
   );

@@ -59,8 +59,13 @@ export const ImportData: React.FC<Prop> = ({
     uploadLoading: false,
     taskId: '',
   });
-  const { resultStatus, errorMessage, isFullView, taskId, uploadLoading } =
-    state;
+  const {
+    resultStatus,
+    errorMessage,
+    isFullView,
+    taskId,
+    uploadLoading,
+  } = state;
 
   useEffect(() => {
     if (!taskId || resultStatus === 'success' || resultStatus === 'error') {
@@ -81,7 +86,6 @@ export const ImportData: React.FC<Prop> = ({
             draft.resultStatus = 'success';
             draft.errorMessage = '';
           });
-          window.location.reload();
         } else {
           updateState((draft) => {
             draft.resultStatus = 'loading';
@@ -102,10 +106,8 @@ export const ImportData: React.FC<Prop> = ({
     onSwitch?.(onShow, onClose);
 
     const taskList = getLocalData('TUGRAPH_INFO') ?? [];
-    const taskId = find(
-      taskList,
-      (item) => item.graphName === graphName
-    )?.taskId;
+    const taskId = find(taskList, (item) => item.graphName === graphName)
+      ?.taskId;
     if (taskId) {
       updateState((draft) => {
         draft.taskId = taskId;
@@ -281,7 +283,10 @@ export const ImportData: React.FC<Prop> = ({
           <div className={styles[`${PUBLIC_PERFIX_CLASS}-container-header`]}>
             <span>数据导入</span>
             <div>
-              命令行导入<a> 参见文档</a>
+              命令行导入
+              <a href="https://tugraph.antgroup.com/doc" target="_blank">
+                参见文档
+              </a>
             </div>
           </div>
           <div>

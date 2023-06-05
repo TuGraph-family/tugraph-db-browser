@@ -1,4 +1,5 @@
 import { GraphinContext } from '@antv/graphin';
+import { Popover } from 'antd';
 import React, { useCallback, useContext } from 'react';
 import { useGraphinContext } from '../../../components/garph-canvas';
 import IconFont from '../../../components/icon-font/index';
@@ -16,9 +17,11 @@ const AutoZoom: React.FC = () => {
     }
   }, [apis, contextApis]);
   return (
-    <div onClick={onClick}>
-      <IconFont type="icon-compress" />
-    </div>
+    <Popover content="全屏" placement="top">
+      <div onClick={onClick}>
+        <IconFont type="icon-compress" />
+      </div>
+    </Popover>
   );
 };
 

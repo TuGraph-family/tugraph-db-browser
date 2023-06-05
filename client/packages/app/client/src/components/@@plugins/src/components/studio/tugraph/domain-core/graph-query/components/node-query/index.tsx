@@ -34,11 +34,13 @@ export const NodeQuery: React.FC<Prop> = ({ nodes, nodeQuery }) => {
   const [state, updateState] = useImmer<{
     nodeCheckedList: Array<CheckboxValueType>;
     activeKey: string;
+    isShow: boolean;
   }>({
     nodeCheckedList: [],
     activeKey: '',
+    isShow: false,
   });
-  const { nodeCheckedList, activeKey } = state;
+  const { nodeCheckedList, activeKey, isShow } = state;
   const [form] = Form.useForm();
   const [nodeForm] = Form.useForm();
   const nodeChange = (list: CheckboxValueType[]) => {
@@ -123,6 +125,16 @@ export const NodeQuery: React.FC<Prop> = ({ nodes, nodeQuery }) => {
               />
             </Item>
             <Tabs
+              onMouseEnter={() => {
+                updateState((draft) => {
+                  draft.isShow = true;
+                });
+              }}
+              onMouseLeave={() => {
+                updateState((draft) => {
+                  draft.isShow = false;
+                });
+              }}
               activeKey={activeKey}
               onChange={(val) => {
                 updateState((draft) => {
@@ -132,42 +144,51 @@ export const NodeQuery: React.FC<Prop> = ({ nodes, nodeQuery }) => {
             >
               {map(nodeCheckedList, (item, index) => (
                 <Tabs.TabPane tab={item} key={item}>
-                  <div
-                    style={{
-                      top: find(nodes, (node) => node.labelName === item)
-                        ?.properties?.length
-                        ? -50
-                        : -35,
-                    }}
-                    className={styles[`${PUBLIC_PERFIX_CLASS}-tab-left-btn`]}
-                    onClick={() => {
-                      updateState((draft) => {
-                        if (index > 0) {
-                          draft.activeKey = nodeCheckedList[index - 1];
+                  {nodeCheckedList.length > 1 && isShow && (
+                    <>
+                      <div
+                        style={{
+                          top: find(nodes, (node) => node.labelName === item)
+                            ?.properties?.length
+                            ? -50
+                            : -35,
+                        }}
+                        className={
+                          styles[`${PUBLIC_PERFIX_CLASS}-tab-left-btn`]
                         }
-                      });
-                    }}
-                  >
-                    <LeftOutlined />
-                  </div>
-                  <div
-                    className={styles[`${PUBLIC_PERFIX_CLASS}-tab-right-btn`]}
-                    style={{
-                      top: find(nodes, (node) => node.labelName === item)
-                        ?.properties?.length
-                        ? -50
-                        : -35,
-                    }}
-                    onClick={() => {
-                      updateState((draft) => {
-                        if (index + 1 < nodeCheckedList.length) {
-                          draft.activeKey = nodeCheckedList[index + 1];
+                        onClick={() => {
+                          updateState((draft) => {
+                            if (index > 0) {
+                              draft.activeKey = nodeCheckedList[index - 1];
+                            }
+                          });
+                        }}
+                      >
+                        <LeftOutlined />
+                      </div>
+                      <div
+                        className={
+                          styles[`${PUBLIC_PERFIX_CLASS}-tab-right-btn`]
                         }
-                      });
-                    }}
-                  >
-                    <RightOutlined />
-                  </div>
+                        style={{
+                          top: find(nodes, (node) => node.labelName === item)
+                            ?.properties?.length
+                            ? -50
+                            : -35,
+                        }}
+                        onClick={() => {
+                          updateState((draft) => {
+                            if (index + 1 < nodeCheckedList.length) {
+                              draft.activeKey = nodeCheckedList[index + 1];
+                            }
+                          });
+                        }}
+                      >
+                        <RightOutlined />
+                      </div>
+                    </>
+                  )}
+
                   <Form form={nodeForm}>
                     {map(
                       find(nodes, (node) => node.labelName === item)

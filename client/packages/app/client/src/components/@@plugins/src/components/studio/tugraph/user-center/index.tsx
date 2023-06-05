@@ -1,6 +1,6 @@
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { useOpenpieceUserAuth } from '@tugraph/openpiece-client';
-import { Divider, Dropdown, Menu, Space, message } from 'antd';
+import { Divider, Dropdown, Menu, Space, Tooltip, message } from 'antd';
 import { isEmpty } from 'lodash';
 import React from 'react';
 import { useImmer } from 'use-immer';
@@ -50,11 +50,13 @@ export const UserCenter: React.FC<Prop> = () => {
   return (
     <div>
       <Space split={<Divider type="vertical" />}>
-        <QuestionCircleOutlined
-          onClick={() => {
-            window.open('https://tugraph.antgroup.com/');
-          }}
-        />
+        <Tooltip title="用户帮助">
+          <QuestionCircleOutlined
+            onClick={() => {
+              window.open('https://tugraph.antgroup.com/doc');
+            }}
+          />
+        </Tooltip>
         <Dropdown overlay={menu} trigger={['click']}>
           <a style={{ color: 'black' }}>
             {isEmpty(getLocalData('TUGRAPH_USER_NAME'))

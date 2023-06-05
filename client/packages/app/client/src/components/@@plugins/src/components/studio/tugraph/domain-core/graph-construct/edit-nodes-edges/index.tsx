@@ -158,7 +158,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
   };
   const indexOperateCancel = (record) => {
     return (
-      <>
+      <div style={{ display: 'flex' }}>
         <Button
           type="text"
           onClick={() => {
@@ -179,7 +179,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
         >
           取消
         </Button>
-      </>
+      </div>
     );
   };
   const indexOperateDelete = (record) => {
@@ -282,7 +282,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
       editorConfig: (record) => {
         return {
           inputType: EditType.SELECT,
-          prop: { options: DATA_TYPE },
+          prop: { options: DATA_TYPE, disabled: record.disabled },
         };
       },
     },
@@ -296,7 +296,8 @@ export const EditNodesEdges: React.FC<Prop> = ({
         return {
           inputType: EditType.SELECT,
           prop: {
-            defaultValue: true,
+            disabled: record.disabled,
+            defaultValue: false,
             options: [
               { label: '否', value: false },
               { label: '是', value: true },
@@ -534,7 +535,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
               }),
             ];
           });
-          onRefreshSchema();
+          onRefreshSchema?.();
         } else {
           message.error('索引添加失败' + res.errorMessage);
         }
@@ -602,7 +603,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
             primaryField: isPrimaryField(item.propertyName),
             disabled: true,
             id: uniqueId(`index_`),
-            disabled: isPrimaryField(item.propertyName),
+            disabled: true,
           })
         );
       } else {
@@ -642,7 +643,10 @@ export const EditNodesEdges: React.FC<Prop> = ({
         <div className={styles[`${PUBLIC_PERFIX_CLASS}-container-header`]}>
           <span> 编辑{`${isNode ? '点' : '边'}`}类型</span>
           <div>
-            命令行建模<a> 参见文档</a>
+            命令行建模
+            <a href="https://tugraph.antgroup.com/doc" target="_blank">
+              参见文档
+            </a>
           </div>
         </div>
         <div>
