@@ -55,4 +55,8 @@ export default defineConfig({
     // "https://gw.alipayobjects.com/os/lib/alipay/theme-tools/0.3.0/dist/GraphInsight/light.css",
     'https://gw.alipayobjects.com/os/lib/antd/4.23.5/dist/antd.css',
   ],
+  theme: {
+    'primary-color': '#1650ff',
+    'link-color': '#1650ff',
+  },
 });

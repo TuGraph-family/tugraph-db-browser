@@ -4,6 +4,7 @@ import {
   DownloadOutlined,
   PlayCircleOutlined,
   QuestionCircleOutlined,
+  SaveOutlined,
 } from '@ant-design/icons';
 import GremlinEditor from 'ace-gremlin-editor';
 import {
@@ -16,6 +17,7 @@ import {
   Switch,
   Tabs,
   Tooltip,
+  message,
 } from 'antd';
 import { filter, find, isEmpty, map, uniqueId } from 'lodash';
 import { useCallback, useEffect } from 'react';
@@ -101,7 +103,7 @@ export const GraphQuery = (props: PluginPorps) => {
     editorWidth: 350,
     editorHeight: 372,
     pathHeight: 388,
-    script: `MATCH p=()-[]-() RETURN p LIMIT 100`,
+    script: '',
     resultData: [],
     queryList: [],
     editorKey: '',
@@ -130,7 +132,7 @@ export const GraphQuery = (props: PluginPorps) => {
           {
             id: `${new Date().getTime()}`,
             value: '语句0',
-            script: 'MATCH p=()-[]-() RETURN p LIMIT 100',
+            script: '',
           },
         ];
       } else {
@@ -292,6 +294,29 @@ export const GraphQuery = (props: PluginPorps) => {
             </Button>
           </div>
           <div>
+            <Tooltip title="保存语句">
+              <Button
+                type="text"
+                icon={<SaveOutlined />}
+                onClick={() => {
+                  setLocalData(`TUGRAPH_STATEMENT_LISTS`, {
+                    ...getLocalData(`TUGRAPH_STATEMENT_LISTS`),
+                    [currentGraphName]: map(
+                      getLocalData(`TUGRAPH_STATEMENT_LISTS`)[currentGraphName],
+                      (item) => {
+                        if (item.id === editorKey) {
+                          return { ...item, script };
+                        }
+                        return item;
+                      }
+                    ),
+                  });
+                  message.success('保存成功');
+                }}
+              >
+                保存
+              </Button>
+            </Tooltip>
             <Tooltip title="收藏为模版">
               <Button
                 type="text"
@@ -333,6 +358,7 @@ export const GraphQuery = (props: PluginPorps) => {
                           }),
                     ],
                   });
+                  message.success('收藏成功');
                 }}
               >
                 收藏
@@ -376,17 +402,17 @@ export const GraphQuery = (props: PluginPorps) => {
           <StatementList
             list={queryList}
             garphName={currentGraphName}
-            onSelect={(id) => {
+            onSelect={(activeId) => {
+              const value = find(
+                getLocalData('TUGRAPH_STATEMENT_LISTS')[currentGraphName],
+                (item) => item.id === activeId
+              )?.script;
+              if (!isEmpty(editor)) {
+                editor?.editorInstance?.setValue?.(value);
+              }
               updateState((draft) => {
-                const value = find(
-                  getLocalData('TUGRAPH_STATEMENT_LISTS')[currentGraphName],
-                  (item) => item.id === id
-                )?.script;
-                if (!isEmpty(editor)) {
-                  editor?.editorInstance?.setValue?.(value);
-                }
+                draft.editorKey = activeId;
                 draft.script = value;
-                draft.editorKey = id;
               });
             }}
           />
@@ -444,20 +470,6 @@ export const GraphQuery = (props: PluginPorps) => {
                           onValueChange={(val) => {
                             updateState((draft) => {
                               draft.script = val;
-                            });
-                            setLocalData(`TUGRAPH_STATEMENT_LISTS`, {
-                              ...getLocalData(`TUGRAPH_STATEMENT_LISTS`),
-                              [currentGraphName]: map(
-                                getLocalData(`TUGRAPH_STATEMENT_LISTS`)[
-                                  currentGraphName
-                                ],
-                                (item) => {
-                                  if (item.id === editorKey) {
-                                    return { ...item, script: val };
-                                  }
-                                  return item;
-                                }
-                              ),
                             });
                           }}
                         />

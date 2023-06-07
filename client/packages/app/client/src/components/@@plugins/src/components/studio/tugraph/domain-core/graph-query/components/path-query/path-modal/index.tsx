@@ -109,11 +109,9 @@ export const PathModal: React.FC<PathModalProp> = ({
         >
           <InputNumber placeholder="请输入路径数目" />
         </Item>
-        <Tabs
-          items={map(tabList, (item) => ({
-            label: item.name,
-            key: item.name,
-            children: (
+        <Tabs>
+          {map(tabList, (item) => (
+            <Tabs.TabPane key={item.name} tab={item.name}>
               <Row>
                 {item.properties?.length ? (
                   map(item.properties, (propey) => (
@@ -160,9 +158,9 @@ export const PathModal: React.FC<PathModalProp> = ({
                   </div>
                 )}
               </Row>
-            ),
-          }))}
-        />
+            </Tabs.TabPane>
+          ))}
+        </Tabs>
       </Form>
     </Modal>
   );

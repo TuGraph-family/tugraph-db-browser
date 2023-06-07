@@ -42,7 +42,7 @@ export const StatementList: React.FC<Prop> = ({
     activeId: '',
   });
   useEffect(() => {
-    if (garphName && list.length) {
+    if (garphName && list?.length) {
       updateState((draft) => {
         draft.queryList = [...list];
       });
@@ -60,7 +60,7 @@ export const StatementList: React.FC<Prop> = ({
         {
           id: `${new Date().getTime()}`,
           value: `语句${queryList.length}`,
-          script: 'MATCH (n) RETURN n LIMIT 100',
+          script: '',
         },
       ];
       draft.queryList = newList;
