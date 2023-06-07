@@ -103,51 +103,6 @@ class TuGraphSubGraphService extends Service {
   }
 
   /**
-   * 查询子图列表
-   */
-  async querySubGraphList() {
-    const cypher = `CALL dbms.graph.listGraphs()`
-
-    const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
-      headers: {
-        'content-type': 'application/json',
-        Authorization: this.ctx.request.header.authorization,
-      },
-      method: 'POST',
-      data: {
-        script: cypher,
-      },
-      timeout: [ 30000, 50000 ],
-      dataType: 'json',
-    });
-
-    if (result.status !== 200) {
-      return {
-        success: false,
-        code: result.status,
-        data: null,
-      };
-    }
-
-    const list = [] as any;
-    for (const key in result.data) {
-      const current = result.data[key];
-      const { description, max_size_GB } = current;
-      list.push({
-        value: key,
-        label: key,
-        description,
-        maxSizeGB: max_size_GB,
-      });
-    }
-    return {
-      success: true,
-      code: 200,
-      data: list,
-    };
-  }
-
-  /**
    * 获取子图详情
    * @param graphName 子图名称
    * @returns 

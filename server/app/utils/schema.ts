@@ -73,7 +73,7 @@ export const diffProperties = (pre: ISchemaProperties[], cur: ISchemaProperties[
 	 * 	properties: ISchemaProperties[]
 	 * }
 	 */
-
+	console.log(pre, cur)
 	return {
 		operationType: 'add',
 		properties: []
