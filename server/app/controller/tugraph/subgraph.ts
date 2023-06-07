@@ -41,7 +41,6 @@ class TuGraphSubGraphController extends Controller {
    */
   async getSubGraphList() {
     const { ctx } = this;
-    console.log(ctx.session)
     const result = await ctx.service.tugraph.subgraph.getSubGraphList();
     responseData(ctx, result);
   }
