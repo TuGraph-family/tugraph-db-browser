@@ -13,12 +13,11 @@ import { EngineServerURL } from './constant';
 import { formatMultipleResponse, formatVertexResponse } from '../../utils';
 
 class TuGraphQueryService extends Service {
-
   /**
-	 * 根据节点 ID 查询
-	 * @param graphName 子图名称
-	 * @param vertexId 节点 ID
-	 */
+   * 根据节点 ID 查询
+   * @param graphName 子图名称
+   * @param vertexId 节点 ID
+   */
   async queryNodeById(graphName: string, vertexId: string) {
     const cypherLanguage = `MATCH (n) WHERE id(n)=${vertexId} RETURN n`;
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
@@ -32,7 +31,7 @@ class TuGraphQueryService extends Service {
         graph: graphName,
         script: cypherLanguage,
       },
-      timeout: [ 30000, 50000 ],
+      timeout: [30000, 50000],
       dataType: 'json',
     });
 
@@ -65,7 +64,7 @@ class TuGraphQueryService extends Service {
         graph: graphName,
         script: value,
       },
-      timeout: [ 30000, 50000 ],
+      timeout: [30000, 50000],
       dataType: 'json',
     });
 
@@ -94,7 +93,11 @@ class TuGraphQueryService extends Service {
       cypher = `match(n)-[*..${sep}]-(m) WHERE id(n) in [${ids}] RETURN n, m LIMIT 200`;
     }
 
-    const responseData = await this.service.openpiece.query.querySubGraphByCypher(cypher, graphName);
+    const responseData =
+      await this.service.openpiece.query.querySubGraphByCypher(
+        cypher,
+        graphName
+      );
     return {
       data: responseData,
       code: 200,

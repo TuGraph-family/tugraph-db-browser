@@ -11,7 +11,6 @@ import { Service } from 'egg';
 import { EngineServerURL } from './constant';
 
 class TuGraphSchemaService extends Service {
-
   /**
    * 获取指定边类型的 Schema 信息
    * @param graphName 子图名称
@@ -29,7 +28,7 @@ class TuGraphSchemaService extends Service {
         graph: graphName,
         script: `CALL db.getEdgeSchema('${edgeType}')`,
       },
-      timeout: [ 30000, 50000 ],
+      timeout: [30000, 50000],
       dataType: 'json',
     });
 
@@ -47,7 +46,7 @@ class TuGraphSchemaService extends Service {
       // 忽略这条信息
       return null;
     }
-    const [ source, target ] = constraints[0];
+    const [source, target] = constraints[0];
 
     const propertiesObj = {} as any;
     for (const p of properties) {
@@ -80,7 +79,7 @@ class TuGraphSchemaService extends Service {
         graph: graphName,
         script: `CALL db.getVertexSchema('${nodeType}')`,
       },
-      timeout: [ 30000, 50000 ],
+      timeout: [30000, 50000],
       dataType: 'json',
     });
 
@@ -124,12 +123,12 @@ class TuGraphSchemaService extends Service {
         graph: graphName,
         script: 'CALL db.edgeLabels()',
       },
-      timeout: [ 30000, 50000 ],
+      timeout: [30000, 50000],
       dataType: 'json',
     });
 
     // step2: 根据获取到的边类型，再获取每个边类型的详细属性
-    const edgeSchemaPromise = typeResult.data.map(async d => {
+    const edgeSchemaPromise = typeResult.data.map(async (d) => {
       const currentEdgeSchema = await this.queryEdgeSchemaByType(graphName, d);
       return currentEdgeSchema;
     });
@@ -149,13 +148,16 @@ class TuGraphSchemaService extends Service {
         graph: graphName,
         script: 'CALL db.vertexLabels()',
       },
-      timeout: [ 30000, 50000 ],
+      timeout: [30000, 50000],
       dataType: 'json',
     });
 
     // step2: 根据获取到的边类型，再获取每个边类型的详细属性
-    const vertexSchemaPromise = typeResult.data.map(async d => {
-      const currentVertexSchema = await this.queryVertexSchemaByType(graphName, d);
+    const vertexSchemaPromise = typeResult.data.map(async (d) => {
+      const currentVertexSchema = await this.queryVertexSchemaByType(
+        graphName,
+        d
+      );
       return currentVertexSchema;
     });
     const vertexSchema = await Promise.all(vertexSchemaPromise);
@@ -175,14 +177,12 @@ class TuGraphSchemaService extends Service {
     };
   }
 
-
   /**
    * 查询指定子图中节点和边的数量
    * @param graphName 子图名称
    * @param authorization 认证信息
    */
   async getVertexEdgeCount(graphName: string) {
-
     const nodeResult = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {
         'content-type': 'application/json',
@@ -192,7 +192,7 @@ class TuGraphSchemaService extends Service {
       data: {
         script: 'MATCH n RETURN count(*)',
       },
-      timeout: [ 30000, 50000 ],
+      timeout: [30000, 50000],
       dataType: 'json',
     });
 
@@ -218,7 +218,7 @@ class TuGraphSchemaService extends Service {
         graph: graphName,
         script: edgeCypher,
       },
-      timeout: [ 30000, 500000 ],
+      timeout: [30000, 500000],
       dataType: 'json',
     });
 

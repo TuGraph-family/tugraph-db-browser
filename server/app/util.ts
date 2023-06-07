@@ -1,4 +1,3 @@
-
 export const responseData = (ctx, resp) => {
   if (!resp) {
     ctx.status = 500;
@@ -21,22 +20,22 @@ interface ICypherResponse {
 }
 
 export const getNodeIdsByResponseBak = (
-  params: ICypherResponse,
+  params: ICypherResponse
 ): { nodeIds: Array<number>; edgeIds: Array<string> } => {
   const nodeIds: Array<number> = [];
   const edgeIds: Array<string> = [];
 
   const { result } = params;
 
-  result.forEach(item => {
+  result.forEach((item) => {
     if (Array.isArray(item)) {
-      item.forEach(item_c => {
+      item.forEach((item_c) => {
         if (typeof item_c === 'string' && item_c.startsWith('E[')) {
           const eid: any = item_c.replace(
             /(E\[)([0-9]*_[0-9]*_[0-9]*_[0-9]*)(])/g,
             (_$1: string, _$2: string, $3: string) => {
               return $3;
-            },
+            }
           );
           if (eid) {
             edgeIds.push(eid);
@@ -46,13 +45,13 @@ export const getNodeIdsByResponseBak = (
         } else if (typeof item_c === 'string' && item_c.startsWith('[V')) {
           if (item_c.includes('E[')) {
             const Ids = item_c.split(',');
-            Ids.forEach(itemId => {
+            Ids.forEach((itemId) => {
               if (itemId.startsWith('E[')) {
                 const eid: any = itemId.replace(
                   /(E\[)([0-9]*_[0-9]*_[0-9]*_[0-9]*)(])/g,
                   (_$1: string, _$2: string, $3: string) => {
                     return $3;
-                  },
+                  }
                 );
                 if (eid) {
                   edgeIds.push(eid);
@@ -66,7 +65,7 @@ export const getNodeIdsByResponseBak = (
               /(\[V\[)([0-9]*)(\]\])/g,
               (_$1: string, _$2: string, $3: string) => {
                 return $3;
-              },
+              }
             );
             nodeIds.push(parseInt(vid));
           }
@@ -75,7 +74,7 @@ export const getNodeIdsByResponseBak = (
             /(V\[)([0-9]*)(])/g,
             (_$1: string, _$2: string, $3: string) => {
               return $3;
-            },
+            }
           );
           nodeIds.push(parseInt(vid));
         }
@@ -84,12 +83,14 @@ export const getNodeIdsByResponseBak = (
   });
 
   return {
-    nodeIds: [ ...new Set(nodeIds) ],
-    edgeIds: [ ...new Set(edgeIds) ],
+    nodeIds: [...new Set(nodeIds)],
+    edgeIds: [...new Set(edgeIds)],
   };
 };
 
-export const getNodeIdsByResponse = (params: any): { nodeIds: Array<number>; edgeIds: Array<string> } => {
+export const getNodeIdsByResponse = (
+  params: any
+): { nodeIds: Array<number>; edgeIds: Array<string> } => {
   const nodeIds: Array<number> = [];
   const edgeIds: Array<string> = [];
   console.log('getNodeIdsByResponse', params.data);
@@ -104,8 +105,8 @@ export const getNodeIdsByResponse = (params: any): { nodeIds: Array<number>; edg
       edgeIndexList.push(index);
     }
   });
-  result.forEach(item => {
-    pathIndexList.forEach(c => {
+  result.forEach((item) => {
+    pathIndexList.forEach((c) => {
       if (item && item[c]) {
         const data = JSON.parse(item[c]);
         data.forEach((el: any, index: number) => {
@@ -117,7 +118,7 @@ export const getNodeIdsByResponse = (params: any): { nodeIds: Array<number>; edg
         });
       }
     });
-    edgeIndexList.forEach(c => {
+    edgeIndexList.forEach((c) => {
       if (item && item[c]) {
         const data = JSON.parse(item[c]);
         const eid = `${data.src}_${data.dst}_${data.label_id}_${data.temporal_id}_${data.identity}`;
@@ -128,7 +129,7 @@ export const getNodeIdsByResponse = (params: any): { nodeIds: Array<number>; edg
   });
 
   return {
-    nodeIds: [ ...new Set(nodeIds) ],
-    edgeIds: [ ...new Set(edgeIds) ],
+    nodeIds: [...new Set(nodeIds)],
+    edgeIds: [...new Set(edgeIds)],
   };
 };

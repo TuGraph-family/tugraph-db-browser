@@ -10,172 +10,8 @@
 
 import { Service } from 'egg';
 import { EngineServerURL } from './constant';
-import { ISubGraphConfig } from './interface';
 
 class TuGraphSubGraphService extends Service {
-
-  /**
-   * 创建子图
-   * @param graphName 子图名称
-   * @param config 子图配置
-   * @returns 
-   */
-  async createSubGraph(graphName: string, config: ISubGraphConfig) {
-    const { maxSizeGB, description, async } = config
-    console.log('async', async)
-
-    const createCypher = `CALL dbms.graph.createGraph(${graphName}, ${description}, ${maxSizeGB})`
-
-    const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
-      headers: {
-        'content-type': 'application/json',
-        Authorization: this.ctx.request.header.authorization,
-      },
-      method: 'POST',
-      data: {
-        script: createCypher,
-      },
-      timeout: [ 30000, 50000 ],
-      dataType: 'json',
-    });
-
-    if (result.status !== 200) {
-      return result.data;
-    }
-
-    return result.data
-  }
-
-  /**
-   * 更新子图信息
-   * @param graphName 子图名称
-   * @param config 子图配置
-   * @returns 
-   */
-  async updateSubGraph(graphName: string, config: ISubGraphConfig) {
-    const updateCypher = `CALL dbms.graph.modGraph(${graphName}, ${config})`
-
-    const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
-      headers: {
-        'content-type': 'application/json',
-        Authorization: this.ctx.request.header.authorization,
-      },
-      method: 'POST',
-      data: {
-        script: updateCypher,
-      },
-      timeout: [ 30000, 50000 ],
-      dataType: 'json',
-    });
-
-    if (result.status !== 200) {
-      return result.data;
-    }
-
-    return result.data
-  }
-
-  /**
-   * 删除子图
-   * @param graphName 子图名称
-   * @returns 
-   */
-  async deleteSubGraph(graphName: string) {
-    const cypher = `CALL dbms.graph.deleteGraph(${graphName})`
-
-    const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
-      headers: {
-        'content-type': 'application/json',
-        Authorization: this.ctx.request.header.authorization,
-      },
-      method: 'POST',
-      data: {
-        script: cypher,
-      },
-      timeout: [ 30000, 50000 ],
-      dataType: 'json',
-    });
-
-    if (result.status !== 200) {
-      return result.data;
-    }
-
-    return result.data
-  }
-
-  /**
-   * 查询子图列表
-   */
-  async querySubGraphList() {
-    const cypher = `CALL dbms.graph.listGraphs()`
-
-    const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
-      headers: {
-        'content-type': 'application/json',
-        Authorization: this.ctx.request.header.authorization,
-      },
-      method: 'POST',
-      data: {
-        script: cypher,
-      },
-      timeout: [ 30000, 50000 ],
-      dataType: 'json',
-    });
-
-    if (result.status !== 200) {
-      return {
-        success: false,
-        code: result.status,
-        data: null,
-      };
-    }
-
-    const list = [] as any;
-    for (const key in result.data) {
-      const current = result.data[key];
-      const { description, max_size_GB } = current;
-      list.push({
-        value: key,
-        label: key,
-        description,
-        maxSizeGB: max_size_GB,
-      });
-    }
-    return {
-      success: true,
-      code: 200,
-      data: list,
-    };
-  }
-
-  /**
-   * 获取子图详情
-   * @param graphName 子图名称
-   * @returns 
-   */
-  async getSubGraphInfo(graphName: string) {
-    const cypher = `CALL dbms.graph.getGraphInfo(${graphName})`
-
-    const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
-      headers: {
-        'content-type': 'application/json',
-        Authorization: this.ctx.request.header.authorization,
-      },
-      method: 'POST',
-      data: {
-        script: cypher,
-      },
-      timeout: [ 30000, 50000 ],
-      dataType: 'json',
-    });
-
-    if (result.status !== 200) {
-      return result.data;
-    }
-
-    return result.data
-  }
-
   /**
    * 根据节点 ID 提取子图信息
    * @param graphName 子图名称
@@ -183,27 +19,28 @@ class TuGraphSubGraphService extends Service {
    * @return
    */
   async querySubGraphByNodeIds(graphName: string, vertexIds: string[]) {
-    const subGraphResult = await this.ctx.curl(`${EngineServerURL}/cypher`, {
-      headers: {
-        'content-type': 'application/json',
-        Authorization: this.ctx.request.header.authorization,
-      },
-      method: 'POST',
-      data: {
-        graph: graphName,
-        script: `call db.subgraph([${vertexIds}])`,
-      },
-      timeout: [ 30000, 50000 ],
-      dataType: 'json',
-    })
-      .then(res => {
+    const subGraphResult = await this.ctx
+      .curl(`${EngineServerURL}/cypher`, {
+        headers: {
+          'content-type': 'application/json',
+          Authorization: this.ctx.request.header.authorization,
+        },
+        method: 'POST',
+        data: {
+          graph: graphName,
+          script: `call db.subgraph([${vertexIds}])`,
+        },
+        timeout: [30000, 50000],
+        dataType: 'json',
+      })
+      .then((res) => {
         const graphData = JSON.parse(res.data.result[0]);
 
-        graphData.nodes.forEach(item => {
+        graphData.nodes.forEach((item) => {
           item.vid = item.identity;
         });
 
-        graphData.relationships.forEach(item => {
+        graphData.relationships.forEach((item) => {
           item.source = item.src;
           item.destination = item.dst;
           item.uid = `${item.src}_${item.dst}_${item.label_id}_${item.temporal_id}_${item.identity}`;
@@ -219,10 +56,9 @@ class TuGraphSubGraphService extends Service {
     }
 
     const { nodes, relationships } = subGraphResult.data;
-    console.log('subGraphResult.data', subGraphResult.data);
 
     const graphData = {
-      nodes: nodes.map(node => {
+      nodes: nodes.map((node) => {
         const { vid, label, ...others } = node;
         return {
           ...others.properties,
@@ -232,7 +68,7 @@ class TuGraphSubGraphService extends Service {
           id: `${vid}`,
         };
       }),
-      edges: relationships.map(r => {
+      edges: relationships.map((r) => {
         const { uid, label, destination, source, ...others } = r;
         return {
           ...others.properties,
@@ -267,7 +103,7 @@ class TuGraphSubGraphService extends Service {
         graph: graphName,
         script: cypher,
       },
-      timeout: [ 30000, 50000 ],
+      timeout: [30000, 50000],
       dataType: 'json',
     });
 
@@ -287,8 +123,44 @@ class TuGraphSubGraphService extends Service {
       };
     }
 
-    const subGraphResult = await this.querySubGraphByNodeIds(graphName, nodeIds);
+    const subGraphResult = await this.querySubGraphByNodeIds(
+      graphName,
+      nodeIds
+    );
     return subGraphResult;
+  }
+
+  /**
+   * 查询子图列表
+   */
+  async getSubGraphList() {
+    const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
+      headers: {
+        'content-type': 'application/json',
+        Authorization: this.ctx.request.header.authorization,
+      },
+      method: 'POST',
+      data: {
+        graph: '',
+        script: 'CALL dbms.graph.listGraphs()',
+      },
+      timeout: [30000, 50000],
+      dataType: 'json',
+    });
+
+    if (result.status !== 200) {
+      return {
+        success: false,
+        code: result.status,
+        data: null,
+      };
+    }
+
+    return {
+      success: true,
+      code: 200,
+      data: result.data.data.result,
+    };
   }
 }
 

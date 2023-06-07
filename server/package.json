@@ -10,7 +10,7 @@
   "scripts": {
     "pro": "npm run tsc && egg-scripts start",
     "stop": "egg-scripts stop --title=egg-server-gi-standalone-service",
-    "start": "egg-scripts start --port=7001 --daemon ",
+    "start": "egg-scripts start --port=8001 --daemon ",
     "build": "npm run tsc && rm -rf ./node_modules && tnpm install --production && tar -zcvf ./release.tgz",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",

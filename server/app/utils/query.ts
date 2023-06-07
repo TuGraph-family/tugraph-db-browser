@@ -1,11 +1,22 @@
-import { IVertextParams, IEdgeParams, IPathParams, IMultipleParams, IPropertiesParams, ISubGraphParams, IVertexResponse, IEdgeResponse } from './interface';
+import {
+  IVertextParams,
+  IEdgeParams,
+  IPathParams,
+  IMultipleParams,
+  IPropertiesParams,
+  ISubGraphParams,
+  IVertexResponse,
+  IEdgeResponse,
+} from './interface';
 
 /**
  * 转换使用 Cypher 查询节点返回的数据格式
  * @param params
  * @return
  */
-export const formatVertexResponse = (params: IVertextParams[]): IVertexResponse[] => {
+export const formatVertexResponse = (
+  params: IVertextParams[]
+): IVertexResponse[] => {
   const nodes: IVertexResponse[] = [];
   for (const vertex of params) {
     for (const key in vertex) {
@@ -35,7 +46,8 @@ export const formatEdgeResponse = (params: IEdgeParams[]) => {
   for (const edge of params) {
     for (const key in edge) {
       const current = edge[key];
-      const { identity, src, dst, label_id, temporal_id, forward, ...others } = current;
+      const { identity, src, dst, label_id, temporal_id, forward, ...others } =
+        current;
       const edgeId = `${src}_${label_id}_${temporal_id}_${dst}_${identity}`;
       const hasEdge = edges.find((d: any) => d.id === `${edgeId}`);
       if (!hasEdge) {
@@ -48,7 +60,7 @@ export const formatEdgeResponse = (params: IEdgeParams[]) => {
         });
 
         // 如果只是边，则还需要将起点和终点添加到 nodes 中
-        const hasSourceNode = nodes.find(d => d.id === `${src}`);
+        const hasSourceNode = nodes.find((d) => d.id === `${src}`);
         if (!hasSourceNode) {
           nodes.push({
             id: `${src}`,
@@ -56,7 +68,7 @@ export const formatEdgeResponse = (params: IEdgeParams[]) => {
             properties: null,
           });
         }
-        const hasTargetNode = nodes.find(d => d.id === `${dst}`);
+        const hasTargetNode = nodes.find((d) => d.id === `${dst}`);
 
         if (!hasTargetNode) {
           nodes.push({
@@ -80,9 +92,11 @@ export const formatEdgeResponse = (params: IEdgeParams[]) => {
  * @param params
  * @return
  */
-export const formatPathResponse = (params: {
-  [key: string]: IPathParams[]
-}[]) => {
+export const formatPathResponse = (
+  params: {
+    [key: string]: IPathParams[];
+  }[]
+) => {
   const pnodes: IVertextParams[] = [];
   const pedges: IEdgeParams[] = [];
   const paths: IPathParams[][] = [];
@@ -92,7 +106,7 @@ export const formatPathResponse = (params: {
       for (const cp of currentPath) {
         const { identity, src, dst, label_id, temporal_id, label } = cp;
         // src & dst 都存在，则为边
-        if (src === 0 || src && dst) {
+        if (src === 0 || (src && dst)) {
           const edgeId = `${src}_${label_id}_${temporal_id}_${dst}_${identity}`;
           const hasEdge = pedges.find((d: any) => d.id === edgeId);
           if (!hasEdge) {
@@ -108,24 +122,27 @@ export const formatPathResponse = (params: {
             pnodes.push(cp as unknown as IVertextParams);
           }
         }
-
       }
       // path
       paths.push(currentPath);
     }
   }
 
-  const nodes = formatVertexResponse(pnodes.map(d => {
-    return {
-      n: d,
-    };
-  }) as unknown as IVertextParams[]);
+  const nodes = formatVertexResponse(
+    pnodes.map((d) => {
+      return {
+        n: d,
+      };
+    }) as unknown as IVertextParams[]
+  );
 
-  const { edges } = formatEdgeResponse(pedges.map(d => {
-    return {
-      e: d,
-    };
-  }) as unknown as IEdgeParams[]);
+  const { edges } = formatEdgeResponse(
+    pedges.map((d) => {
+      return {
+        e: d,
+      };
+    }) as unknown as IEdgeParams[]
+  );
 
   return {
     nodes,
@@ -154,11 +171,13 @@ export const formatMultipleResponse = (params: IMultipleParams[]) => {
         paths.push({
           p: current as any,
         });
-      } else if (Object.prototype.toString.call(current) === '[object Object]') {
+      } else if (
+        Object.prototype.toString.call(current) === '[object Object]'
+      ) {
         // vertex or edge
         const { identity, src, dst, label_id, temporal_id, label } = current;
         // src & dst 都存在，则为边
-        if (src === 0 || src && dst) {
+        if (src === 0 || (src && dst)) {
           const edgeId = `${src}_${label_id}_${temporal_id}_${dst}_${identity}`;
           const hasEdge = edges.find((d: any) => d.id === edgeId);
           if (!hasEdge) {
@@ -183,35 +202,43 @@ export const formatMultipleResponse = (params: IMultipleParams[]) => {
     }
   }
 
-  const multiNodes = formatVertexResponse(nodes.map(d => {
-    return {
-      n: d,
-    };
-  }) as unknown as IVertextParams[]);
+  const multiNodes = formatVertexResponse(
+    nodes.map((d) => {
+      return {
+        n: d,
+      };
+    }) as unknown as IVertextParams[]
+  );
 
-  const { nodes: nodeFromEdge, edges: multiEdges } = formatEdgeResponse(edges.map(d => {
-    return {
-      e: d,
-    };
-  }) as unknown as IEdgeParams[]);
+  const { nodes: nodeFromEdge, edges: multiEdges } = formatEdgeResponse(
+    edges.map((d) => {
+      return {
+        e: d,
+      };
+    }) as unknown as IEdgeParams[]
+  );
 
-  const multiNodeIds = multiNodes.map(d => d.id);
-  const multiEdgeIds = multiEdges.map(d => d.id);
-  const { nodes: graphNodes, edges: graphEdges, paths: graphPaths } = formatPathResponse(paths);
+  const multiNodeIds = multiNodes.map((d) => d.id);
+  const multiEdgeIds = multiEdges.map((d) => d.id);
+  const {
+    nodes: graphNodes,
+    edges: graphEdges,
+    paths: graphPaths,
+  } = formatPathResponse(paths);
 
-  graphNodes.forEach(d => {
+  graphNodes.forEach((d) => {
     if (!multiNodeIds.includes(d.id)) {
       multiNodes.push(d);
     }
   });
 
-  nodeFromEdge.forEach(d => {
+  nodeFromEdge.forEach((d) => {
     if (!multiNodeIds.includes(d.id)) {
       multiNodes.push(d);
     }
   });
 
-  graphEdges.forEach(d => {
+  graphEdges.forEach((d) => {
     if (!multiEdgeIds.includes(d.id)) {
       multiEdges.push(d);
     }

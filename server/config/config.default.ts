@@ -8,11 +8,15 @@ export default (appInfo: EggAppInfo) => {
   config.keys = appInfo.name + '_graphinsight_375A';
 
   // add your egg config in here
-  config.middleware = [];
+  config.middleware = ['errorHandler'];
+
+  config.errorHandler = {
+    enable: true,
+  };
 
   config.multipart = {
     mode: 'file',
-    whitelist: [ '.csv', '.txt' ],
+    whitelist: ['.csv', '.txt'],
     // 表单 Field 文件名长度限制
     fieldNameSize: 10000,
     // 表单 Field 内容大小
@@ -34,7 +38,7 @@ export default (appInfo: EggAppInfo) => {
   };
 
   config.cors = {
-    origin: '*',
+    origin: (ctx) => ctx.get('origin'),
     credentials: true,
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
   };
@@ -43,6 +47,12 @@ export default (appInfo: EggAppInfo) => {
     defaultViewEngine: 'nunjucks',
     mapping: {
       '.html': 'nunjucks',
+    },
+  };
+
+  config.cluster = {
+    listen: {
+      port: 8001,
     },
   };
 
