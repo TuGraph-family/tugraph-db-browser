@@ -52,12 +52,9 @@
   "ci": {
     "version": "14, 16, 18"
   },
-  "repository": "https://code.alipay.com/fma/tugraph-db-browser.git",
   "eslintIgnore": [
     "coverage"
   ],
-  "author": "baizn",
-  "license": "MIT",
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true
 }

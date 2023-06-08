@@ -40,7 +40,7 @@ export const PluginBlockInitializer = (props) => {
 };
 
 export default React.memo((props) => {
-  const items = useContext(SchemaInitializerContext);
+  const items = useContext(SchemaInitializerContext) as any;
   const children = items?.BlockInitializers?.items?.[1]?.children ?? [];
 
   const hasCustomBlock = children?.find(
