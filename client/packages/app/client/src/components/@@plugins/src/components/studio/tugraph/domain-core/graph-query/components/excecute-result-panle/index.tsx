@@ -1,5 +1,5 @@
 import { Tag, Tooltip } from 'antd';
-import { find, omit } from 'lodash';
+import { find, join, omit } from 'lodash';
 import React, { useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import IconFont from '../../../../components/icon-font';
@@ -27,7 +27,7 @@ interface ExcecuteHistoryProps {
   queryResultList: Array<ExcecuteResultProp & { id?: string }>;
   efficiencyResult?: any[];
   planResult?: any[];
-  onResultClose?: (resultIndex: string) => void;
+  onResultClose?: (resultIndex?: string) => void;
   graphName: string;
   graphData: GraphData;
 }
@@ -40,7 +40,7 @@ const ExcecuteResultPanle: React.FC<ExcecuteHistoryProps> = ({
 }) => {
   const [state, setState] = useImmer<{
     tabs: TextTabsTab<string>[];
-    activeTab: string;
+    activeTab?: string;
     isFullView: boolean;
     activeResult?: ExcecuteResultProp;
     modalOpen: boolean;
@@ -74,11 +74,6 @@ const ExcecuteResultPanle: React.FC<ExcecuteHistoryProps> = ({
       default:
         return (
           <>
-            {activeResult?.requestTime && (
-              <div className={styles[`${PUBLIC_PERFIX_CLASS}-time`]}>
-                执行耗时（ms）：{`${activeResult?.requestTime}`}
-              </div>
-            )}
             <Tooltip
               title="插入数据"
               placement={!isFullView ? 'top' : 'bottom'}
@@ -148,12 +143,15 @@ const ExcecuteResultPanle: React.FC<ExcecuteHistoryProps> = ({
   }, [queryResultList]);
   return (
     <div
-      className={[
-        styles[`${PUBLIC_PERFIX_CLASS}-excecute-history`],
-        isFullView
-          ? styles[`${PUBLIC_PERFIX_CLASS}-excecute-history__full`]
-          : '',
-      ].join(' ')}
+      className={join(
+        [
+          styles[`${PUBLIC_PERFIX_CLASS}-excecute-history`],
+          isFullView
+            ? styles[`${PUBLIC_PERFIX_CLASS}-excecute-history__full`]
+            : '',
+        ],
+        ' '
+      )}
     >
       <TextTabs
         type="card"

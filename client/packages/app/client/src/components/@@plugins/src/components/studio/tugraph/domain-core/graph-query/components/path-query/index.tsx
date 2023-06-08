@@ -38,10 +38,10 @@ export const PathQueryPanel: React.FC<Prop> = ({
     conditions: [],
   });
   const { pathList, selectPath, open, limit, conditions } = state;
-  const nodeDiv = (n) => (
+  const nodeDiv = (n: string) => (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-node`]}>{n}</div>
   );
-  const edgeDiv = (r) => (
+  const edgeDiv = (r: string) => (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-edge`]}>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-edge-left`]}></div>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-edge-canter`]}>{r}</div>
@@ -68,7 +68,7 @@ export const PathQueryPanel: React.FC<Prop> = ({
                 const clickItem = last(
                   find(pathList, (item, index) => val === index)
                 );
-                if (clickItem.source === clickItem.target) {
+                if (clickItem?.source === clickItem?.target) {
                   draft.pathList = [
                     [
                       ...find(pathList, (item, index) => val === index),
@@ -79,7 +79,7 @@ export const PathQueryPanel: React.FC<Prop> = ({
                 } else {
                   const optionPath = filter(
                     edges,
-                    (item) => item.source === clickItem.target
+                    (item) => item.source === clickItem?.target
                   );
                   draft.selectPath = [...pathList[val]];
                   draft.pathList = map(optionPath, (item) => [

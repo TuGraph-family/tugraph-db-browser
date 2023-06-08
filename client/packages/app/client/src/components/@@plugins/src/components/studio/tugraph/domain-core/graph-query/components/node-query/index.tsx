@@ -1,5 +1,5 @@
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, Select, Tabs } from 'antd';
-import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import { filter, find, flatMapDeep, map, toArray } from 'lodash';
 import React from 'react';
 import { useImmer } from 'use-immer';
@@ -9,7 +9,6 @@ import { useVisible } from '../../../../hooks/useVisible';
 import { Condition } from '../../../../interface/query';
 import { getConnectOptions } from '../../utils/getConnectOptions';
 
-import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import styles from './index.module.less';
 
 const { Item } = Form;
@@ -26,13 +25,13 @@ type Prop = {
   nodeQuery: (
     limit: number,
     conditions: Array<Condition>,
-    nodes: Array<CheckboxValueType>
+    nodes: Array<string>
   ) => void;
 };
 export const NodeQuery: React.FC<Prop> = ({ nodes, nodeQuery }) => {
   const { visible, onShow, onClose } = useVisible({ defaultVisible: true });
   const [state, updateState] = useImmer<{
-    nodeCheckedList: Array<CheckboxValueType>;
+    nodeCheckedList: Array<string>;
     activeKey: string;
     isShow: boolean;
   }>({
@@ -43,7 +42,7 @@ export const NodeQuery: React.FC<Prop> = ({ nodes, nodeQuery }) => {
   const { nodeCheckedList, activeKey, isShow } = state;
   const [form] = Form.useForm();
   const [nodeForm] = Form.useForm();
-  const nodeChange = (list: CheckboxValueType[]) => {
+  const nodeChange = (list: string[]) => {
     updateState((draft) => {
       draft.indeterminate = !!list.length && list.length < nodes.length;
       draft.nodeCheckedList = [...list];

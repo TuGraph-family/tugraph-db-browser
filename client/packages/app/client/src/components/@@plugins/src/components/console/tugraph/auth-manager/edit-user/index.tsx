@@ -28,7 +28,7 @@ const EditAuthModal: React.FC<Prop> = ({
   const [form] = Form.useForm();
   const [state, setState] = useImmer<{
     roleList?: Array<string>;
-    refreshList: () => void;
+    refreshList?: () => void;
     isAdmin: boolean;
     rawRoleData?: Array<string>;
   }>({
@@ -53,7 +53,7 @@ const EditAuthModal: React.FC<Prop> = ({
           message.success('创建成功');
           onCancel();
           form.resetFields();
-          refreshList();
+          refreshList?.();
         } else {
           message.error('创建失败');
         }
@@ -67,7 +67,7 @@ const EditAuthModal: React.FC<Prop> = ({
           message.success('修改成功');
           onCancel();
           form.resetFields();
-          refreshList();
+          refreshList?.();
         } else {
           message.error('修改失败');
         }
@@ -153,7 +153,7 @@ const EditAuthModal: React.FC<Prop> = ({
               ) {
                 form.setFieldsValue({ roles: [e.target.value] });
                 setState((draft) => {
-                  draft.roleList = [...rawRoleData, e.target.value];
+                  draft.roleList = [...(rawRoleData || []), e.target.value];
                 });
               }
               if (!e.target.value && roleList?.length !== rawRoleData?.length) {

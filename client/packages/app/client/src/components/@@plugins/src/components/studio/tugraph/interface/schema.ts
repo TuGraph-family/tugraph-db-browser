@@ -11,37 +11,38 @@ export interface IndexParams {
   labelName: string;
   propertyName: string;
   isUnique?: boolean;
+  primaryField: boolean;
 }
 
 export interface LabelSchema {
   graphName: string;
   labelType: LabelType;
   labelName: string;
-  properties?: SchemaProperties[];
-  primaryField?: string;
-  edgeConstraints?: Array<any>;
-  indexs?: IndexParams[];
+  properties: SchemaProperties[];
+  primaryField: string;
+  edgeConstraints: Array<any>;
+  indexs: IndexParams[];
 }
 
 export interface StartData {
-  id?: string | number;
-  source?: string;
-  target?: string;
+  id: string | number;
+  source: string;
+  target: string;
   disabled?: string;
 }
 export interface AttrData {
-  id?: string | number;
-  name?: string;
-  type?: string;
-  optional?: boolean;
+  id: string | number;
+  name: string;
+  type: string;
+  optional: boolean;
   disabled?: boolean;
 }
 export interface IndexData {
-  id?: string | number;
-  index?: string;
-  isUnique?: boolean;
-  primaryField?: string;
-  propertyName?: string;
+  id: string | number;
+  index: string;
+  isUnique: boolean;
+  primaryField: string;
+  propertyName: string;
   disabled?: boolean;
 }
 export type NodeIndexProp = {

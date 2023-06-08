@@ -17,9 +17,9 @@ type Prop = {
   type: 'node' | 'edge';
   data?: any;
   labelName: string;
-  currentGraphName?: string;
+  currentGraphName: string;
   onRefreshSchema?: () => void;
-  onSwitch?: (onShow, onClose) => void;
+  onSwitch?: (onShow: () => void, onClose: () => void) => void;
 };
 type EditColumnsType<T> = ColumnsType & {
   inputType?: string;
@@ -60,7 +60,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
   const { startList, attrList, configList, currentAttrList } = state;
   const isNode = type === 'node';
   useEffect(() => {
-    onSwitch(onShow, onClose);
+    onSwitch?.(onShow, onClose);
   }, []);
   const propertyList = () => {
     const attrPropertyNames = map(
@@ -76,7 +76,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
       (item) => ({ label: item, value: item })
     );
   };
-  const operateEdit = (record) => {
+  const operateEdit = (record: AttrData) => {
     return (
       <>
         <Button
@@ -113,7 +113,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
       </>
     );
   };
-  const operateCancel = (record) => {
+  const operateCancel = (record: AttrData) => {
     return (
       <>
         <Button
@@ -156,7 +156,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
       </>
     );
   };
-  const indexOperateCancel = (record) => {
+  const indexOperateCancel = (record: IndexData) => {
     return (
       <div style={{ display: 'flex' }}>
         <Button
@@ -182,7 +182,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
       </div>
     );
   };
-  const indexOperateDelete = (record) => {
+  const indexOperateDelete = (record: IndexData) => {
     return (
       <Popconfirm
         disabled={isPrimaryField(record.propertyName) || false}
@@ -210,7 +210,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
       dataIndex: 'source',
       key: 'source',
       editable: true,
-      editorConfig: (record) => {
+      editorConfig: (record: StartData) => {
         return {
           inputType: EditType.SELECT,
           prop: {
@@ -227,7 +227,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
       dataIndex: 'target',
       key: 'target',
       editable: true,
-      editorConfig: (record) => {
+      editorConfig: (record: StartData) => {
         return {
           inputType: EditType.SELECT,
           prop: {
@@ -250,7 +250,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
       ),
     },
   ];
-  const defaultColumns: EditColumnsType<any> = [
+  const defaultColumns: EditColumnsType<AttrData> = [
     {
       title: (
         <>
@@ -264,7 +264,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
       dataIndex: 'name',
       key: 'name',
       editable: true,
-      editorConfig: (record) => {
+      editorConfig: (record: AttrData) => {
         return {
           inputType: EditType.INPUT,
           prop: {
@@ -279,7 +279,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
       width: '20%',
       key: 'type',
       editable: true,
-      editorConfig: (record) => {
+      editorConfig: (record: AttrData) => {
         return {
           inputType: EditType.SELECT,
           prop: { options: DATA_TYPE, disabled: record.disabled },
@@ -292,7 +292,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
       width: '20%',
       key: 'optional',
       editable: true,
-      editorConfig: (record) => {
+      editorConfig: (record: AttrData) => {
         return {
           inputType: EditType.SELECT,
           prop: {
@@ -314,14 +314,14 @@ export const EditNodesEdges: React.FC<Prop> = ({
         !record.disabled ? operateCancel(record) : operateEdit(record),
     },
   ];
-  const nodeConfigColumns: EditColumnsType<any> = [
+  const nodeConfigColumns: EditColumnsType<IndexData> = [
     {
       title: '索引',
       width: '15%',
       dataIndex: 'index',
       key: 'index',
       editable: true,
-      editorConfig: (record) => {
+      editorConfig: (record: IndexData) => {
         return {
           inputType: EditType.INPUT,
           prop: {
@@ -336,7 +336,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
       width: '20%',
       key: 'propertyName',
       editable: true,
-      editorConfig: (record) => {
+      editorConfig: (record: IndexData) => {
         return {
           inputType: EditType.SELECT,
           prop: {
@@ -352,7 +352,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
       width: '17.5%',
       key: 'isUnique',
       editable: true,
-      editorConfig: (record) => {
+      editorConfig: (record: IndexData) => {
         if (!record.index) {
           record.isUnique = false;
         }
@@ -381,7 +381,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
       width: '17.5%',
       key: 'primaryField',
       editable: true,
-      editorConfig: (record) => {
+      editorConfig: (record: IndexData) => {
         return {
           inputType: EditType.SELECT,
           prop: {
@@ -417,16 +417,16 @@ export const EditNodesEdges: React.FC<Prop> = ({
       </Button>
     );
   };
-  const findLabelItem = (labelName) => {
+  const findLabelItem = (labelName: string) => {
     return find(
       type === 'node' ? data.nodes : data.edges,
       (item) => item.labelName === labelName
     );
   };
-  const isPrimaryField = (name) => {
+  const isPrimaryField = (name: string) => {
     return name === findLabelItem(labelName)?.primaryField;
   };
-  const deleteProperty = (record) => {
+  const deleteProperty = (record: AttrData) => {
     onDeleteLabelPropertySchema({
       graphName: currentGraphName,
       labelName,
@@ -441,7 +441,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
               ...attrList.filter((item) => item.id !== record?.id),
             ];
           });
-          onRefreshSchema();
+          onRefreshSchema?.();
         } else {
           message.error('属性删除失败' + res.errorMessage);
         }
@@ -450,7 +450,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
         message.error('属性删除失败' + res.errorMessage);
       });
   };
-  const editProperty = (record) => {
+  const editProperty = (record: AttrData) => {
     onEditLabelPropertySchema({
       graphName: currentGraphName,
       labelName,
@@ -473,7 +473,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
               }),
             ];
           });
-          onRefreshSchema();
+          onRefreshSchema?.();
         } else {
           message.error('属性修改失败' + res.errorMessage);
         }
@@ -482,7 +482,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
         message.error('属性修改失败' + res.errorMessage);
       });
   };
-  const createProperty = (record) => {
+  const createProperty = (record: AttrData) => {
     onCreateLabelPropertySchema({
       graphName: currentGraphName,
       labelName,
@@ -505,7 +505,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
               }),
             ];
           });
-          onRefreshSchema();
+          onRefreshSchema?.();
         } else {
           message.error('属性添加失败' + res.errorMessage);
         }
@@ -514,7 +514,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
         message.error('属性添加失败' + res.errorMessage);
       });
   };
-  const createIndex = (record) => {
+  const createIndex = (record: IndexData) => {
     onCreateIndexSchema({
       propertyName: record.propertyName,
       graphName: currentGraphName,
@@ -544,7 +544,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
         message.error('索引添加失败' + res.errorMessage);
       });
   };
-  const deleteIndex = (record) => {
+  const deleteIndex = (record: IndexData) => {
     onDeleteIndexSchema({
       propertyName: record.propertyName,
       graphName: currentGraphName,
@@ -558,7 +558,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
               ...configList.filter((item) => item.id !== record?.id),
             ];
           });
-          onRefreshSchema();
+          onRefreshSchema?.();
         } else {
           message.error('索引删除失败' + res.errorMessage);
         }

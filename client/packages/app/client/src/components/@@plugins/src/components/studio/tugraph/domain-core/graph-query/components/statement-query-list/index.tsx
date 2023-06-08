@@ -5,7 +5,7 @@ import {
   PlusSquareOutlined,
 } from '@ant-design/icons';
 import { Input, Popconfirm, Select, Tooltip } from 'antd';
-import { filter, map, omit } from 'lodash';
+import { filter, join, map, omit } from 'lodash';
 import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import SearchInput from '../../../../components/search-input';
@@ -70,7 +70,7 @@ export const StatementList: React.FC<Prop> = ({
       });
     });
   };
-  const editStatement = (id) => {
+  const editStatement = (id: string) => {
     updateState((draft) => {
       const newList = map(queryList, (item) => {
         if (item.id === id) {
@@ -85,7 +85,7 @@ export const StatementList: React.FC<Prop> = ({
       });
     });
   };
-  const deleteStatement = (id) => {
+  const deleteStatement = (id: string) => {
     updateState((draft) => {
       const newList = filter(queryList, (item) => item.id !== id);
       draft.queryList = newList;
@@ -95,7 +95,7 @@ export const StatementList: React.FC<Prop> = ({
       });
     });
   };
-  const searchStatement = (searchKeyword) => {
+  const searchStatement = (searchKeyword: string) => {
     updateState((draft) => {
       draft.queryList = filter(
         getLocalData('TUGRAPH_STATEMENT_LISTS')[garphName],
@@ -149,16 +149,19 @@ export const StatementList: React.FC<Prop> = ({
               {map(queryList, (item) => (
                 <div
                   key={item.id}
-                  className={[
-                    styles[
-                      `${PUBLIC_PERFIX_CLASS}-statement-drawer-content-list-item`
+                  className={join(
+                    [
+                      styles[
+                        `${PUBLIC_PERFIX_CLASS}-statement-drawer-content-list-item`
+                      ],
+                      activeId === item.id
+                        ? styles[
+                            `${PUBLIC_PERFIX_CLASS}-statement-drawer-content-list-active`
+                          ]
+                        : '',
                     ],
-                    activeId === item.id
-                      ? styles[
-                          `${PUBLIC_PERFIX_CLASS}-statement-drawer-content-list-active`
-                        ]
-                      : '',
-                  ].join(' ')}
+                    ' '
+                  )}
                   onClick={() => {
                     updateState((draft) => {
                       draft.activeId = item.id;
@@ -232,7 +235,7 @@ export const StatementList: React.FC<Prop> = ({
                     <Popconfirm
                       title="确定要删除吗？"
                       onConfirm={(e) => {
-                        e.stopPropagation();
+                        e?.stopPropagation();
                         deleteStatement(item.id);
                       }}
                       okText="确定"

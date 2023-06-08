@@ -1,10 +1,11 @@
+import { map } from 'lodash';
 import { SubGraph } from '../interface/graph';
 
 export const getGraphListTranslator = (graphList: SubGraph[]) => {
   if (graphList?.length === 0) {
     return [];
   }
-  return graphList.map((graph: SubGraph) => {
+  return map(graphList, (graph: SubGraph) => {
     return {
       isStatistics: false,
       description: graph.configuration?.description,

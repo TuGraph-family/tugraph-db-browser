@@ -1,7 +1,6 @@
 import { CaretDownOutlined } from '@ant-design/icons';
 import { Badge, Button, Collapse, Popconfirm, Space, Tooltip } from 'antd';
 import { filter, map } from 'lodash';
-import React from 'react';
 import { PUBLIC_PERFIX_CLASS } from '../../../constant';
 import { FileData } from '../../../interface/import';
 import { GraphData } from '../../../interface/schema';
@@ -22,15 +21,20 @@ export const ImportDataConfig = (prop: ImportDataConfigProps) => {
   const { fileDataList = [], setFileDataList, graphData, isFullView } = prop;
 
   const handleDelete = (fileName: string) => {
-    const newFileList = filter(fileDataList, (item: FileData) => item.fileName !== fileName);
-    setFileDataList(newFileList);
+    const newFileList = filter(
+      fileDataList,
+      (item: FileData) => item.fileName !== fileName
+    );
+    setFileDataList?.(newFileList);
   };
 
   return (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-collapse`]}>
       <Collapse
         defaultActiveKey={['1']}
-        expandIcon={({ isActive }) => <CaretDownOutlined rotate={isActive ? 0 : -90} />}
+        expandIcon={({ isActive }) => (
+          <CaretDownOutlined rotate={isActive ? 0 : -90} />
+        )}
       >
         {map(fileDataList, (fileData, index) => {
           return (
@@ -43,20 +47,50 @@ export const ImportDataConfig = (prop: ImportDataConfigProps) => {
                     <>
                       <div>文件名：{fileData?.fileName}</div>
                       <div>文件大小：{fileData?.formateSize}</div>
-                      <div className={styles[`${PUBLIC_PERFIX_CLASS}-collapse-status`]}>
-                        读取结果： <Badge status={fileData?.status} text={fileData?.status} />
+                      <div
+                        className={
+                          styles[`${PUBLIC_PERFIX_CLASS}-collapse-status`]
+                        }
+                      >
+                        读取结果：{' '}
+                        <Badge
+                          status={fileData?.status}
+                          text={fileData?.status}
+                        />
                       </div>
                     </>
                   ) : (
                     <>
-                      <div className={styles[`${PUBLIC_PERFIX_CLASS}-collapse-name`]}>
-                        文件名： <Tooltip title={fileData?.fileName}>{fileData?.fileName}</Tooltip>
+                      <div
+                        className={
+                          styles[`${PUBLIC_PERFIX_CLASS}-collapse-name`]
+                        }
+                      >
+                        文件名：{' '}
+                        <Tooltip title={fileData?.fileName}>
+                          {fileData?.fileName}
+                        </Tooltip>
                       </div>
-                      <div className={styles[`${PUBLIC_PERFIX_CLASS}-collapse-size`]}>
-                        文件大小： <Tooltip title={fileData?.formateSize}>{fileData?.formateSize}</Tooltip>
+                      <div
+                        className={
+                          styles[`${PUBLIC_PERFIX_CLASS}-collapse-size`]
+                        }
+                      >
+                        文件大小：{' '}
+                        <Tooltip title={fileData?.formateSize}>
+                          {fileData?.formateSize}
+                        </Tooltip>
                       </div>
-                      <div className={styles[`${PUBLIC_PERFIX_CLASS}-collapse-status`]}>
-                        读取结果： <Badge status={fileData?.status} text={fileData?.status} />
+                      <div
+                        className={
+                          styles[`${PUBLIC_PERFIX_CLASS}-collapse-status`]
+                        }
+                      >
+                        读取结果：{' '}
+                        <Badge
+                          status={fileData?.status}
+                          text={fileData?.status}
+                        />
                       </div>
                     </>
                   )}

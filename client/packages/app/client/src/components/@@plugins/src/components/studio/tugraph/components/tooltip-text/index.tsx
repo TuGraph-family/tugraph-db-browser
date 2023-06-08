@@ -1,5 +1,6 @@
 import { message, Tooltip, TooltipProps } from 'antd';
 import copy from 'copy-to-clipboard';
+import { join } from 'lodash';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
 
@@ -34,16 +35,16 @@ export const TooltipText: FC<TooltipTextProps> = ({
     >
       <Tooltip
         title={text}
-        {...tooltipProps}
         overlayInnerStyle={{
           maxHeight: '300px',
           overflowY: 'auto',
           color: 'black',
         }}
         color="white"
+        {...tooltipProps}
       >
         <span
-          className={['tooltip-text', styles['tooltip-text']].join(' ')}
+          className={join(['tooltip-text', styles['tooltip-text']], ' ')}
           style={{
             maxWidth,
             color: 'rgba(22,119,255,1)',

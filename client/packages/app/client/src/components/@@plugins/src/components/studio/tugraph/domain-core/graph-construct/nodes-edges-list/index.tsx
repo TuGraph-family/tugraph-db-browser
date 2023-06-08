@@ -1,34 +1,44 @@
 import { DeleteOutlined } from '@ant-design/icons';
 import { Popconfirm, Tooltip, message } from 'antd';
 import copy from 'copy-to-clipboard';
+import { filter, join } from 'lodash';
 import React, { useEffect, useMemo } from 'react';
 import { useImmer } from 'use-immer';
+import IconFont from '../../../components/icon-font';
 import SearchInput from '../../../components/search-input';
 import SwitchDrawer from '../../../components/switch-drawer';
 import TextTabs from '../../../components/text-tabs';
 import { PUBLIC_PERFIX_CLASS } from '../../../constant';
 import { useVisible } from '../../../hooks/useVisible';
 
-import IconFont from '../../../components/icon-font';
 import styles from './index.module.less';
+interface NodeProp {
+  id: string;
+  label: string;
+  type: string;
+  style: any;
+  labelName: string;
+}
+interface EdgeProp {
+  id?: string;
+  label?: string;
+  type?: string;
+  style: any;
+  source: string;
+  target: string;
+  labelName: string;
+}
 
 export type NodesEdgesListTab = 'node' | 'edge';
 export interface NodesEdgesListProps {
-  onClick: (value?: any, activeTab?: 'node' | 'edge') => void;
+  onClick: (value?: any, activeTab?: string) => void;
   graphName: string;
   currentStep?: number;
   data?: {
-    nodes: Array<{ id: string; label: string; type: string; style: any }>;
-    edges: Array<{
-      id?: string;
-      label?: string;
-      type?: string;
-      style: any;
-      source: string;
-      target: string;
-    }>;
+    nodes: Array<NodeProp>;
+    edges: Array<EdgeProp>;
   };
-  onDelete?: (labelName: string, type?: 'node' | 'edge') => void;
+  onDelete?: (labelName: string, type?: string) => void;
   isActiveItem?: boolean;
 }
 
@@ -43,16 +53,9 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
   const { visible, onShow, onClose } = useVisible({ defaultVisible: true });
   const [state, setState] = useImmer<{
     activeElementId?: string;
-    activeTab: NodesEdgesListTab;
-    nodes: Array<{ id: string; label: string; type: string; style: any }>;
-    edges: Array<{
-      id?: string;
-      label?: string;
-      type?: string;
-      style: any;
-      source: string;
-      target: string;
-    }>;
+    activeTab: string;
+    nodes: Array<NodeProp>;
+    edges: Array<EdgeProp>;
     nodesTotal: number;
     edgeTotal: number;
   }>({
@@ -62,8 +65,14 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
     nodesTotal: data.nodes.length,
     edgeTotal: data.edges.length,
   });
-  const { activeElementId, activeTab, edges, nodes, nodesTotal, edgeTotal } =
-    state;
+  const {
+    activeElementId,
+    activeTab,
+    edges,
+    nodes,
+    nodesTotal,
+    edgeTotal,
+  } = state;
   useEffect(() => {
     setState((draft) => {
       draft.nodesTotal = data.nodes.length;
@@ -104,17 +113,17 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
                 key: 'node',
                 text: (
                   <div
-                    className={[
-                      styles[`${PUBLIC_PERFIX_CLASS}-title`],
-                      'title',
-                    ].join(' ')}
+                    className={join(
+                      [styles[`${PUBLIC_PERFIX_CLASS}-title`], 'title'],
+                      ' '
+                    )}
                   >
                     点类型
                     <span
-                      className={[
-                        styles[`${PUBLIC_PERFIX_CLASS}-total`],
-                        'total',
-                      ].join(' ')}
+                      className={join(
+                        [styles[`${PUBLIC_PERFIX_CLASS}-total`], 'total'],
+                        ' '
+                      )}
                     >
                       {nodesTotal}
                     </span>
@@ -125,17 +134,17 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
                 key: 'edge',
                 text: (
                   <div
-                    className={[
-                      styles[`${PUBLIC_PERFIX_CLASS}-title`],
-                      'title',
-                    ].join(' ')}
+                    className={join(
+                      [styles[`${PUBLIC_PERFIX_CLASS}-title`], 'title'],
+                      ' '
+                    )}
                   >
                     边类型
                     <span
-                      className={[
-                        styles[`${PUBLIC_PERFIX_CLASS}-total`],
-                        'total',
-                      ].join(' ')}
+                      className={join(
+                        [styles[`${PUBLIC_PERFIX_CLASS}-total`], 'total'],
+                        ' '
+                      )}
                     >
                       {edgeTotal}
                     </span>
@@ -152,11 +161,13 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
             onChange={(e) => {
               setState((draft) => {
                 if (isNodeTab) {
-                  draft.nodes = data.nodes.filter(
+                  draft.nodes = filter(
+                    data.nodes,
                     (item) => item.labelName.indexOf(e.target.value) !== -1
                   );
                 } else {
-                  draft.edges = data.edges.filter(
+                  draft.edges = filter(
+                    data.edges,
                     (item) =>
                       (item.id || item.labelName).indexOf(e.target.value) !== -1
                   );
@@ -177,7 +188,7 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
                 );
               }
               return (
-                <div className={styleList.join(' ')} key={item.labelName}>
+                <div className={join(styleList, ' ')} key={item.labelName}>
                   <div
                     className={styles[`${PUBLIC_PERFIX_CLASS}-element-type`]}
                     onClick={() => {
@@ -207,8 +218,8 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
                       <Popconfirm
                         title="确定要删除吗"
                         onConfirm={(e) => {
-                          e.stopPropagation();
-                          onDelete(item.labelName, activeTab);
+                          e?.stopPropagation();
+                          onDelete?.(item.labelName, activeTab);
                         }}
                       >
                         <Tooltip title="删除">

@@ -40,10 +40,10 @@ export const PathModal: React.FC<PathModalProp> = ({
   const { path = [], nodes = [] } = data;
   const [state, updateState] = useImmer<{
     tabList: Array<{
-      label?: string;
-      key?: string;
-      children?: ReactNode;
-      name?: string;
+      label: string;
+      key: string;
+      children: ReactNode;
+      name: string;
       properties: Array<SchemaProperties>;
       id: string;
     }>;

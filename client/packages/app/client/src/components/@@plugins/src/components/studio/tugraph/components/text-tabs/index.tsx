@@ -1,4 +1,5 @@
 import { Tooltip } from 'antd';
+import { join, map } from 'lodash';
 import React, { useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import { PUBLIC_PERFIX_CLASS } from '../../constant';
@@ -53,31 +54,42 @@ export const TextTabs: React.FC<TextTabsProps> = ({
   );
   return (
     <div
-      className={[
-        styles[`${PUBLIC_PERFIX_CLASS}-text-tabs`],
-        styles[`${PUBLIC_PERFIX_CLASS}-text-tabs-${type}`],
-        'text-tabs',
-        `text-tabs-${type}`,
-        styles[`${PUBLIC_PERFIX_CLASS}-text-tabs-${autoWidth ? '' : 'inline'}`],
-      ].join(' ')}
+      className={join(
+        [
+          styles[`${PUBLIC_PERFIX_CLASS}-text-tabs`],
+          styles[`${PUBLIC_PERFIX_CLASS}-text-tabs-${type}`],
+          'text-tabs',
+          `text-tabs-${type}`,
+          styles[
+            `${PUBLIC_PERFIX_CLASS}-text-tabs-${autoWidth ? '' : 'inline'}`
+          ],
+        ],
+        ' '
+      )}
     >
-      {tabs.map((tab) => {
+      {map(tabs, (tab) => {
         const { disabled, key, text } = tab;
         const isActiveTab = state.activeTab === key;
         return (
           <div
             className={
               isActiveTab
-                ? [
-                    styles[`${PUBLIC_PERFIX_CLASS}-text-tabs-item`],
-                    styles[`${PUBLIC_PERFIX_CLASS}-text-tabs-item-active`],
-                    'text-tabs-item',
-                    'text-tabs-item-active',
-                  ].join(' ')
-                : [
-                    styles[`${PUBLIC_PERFIX_CLASS}-text-tabs-item`],
-                    'text-tabs-item',
-                  ].join(' ')
+                ? join(
+                    [
+                      styles[`${PUBLIC_PERFIX_CLASS}-text-tabs-item`],
+                      styles[`${PUBLIC_PERFIX_CLASS}-text-tabs-item-active`],
+                      'text-tabs-item',
+                      'text-tabs-item-active',
+                    ],
+                    ' '
+                  )
+                : join(
+                    [
+                      styles[`${PUBLIC_PERFIX_CLASS}-text-tabs-item`],
+                      'text-tabs-item',
+                    ],
+                    ' '
+                  )
             }
             key={key}
             onClick={disabled ? undefined : () => onTabClick(tab)}
