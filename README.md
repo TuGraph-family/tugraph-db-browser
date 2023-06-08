@@ -9,12 +9,11 @@ yarn run bootstrap
 
 
 2. 项目编译
-ß∂ßß
 ```bash
 yarn run build
 ```
 
-3. 启动项目
+1. 启动项目
 
 ```bash
 yarn run start
