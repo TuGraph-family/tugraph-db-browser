@@ -125,17 +125,24 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                   });
                   if (res.success) {
                     onImportProgress(res.data.taskId).then((res) => {
-                      if (res.success === 0) {
-                        message.success('模版创建成功');
-                        importProgressCancel();
-                        setState((draft) => {
-                          draft.loading = false;
-                        });
-                        onGetGraphList({
-                          userName: getLocalData('TUGRAPH_USER_NAME'),
-                        });
-                        form.resetFields();
-                        onClose();
+                      if (res.errorCode == 200) {
+                        if (res.data.state === '2') {
+                          message.success('模版创建成功');
+                          importProgressCancel();
+                          setState((draft) => {
+                            draft.loading = false;
+                          });
+                          onGetGraphList({
+                            userName: getLocalData('TUGRAPH_USER_NAME'),
+                          });
+                          form.resetFields();
+                          onClose();
+                        } else if (res.data.state === '3') {
+                          message.error('模版创建失败' + res.data.reason);
+                          setState((draft) => {
+                            draft.loading = false;
+                          });
+                        }
                       }
                     });
                   } else {

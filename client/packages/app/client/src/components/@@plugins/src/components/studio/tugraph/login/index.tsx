@@ -30,11 +30,11 @@ export const Login = (props: PluginPorps) => {
     if (values) {
       try {
         onLogin(values).then((res) => {
-          if (res.success) {
+          if (res.errorCode == 200) {
             message.success('登录成功！');
             setLocalData('TUGRAPH_TOKEN', res.data.authorization);
-            setLocalData('TUGRAPH_USER_NAME', values.username);
-            if (values.username === 'admin') {
+            setLocalData('TUGRAPH_USER_NAME', values.userName);
+            if (values.userName === 'admin') {
               switchRole('root', redirectPath?.[0]?.path ?? '/');
             } else {
               switchRole('member', redirectPath?.[0]?.path ?? '/');
@@ -84,7 +84,7 @@ export const Login = (props: PluginPorps) => {
             className={styles[`${PUBLIC_PERFIX_CLASS}-form-style`]}
           >
             <Item
-              name="username"
+              name="userName"
               rules={[
                 {
                   required: true,

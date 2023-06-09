@@ -43,8 +43,6 @@ export const AccountManager: React.FC<Prop> = ({ getRefreshList }) => {
             permissions: item.user_info.permissions,
           }));
         });
-      } else {
-        message.error(res.errorMessage);
       }
     });
   };
@@ -75,11 +73,6 @@ export const AccountManager: React.FC<Prop> = ({ getRefreshList }) => {
                   if (res.success) {
                     message.success(`${record.disabled ? '启用' : '禁用'}成功`);
                     getAuthList();
-                  } else {
-                    message.error(
-                      `${record.disabled ? '启用' : '禁用'}失败` +
-                        res.errorMessage
-                    );
                   }
                 });
               }}

@@ -340,7 +340,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
       const data = {
         ...currentData,
         nodes: [
-          ...currentData?.nodes,
+          ...(currentData?.nodes || []),
           { id: `${new Date().getTime()}`, label: labelName, properties },
         ],
       };
@@ -402,7 +402,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
       const data = {
         ...currentData,
         edges: [
-          ...currentData?.edges,
+          ...(currentData?.edges || []),
           {
             id: `${new Date().getTime()}`,
             label: labelName,

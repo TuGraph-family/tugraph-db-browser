@@ -18,8 +18,8 @@ import {
   ICreateSchemaParams,
   IDeleteSchemaParams,
   IIndexParams,
-  IUpdateSchemaParams,
   ISchemaParams,
+  IUpdateSchemaParams,
 } from './interface';
 
 class TuGraphSchemaService extends Service {
@@ -75,8 +75,7 @@ class TuGraphSchemaService extends Service {
       timeout: [30000, 50000],
       dataType: 'json',
     });
-
-    if (result.data.success !== 0) {
+    if (result.data.errorCode != 200) {
       return {
         code: 200,
         errorCode: result.data.errorCode,
@@ -403,8 +402,7 @@ class TuGraphSchemaService extends Service {
       timeout: [30000, 50000],
       dataType: 'json',
     });
-
-    if (nodeResult.status !== 200 || nodeResult.data.success !== 0) {
+    if (nodeResult.status !== 200 || nodeResult.data.errorCode != 200) {
       return {
         success: false,
         code: nodeResult.status,
@@ -474,10 +472,11 @@ class TuGraphSchemaService extends Service {
       dataType: 'json',
     });
 
-    if (vertexResult.status !== 200 || vertexResult.data.success !== 0) {
+    if (vertexResult.status !== 200 || vertexResult.data.errorCode != 200) {
       return {
         success: false,
         errorMessage: vertexResult.data,
+        errorCode: vertexResult.data.errorCode,
         data: {
           vertexLabels: 0,
           edgeLabels: 0,
@@ -499,10 +498,11 @@ class TuGraphSchemaService extends Service {
       dataType: 'json',
     });
 
-    if (vertexResult.status !== 200 || vertexResult.data.success !== 0) {
+    if (vertexResult.status !== 200 || vertexResult.data.errorCode != 200) {
       return {
         success: false,
         errorMessage: edgeResult.data,
+        errorCode: vertexResult.data.errorCode,
         data: {
           vertexLabels: vertexResult.data.data?.result?.[0].vertexNumLabels,
           edgeLabels: 0,
@@ -513,6 +513,7 @@ class TuGraphSchemaService extends Service {
     return {
       success: true,
       code: 200,
+      errorCode: vertexResult.data.errorCode,
       data: {
         vertexLabels: vertexResult.data.data?.result?.[0]?.vertexNumLabels,
         edgeLabels: edgeResult.data.data?.result?.[0]?.edgeNumLabels,
@@ -658,7 +659,7 @@ class TuGraphSchemaService extends Service {
       );
 
       if (
-        deleteSchemaResult?.data?.success !== 0 ||
+        deleteSchemaResult?.data?.errorCode != 200 ||
         deleteSchemaResult?.status !== 200
       ) {
         return {

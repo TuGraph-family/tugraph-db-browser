@@ -13,41 +13,6 @@ import { EngineServerURL } from './constant';
 import { IRoleParams, IUserParams } from './interface';
 
 class TuGraphAuthService extends Service {
-  async login(username: string, password: string) {
-    const result = await this.ctx.curl(`${EngineServerURL}/login`, {
-      headers: {
-        'content-type': 'application/json',
-      },
-      method: 'POST',
-      data: {
-        userName: username,
-        password,
-      },
-      timeout: [30000, 50000],
-      dataType: 'json',
-    });
-
-    if (result.data.success !== 0 || result.status !== 200) {
-      return {
-        success: false,
-        code: 200,
-        data: null,
-        errorMessage: result.data.errorMessage,
-        errorCode: result.data.errorCode,
-      };
-    }
-    const authorization = result.data.data.authorization;
-    this.ctx.session.authorization = authorization;
-
-    return {
-      success: true,
-      code: 200,
-      data: {
-        authorization,
-      },
-    };
-  }
-
   async executeCypherQuery(cypherQuery: string, graph = '') {
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
       headers: {

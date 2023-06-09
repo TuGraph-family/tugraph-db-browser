@@ -9,9 +9,9 @@
  */
 
 import { Service } from 'egg';
+import { responseFormatter } from '../../util';
 import { EngineServerURL } from './constant';
 import { ISubGraphConfig, ISubGraphTemplateParams } from './interface';
-import { responseFormatter } from '../../util';
 
 class TuGraphSubGraphService extends Service {
   /**
@@ -89,7 +89,7 @@ class TuGraphSubGraphService extends Service {
     );
 
     if (
-      importDataResult.data.success !== 0 ||
+      importDataResult.data.errorCode != 200 ||
       importDataResult.status !== 200
     ) {
       return {
@@ -222,7 +222,7 @@ class TuGraphSubGraphService extends Service {
         };
       });
 
-    if (subGraphResult.data.success !== 0 || subGraphResult.status !== 200) {
+    if (subGraphResult.data.errorCode != 200 || subGraphResult.status !== 200) {
       return subGraphResult.data;
     }
 
@@ -278,7 +278,7 @@ class TuGraphSubGraphService extends Service {
       dataType: 'json',
     });
 
-    if (result.data.success !== 0 || result.status !== 200) {
+    if (result.data.errorCode != 200) {
       return result.data;
     }
 

@@ -5,7 +5,6 @@ export default (app: Application) => {
   router.get('/', controller.home.index);
 
   // TuGraph Auth
-  router.post('/login', controller.tugraph.auth.login);
   router.get('/api/auth/user', controller.tugraph.auth.getUserList);
   router.post('/api/auth/user', controller.tugraph.auth.createUser);
   router.put('/api/auth/user', controller.tugraph.auth.updateUser);
