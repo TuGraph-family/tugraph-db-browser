@@ -8,19 +8,19 @@
  */
 import { Service } from 'egg';
 import {
-  INeighborsParams,
   ILanguageQueryParams,
-  IPathQueryParams,
+  INeighborsParams,
   INodeQueryParams,
+  IPathQueryParams,
 } from './interface';
 
-import { EngineServerURL } from './constant';
+import { QueryResultFormatter } from '../../util';
 import {
   formatVertexResponse,
-  generateCypherByPath,
   generateCypherByNode,
+  generateCypherByPath,
 } from '../../utils/query';
-import { QueryResultFormatter } from '../../util';
+import { EngineServerURL } from './constant';
 
 class TuGraphQueryService extends Service {
   /**
@@ -45,7 +45,7 @@ class TuGraphQueryService extends Service {
       dataType: 'json',
     });
 
-    if (result.data.success !== 0 || result.status !== 200) {
+    if (result.data.errorCode != 200) {
       return result.data;
     }
 

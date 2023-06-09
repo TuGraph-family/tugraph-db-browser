@@ -1,5 +1,5 @@
-import { RestFulResponse, ICypherResponse } from './service/tugraph/interface';
 import { isEmpty } from 'lodash';
+import { ICypherResponse, RestFulResponse } from './service/tugraph/interface';
 import { formatMultipleResponse } from './utils/query';
 
 export const responseData = (ctx, resp) => {
@@ -15,7 +15,7 @@ export const responseData = (ctx, resp) => {
 };
 
 export const responseFormatter = (result: RestFulResponse) => {
-  if (result.data.success !== 0 || result.status !== 200) {
+  if (result.status !== 200 || result.data.errorCode != 200) {
     return {
       success: false,
       code: result.status,
@@ -29,6 +29,7 @@ export const responseFormatter = (result: RestFulResponse) => {
     success: true,
     code: 200,
     data: resultData,
+    errorCode: result.data.errorCode,
   };
 };
 
@@ -150,7 +151,7 @@ export const QueryResultFormatter = (
   result: RestFulResponse,
   script: string
 ) => {
-  if (result.data.success !== 0 || result.status !== 200) {
+  if (result.status !== 200 || result.data.errorCode != 200) {
     return {
       code: 200,
       errorCode: result.data.errorCode,
@@ -175,5 +176,6 @@ export const QueryResultFormatter = (
     script,
     code: 200,
     success: true,
+    errorCode: result.data.errorCode,
   };
 };

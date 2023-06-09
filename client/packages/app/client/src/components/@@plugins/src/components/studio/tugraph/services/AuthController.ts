@@ -3,8 +3,8 @@ import { PROXY_HOST, SERVER_HOST } from '../constant';
 import { getLocalData } from '../utils';
 
 /* Login */
-export async function login(params: { username: string; password: string }) {
-  return request(`${PROXY_HOST}/login`, {
+export async function login(params: { userName: string; password: string }) {
+  return request(`${SERVER_HOST}/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

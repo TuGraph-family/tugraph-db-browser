@@ -59,13 +59,8 @@ export const ImportData: React.FC<Prop> = ({
     uploadLoading: false,
     taskId: '',
   });
-  const {
-    resultStatus,
-    errorMessage,
-    isFullView,
-    taskId,
-    uploadLoading,
-  } = state;
+  const { resultStatus, errorMessage, isFullView, taskId, uploadLoading } =
+    state;
 
   useEffect(() => {
     if (!taskId || resultStatus === 'success' || resultStatus === 'error') {
@@ -73,8 +68,8 @@ export const ImportData: React.FC<Prop> = ({
       return;
     }
     onImportProgress(taskId).then((res) => {
-      if (res.success === 0 && res?.data?.success) {
-        if (res.data.progress === '1') {
+      if (res.errorCode == 200) {
+        if (res?.data?.state === '2') {
           importProgressCancel();
           const taskList = getLocalData('TUGRAPH_INFO');
           const newTaskInfo = filter(
@@ -86,10 +81,16 @@ export const ImportData: React.FC<Prop> = ({
             draft.resultStatus = 'success';
             draft.errorMessage = '';
           });
-        } else {
+        } else if (res?.data?.state === '1') {
           updateState((draft) => {
             draft.resultStatus = 'loading';
             draft.errorMessage = '';
+          });
+        } else {
+          importProgressCancel();
+          updateState((draft) => {
+            draft.resultStatus = 'error';
+            draft.errorMessage = res?.data?.reason;
           });
         }
       } else {
@@ -106,8 +107,10 @@ export const ImportData: React.FC<Prop> = ({
     onSwitch?.(onShow, onClose);
 
     const taskList = getLocalData('TUGRAPH_INFO') ?? [];
-    const taskId = find(taskList, (item) => item.graphName === graphName)
-      ?.taskId;
+    const taskId = find(
+      taskList,
+      (item) => item.graphName === graphName
+    )?.taskId;
     if (taskId) {
       updateState((draft) => {
         draft.taskId = taskId;
@@ -205,7 +208,7 @@ export const ImportData: React.FC<Prop> = ({
       };
 
       onImportData(params).then((res) => {
-        if (res.success === 0) {
+        if (res.errorCode == 200) {
           const taskId = res?.data?.taskId;
           mergeTaskInfo(taskId, graphName);
           updateState((draft) => {

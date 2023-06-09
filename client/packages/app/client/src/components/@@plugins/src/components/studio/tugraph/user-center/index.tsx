@@ -18,7 +18,7 @@ export const UserCenter: React.FC<Prop> = () => {
   const { isEditPassword } = state;
   const handleLogout = () => {
     onLogout().then((res) => {
-      if (res.success === 0) {
+      if (res.errorCode == 200) {
         setLocalData('TUGRAPH_TOKEN', '');
         redirectLoginURL();
       } else {
