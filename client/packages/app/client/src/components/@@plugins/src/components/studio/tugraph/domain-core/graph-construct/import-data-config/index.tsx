@@ -52,7 +52,7 @@ export const ImportDataConfig = (prop: ImportDataConfigProps) => {
                           styles[`${PUBLIC_PERFIX_CLASS}-collapse-status`]
                         }
                       >
-                        读取结果：{' '}
+                        读取结果：
                         <Badge
                           status={fileData?.status}
                           text={fileData?.status}
@@ -66,7 +66,7 @@ export const ImportDataConfig = (prop: ImportDataConfigProps) => {
                           styles[`${PUBLIC_PERFIX_CLASS}-collapse-name`]
                         }
                       >
-                        文件名：{' '}
+                        文件名：
                         <Tooltip title={fileData?.fileName}>
                           {fileData?.fileName}
                         </Tooltip>
@@ -76,7 +76,7 @@ export const ImportDataConfig = (prop: ImportDataConfigProps) => {
                           styles[`${PUBLIC_PERFIX_CLASS}-collapse-size`]
                         }
                       >
-                        文件大小：{' '}
+                        文件大小：
                         <Tooltip title={fileData?.formateSize}>
                           {fileData?.formateSize}
                         </Tooltip>
@@ -86,7 +86,7 @@ export const ImportDataConfig = (prop: ImportDataConfigProps) => {
                           styles[`${PUBLIC_PERFIX_CLASS}-collapse-status`]
                         }
                       >
-                        读取结果：{' '}
+                        读取结果：
                         <Badge
                           status={fileData?.status}
                           text={fileData?.status}

@@ -1,4 +1,4 @@
-import Graphin, { GraphinContextType, Layout, Utils } from '@antv/graphin';
+import { GraphinContextType, Layout, Utils } from '@antv/graphin';
 import {
   AutoComplete,
   Button,
@@ -142,7 +142,6 @@ const ExecuteResult: React.FC<ResultProps> = ({
     targetPrimaryKey,
     currentData,
   } = state;
-  const modalGraphRef = React.createRef<Graphin>();
   const [form] = Form.useForm();
   const [addForm] = Form.useForm();
   const onTableTypeChange = (e: any) => {
@@ -229,16 +228,6 @@ const ExecuteResult: React.FC<ResultProps> = ({
       };
     }
   }, [graphCanvasContextValue]);
-
-  // useEffect(() => {
-  //   if (modalGraphRef && modalGraphRef.current) {
-  //     modalGraphRef.current.graph?.changeSize(
-  //       document.body.clientWidth,
-  //       document.body.clientHeight
-  //     );
-  //     modalGraphRef.current?.graph.fitCenter();
-  //   }
-  // }, [modalGraphRef.current]);
   useEffect(() => {
     if (formatData) {
       setState((draft) => {
@@ -285,7 +274,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
           className={styles[`${PUBLIC_PERFIX_CLASS}-icon-copy`]}
           onClick={() => {
             copy(excecuteResult?.script || '');
-            message.success('负责成功');
+            message.success('复制成功');
           }}
         />
       </Tooltip>
