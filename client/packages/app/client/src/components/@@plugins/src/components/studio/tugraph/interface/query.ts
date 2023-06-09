@@ -43,10 +43,8 @@ export type FormatDataNodeProp = {
   properties: Array<Nodeproperties>;
 };
 export type FormatData = {
-  formatData?: {
-    nodes: Array<FormatDataNodeProp>;
-    edges: Array<FormatDataEdgeProp>;
-  };
+  nodes: Array<FormatDataNodeProp>;
+  edges: Array<FormatDataEdgeProp>;
 };
 export type ExcecuteResultProp = {
   data: {
@@ -54,4 +52,5 @@ export type ExcecuteResultProp = {
     originalData?: any;
   };
   success?: boolean;
+  script: string;
 };

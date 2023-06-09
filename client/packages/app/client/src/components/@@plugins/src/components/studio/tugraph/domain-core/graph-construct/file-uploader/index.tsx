@@ -1,4 +1,3 @@
-import React from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
 import { Upload, UploadFile } from 'antd';
@@ -97,7 +96,7 @@ export const FileUploader = (props: FileUploaderProps) => {
     }
     currentFileDataList = mergeFileDataList(currentFileDataList, fileResult);
 
-    setFileDataList(currentFileDataList);
+    setFileDataList?.(currentFileDataList);
   };
 
   const uploadProps: UploadProps = {

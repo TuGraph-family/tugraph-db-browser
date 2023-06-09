@@ -3,9 +3,9 @@ import { EdgeConfig, NodeConfig } from '@antv/g6-pc';
 import { GraphinContextType, Layout, Utils } from '@antv/graphin';
 import type { UploadProps } from 'antd';
 import { Button, Checkbox, Modal, Select, Steps, Upload, message } from 'antd';
-import { filter, isEmpty } from 'lodash';
+import { filter, isEmpty, join } from 'lodash';
 import { useCallback, useEffect } from 'react';
-import { useHistory } from 'umi';
+import { History, useHistory } from 'umi';
 import { useImmer } from 'use-immer';
 import {
   GraphCanvas,
@@ -27,6 +27,7 @@ import {
   LabelType,
   SchemaProperties,
 } from '../../interface/schema';
+import { downloadFile } from '../../utils/downloadFile';
 import { getLocalData } from '../../utils/localStorage';
 import { nodesEdgesListTranslator } from '../../utils/nodesEdgesListTranslator';
 import { schemaTransform } from '../../utils/schemaTransform';
@@ -35,12 +36,11 @@ import { EditNodesEdges } from './edit-nodes-edges';
 import { ImportData } from './import-data';
 import NodesEdgesList from './nodes-edges-list';
 
-import { downloadFile } from '../../utils/downloadFile';
 import styles from './index.module.less';
 
 export const GraphConstruct = (props: PluginPorps) => {
   const redirectPath = props?.redirectPath;
-  const history = useHistory();
+  const history = useHistory() as History;
   const location = history.location;
   const graphList = getLocalData('TUGRAPH_SUBGRAPH_LIST') as SubGraph[];
   const { onImportGraphSchema, ImportGraphSchemaLoading } = useImport();
@@ -123,8 +123,11 @@ export const GraphConstruct = (props: PluginPorps) => {
     schema,
   } = state;
 
-  const { onGetGraphSchema, onCreateLabelSchema, onDeleteLabelSchema } =
-    useSchema();
+  const {
+    onGetGraphSchema,
+    onCreateLabelSchema,
+    onDeleteLabelSchema,
+  } = useSchema();
   const getGraphCanvasContextValue = useCallback((contextValue: any) => {
     setState((draft) => {
       if (contextValue) {
@@ -132,7 +135,7 @@ export const GraphConstruct = (props: PluginPorps) => {
       }
     });
   }, []);
-  const getGraphSchema = (graphName) => {
+  const getGraphSchema = (graphName: string) => {
     onGetGraphSchema({ graphName }).then((res) => {
       if (res.success) {
         setState((draft) => {
@@ -187,7 +190,7 @@ export const GraphConstruct = (props: PluginPorps) => {
     return Utils.processEdges([...edges], { poly: 50, loop: 10 });
   };
 
-  const createLabelSchema = (newSchema) => {
+  const createLabelSchema = (newSchema: LabelSchema) => {
     const labelType = newSchema.labelType;
 
     let params = {
@@ -297,12 +300,15 @@ export const GraphConstruct = (props: PluginPorps) => {
       {GRAPH_OPERATE.map((item) => (
         <div
           key={item.lable}
-          className={[
-            styles[`${PUBLIC_PERFIX_CLASS}-operate-item`],
-            activeBtnType === item.value
-              ? styles[`${PUBLIC_PERFIX_CLASS}-operate-item-active`]
-              : '',
-          ].join(' ')}
+          className={join(
+            [
+              styles[`${PUBLIC_PERFIX_CLASS}-operate-item`],
+              activeBtnType === item.value
+                ? styles[`${PUBLIC_PERFIX_CLASS}-operate-item-active`]
+                : '',
+            ],
+            ' '
+          )}
           onClick={() => {
             setState((draft) => {
               if (item.value === 'node' || item.value === 'edge') {
@@ -364,7 +370,7 @@ export const GraphConstruct = (props: PluginPorps) => {
       reader.onload = (result) => {
         setState((draft) => {
           try {
-            draft.schema = JSON.parse(result.target.result);
+            draft.schema = JSON.parse(result.target?.result);
           } catch (e) {
             console.error(e.message);
           }

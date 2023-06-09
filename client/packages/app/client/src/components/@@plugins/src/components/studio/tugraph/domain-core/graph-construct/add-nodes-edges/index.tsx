@@ -16,15 +16,18 @@ type Prop = {
   type: 'node' | 'edge';
   data?: any;
   onFinish?: (value?: any) => void;
-  onSwitch?: (onShow, onClose) => void;
+  onSwitch?: (onShow: () => void, onClose: () => void) => void;
 };
-type EditColumnsType<T> = ColumnsType & {
-  inputType?: string;
-  prop: {
-    options: Array<{ label: string; value: string }>;
-    mode: 'multiple' | 'tags';
+interface EditColumnsType<T> extends ColumnsType<T> {
+  editorConfig: {
+    inputType?: string;
+    prop: {
+      options: Array<{ label: string; value: string }>;
+      mode: 'multiple' | 'tags';
+    };
   };
-};
+  editable: boolean;
+}
 export const AddNodesEdges: React.FC<Prop> = ({
   type,
   data = [],
@@ -45,7 +48,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
   });
   const { startList, attrList, configList } = state;
   useEffect(() => {
-    onSwitch(onShow, onClose);
+    onSwitch?.(onShow, onClose);
   }, []);
   const propertyList = () => {
     const attrPropertyNames = map(
@@ -74,13 +77,13 @@ export const AddNodesEdges: React.FC<Prop> = ({
       </Button>
     );
   };
-  const colums: EditColumnsType<any> = [
+  const colums: EditColumnsType<StartData> = [
     {
       title: '起点',
       dataIndex: 'source',
       key: 'source',
       editable: true,
-      editorConfig: (record) => {
+      editorConfig: (record: StartData) => {
         return {
           inputType: EditType.SELECT,
           prop: {
@@ -97,7 +100,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
       dataIndex: 'target',
       key: 'target',
       editable: true,
-      editorConfig: (record) => {
+      editorConfig: (record: StartData) => {
         return {
           inputType: EditType.SELECT,
           prop: {
@@ -131,7 +134,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
       ),
     },
   ];
-  const defaultColumns: EditColumnsType<any> = [
+  const defaultColumns: EditColumnsType<AttrData> = [
     {
       title: (
         <>
@@ -145,7 +148,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
       dataIndex: 'name',
       key: 'name',
       editable: true,
-      editorConfig: (record) => {
+      editorConfig: (record: AttrData) => {
         return {
           inputType: EditType.INPUT,
         };
@@ -157,7 +160,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
       width: '25%',
       key: 'type',
       editable: true,
-      editorConfig: (record) => {
+      editorConfig: (record: AttrData) => {
         return {
           inputType: EditType.SELECT,
           prop: { options: DATA_TYPE },
@@ -170,7 +173,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
       width: '25%',
       key: 'optional',
       editable: true,
-      editorConfig: (record) => {
+      editorConfig: (record: AttrData) => {
         return {
           inputType: EditType.SELECT,
           prop: {
@@ -205,14 +208,14 @@ export const AddNodesEdges: React.FC<Prop> = ({
       ),
     },
   ];
-  const nodeConfigColumns: EditColumnsType<any> = [
+  const nodeConfigColumns: EditColumnsType<IndexData> = [
     {
       title: '索引',
       width: '15%',
       dataIndex: 'index',
       key: 'index',
       editable: true,
-      editorConfig: (record) => {
+      editorConfig: (record: IndexData) => {
         return {
           inputType: EditType.INPUT,
           prop: {
@@ -227,7 +230,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
       width: '30%',
       key: 'propertyName',
       editable: true,
-      editorConfig: (record) => {
+      editorConfig: (record: IndexData) => {
         return {
           inputType: EditType.SELECT,
           prop: {
@@ -242,7 +245,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
       width: '17.5%',
       key: 'isUnique',
       editable: true,
-      editorConfig: (record) => {
+      editorConfig: (record: IndexData) => {
         if (!record.index) {
           record.isUnique = false;
         }
@@ -271,7 +274,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
       width: '17.5%',
       key: 'primaryField',
       editable: true,
-      editorConfig: (record) => {
+      editorConfig: (record: IndexData) => {
         return {
           inputType: EditType.SELECT,
           prop: {
@@ -372,7 +375,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
                   },
                   indexs: configList,
                   properties: attrList,
-                  edgeConstraints: startList.map((item) => {
+                  edgeConstraints: map(startList, (item) => {
                     return [item.source, item.target];
                   }),
                 });
@@ -421,7 +424,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
               ]}
             >
               <Input
-                autocomplete="off"
+                autoComplete="off"
                 placeholder={`请输入${isNode ? '点' : '边'}类型名称`}
               />
             </Form.Item>
@@ -436,7 +439,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
               rowKey="id"
               onChange={(newData) => {
                 updateState((draft) => {
-                  draft.attrList = [...newData];
+                  draft.attrList = [...(newData || [])];
                 });
               }}
               bordered={true}
@@ -459,7 +462,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
                 pagination={false}
                 onChange={(newData) => {
                   updateState((draft) => {
-                    draft.startList = [...newData].map((item) => ({
+                    draft.startList = map([...newData], (item) => ({
                       ...item,
                       label: form.getFieldValue('name'),
                       style: { label: { value: form.getFieldValue('name') } },

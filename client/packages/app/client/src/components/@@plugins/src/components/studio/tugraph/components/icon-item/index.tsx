@@ -1,4 +1,5 @@
-import type { HTMLAttributes, ReactNode } from '@alipay/bigfish/react';
+import { join } from 'lodash';
+import type { HTMLAttributes, ReactNode } from 'react';
 import React from 'react';
 import { PUBLIC_PERFIX_CLASS } from '../../constant';
 import IconFont from '../icon-font';
@@ -28,13 +29,18 @@ const IconItem: React.FC<IconItemProps> = ({
   return (
     <div
       {...others}
-      className={[
-        disabled
-          ? styles[`${PUBLIC_PERFIX_CLASS}-icon-item-disabled`]
-          : styles[`${PUBLIC_PERFIX_CLASS}-icon-item`],
-        styles[`${PUBLIC_PERFIX_CLASS}-icon-item__${direction || 'vertical'}`],
-        'icon-item',
-      ].join(' ')}
+      className={join(
+        [
+          disabled
+            ? styles[`${PUBLIC_PERFIX_CLASS}-icon-item-disabled`]
+            : styles[`${PUBLIC_PERFIX_CLASS}-icon-item`],
+          styles[
+            `${PUBLIC_PERFIX_CLASS}-icon-item__${direction || 'vertical'}`
+          ],
+          'icon-item',
+        ],
+        ' '
+      )}
       onClick={disabled ? undefined : onClick}
     >
       {typeof icon === 'string' ? (
@@ -44,10 +50,10 @@ const IconItem: React.FC<IconItemProps> = ({
       )}
       {name && (
         <div
-          className={[
-            styles[`${PUBLIC_PERFIX_CLASS}-icon-item-name`],
-            'icon-item-name',
-          ].join(' ')}
+          className={join(
+            [styles[`${PUBLIC_PERFIX_CLASS}-icon-item-name`], 'icon-item-name'],
+            ' '
+          )}
         >
           {name}
         </div>

@@ -19,7 +19,7 @@ import {
   Tooltip,
   message,
 } from 'antd';
-import { filter, find, isEmpty, map, uniqueId } from 'lodash';
+import { filter, find, isEmpty, join, map, uniqueId } from 'lodash';
 import { useCallback, useEffect } from 'react';
 import { useHistory } from 'umi';
 import { useImmer } from 'use-immer';
@@ -180,7 +180,11 @@ export const GraphQuery = (props: PluginPorps) => {
     },
     [resultData]
   );
-  const handleQuery = (limit, conditions, queryParams) => {
+  const handleQuery = (
+    limit: number,
+    conditions: Array<{ property: string; value: string; operator: string }>,
+    queryParams: string
+  ) => {
     if (activeTab === IQUIRE_LIST[0].key) {
       onStatementQuery({
         graphName: currentGraphName,
@@ -429,10 +433,13 @@ export const GraphQuery = (props: PluginPorps) => {
                   onChange={onSplitPaneHeightChange}
                 >
                   <div
-                    className={[
-                      styles[`${PUBLIC_PERFIX_CLASS}-right-center`],
-                      styles[`${PUBLIC_PERFIX_CLASS}-split-pane`],
-                    ].join(' ')}
+                    className={join(
+                      [
+                        styles[`${PUBLIC_PERFIX_CLASS}-right-center`],
+                        styles[`${PUBLIC_PERFIX_CLASS}-split-pane`],
+                      ],
+                      ' '
+                    )}
                   >
                     <SplitPane
                       split="vertical"

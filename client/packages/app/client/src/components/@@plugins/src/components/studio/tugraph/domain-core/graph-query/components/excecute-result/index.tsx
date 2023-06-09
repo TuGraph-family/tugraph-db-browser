@@ -1,4 +1,4 @@
-import Graphin, { GraphinContextType, Layout, Utils } from '@antv/graphin';
+import { GraphinContextType, Layout, Utils } from '@antv/graphin';
 import {
   AutoComplete,
   Button,
@@ -45,11 +45,7 @@ import {
 } from '../../constant';
 
 import { useGraphData } from '../../../../hooks/useGraphData';
-import {
-  GraphData,
-  NodeProp,
-  SchemaProperties,
-} from '../../../../interface/schema';
+import { GraphData, SchemaProperties } from '../../../../interface/schema';
 import { editEdgeParamsTransform } from '../../utils/editEdgeParamsTransform';
 import styles from './index.module.less';
 
@@ -100,8 +96,8 @@ const ExecuteResult: React.FC<ResultProps> = ({
     editEdgeParams: EditEdge;
     selectType: 'node' | 'edge';
     selectProperties: Array<SchemaProperties>;
-    sourceProperity: Array<NodeProp>;
-    targetProperity: Array<NodeProp>;
+    sourceProperity: Array<FormatDataNodeProp>;
+    targetProperity: Array<FormatDataNodeProp>;
     sourcePrimaryKey: string;
     targetPrimaryKey: string;
     currentData?: any;
@@ -146,7 +142,6 @@ const ExecuteResult: React.FC<ResultProps> = ({
     targetPrimaryKey,
     currentData,
   } = state;
-  const modalGraphRef = React.createRef<Graphin>();
   const [form] = Form.useForm();
   const [addForm] = Form.useForm();
   const onTableTypeChange = (e: any) => {
@@ -168,77 +163,71 @@ const ExecuteResult: React.FC<ResultProps> = ({
   }, []);
 
   useEffect(() => {
-    const canvasContainer = document.querySelector(`.canvas`);
-    const objResizeObserver = new ResizeObserver((entries) => {
-      window.requestAnimationFrame(() => {
-        if (!Array.isArray(entries) || !entries.length) {
-          return;
-        }
-        entries.forEach((entry) => {
-          const cr = entry.contentRect;
-          graphCanvasContextValue?.graph?.changeSize(cr.width, cr.height);
-          graphCanvasContextValue?.graph?.fitCenter();
+    if (excecuteResult?.success) {
+      const canvasContainer = document.querySelector(`.canvas`);
+      const objResizeObserver = new ResizeObserver((entries) => {
+        window.requestAnimationFrame(() => {
+          if (!Array.isArray(entries) || !entries.length) {
+            return;
+          }
+          entries.forEach((entry) => {
+            const cr = entry.contentRect;
+            if (graphCanvasContextValue?.graph) {
+              graphCanvasContextValue?.graph?.changeSize(cr.width, cr.height);
+              graphCanvasContextValue?.graph?.fitCenter();
+            }
+          });
         });
       });
-    });
-    if (canvasContainer) {
-      objResizeObserver.observe(canvasContainer);
-    }
-    graphCanvasContextValue.graph?.on('node:click', (val) => {
-      setState((draft) => {
-        draft.id = val.item._cfg.id;
-        draft.tagName = val.item._cfg.model.label;
-        draft.activeElementType = val.item._cfg.type;
-        draft.properties = { ...val.item._cfg.model.properties };
-        draft.propertyTypes = find(
-          graphData.nodes,
-          (node) => node.labelName === val.item._cfg.model.label
-        )?.properties;
-        form.setFieldsValue({ ...val.item._cfg.model.properties });
-        onShow();
-      });
-    });
-    graphCanvasContextValue.graph?.on('edge:click', (val) => {
-      setState((draft) => {
-        draft.id = val.item._cfg.id;
-        draft.tagName = val.item._cfg.model.label;
-        draft.activeElementType = val.item._cfg.type;
-        draft.properties = { ...val.item._cfg.model.properties };
-        form.setFieldsValue({ ...val.item._cfg.model.properties });
-        draft.propertyTypes = find(
-          graphData.nodes,
-          (node) => node.labelName === tagName
-        )?.properties;
-        const sourceTargetParams = editEdgeParamsTransform(
-          val.item._cfg.source._cfg.model,
-          val.item._cfg.target._cfg.model,
-          graphData.nodes
-        );
-        draft.editEdgeParams = {
-          graphName,
-          labelName: val.item._cfg.model.label,
-          ...sourceTargetParams,
-        };
-        onShow();
-      });
-    });
-    graphCanvasContextValue.apis?.handleAutoZoom();
-    return () => {
       if (canvasContainer) {
-        objResizeObserver.unobserve(canvasContainer);
+        objResizeObserver.observe(canvasContainer);
       }
-    };
-  }, [graphCanvasContextValue]);
-
-  useEffect(() => {
-    if (modalGraphRef && modalGraphRef.current) {
-      modalGraphRef.current.graph?.changeSize(
-        document.body.clientWidth,
-        document.body.clientHeight
-      );
-      modalGraphRef.current?.graph.fitCenter();
+      graphCanvasContextValue.graph?.on('node:click', (val) => {
+        setState((draft) => {
+          draft.id = val.item._cfg.id;
+          draft.tagName = val.item._cfg.model.label;
+          draft.activeElementType = val.item._cfg.type;
+          draft.properties = { ...val.item._cfg.model.properties };
+          draft.propertyTypes = find(
+            graphData.nodes,
+            (node) => node.labelName === val.item._cfg.model.label
+          )?.properties;
+          form.setFieldsValue({ ...val.item._cfg.model.properties });
+          onShow();
+        });
+      });
+      graphCanvasContextValue.graph?.on('edge:click', (val) => {
+        setState((draft) => {
+          draft.id = val.item._cfg.id;
+          draft.tagName = val.item._cfg.model.label;
+          draft.activeElementType = val.item._cfg.type;
+          draft.properties = { ...val.item._cfg.model.properties };
+          form.setFieldsValue({ ...val.item._cfg.model.properties });
+          draft.propertyTypes = find(
+            graphData.nodes,
+            (node) => node.labelName === tagName
+          )?.properties;
+          const sourceTargetParams = editEdgeParamsTransform(
+            val.item._cfg.source._cfg.model,
+            val.item._cfg.target._cfg.model,
+            graphData.nodes
+          );
+          draft.editEdgeParams = {
+            graphName,
+            labelName: val.item._cfg.model.label,
+            ...sourceTargetParams,
+          };
+          onShow();
+        });
+      });
+      graphCanvasContextValue.apis?.handleAutoZoom();
+      return () => {
+        if (canvasContainer) {
+          objResizeObserver.unobserve(canvasContainer);
+        }
+      };
     }
-  }, [modalGraphRef.current]);
+  }, [graphCanvasContextValue]);
   useEffect(() => {
     if (formatData) {
       setState((draft) => {
@@ -284,7 +273,8 @@ const ExecuteResult: React.FC<ResultProps> = ({
           type="icon-fuzhi1"
           className={styles[`${PUBLIC_PERFIX_CLASS}-icon-copy`]}
           onClick={() => {
-            copy(excecuteResult?.script);
+            copy(excecuteResult?.script || '');
+            message.success('复制成功');
           }}
         />
       </Tooltip>
@@ -303,7 +293,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
   const editNode = () => {
     form.validateFields().then((val) => {
       const primaryKey = find(
-        graphData.nodes,
+        graphData?.nodes,
         (node) => node.labelName === tagName
       )?.primaryField;
       onEditNode({
@@ -328,7 +318,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
   const editEdge = () => {
     form.validateFields().then((val) => {
       const primaryKey = find(
-        graphData.nodes,
+        graphData?.nodes,
         (node) => node.labelName === tagName
       )?.primaryField;
       onEditEdge({ ...editEdgeParams, properties: { ...val } }).then((res) => {
@@ -389,11 +379,11 @@ const ExecuteResult: React.FC<ResultProps> = ({
         targetProperity,
       } = val;
       const sourceNode = find(
-        graphData.nodes,
+        graphData?.nodes,
         (item) => item.labelName === source
       );
       const targetNode = find(
-        graphData.nodes,
+        graphData?.nodes,
         (item) => item.labelName === target
       );
       const sourcePrimaryKey = sourceNode?.primaryField;
@@ -964,7 +954,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
                               (item) => item.label.indexOf(val) !== -1
                             );
                             draft.targetPrimaryKey = find(
-                              graphData.nodes,
+                              graphData?.nodes,
                               (item) => item.labelName === val
                             )?.primaryField;
                           });

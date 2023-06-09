@@ -6,7 +6,12 @@ import styles from './index.module.less';
 type Prop = {
   isActive: boolean;
   onClick?: () => void;
-  detail: { graph_name: string; description: string; imgUrl?: string };
+  detail: {
+    graph_name: string;
+    description: string;
+    imgUrl?: string;
+    graph_demo_name: string;
+  };
 };
 const DemoCard: React.FC<Prop> = ({ isActive, onClick, detail }) => {
   return (

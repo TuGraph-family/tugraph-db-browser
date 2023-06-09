@@ -22,12 +22,12 @@ import styles from './index.module.less';
 
 const { Panel } = Collapse;
 type EdgeNodeListProp = {
-  onSegmentedChange?: () => void;
-  onSearchChange?: (val: string) => void;
-  isNodeTab?: string;
+  onSegmentedChange: (e: 'node' | 'edge') => void;
+  onSearchChange: (val: string) => void;
+  isNodeTab?: boolean;
   keyword?: string;
-  graphData?: { nodes: Array<any>; edges: Array<any> };
-  width?: number | string;
+  graphData: { nodes: Array<any>; edges: Array<any> };
+  width: number | string;
 };
 const EdgeNodeList: React.FC<EdgeNodeListProp> = ({
   onSegmentedChange,

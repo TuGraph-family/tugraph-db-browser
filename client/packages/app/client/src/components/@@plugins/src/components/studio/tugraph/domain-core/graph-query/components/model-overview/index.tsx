@@ -1,25 +1,35 @@
 import { GraphinContextType, Utils } from '@antv/graphin';
 import { message } from 'antd';
+import { join } from 'lodash';
 import React, { useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import { GraphCanvasContext, GraphCanvasContextInitValue } from '../../../../components/garph-canvas';
+import {
+  GraphCanvasContext,
+  GraphCanvasContextInitValue,
+} from '../../../../components/garph-canvas';
 import TextTabs from '../../../../components/text-tabs';
 import { PUBLIC_PERFIX_CLASS } from '../../../../constant';
 import { useSchema } from '../../../../hooks/useSchema';
 import { nodesEdgesListTranslator } from '../../../../utils/nodesEdgesListTranslator';
-import { GraphConfigData } from '../../../graph-construct';
 import { MODEL_OVER_VIEW_TABS } from '../../constant';
 import EdgeNodeList from './components/edge-node-list';
 import GraphCanvasMini from './components/graph-canvas-mini';
 
+import { GraphConfigData } from '../../../../interface/schema';
 import styles from './index.module.less';
+
 type ModelOverviewProps = {
   open?: boolean;
   height?: string | number;
   width?: string | number;
   graphName?: string;
 };
-const ModelOverview: React.FC<ModelOverviewProps> = ({ open, height, width, graphName }) => {
+const ModelOverview: React.FC<ModelOverviewProps> = ({
+  open,
+  height,
+  width,
+  graphName,
+}) => {
   const [viewState, setViewState] = useImmer<{
     graphCanvasContextValue: GraphinContextType;
     isNodeTab: boolean;
@@ -33,7 +43,13 @@ const ModelOverview: React.FC<ModelOverviewProps> = ({ open, height, width, grap
     activeTab: 'list',
     graphData: { nodes: [], edges: [] },
   });
-  const { isNodeTab, keyword, activeTab, graphCanvasContextValue, graphData } = viewState;
+  const {
+    isNodeTab,
+    keyword,
+    activeTab,
+    graphCanvasContextValue,
+    graphData,
+  } = viewState;
   const { onGetGraphSchema } = useSchema();
   const dealEdges = (edges: Array<any>) => {
     return Utils.processEdges([...edges], { poly: 50, loop: 10 });
@@ -62,16 +78,21 @@ const ModelOverview: React.FC<ModelOverviewProps> = ({ open, height, width, grap
     });
   };
 
-  const getGraphCanvasContextValue = useCallback((contextValue: { graph: any; apis: any; theme: any; layout: any }) => {
-    setViewState((draft) => {
-      if (contextValue) {
-        draft.graphCanvasContextValue = contextValue;
-      }
-    });
-  }, []);
+  const getGraphCanvasContextValue = useCallback(
+    (contextValue: { graph: any; apis: any; theme: any; layout: any }) => {
+      setViewState((draft) => {
+        if (contextValue) {
+          draft.graphCanvasContextValue = contextValue;
+        }
+      });
+    },
+    []
+  );
 
   useEffect(() => {
-    const canvasContainer = document.querySelector(`.${PUBLIC_PERFIX_CLASS}-view-graph-model-canvas`);
+    const canvasContainer = document.querySelector(
+      `.${PUBLIC_PERFIX_CLASS}-view-graph-model-canvas`
+    );
     const objResizeObserver = new ResizeObserver((entries) => {
       entries.forEach((entry) => {
         const cr = entry.contentRect;
@@ -92,10 +113,13 @@ const ModelOverview: React.FC<ModelOverviewProps> = ({ open, height, width, grap
 
   return (
     <div
-      className={[
-        styles[`${PUBLIC_PERFIX_CLASS}-model-overview`],
-        open ? styles[`${PUBLIC_PERFIX_CLASS}-model-overview__open`] : '',
-      ].join(' ')}
+      className={join(
+        [
+          styles[`${PUBLIC_PERFIX_CLASS}-model-overview`],
+          open ? styles[`${PUBLIC_PERFIX_CLASS}-model-overview__open`] : '',
+        ],
+        ' '
+      )}
       style={{ height, width }}
     >
       <GraphCanvasContext.Provider value={{ ...graphCanvasContextValue }}>
@@ -109,7 +133,9 @@ const ModelOverview: React.FC<ModelOverviewProps> = ({ open, height, width, grap
           }}
           activeTab={activeTab}
         />
-        <div className={styles[`${PUBLIC_PERFIX_CLASS}-model-overview-content`]}>
+        <div
+          className={styles[`${PUBLIC_PERFIX_CLASS}-model-overview-content`]}
+        >
           {activeTab === 'list' && (
             <EdgeNodeList
               onSearchChange={onSearchChange}

@@ -9,8 +9,8 @@ export const getFileSizeTransform = (size: number) => {
   if (size / 1024 ** 2 >= 1 && size / 1024 ** 3 < 1) {
     fileSize = `${(size / 1024 ** 2).toFixed(2)} MB`;
   }
-  if (size / 1024 ** 3 >= 1 && size / 1024 ** 4 < 1) {
+  if (size / 1024 ** 3 >= 1) {
     fileSize = `${(size / 1024 ** 3).toFixed(2)} GB`;
   }
-  return fileSize;
+  return fileSize || '';
 };

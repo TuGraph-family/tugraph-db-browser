@@ -1,3 +1,4 @@
+import { join } from 'lodash';
 import React from 'react';
 import { PUBLIC_PERFIX_CLASS } from '../../constant';
 import AutoZoom from './components/auto-zoom';
@@ -10,10 +11,13 @@ import styles from './index.module.less';
 export const GraphCanvasTools: React.FC = () => {
   return (
     <div
-      className={[
-        styles[`${PUBLIC_PERFIX_CLASS}-graph-canvas-tools`],
-        `${PUBLIC_PERFIX_CLASS}-graph-canvas-tools`,
-      ].join(' ')}
+      className={join(
+        [
+          styles[`${PUBLIC_PERFIX_CLASS}-graph-canvas-tools`],
+          `${PUBLIC_PERFIX_CLASS}-graph-canvas-tools`,
+        ],
+        ' '
+      )}
     >
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-graph-canvas-tools-item`]}>
         <ZoomIn />

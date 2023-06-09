@@ -1,7 +1,9 @@
+import { join } from 'lodash';
 import React, { useMemo } from 'react';
-import IconFont from '../icon-font';
-import styles from './index.module.less';
 import { PUBLIC_PERFIX_CLASS } from '../../constant';
+import IconFont from '../icon-font';
+
+import styles from './index.module.less';
 
 export interface SwitchDrawerProps {
   children?: React.ReactNode;
@@ -70,11 +72,20 @@ const SwitchDrawer: React.FC<SwitchDrawerProps> = (props) => {
   };
   return (
     <div
-      className={[styles[`${PUBLIC_PERFIX_CLASS}-switch-drawer`], className].join(' ')}
+      className={join(
+        [styles[`${PUBLIC_PERFIX_CLASS}-switch-drawer`], className],
+        ' '
+      )}
       style={{ ...style, ...wrapperStyles }}
     >
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-switch-drawer-wrapper`]}>
-        {title && <div className={styles[`${PUBLIC_PERFIX_CLASS}-switch-drawer-header`]}>{title}</div>}
+        {title && (
+          <div
+            className={styles[`${PUBLIC_PERFIX_CLASS}-switch-drawer-header`]}
+          >
+            {title}
+          </div>
+        )}
         <div
           className={styles[`${PUBLIC_PERFIX_CLASS}-switch-drawer-body`]}
           style={{
@@ -83,16 +94,31 @@ const SwitchDrawer: React.FC<SwitchDrawerProps> = (props) => {
         >
           {children}
         </div>
-        {footer && <div className={styles[`${PUBLIC_PERFIX_CLASS}-switch-drawer-footer`]}>{footer}</div>}
+        {footer && (
+          <div
+            className={styles[`${PUBLIC_PERFIX_CLASS}-switch-drawer-footer`]}
+          >
+            {footer}
+          </div>
+        )}
       </div>
       <div
-        className={[
-          styles[`${PUBLIC_PERFIX_CLASS}-switch-drawer-switcher`],
-          styles[`${PUBLIC_PERFIX_CLASS}-switch-drawer-switcher-${position}`],
-        ].join(' ')}
+        className={join(
+          [
+            styles[`${PUBLIC_PERFIX_CLASS}-switch-drawer-switcher`],
+            styles[`${PUBLIC_PERFIX_CLASS}-switch-drawer-switcher-${position}`],
+          ],
+          ' '
+        )}
         onClick={visible ? onClose : onShow}
       >
-        <div className={styles[`${PUBLIC_PERFIX_CLASS}-switch-drawer-switcher-arrow`]}>{getSwitcherArrow()}</div>
+        <div
+          className={
+            styles[`${PUBLIC_PERFIX_CLASS}-switch-drawer-switcher-arrow`]
+          }
+        >
+          {getSwitcherArrow()}
+        </div>
         <div
           className={styles[`${PUBLIC_PERFIX_CLASS}-switch-drawer-switcher-bg`]}
           style={{ backgroundColor: backgroundColor }}

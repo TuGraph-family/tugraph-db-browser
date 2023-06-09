@@ -1,4 +1,4 @@
-import { flatMapDeep } from 'lodash';
+import { filter, flatMapDeep, includes, map } from 'lodash';
 import { SchemaProperties } from '../interface/schema';
 
 export const nodesEdgesListTranslator = (
@@ -21,7 +21,7 @@ export const nodesEdgesListTranslator = (
   }
 ) => {
   if (type === 'node') {
-    return data?.nodes.map((item) => ({
+    return map(data?.nodes, (item) => ({
       id: item.labelName,
       label: item.labelName,
       type: 'graphin-circle',
@@ -31,8 +31,8 @@ export const nodesEdgesListTranslator = (
     }));
   }
   const edgeList = flatMapDeep(
-    data?.edges.map((item) => {
-      return item.edgeConstraints.map((constraint, index) => {
+    map(data?.edges, (item) => {
+      return map(item.edgeConstraints, (constraint, index) => {
         return {
           id: index
             ? `edge_#${item.labelName + index}`
@@ -49,20 +49,17 @@ export const nodesEdgesListTranslator = (
               stroke: '#1650ff',
               lineWidth: 1,
             },
-            keyshape: {
-              stroke: '#1650ff',
-              lineWidth: 1,
-            },
           },
           properties: item.properties,
         };
       });
     })
   );
-  const nodeNameList = data?.nodes.map((item) => item.labelName);
-  const filterEdge = edgeList?.filter(
+  const nodeNameList = map(data?.nodes, (item) => item.labelName);
+  const filterEdge = filter(
+    edgeList,
     (item) =>
-      nodeNameList.includes(item.source) && nodeNameList.includes(item.target)
+      includes(nodeNameList, item.source) && includes(nodeNameList, item.target)
   );
   return filterEdge;
 };

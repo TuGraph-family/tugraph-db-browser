@@ -33,7 +33,7 @@ const EditRoleModal: React.FC<Prop> = ({
   const [form] = Form.useForm();
   const [state, setState] = useImmer<{
     graphList?: Array<{ graphName: string }>;
-    refreshList: () => void;
+    refreshList?: () => void;
   }>({
     graphList: [],
     refreshList: () => {},
@@ -49,7 +49,7 @@ const EditRoleModal: React.FC<Prop> = ({
           message.success('创建成功');
           onCancel();
           form.resetFields();
-          refreshList();
+          refreshList?.();
         } else {
           message.error('创建失败' + res.errorMessage);
         }
@@ -63,7 +63,7 @@ const EditRoleModal: React.FC<Prop> = ({
           message.success('修改成功');
           onCancel();
           form.resetFields();
-          refreshList();
+          refreshList?.();
         } else {
           message.error('修改失败' + res.errorMessage);
         }

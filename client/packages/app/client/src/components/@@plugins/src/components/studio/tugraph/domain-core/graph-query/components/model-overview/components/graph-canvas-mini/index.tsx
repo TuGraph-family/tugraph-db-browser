@@ -1,4 +1,5 @@
 import { GraphinContext } from '@antv/graphin';
+import { join } from 'lodash';
 import { useContext, useEffect } from 'react';
 import {
   GraphCanvas,
@@ -28,10 +29,13 @@ const GraphCanvasMini = ({
   return (
     <GraphCanvasContext.Provider value={{ ...graphCanvasContextValue }}>
       <div
-        className={[
-          styles[`${PUBLIC_PERFIX_CLASS}-view-graph-model-canvas`],
-          'view-graph-model-canvas',
-        ].join(' ')}
+        className={join(
+          [
+            styles[`${PUBLIC_PERFIX_CLASS}-view-graph-model-canvas`],
+            'view-graph-model-canvas',
+          ],
+          ' '
+        )}
       >
         <GraphCanvas
           containerId="model-view"

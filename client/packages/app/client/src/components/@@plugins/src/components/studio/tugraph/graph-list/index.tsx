@@ -1,5 +1,6 @@
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import { List, Pagination, Spin } from 'antd';
+import { join } from 'lodash';
 import { useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import CollasibleSteps from '../components/collapsable-steps';
@@ -18,7 +19,7 @@ import { getLocalData, setLocalData } from '../utils/localStorage';
 import styles from './index.module.less';
 
 export const GraphList = (props: PluginPorps) => {
-  const redirectPath = props?.redirectPath;
+  const redirectPath = props?.redirectPath || [];
   const { onGetGraphList, getGraphListLoading } = useGraph();
 
   const [state, updateState] = useImmer<{
@@ -128,12 +129,15 @@ export const GraphList = (props: PluginPorps) => {
               ) : (
                 <List
                   grid={{ column: 3, gutter: 16 }}
-                  className={[
-                    styles[`${PUBLIC_PERFIX_CLASS}-list`],
-                    isShowStep
-                      ? styles[`${PUBLIC_PERFIX_CLASS}-list-show-step`]
-                      : '',
-                  ].join(' ')}
+                  className={join(
+                    [
+                      styles[`${PUBLIC_PERFIX_CLASS}-list`],
+                      isShowStep
+                        ? styles[`${PUBLIC_PERFIX_CLASS}-list-show-step`]
+                        : '',
+                    ],
+                    ' '
+                  )}
                   dataSource={[{ id: '-1' } as any, ...(list || [])]}
                   renderItem={(item, index) => {
                     return (

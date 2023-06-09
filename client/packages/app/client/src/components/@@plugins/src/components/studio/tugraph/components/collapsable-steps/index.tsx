@@ -1,7 +1,8 @@
-import React from 'react';
 import { Tooltip } from 'antd';
-import IconFont from '../icon-font';
+import { map } from 'lodash';
+import React from 'react';
 import { PUBLIC_PERFIX_CLASS } from '../../constant';
+import IconFont from '../icon-font';
 
 import styles from './index.module.less';
 
@@ -32,7 +33,7 @@ const CollasibleSteps: React.FC<CollasibleStepsProps> = ({
         width: !collapsed ? '100%' : 0,
       }}
     >
-      {stepList.map(({ title, description, iconType, tooltipText }, index) => {
+      {map(stepList, ({ title, description, iconType, tooltipText }, index) => {
         return (
           <div
             className={styles[`${PUBLIC_PERFIX_CLASS}-step`]}

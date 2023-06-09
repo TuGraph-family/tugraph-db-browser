@@ -1,13 +1,13 @@
-import { Table, Popconfirm, message, Badge } from 'antd';
+import { Badge, Popconfirm, Table, message } from 'antd';
+import { ColumnsType } from 'antd/lib/table';
+import { isEmpty, join, map } from 'lodash';
 import React, { useEffect } from 'react';
-import { PERSSION_COlOR, PUBLIC_PERFIX_CLASS } from '../../constant';
-import EditAuthModal from '../edit-user';
 import { useImmer } from 'use-immer';
 import { useUser } from '../..//hooks/useUser';
-import { ColumnsType } from 'antd/lib/table';
-import { map, isEmpty } from 'lodash';
+import { PERSSION_COlOR, PUBLIC_PERFIX_CLASS } from '../../constant';
 import { UserProps } from '../../interface/user';
 import { getLocalData } from '../../utils/localStorage';
+import EditAuthModal from '../edit-user';
 
 import styles from './index.module.less';
 
@@ -29,7 +29,8 @@ export const AccountManager: React.FC<Prop> = ({ getRefreshList }) => {
     editData: {},
   });
   const { isOpen, dataSource, username, type, editData } = state;
-  const { onGetAuthList, onDisabledUser, GetAuthListLoading, onDeleteUser } = useUser();
+  const { onGetAuthList, onDisabledUser, GetAuthListLoading, onDeleteUser } =
+    useUser();
   const getAuthList = (username?: string) => {
     onGetAuthList({ username }).then((res) => {
       if (res.success) {
@@ -61,63 +62,82 @@ export const AccountManager: React.FC<Prop> = ({ getRefreshList }) => {
       >
         编辑
       </a>
-      {record.username !== 'admin' && record.username !== getLocalData('TUGRAPH_USER') && (
-        <>
-          <a
-            className={styles[`${PUBLIC_PERFIX_CLASS}-permissions-btn`]}
-            onClick={() => {
-              onDisabledUser({ username: record.username, disabled: !record.disabled }).then((res) => {
-                if (res.success) {
-                  message.success(`${record.disabled ? '启用' : '禁用'}成功`);
-                  getAuthList();
-                } else {
-                  message.error(`${record.disabled ? '启用' : '禁用'}失败` + res.errorMessage);
-                }
-              });
-            }}
-          >
-            {!record.disabled ? '禁用' : '启用'}
-          </a>
-          <Popconfirm
-            onConfirm={() => {
-              onDeleteUser({ username: record.username }).then((res) => {
-                if (res.success) {
-                  message.success('删除成功');
-                  getAuthList();
-                } else {
-                  message.error('删除失败' + res.errorMessage);
-                }
-              });
-            }}
-            title={`此操作将永久删除 ${record.username}账户，确定删除吗？`}
-          >
-            <a className={styles[`${PUBLIC_PERFIX_CLASS}-permissions-btn`]}>删除</a>
-          </Popconfirm>
-        </>
-      )}
+      {record.username !== 'admin' &&
+        record.username !== getLocalData('TUGRAPH_USER') && (
+          <>
+            <a
+              className={styles[`${PUBLIC_PERFIX_CLASS}-permissions-btn`]}
+              onClick={() => {
+                onDisabledUser({
+                  username: record.username,
+                  disabled: !record.disabled,
+                }).then((res) => {
+                  if (res.success) {
+                    message.success(`${record.disabled ? '启用' : '禁用'}成功`);
+                    getAuthList();
+                  } else {
+                    message.error(
+                      `${record.disabled ? '启用' : '禁用'}失败` +
+                        res.errorMessage
+                    );
+                  }
+                });
+              }}
+            >
+              {!record.disabled ? '禁用' : '启用'}
+            </a>
+            <Popconfirm
+              onConfirm={() => {
+                onDeleteUser({ username: record.username }).then((res) => {
+                  if (res.success) {
+                    message.success('删除成功');
+                    getAuthList();
+                  } else {
+                    message.error('删除失败' + res.errorMessage);
+                  }
+                });
+              }}
+              title={`此操作将永久删除 ${record.username}账户，确定删除吗？`}
+            >
+              <a className={styles[`${PUBLIC_PERFIX_CLASS}-permissions-btn`]}>
+                删除
+              </a>
+            </Popconfirm>
+          </>
+        )}
     </>
   );
   const renderPermissions = (permissions: string) => {
-    const renderItem = (name, permissions) => (
+    const renderItem = (name: string | number, permissions: string) => (
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-permissions-tr`]}>
         <Badge color={PERSSION_COlOR[permissions]} />
         <span style={{ margin: '0 14px 0 4px' }}>{name}</span>
       </div>
     );
-    return !isEmpty(permissions) ? map(permissions, (item, key) => renderItem(key, item)) : '-';
+    return !isEmpty(permissions)
+      ? map(permissions, (item, key) => renderItem(key, item))
+      : '-';
   };
 
   const permissionsTitle = (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-permissions-permissions`]}>
       <span style={{ marginRight: 28 }}>图权限</span>
       <Badge color="blue" />
-      <span className={styles[`${PUBLIC_PERFIX_CLASS}-permissions-dot`]}>全部</span>
+      <span className={styles[`${PUBLIC_PERFIX_CLASS}-permissions-dot`]}>
+        全部
+      </span>
       <Badge status="success" />
-      <span className={styles[`${PUBLIC_PERFIX_CLASS}-permissions-dot`]}>写</span>
+      <span className={styles[`${PUBLIC_PERFIX_CLASS}-permissions-dot`]}>
+        写
+      </span>
       <Badge status="warning" />
-      <span className={styles[`${PUBLIC_PERFIX_CLASS}-permissions-dot`]}>读</span>
+      <span className={styles[`${PUBLIC_PERFIX_CLASS}-permissions-dot`]}>
+        读
+      </span>
       <Badge status="default" />
-      <span className={styles[`${PUBLIC_PERFIX_CLASS}-permissions-dot`]}>无</span>
+      <span className={styles[`${PUBLIC_PERFIX_CLASS}-permissions-dot`]}>
+        无
+      </span>
     </div>
   );
   const columns: ColumnsType<UserProps> = [
@@ -144,7 +164,7 @@ export const AccountManager: React.FC<Prop> = ({ getRefreshList }) => {
       title: '相关角色',
       dataIndex: 'roles',
       key: 'roles',
-      render: (text: Array<string>) => text.join('、') || '-',
+      render: (text: Array<string>) => join(text, '、') || '-',
     },
     {
       title: '操作',
@@ -155,11 +175,16 @@ export const AccountManager: React.FC<Prop> = ({ getRefreshList }) => {
     getAuthList(username);
   }, [username]);
   useEffect(() => {
-    getRefreshList(getAuthList);
+    getRefreshList?.(getAuthList);
   }, []);
   return (
     <>
-      <Table columns={columns} bordered={false} dataSource={dataSource} loading={GetAuthListLoading} />
+      <Table
+        columns={columns}
+        bordered={false}
+        dataSource={dataSource}
+        loading={GetAuthListLoading}
+      />
       <EditAuthModal
         open={isOpen}
         type={type}
