@@ -11,7 +11,8 @@ logs/
 *.lock
 *.js
 !.autod.conf.js
-
+client/packages/**/lib
+client/packages/**/dist
 app/**/*.js
 test/**/*.js
 config/**/*.js

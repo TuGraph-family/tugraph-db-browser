@@ -17,13 +17,10 @@
     "server-dev": "cd server && yarn run dev",
     "client-start": "cd client && yarn run start",
     "server-start": "cd server && yarn run start",
-    "start": "yarn run server-start && yarn run client-dev",
+    "start": "yarn run server-start && yarn run client-start",
     "client-build": "cd client && yarn run build",
     "server-build": "cd server && yarn run build",
     "build": "npm run client-build && npm run server-build"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/TuGraph-family"
-  }
+  "repository": "https://github.com/TuGraph-family/tugraph-db-browser.git"
 }
