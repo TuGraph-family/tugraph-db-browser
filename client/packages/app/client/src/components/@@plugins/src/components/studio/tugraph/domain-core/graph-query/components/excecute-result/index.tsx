@@ -259,15 +259,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
     return { nodes: newNodes, edges: newEdge };
   };
   const copyScript = (
-    <div
-      className={
-        styles[
-          `${PUBLIC_PERFIX_CLASS}-script${
-            activeKey === 'canvas' ? '-canvas' : ''
-          }`
-        ]
-      }
-    >
+    <div className={styles[`${PUBLIC_PERFIX_CLASS}-script`]}>
       <Tooltip title="复制">
         <IconFont
           type="icon-fuzhi1"
@@ -538,13 +530,12 @@ const ExecuteResult: React.FC<ResultProps> = ({
   return (
     <GraphCanvasContext.Provider value={{ ...graphCanvasContextValue }}>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-excecute-result`]}>
-        {activeKey === 'canvas' && copyScript}
         <Tabs
           type="card"
           tabPosition="left"
           activeKey={activeKey}
           style={{
-            height: activeKey === 'canvas' ? 'calc(100% - 42px)' : '100%',
+            height: '100%',
           }}
           onChange={(val) => {
             setState((draft) => {
@@ -613,10 +604,11 @@ const ExecuteResult: React.FC<ResultProps> = ({
               <IconItem
                 icon="icon-dianbiantupu"
                 name="点边视图"
-                style={{ marginLeft: -5, height: 'calc(100% - 42px)' }}
+                style={{ marginLeft: -5 }}
               />
             }
           >
+            {copyScript}
             <div className={`canvas`} style={{ height: '100%' }}>
               <GraphCanvas
                 key={excecuteResult?.id}
