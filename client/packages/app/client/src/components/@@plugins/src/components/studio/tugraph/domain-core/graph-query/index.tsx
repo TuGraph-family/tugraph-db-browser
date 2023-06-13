@@ -2,7 +2,6 @@ import {
   AppstoreAddOutlined,
   ArrowLeftOutlined,
   DownloadOutlined,
-  PlayCircleOutlined,
   QuestionCircleOutlined,
   SaveOutlined,
 } from '@ant-design/icons';
@@ -39,6 +38,7 @@ import { NodeQuery } from './components/node-query';
 import { PathQueryPanel } from './components/path-query';
 import { StatementList } from './components/statement-query-list';
 
+import IconFont from '../../components/icon-font';
 import styles from './index.module.less';
 
 const { Option } = Select;
@@ -289,12 +289,17 @@ export const GraphQuery = (props: PluginPorps) => {
               </Option>
             </Select>
             <Button
+              className={styles[`${PUBLIC_PERFIX_CLASS}-btn-implement`]}
               type="primary"
               onClick={handleQuery}
               loading={StatementQueryLoading}
-              icon={<PlayCircleOutlined />}
+              icon={<IconFont type="icon-zhihang" />}
             >
-              执行
+              <span
+                className={styles[`${PUBLIC_PERFIX_CLASS}-btn-implement-text`]}
+              >
+                执行
+              </span>
             </Button>
           </div>
           <div>

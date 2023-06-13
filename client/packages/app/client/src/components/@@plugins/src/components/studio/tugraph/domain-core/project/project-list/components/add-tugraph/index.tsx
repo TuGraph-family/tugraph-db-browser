@@ -190,6 +190,10 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                         setState((draft) => {
                           draft.active = index;
                         });
+                        form.setFieldsValue({
+                          graphName: item.graph_name,
+                          description: item.description,
+                        });
                       }}
                     />
                   </Col>
