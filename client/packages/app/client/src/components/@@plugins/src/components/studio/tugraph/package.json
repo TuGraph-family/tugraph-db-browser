@@ -12,7 +12,7 @@
     "@antv/g6": "^4.7.14",
     "@antv/graphin": "^2.7.13",
     "@codemirror/lang-json": "^6.0.1",
-    "@uiw/react-codemirror": "^4.19.5",
+    "@uiw/react-codemirror": "^4.20.2",
     "@umijs/plugin-request": "^2.9.0",
     "ace-gremlin-editor": "1.0.2",
     "ahooks": "^3.7.2",

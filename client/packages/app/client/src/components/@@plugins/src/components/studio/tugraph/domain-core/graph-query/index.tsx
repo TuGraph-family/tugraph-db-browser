@@ -22,6 +22,7 @@ import { filter, find, isEmpty, join, map, uniqueId } from 'lodash';
 import { useCallback, useEffect } from 'react';
 import { useHistory } from 'umi';
 import { useImmer } from 'use-immer';
+import IconFont from '../../components/icon-font';
 import { SplitPane } from '../../components/split-panle';
 import { IQUIRE_LIST, PUBLIC_PERFIX_CLASS } from '../../constant';
 import { useQuery } from '../../hooks/useQuery';
@@ -37,8 +38,8 @@ import ModelOverview from './components/model-overview';
 import { NodeQuery } from './components/node-query';
 import { PathQueryPanel } from './components/path-query';
 import { StatementList } from './components/statement-query-list';
+import { StoredProcedureModal } from './components/stored-procedure';
 
-import IconFont from '../../components/icon-font';
 import styles from './index.module.less';
 
 const { Option } = Select;
@@ -90,6 +91,7 @@ export const GraphQuery = (props: PluginPorps) => {
       }>;
     };
     editor: any;
+    storedVisible: boolean;
   }>({
     graphListOptions: map(graphList, (graph: SubGraph) => {
       return {
@@ -109,6 +111,7 @@ export const GraphQuery = (props: PluginPorps) => {
     editorKey: '',
     graphData: { nodes: [], edges: [] },
     editor: {},
+    storedVisible: false,
   });
   const {
     activeTab,
@@ -124,6 +127,7 @@ export const GraphQuery = (props: PluginPorps) => {
     editorKey,
     graphData,
     editor,
+    storedVisible,
   } = state;
   useEffect(() => {
     updateState((draft) => {
@@ -256,8 +260,19 @@ export const GraphQuery = (props: PluginPorps) => {
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerRight`]}>
         <Tooltip title="用户帮助">
           <QuestionCircleOutlined
+            style={{ color: 'rgba(106,107,113,1)' }}
             onClick={() => {
               window.open('https://tugraph.antgroup.com/doc');
+            }}
+          />
+        </Tooltip>
+        <Tooltip title="存储过程">
+          <SaveOutlined
+            style={{ color: 'rgba(106,107,113,1)', marginLeft: '16px' }}
+            onClick={() => {
+              updateState((draft) => {
+                draft.storedVisible = true;
+              });
             }}
           />
         </Tooltip>
@@ -586,6 +601,14 @@ export const GraphQuery = (props: PluginPorps) => {
           </div>
         </div>
       )}
+      <StoredProcedureModal
+        visible={storedVisible}
+        onCancel={() => {
+          updateState((draft) => {
+            draft.storedVisible = false;
+          });
+        }}
+      />
     </div>
   );
 };

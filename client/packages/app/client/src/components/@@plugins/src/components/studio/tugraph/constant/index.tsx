@@ -146,3 +146,37 @@ export enum PROPERTY_TYPE {
   BLOB = 'string',
   BOOL = 'boolean',
 }
+export const STORED_OPTIONS = [
+  {
+    label: 'C++',
+    options: [
+      {
+        value: 'zip',
+        label: 'zip',
+      },
+      {
+        value: 'so',
+        label: 'so',
+      },
+      {
+        value: 'cpp',
+        label: 'cpp',
+      },
+    ],
+  },
+  {
+    label: 'Python',
+    options: [
+      {
+        value: 'py',
+        label: 'py',
+      },
+    ],
+  },
+];
+export const STROED_TYPE = [
+  { label: 'zip（C++）', value: 'zip' },
+  { label: 'so（C++）', value: 'so' },
+  { label: 'cpp（C++）', value: 'cpp' },
+  { label: 'Py（Python）', value: 'Py' },
+];
