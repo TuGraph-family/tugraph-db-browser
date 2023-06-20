@@ -1,6 +1,6 @@
 import { PlusSquareOutlined } from '@ant-design/icons';
 import { Button, Collapse, Form } from 'antd';
-import { map } from 'lodash';
+import { filter, join, map } from 'lodash';
 import React from 'react';
 import { useImmer } from 'use-immer';
 import IconFont from '../../../../../components/icon-font';
@@ -8,20 +8,40 @@ import SearchInput from '../../../../../components/search-input';
 import { PUBLIC_PERFIX_CLASS } from '../../../../../constant';
 import { StoredForm } from './stored-form';
 
+import { getLocalData } from '../../../../../utils';
 import styles from './index.module.less';
 
-type Prop = {};
+type Prop = { graphName: string };
 const { Panel } = Collapse;
-const list = [
-  { name: 'C++存储过程', value: [{ label: 'KHOP' }, { label: 'KHOP' }] },
-  { name: 'Python存储过程', value: [{ label: 'KHOP' }] },
-];
-export const StoredList: React.FC<Prop> = () => {
-  const [state, updateState] = useImmer<{ visible: boolean }>({
+export const StoredList: React.FC<Prop> = ({ graphName }) => {
+  const procedureList = getLocalData('TUGRAPH_PROCEDURE_LISTS')[graphName];
+  const [state, updateState] = useImmer<{
+    visible: boolean;
+    list: { name: string; value: any[] }[];
+    activeKey: number | null;
+  }>({
     visible: false,
+    list: [
+      {
+        name: 'C++存储过程',
+        value: filter(
+          procedureList,
+          (procedure) => procedure.procedureType === 'cpp'
+        ),
+      },
+      {
+        name: 'Python存储过程',
+        value: filter(
+          procedureList,
+          (procedure) => procedure.procedureType === 'python'
+        ),
+      },
+    ],
+    activeKey: null,
   });
-  const { visible } = state;
+  const { visible, list, activeKey } = state;
   const [form] = Form.useForm();
+  console.log(graphName);
   return (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-list`]}>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-list-search`]}>
@@ -44,10 +64,23 @@ export const StoredList: React.FC<Prop> = () => {
             {map(item.value, (item, index) => (
               <div
                 key={index}
-                className={styles[`${PUBLIC_PERFIX_CLASS}-list-item`]}
+                className={join(
+                  [
+                    styles[`${PUBLIC_PERFIX_CLASS}-list-item`],
+                    activeKey === index
+                      ? styles[`${PUBLIC_PERFIX_CLASS}-list-active`]
+                      : '',
+                  ],
+                  ' '
+                )}
+                onClick={() => {
+                  updateState((draft) => {
+                    draft.activeKey = index;
+                  });
+                }}
               >
                 <IconFont type="icon-component" />
-                <span>{item.label}</span>
+                <span>{`${item.procedureName}.${item.codeType}`}</span>
               </div>
             ))}
           </Panel>
@@ -55,6 +88,7 @@ export const StoredList: React.FC<Prop> = () => {
       </Collapse>
       <StoredForm
         form={form}
+        graphName={graphName}
         visible={visible}
         onCancel={() => {
           updateState((draft) => {

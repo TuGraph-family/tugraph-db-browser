@@ -21,10 +21,12 @@ import styles from './index.module.less';
 type Props = {
   visible: boolean;
   onCancel: () => void;
+  graphName: string;
 };
 export const StoredProcedureModal: React.FC<Props> = ({
   visible,
   onCancel,
+  graphName,
 }) => {
   const [state, updateState] = useImmer<{
     height: number;
@@ -89,7 +91,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
       }
     >
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-stored-modal-content`]}>
-        <StoredList />
+        <StoredList graphName={graphName} />
         <div
           className={join(
             [
@@ -137,16 +139,16 @@ export const StoredProcedureModal: React.FC<Props> = ({
             </div>
           </SplitPane>
         </div>
+        <StoredCheckoutDrawer
+          value={''}
+          visible={drawerVisible}
+          onClose={() => {
+            updateState((draft) => {
+              draft.drawerVisible = false;
+            });
+          }}
+        />
       </div>
-      <StoredCheckoutDrawer
-        value={''}
-        visible={drawerVisible}
-        onClose={() => {
-          updateState((draft) => {
-            draft.drawerVisible = false;
-          });
-        }}
-      />
     </Modal>
   );
 };

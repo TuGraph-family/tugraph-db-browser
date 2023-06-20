@@ -43,7 +43,11 @@ export async function importProgress(taskId: string) {
 }
 
 /* Import GraphSchema*/
-export async function importGraphSchema(params: { graph: string; schema: any; override: boolean }) {
+export async function importGraphSchema(params: {
+  graph: string;
+  schema: any;
+  override: boolean;
+}) {
   return request(`${PROXY_HOST}/api/import/schema`, {
     method: 'POST',
     headers: {

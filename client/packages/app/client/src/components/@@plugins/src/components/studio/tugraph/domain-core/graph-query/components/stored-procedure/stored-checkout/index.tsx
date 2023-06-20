@@ -12,7 +12,13 @@ export const StoredCheckoutDrawer: React.FC<Prop> = ({
   value,
 }) => {
   return (
-    <Drawer width={570} placement="right" visible={visible} onClose={onClose}>
+    <Drawer
+      width={570}
+      placement="right"
+      visible={visible}
+      onClose={onClose}
+      maskStyle={{ display: visible ? 'block' : 'none' }}
+    >
       <CodeMirror readOnly value={value} />
     </Drawer>
   );

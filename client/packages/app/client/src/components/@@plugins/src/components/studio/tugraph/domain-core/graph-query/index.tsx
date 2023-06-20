@@ -308,7 +308,14 @@ export const GraphQuery = (props: PluginPorps) => {
               type="primary"
               onClick={handleQuery}
               loading={StatementQueryLoading}
-              icon={<IconFont type="icon-zhihang" />}
+              icon={
+                <IconFont
+                  type="icon-zhihang"
+                  className={
+                    styles[`${PUBLIC_PERFIX_CLASS}-btn-implement-zhixing`]
+                  }
+                />
+              }
             >
               <span
                 className={styles[`${PUBLIC_PERFIX_CLASS}-btn-implement-text`]}
@@ -603,6 +610,7 @@ export const GraphQuery = (props: PluginPorps) => {
       )}
       <StoredProcedureModal
         visible={storedVisible}
+        graphName={currentGraphName}
         onCancel={() => {
           updateState((draft) => {
             draft.storedVisible = false;

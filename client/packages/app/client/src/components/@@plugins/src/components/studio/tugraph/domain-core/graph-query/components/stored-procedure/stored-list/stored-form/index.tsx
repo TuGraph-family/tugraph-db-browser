@@ -12,21 +12,25 @@ import {
 } from 'antd';
 import { FormInstance } from 'antd/es/form';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload';
-import { map } from 'lodash';
+import { includes, map } from 'lodash';
 import React from 'react';
 import { useImmer } from 'use-immer';
 import {
+  CPP_CODE_TYPE,
   PUBLIC_PERFIX_CLASS,
   STORED_OPTIONS,
   STROED_TYPE,
 } from '../../../../../../constant';
 
+import { useProcedure } from '../../../../../../hooks/useProcedure';
+import { getLocalData, setLocalData } from '../../../../../../utils';
 import styles from './index.module.less';
 
 type Prop = {
   form: FormInstance<any>;
   visible: boolean;
   onCancel: () => void;
+  graphName: string;
 };
 type Options =
   | {
@@ -39,11 +43,21 @@ type Options =
   | undefined;
 const { Item } = Form;
 const { Group } = Radio;
-export const StoredForm: React.FC<Prop> = ({ form, visible, onCancel }) => {
-  const [state, updateState] = useImmer<{ demoVisible: boolean }>({
+export const StoredForm: React.FC<Prop> = ({
+  form,
+  visible,
+  onCancel,
+  graphName,
+}) => {
+  const { onUploadProcedure, UploadProcedureLoading } = useProcedure();
+  const [state, updateState] = useImmer<{
+    demoVisible: boolean;
+    content: string;
+  }>({
     demoVisible: false,
+    content: '',
   });
-  const { demoVisible } = state;
+  const { demoVisible, content } = state;
   const props: UploadProps = {
     name: 'file',
     headers: {
@@ -59,6 +73,16 @@ export const StoredForm: React.FC<Prop> = ({ form, visible, onCancel }) => {
         message.error('文件上传失败');
       }
     },
+    maxCount: 1,
+    beforeUpload: (file) => {
+      const reader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = (result) => {
+        updateState((draft) => {
+          draft.content = result.target?.result as string;
+        });
+      };
+    },
   };
   // 处理OptGroup数据
   const options = (options: Options) => {
@@ -69,7 +93,14 @@ export const StoredForm: React.FC<Prop> = ({ form, visible, onCancel }) => {
           options: map(option.options, (item) => ({
             ...item,
             label: (
-              <>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                }}
+              >
                 <div>{item.label}</div>
                 <a
                   onClick={() => {
@@ -80,12 +111,45 @@ export const StoredForm: React.FC<Prop> = ({ form, visible, onCancel }) => {
                 >
                   dome下载
                 </a>
-              </>
+              </div>
             ),
           })),
         };
       }
       return option;
+    });
+  };
+  // 新增存储过程
+  const uploadProcedure = () => {
+    form.validateFields().then((val) => {
+      console.log(val, graphName, content);
+      let procedureType: string;
+      if (includes(CPP_CODE_TYPE, val.codeType)) {
+        procedureType = 'cpp';
+      } else {
+        procedureType = 'python';
+      }
+      setLocalData('TUGRAPH_PROCEDURE_LISTS', {
+        ...(getLocalData('TUGRAPH_PROCEDURE_LISTS') || {}),
+        [graphName]: [
+          ...(getLocalData('TUGRAPH_PROCEDURE_LISTS')[graphName] || []),
+          { ...val, procedureType },
+        ],
+      });
+      // onUploadProcedure({ ...val, graphName, procedureType, content }).then(
+      //   (res) => {
+      //     if (res.errorCode == 200) {
+      //       setLocalData('TUGRAPH_PROCEDURE_LISTS', {
+      //         ...(getLocalData('TUGRAPH_PROCEDURE_LISTS') || {}),
+      //         [graphName]: [
+      //           ...(getLocalData('TUGRAPH_PROCEDURE_LISTS')[graphName] || []),
+      //           { ...val, procedureType },
+      //         ],
+      //       });
+      //       message.success('新增成功');
+      //     }
+      //   }
+      // );
     });
   };
   return (
@@ -99,21 +163,27 @@ export const StoredForm: React.FC<Prop> = ({ form, visible, onCancel }) => {
         footer={
           <>
             <Button type="default">取消</Button>
-            <Button type="primary">确定</Button>
+            <Button
+              loading={UploadProcedureLoading}
+              type="primary"
+              onClick={uploadProcedure}
+            >
+              确定
+            </Button>
           </>
         }
       >
         <Form form={form} layout="vertical">
           <Item
             label="存储过程名称"
-            name="name"
+            name="procedureName"
             rules={[{ required: true, message: '请输入' }]}
           >
             <Input placeholder="请输入" />
           </Item>
           <Item
             label="存储过程类型"
-            name="type"
+            name="codeType"
             rules={[{ required: true, message: '请选择' }]}
           >
             <Select options={options(STORED_OPTIONS)} />
@@ -123,8 +193,10 @@ export const StoredForm: React.FC<Prop> = ({ form, visible, onCancel }) => {
           </Item>
           <Item
             label="是否只读"
+            name="readOnly"
             tooltip="执行时是否修改数据库"
             rules={[{ required: true, message: '请选择' }]}
+            className={styles[`${PUBLIC_PERFIX_CLASS}-readonly`]}
           >
             <Group>
               <Radio value={false}>否</Radio>
