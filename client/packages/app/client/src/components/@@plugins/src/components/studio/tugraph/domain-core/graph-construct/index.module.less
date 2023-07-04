@@ -28,12 +28,15 @@
       }
     }
     .@{perfix-cls}-step {
-      width: 580px;
+      width: 956px;
       margin-bottom: 4px;
       :global {
         .ant-steps-item-active {
           &:before {
             background-color: #1650ff;
+            width: 160px;
+            left: 50%;
+            transform: translateX(-50%);
           }
           .ant-steps-item-icon {
             background-color: #1650ff;

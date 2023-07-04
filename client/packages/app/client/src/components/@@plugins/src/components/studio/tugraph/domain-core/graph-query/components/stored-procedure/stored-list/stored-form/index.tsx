@@ -206,7 +206,15 @@ export const StoredForm: React.FC<Prop> = ({
           <Upload {...props}>
             <Button icon={<UploadOutlined />}>上传文件</Button>
           </Upload>
-          <span>支持扩展名：.gql</span>
+          <div
+            style={{
+              fontWeight: 400,
+              color: 'rgba(152,152,157,1)',
+              marginTop: 4,
+            }}
+          >
+            支持扩展名：.gql
+          </div>
         </Form>
       </Modal>
       <Modal

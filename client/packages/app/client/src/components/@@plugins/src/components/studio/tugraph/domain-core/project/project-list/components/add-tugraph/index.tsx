@@ -9,6 +9,7 @@ import {
   Steps,
   message,
 } from 'antd';
+import { map } from 'lodash';
 import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import DemoCard from '../../../../../components/demo-card';
@@ -171,7 +172,11 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
     >
       <Spin spinning={loading}>
         <div>
-          <Steps current={current} items={items} />
+          <Steps current={current} items={items}>
+            {map(items, (item) => (
+              <Steps.Step title={item.title} key={item.title} />
+            ))}
+          </Steps>
           {current === 0 ? (
             <div className={styles[`${PUBLIC_PERFIX_CLASS}-stencil-container`]}>
               <Row
