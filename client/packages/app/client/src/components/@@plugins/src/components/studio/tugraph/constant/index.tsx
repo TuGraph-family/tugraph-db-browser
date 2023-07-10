@@ -75,9 +75,9 @@ export const DATA_TYPE = [
 ];
 export const TUGRAPH_DEOM_NAME = [
   'Movie',
-  'ThreeKindoms',
-  'TheTreeBody',
-  'WanderringEarth',
+  'ThreeKingdoms',
+  'TheThreeBody',
+  'WanderingEarth',
 ];
 export const TUGRAPH_DEOM = [
   {
@@ -89,24 +89,24 @@ export const TUGRAPH_DEOM = [
       'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*vLs3RIMgT4UAAAAAAAAAAAAADgOBAQ/original',
   },
   {
-    graph_demo_name: 'Three Kindoms（三国）',
-    graph_name: 'ThreeKindoms',
+    graph_demo_name: 'Three Kingdoms（三国）',
+    graph_name: 'ThreeKingdoms',
     description: '基于三国时期的历史事件的示例。',
     data: three_kingdoms_data,
     imgUrl:
       'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*ebTkRIJx4SwAAAAAAAAAAAAADgOBAQ/original',
   },
   {
-    graph_demo_name: 'The Tree Body（三体）',
-    graph_name: 'TheTreeBody',
+    graph_demo_name: 'The Three Body（三体）',
+    graph_name: 'TheThreeBody',
     description: '基于刘慈欣的小说《三体》的故事背景示例。',
     data: three_body_data,
     imgUrl:
       'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*UT-FQZ19zooAAAAAAAAAAAAADgOBAQ/original',
   },
   {
-    graph_demo_name: 'Wanderring Earth（流浪地球）',
-    graph_name: 'WanderringEarth',
+    graph_demo_name: 'Wandering Earth（流浪地球）',
+    graph_name: 'WanderingEarth',
     description: '基于电影《流浪地球1》、《流浪地球2》的剧情设计的示例。',
     data: wandering_earth_data,
     imgUrl:
