@@ -1,4 +1,8 @@
-import { ArrowLeftOutlined, UploadOutlined } from '@ant-design/icons';
+import {
+  ArrowLeftOutlined,
+  DownloadOutlined,
+  UploadOutlined,
+} from '@ant-design/icons';
 import { EdgeConfig, NodeConfig } from '@antv/g6-pc';
 import { GraphinContextType, Layout, Utils } from '@antv/graphin';
 import type { UploadProps } from 'antd';
@@ -17,6 +21,7 @@ import { CANVAS_LAYOUT } from '../../components/graph-canvas-layout/constant';
 import { GraphCanvasTools } from '../../components/graph-canvas-tools';
 import IconFont from '../../components/icon-font';
 import { GRAPH_OPERATE, PUBLIC_PERFIX_CLASS } from '../../constant';
+import demoData from '../../constant/demo-json/schema-demo.json';
 import { useImport } from '../../hooks/useImport';
 import { useSchema } from '../../hooks/useSchema';
 import { SubGraph } from '../../interface/graph';
@@ -123,11 +128,8 @@ export const GraphConstruct = (props: PluginPorps) => {
     schema,
   } = state;
 
-  const {
-    onGetGraphSchema,
-    onCreateLabelSchema,
-    onDeleteLabelSchema,
-  } = useSchema();
+  const { onGetGraphSchema, onCreateLabelSchema, onDeleteLabelSchema } =
+    useSchema();
   const getGraphCanvasContextValue = useCallback((contextValue: any) => {
     setState((draft) => {
       if (contextValue) {
@@ -561,9 +563,21 @@ export const GraphConstruct = (props: PluginPorps) => {
             </Button>
           </Upload>
         </div>
-        <div className={styles[`${PUBLIC_PERFIX_CLASS}-model-json`]}>
-          支持扩展名：.JSON
+        <div className={styles[`${PUBLIC_PERFIX_CLASS}-model-demo`]}>
+          <div className={styles[`${PUBLIC_PERFIX_CLASS}-model-json`]}>
+            支持扩展名：.JSON
+          </div>
+          <Button
+            type="link"
+            icon={<DownloadOutlined />}
+            onClick={() => {
+              downloadFile(JSON.stringify(demoData), 'demo.json');
+            }}
+          >
+            示例下载
+          </Button>
         </div>
+
         <Checkbox
           onChange={(e) => {
             setState((draft) => {
