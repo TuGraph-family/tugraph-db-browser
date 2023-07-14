@@ -69,3 +69,15 @@ export async function callProcedure(params: CallProcedure) {
     },
   });
 }
+/* 获取procedure demo */
+export async function getProcedureDemo(params: { type: string }) {
+  return request(`${SERVER_HOST}/get_procedure_demo`, {
+    method: 'POST',
+    headers: {
+      Authorization: getLocalData('TUGRAPH_TOKEN'),
+    },
+    data: {
+      ...params,
+    },
+  });
+}

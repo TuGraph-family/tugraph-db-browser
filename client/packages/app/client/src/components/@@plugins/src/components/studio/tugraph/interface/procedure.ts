@@ -1,15 +1,25 @@
 export type UploadProcedureParams = {
   graphName: string;
-  procedureType: string;
+  procedureType: 'cpp' | 'python';
   procedureName: string;
   content: string;
   codeType: string;
   description: string;
-  readOnly: string;
+  readonly: string;
+  version: string;
 };
 export type ProcedureParams = {
   graphName: string;
-  procedureType: string;
+  procedureType: 'cpp' | 'python' | 'all';
+  version: string;
+};
+export type ProcedureItemParams = {
+  name?: string;
+  version?: 'v1' | 'v2';
+  description?: string;
+  read_only?: string;
+  signature?: string;
+  type: 'cpp' | 'python';
 };
 export type ProcedureCode = {
   graphName: string;
@@ -28,4 +38,5 @@ export type CallProcedure = {
   timeout: number;
   inProcess: boolean;
   param: string;
+  version: 'v1' | 'v2';
 };

@@ -1,3 +1,6 @@
+import { cpp } from '@codemirror/lang-cpp';
+import { java } from '@codemirror/lang-java';
+import { python } from '@codemirror/lang-python';
 import CodeMirror from '@uiw/react-codemirror';
 import { Drawer } from 'antd';
 import React from 'react';
@@ -19,7 +22,11 @@ export const StoredCheckoutDrawer: React.FC<Prop> = ({
       onClose={onClose}
       maskStyle={{ display: visible ? 'block' : 'none' }}
     >
-      <CodeMirror readOnly value={value} />
+      <CodeMirror
+        readOnly
+        value={value}
+        extensions={[cpp(), python(), java()]}
+      />
     </Drawer>
   );
 };

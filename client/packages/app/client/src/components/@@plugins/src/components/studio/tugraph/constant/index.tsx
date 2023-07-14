@@ -6,7 +6,7 @@ import wandering_earth_data from './demo-json/wandering_earth.json';
 export type PROJECT_TAB = 'MY_PROJECT' | 'ALL_PROJEXCT';
 export const PUBLIC_PERFIX_CLASS = 'ant-tugraph';
 export const PROXY_HOST = `http://${window.location.hostname}:7001`;
-export const SERVER_HOST = `http://100.83.30.35:39091/LGraphHttpService/Query`;
+export const SERVER_HOST = `http://${window.location.hostname}:9090/LGraphHttpService/Query`;
 export const STEP_LIST: CollasibleStep[] = [
   {
     title: '新建一张图',
@@ -177,10 +177,9 @@ export const STORED_OPTIONS = [
 export const CPP_CODE_TYPE = ['zip', 'so', 'cpp'];
 export const PYTHON_CODE_TYPE = ['py'];
 export const STROED_TYPE = [
-  { label: 'zip（C++）', value: 'zip' },
-  { label: 'so（C++）', value: 'so' },
-  { label: 'cpp（C++）', value: 'cpp' },
-  { label: 'Py（Python）', value: 'Py' },
+  { label: 'cpp_v1', value: 'cpp_v1' },
+  { label: 'cpp_v2', value: 'cpp_v2' },
+  { label: 'Py（Python）', value: 'py' },
 ];
 export const STORED_PROCEDURE_DESC = [
   {

@@ -3,12 +3,25 @@
   height: 100%;
   padding-bottom: 8px;
   display: flex;
+
   &-box {
     &-text {
       color: rgba(54, 55, 64, 1);
       font-size: 12px;
       line-height: 20px;
       margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      &-right {
+        display: flex;
+        align-items: center;
+        :global {
+          .ant-input-number-input {
+            height: 22px;
+          }
+        }
+      }
     }
     padding: 16px;
     height: 100%;
@@ -26,6 +39,17 @@
         height: 100%;
         padding: 16px 24px;
       }
+    }
+  }
+}
+.@{perfix-cls}-container-empty {
+  justify-content: center;
+  :global {
+    .ant-empty-normal {
+      position: absolute;
+      height: 70px;
+      top: 50%;
+      transform: translateY(-50%);
     }
   }
 }

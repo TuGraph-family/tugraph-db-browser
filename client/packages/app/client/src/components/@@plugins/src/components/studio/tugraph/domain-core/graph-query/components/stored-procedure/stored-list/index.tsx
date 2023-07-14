@@ -1,51 +1,127 @@
 import { PlusSquareOutlined } from '@ant-design/icons';
 import { Button, Collapse, Form } from 'antd';
 import { filter, join, map } from 'lodash';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import IconFont from '../../../../../components/icon-font';
 import SearchInput from '../../../../../components/search-input';
 import { PUBLIC_PERFIX_CLASS } from '../../../../../constant';
+import { useProcedure } from '../../../../../hooks/useProcedure';
+import { ProcedureItemParams } from '../../../../../interface/procedure';
 import { StoredForm } from './stored-form';
 
-import { getLocalData } from '../../../../../utils';
 import styles from './index.module.less';
 
-type Prop = { graphName: string };
+type Prop = {
+  graphName: string;
+  getDetails: (detail: ProcedureItemParams) => void;
+  getList: (list: ProcedureItemParams[]) => void;
+  getRefresh: (fun: any) => void;
+};
 const { Panel } = Collapse;
-export const StoredList: React.FC<Prop> = ({ graphName }) => {
-  const procedureList = getLocalData('TUGRAPH_PROCEDURE_LISTS')[graphName];
+export const StoredList: React.FC<Prop> = ({
+  graphName,
+  getDetails,
+  getList,
+  getRefresh,
+}) => {
+  const { onGetProcedureList } = useProcedure();
   const [state, updateState] = useImmer<{
     visible: boolean;
-    list: { name: string; value: any[] }[];
-    activeKey: number | null;
+    list: { name: string; items: ProcedureItemParams[] }[];
+    activeKey: string;
+    searchList: { name: string; items: ProcedureItemParams[] }[];
   }>({
     visible: false,
     list: [
       {
         name: 'C++存储过程',
-        value: filter(
-          procedureList,
-          (procedure) => procedure.procedureType === 'cpp'
-        ),
+        items: [],
       },
       {
         name: 'Python存储过程',
-        value: filter(
-          procedureList,
-          (procedure) => procedure.procedureType === 'python'
-        ),
+        items: [],
       },
     ],
-    activeKey: null,
+    activeKey: '',
+    searchList: [
+      {
+        name: 'C++存储过程',
+        items: [],
+      },
+      {
+        name: 'Python存储过程',
+        items: [],
+      },
+    ],
   });
-  const { visible, list, activeKey } = state;
+  const { visible, list, activeKey, searchList } = state;
   const [form] = Form.useForm();
-  console.log(graphName);
+  useEffect(() => {
+    getList([...list[0].items, ...list[1].items]);
+  }, [searchList]);
+  const refreshList = (type: 'cpp' | 'python' | 'all') => {
+    onGetProcedureList({
+      graphName,
+      procedureType: type,
+      version: 'all',
+    }).then((res) => {
+      updateState((draft) => {
+        const newItems = map(res.data, (item) => ({
+          ...item.plugin_description,
+        }));
+        if (type === 'all') {
+          draft.list[0].items = filter(
+            newItems,
+            (item) => item.type !== 'python'
+          );
+          draft.list[1].items = filter(
+            newItems,
+            (item) => item.type === 'python'
+          );
+          draft.searchList[0].items = filter(
+            newItems,
+            (item) => item.type !== 'python'
+          );
+          draft.searchList[1].items = filter(
+            newItems,
+            (item) => item.type === 'python'
+          );
+        } else {
+          draft.list[type === 'cpp' ? 0 : 1].items = newItems;
+          draft.searchList[type === 'cpp' ? 0 : 1].items = newItems;
+        }
+      });
+    });
+  };
+  useEffect(() => {
+    getRefresh(refreshList);
+    refreshList('all');
+  }, []);
+  const getSearchList = (e: React.ChangeEvent<HTMLInputElement>) => {
+    updateState((draft) => {
+      if (e.target.value) {
+        draft.list[0].items = filter(
+          searchList[0].items,
+          (item) => item.name?.indexOf(e.target.value) !== -1
+        );
+        draft.list[1].items = filter(
+          searchList[1].items,
+          (item) => item.name?.indexOf(e.target.value) !== -1
+        );
+      } else {
+        draft.list[0].items = searchList[0].items;
+        draft.list[1].items = searchList[1].items;
+      }
+    });
+  };
   return (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-list`]}>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-list-search`]}>
-        <SearchInput placeholder="请输入存储过程名称" />
+        <SearchInput
+          placeholder="请输入存储过程名称"
+          onChange={getSearchList}
+        />
         <Button
           type="link"
           onClick={() => {
@@ -61,26 +137,27 @@ export const StoredList: React.FC<Prop> = ({ graphName }) => {
       <Collapse expandIconPosition="end" bordered={false}>
         {map(list, (item, key) => (
           <Panel header={item.name} key={key}>
-            {map(item.value, (item, index) => (
+            {map(item.items, (item, index) => (
               <div
                 key={index}
                 className={join(
                   [
                     styles[`${PUBLIC_PERFIX_CLASS}-list-item`],
-                    activeKey === index
+                    activeKey === `${key}-${index}`
                       ? styles[`${PUBLIC_PERFIX_CLASS}-list-active`]
                       : '',
                   ],
                   ' '
                 )}
                 onClick={() => {
+                  getDetails({ ...item });
                   updateState((draft) => {
-                    draft.activeKey = index;
+                    draft.activeKey = `${key}-${index}`;
                   });
                 }}
               >
                 <IconFont type="icon-component" />
-                <span>{`${item.procedureName}.${item.codeType}`}</span>
+                <span>{`${item.name}`}</span>
               </div>
             ))}
           </Panel>
@@ -90,6 +167,7 @@ export const StoredList: React.FC<Prop> = ({ graphName }) => {
         form={form}
         graphName={graphName}
         visible={visible}
+        refreshList={refreshList}
         onCancel={() => {
           updateState((draft) => {
             draft.visible = false;

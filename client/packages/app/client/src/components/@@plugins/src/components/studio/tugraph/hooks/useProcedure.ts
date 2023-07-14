@@ -3,6 +3,7 @@ import {
   callProcedure,
   deleteProcedure,
   getProcedureCode,
+  getProcedureDemo,
   getProcedureList,
   uploadProcedure,
 } from '../services/ProcedureController';
@@ -32,6 +33,11 @@ export const useProcedure = () => {
     loading: CallProcedureLoading,
     error: CallProcedureError,
   } = useRequest(callProcedure, { manual: true });
+  const {
+    runAsync: onGetProcedureDemo,
+    loading: GetProcedureDemoLoading,
+    error: GetProcedureDemoError,
+  } = useRequest(getProcedureDemo, { manual: true });
 
   return {
     onUploadProcedure,
@@ -49,5 +55,8 @@ export const useProcedure = () => {
     onCallProcedure,
     CallProcedureLoading,
     CallProcedureError,
+    onGetProcedureDemo,
+    GetProcedureDemoLoading,
+    GetProcedureDemoError,
   };
 };
