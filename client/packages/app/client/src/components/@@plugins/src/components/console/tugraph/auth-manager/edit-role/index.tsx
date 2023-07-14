@@ -124,7 +124,7 @@ const EditRoleModal: React.FC<Prop> = ({
   }, []);
   return (
     <Modal
-      title={`${type === 'add' ? '添加' : '编辑'}账户`}
+      title={`${type === 'add' ? '添加' : '编辑'}角色`}
       onCancel={() => {
         form.resetFields();
         onCancel();

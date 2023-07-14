@@ -146,3 +146,84 @@ export enum PROPERTY_TYPE {
   BLOB = 'string',
   BOOL = 'boolean',
 }
+export const STORED_OPTIONS = [
+  {
+    label: 'C++',
+    options: [
+      {
+        value: 'zip',
+        label: 'zip',
+      },
+      {
+        value: 'so',
+        label: 'so',
+      },
+      {
+        value: 'cpp',
+        label: 'cpp',
+      },
+    ],
+  },
+  {
+    label: 'Python',
+    options: [
+      {
+        value: 'py',
+        label: 'py',
+      },
+    ],
+  },
+];
+export const CPP_CODE_TYPE = ['zip', 'so', 'cpp'];
+export const PYTHON_CODE_TYPE = ['py'];
+export const STROED_TYPE = [
+  { label: 'cpp_v1', value: 'cpp_v1' },
+  { label: 'cpp_v2', value: 'cpp_v2' },
+  { label: 'Py（Python）', value: 'py' },
+];
+export const STORED_PROCEDURE_DESC = [
+  {
+    name: '事务',
+    [`Procedure V1`]: '内部创建，自由控制',
+    [`Procedure V2`]: '外部传入，单一事务',
+  },
+  {
+    name: '签名（参数定义）',
+    [`Procedure V1`]: '无',
+    [`Procedure V2`]: '有',
+  },
+  {
+    name: 'Cypher Standalone Call',
+    [`Procedure V1`]: '支持',
+    [`Procedure V2`]: '支持',
+  },
+  {
+    name: 'Cypher Embeded Call',
+    [`Procedure V1`]: '不支持',
+    [`Procedure V2`]: '支持',
+  },
+  {
+    name: '语言',
+    [`Procedure V1`]: 'C++/python',
+    [`Procedure V2`]: 'C++',
+  },
+  {
+    name: '调用模式',
+    [`Procedure V1`]: '字符串，多为JSON',
+    [`Procedure V2`]: '通过Cypher传内置数据类型',
+  },
+];
+export const STORED_PROCEDURE_RULE = [
+  {
+    desc: '1. Procedure v1 和 v2 不能重名，TuGraph维护已加载的Procedure列表记录版本；',
+  },
+  {
+    desc: '2. 在上传是需要作为参数显式指定 Procedure 版本；',
+  },
+  {
+    desc: '3. list查询可以指定返回v1、v2、v1和v2三种；',
+  },
+  {
+    desc: '4. 删除和修改可以不指定版本，以名字为唯一标识；',
+  },
+];

@@ -1,0 +1,144 @@
+@perfix-cls: ant-tugraph;
+.@{perfix-cls}-stored-modal {
+  width: 100vw !important;
+  margin: 0;
+  padding: 0;
+  max-width: none;
+  top: 0;
+  &-content {
+    display: flex;
+    height: 100%;
+    &-right {
+      width: calc(100% - 273px);
+      height: calc(100% - 1px);
+      margin-top: 1px;
+      &-bar {
+        display: flex;
+        height: 48px;
+        align-items: center;
+        box-shadow: 0 1px 0 0 #f2f2f2;
+        padding-left: 16px;
+        :global {
+          .ant-btn-text {
+            color: rgba(106, 107, 113, 1);
+            .anticon {
+              color: rgba(106, 107, 113, 1);
+            }
+          }
+        }
+      }
+      &-top {
+        width: 100%;
+        height: 100%;
+        :global {
+          .ant-empty-normal {
+            position: absolute;
+            top: 50%;
+            margin: 0;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+        }
+        &-tab {
+          margin-left: 16px;
+          overflow: hidden;
+        }
+        &-content {
+          height: calc(100% - 95px);
+        }
+      }
+      &-bottom {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+  :global {
+    .ant-modal-content {
+      height: 100vh;
+      border-radius: 0px;
+      .ant-modal-header {
+        .anticon-arrow-left {
+          margin-right: 8px;
+        }
+        box-shadow: 0 1px 0 0 #f2f2f2;
+      }
+
+      .ant-modal-body {
+        height: calc(100% - 54px);
+        padding: 0;
+      }
+      .ant-modal-footer {
+        display: none;
+      }
+    }
+  }
+}
+.@{perfix-cls}-split-pane {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+
+  :global {
+    .SplitPane {
+      overflow: hidden;
+    }
+
+    .Resizer {
+      z-index: 2;
+      box-sizing: border-box;
+      background-clip: padding-box;
+    }
+
+    .Resizer:hover {
+      transition: all 1s ease;
+      opacity: 0.1;
+      background: #000;
+    }
+
+    .Resizer.horizontal {
+      width: 100%;
+      height: 4px;
+      z-index: 9999;
+      margin: -5px 0;
+      border-top: 5px solid rgb(255 255 255 / 0%);
+      border-bottom: 5px solid rgb(255 255 255 / 0%);
+      cursor: row-resize;
+    }
+
+    .Resizer.horizontal:hover {
+      border-top: 5px solid rgb(0 0 0 / 50%);
+      border-bottom: 5px solid rgb(0 0 0 / 50%);
+    }
+
+    .Resizer.vertical {
+      width: 4px;
+      margin: 0 -5px;
+      border-right: 5px solid rgb(255 255 255 / 0%);
+      border-left: 5px solid rgb(255 255 255 / 0%);
+      cursor: col-resize;
+    }
+
+    .Resizer.vertical:hover {
+      border-right: 5px solid rgb(0 0 0 / 50%);
+      border-left: 5px solid rgb(0 0 0 / 50%);
+    }
+
+    .Resizer.disabled {
+      cursor: not-allowed;
+    }
+
+    .Resizer.disabled:hover {
+      border-color: transparent;
+    }
+
+    .Pane.horizontal {
+      overflow: hidden;
+    }
+  }
+}
+:global {
+  .cm-editor {
+    height: calc(100vh - 100px);
+  }
+}
