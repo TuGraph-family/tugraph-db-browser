@@ -134,7 +134,11 @@ export const StoredList: React.FC<Prop> = ({
           新建
         </Button>
       </div>
-      <Collapse expandIconPosition="end" bordered={false}>
+      <Collapse
+        expandIconPosition="end"
+        bordered={false}
+        defaultActiveKey={[0, 1]}
+      >
         {map(list, (item, key) => (
           <Panel header={item.name} key={key}>
             {map(item.items, (item, index) => (

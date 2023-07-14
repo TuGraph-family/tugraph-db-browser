@@ -131,11 +131,9 @@ export const StoredProcedureModal: React.FC<Props> = ({
       param: paramValue,
       version: detail.version,
     }).then((res) => {
-      if (res.errorCode === '200') {
-        updateState((draft) => {
-          draft.result = res;
-        });
-      }
+      updateState((draft) => {
+        draft.result = res;
+      });
     });
   };
 

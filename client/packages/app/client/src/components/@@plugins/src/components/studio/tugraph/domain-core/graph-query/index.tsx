@@ -178,12 +178,21 @@ export const GraphQuery = (props: PluginPorps) => {
     });
   }, []);
   useEffect(() => {
-    updateState((draft) => {
-      draft.queryList = getLocalData('TUGRAPH_STATEMENT_LISTS')[
-        currentGraphName
-      ];
-    });
+    if (queryList.length) {
+      updateState((draft) => {
+        draft.queryList = getLocalData('TUGRAPH_STATEMENT_LISTS')[
+          currentGraphName
+        ];
+      });
+    }
   }, [activeTab]);
+  useEffect(() => {
+    if (history.location.hash) {
+      updateState((draft) => {
+        draft.storedVisible = true;
+      });
+    }
+  });
   const onSplitPaneWidthChange = useCallback((size: number) => {
     updateState((draft) => {
       draft.editorWidth = size;
@@ -319,6 +328,13 @@ export const GraphQuery = (props: PluginPorps) => {
               cursor: 'pointer',
             }}
             onClick={() => {
+              window.history.replaceState(
+                null,
+                null,
+                `${
+                  history.location.pathname + history.location.search
+                }#procedure`
+              );
               updateState((draft) => {
                 draft.storedVisible = true;
               });
@@ -661,6 +677,11 @@ export const GraphQuery = (props: PluginPorps) => {
         visible={storedVisible}
         graphName={currentGraphName}
         onCancel={() => {
+          window.history.replaceState(
+            null,
+            null,
+            `${history.location.pathname + history.location.search}`
+          );
           updateState((draft) => {
             draft.storedVisible = false;
           });

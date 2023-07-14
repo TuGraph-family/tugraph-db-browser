@@ -57,12 +57,14 @@ export const StoredForm: React.FC<Prop> = ({
     demoVisible: boolean;
     content: string;
     demoValue: string;
+    isPy: boolean;
   }>({
     demoVisible: false,
     content: '',
     demoValue: 'cpp_v1',
+    isPy: false,
   });
-  const { demoVisible, content, demoValue } = state;
+  const { demoVisible, content, demoValue, isPy } = state;
   const props: UploadProps = {
     name: 'file',
     headers: {
@@ -179,7 +181,20 @@ export const StoredForm: React.FC<Prop> = ({
             name="codeType"
             rules={[{ required: true, message: '请选择' }]}
           >
-            <Select options={options(STORED_OPTIONS)} />
+            <Select
+              onSelect={(val) => {
+                console.log(val);
+                updateState((draft) => {
+                  if (val === 'py') {
+                    draft.isPy = true;
+                    form.setFieldsValue({ version: 'v1' });
+                  } else {
+                    draft.isPy = false;
+                  }
+                });
+              }}
+              options={options(STORED_OPTIONS)}
+            />
           </Item>
 
           <Item label="存储过程描述" name="description">
@@ -195,7 +210,9 @@ export const StoredForm: React.FC<Prop> = ({
               >
                 <Group>
                   <Radio value={'v1'}>v1</Radio>
-                  <Radio value={'v2'}>v2</Radio>
+                  <Radio disabled={isPy} value={'v2'}>
+                    v2
+                  </Radio>
                 </Group>
               </Item>
             </Col>

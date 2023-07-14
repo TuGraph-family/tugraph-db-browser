@@ -41,7 +41,6 @@ export const StoredDownLoad: React.FC<Prop> = ({ demoVisible, onCancel }) => {
       <Form layout="vertical">
         <Item
           label="存储过程类型"
-          tooltip
           required
           className={styles[`${PUBLIC_PERFIX_CLASS}-form-radio`]}
         >
