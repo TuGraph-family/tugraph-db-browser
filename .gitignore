@@ -8,8 +8,6 @@ logs/
 .DS_Store
 .vscode
 *.swp
-*.lock
-*.js
 !.autod.conf.js
 client/packages/**/lib
 client/packages/**/dist
