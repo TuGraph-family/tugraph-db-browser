@@ -27,5 +27,6 @@
   },
   "devDependencies": {
     "@tugraph/openpiece-devtools": "0.0.5"
-  }
+  },
+  "repository": "git@github.com:TuGraph-family/tugraph-db-browser.git"
 }
