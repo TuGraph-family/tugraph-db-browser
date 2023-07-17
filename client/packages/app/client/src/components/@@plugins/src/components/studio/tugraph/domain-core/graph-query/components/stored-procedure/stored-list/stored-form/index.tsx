@@ -106,15 +106,17 @@ export const StoredForm: React.FC<Prop> = ({
                 }}
               >
                 <div>{item.label}</div>
-                <a
-                  onClick={() => {
-                    updateState((draft) => {
-                      draft.demoVisible = true;
-                    });
-                  }}
-                >
-                  dome下载
-                </a>
+                {(item.value === 'cpp' || item.value === 'py') && (
+                  <a
+                    onClick={() => {
+                      updateState((draft) => {
+                        draft.demoVisible = true;
+                      });
+                    }}
+                  >
+                    demo下载
+                  </a>
+                )}
               </div>
             ),
           })),
@@ -234,15 +236,6 @@ export const StoredForm: React.FC<Prop> = ({
           <Upload {...props}>
             <Button icon={<UploadOutlined />}>上传文件</Button>
           </Upload>
-          <div
-            style={{
-              fontWeight: 400,
-              color: 'rgba(152,152,157,1)',
-              marginTop: 4,
-            }}
-          >
-            支持扩展名：.gql
-          </div>
         </Form>
       </Modal>
       <StoredDownLoad

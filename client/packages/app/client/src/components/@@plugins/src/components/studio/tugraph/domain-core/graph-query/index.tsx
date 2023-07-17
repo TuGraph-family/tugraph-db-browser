@@ -192,7 +192,7 @@ export const GraphQuery = (props: PluginPorps) => {
         draft.storedVisible = true;
       });
     }
-  });
+  }, []);
   const onSplitPaneWidthChange = useCallback((size: number) => {
     updateState((draft) => {
       draft.editorWidth = size;

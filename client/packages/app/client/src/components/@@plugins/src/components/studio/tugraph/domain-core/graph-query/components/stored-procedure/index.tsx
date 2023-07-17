@@ -191,7 +191,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
           });
         }}
       >
-        Dome下载
+        Demo下载
       </Button>
     </div>
   );
