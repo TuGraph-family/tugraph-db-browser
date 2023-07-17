@@ -1,0 +1,55 @@
+@perfix-cls: ant-tugraph;
+.@{perfix-cls}-container {
+  height: 100%;
+  padding-bottom: 8px;
+  display: flex;
+
+  &-box {
+    &-text {
+      color: rgba(54, 55, 64, 1);
+      font-size: 12px;
+      line-height: 20px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      &-right {
+        display: flex;
+        align-items: center;
+        :global {
+          .ant-input-number-input {
+            height: 22px;
+          }
+        }
+      }
+    }
+    padding: 16px;
+    height: 100%;
+    width: 50%;
+    &-content {
+      height: calc(100% - 28px);
+      :global {
+        .ant-input {
+          height: 100%;
+        }
+      }
+      &-text {
+        border: 1px solid #d9d9d9;
+        border-radius: 8px;
+        height: 100%;
+        padding: 16px 24px;
+      }
+    }
+  }
+}
+.@{perfix-cls}-container-empty {
+  justify-content: center;
+  :global {
+    .ant-empty-normal {
+      position: absolute;
+      height: 70px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+}

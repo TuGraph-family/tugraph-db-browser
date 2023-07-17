@@ -37,6 +37,9 @@ export default defineConfig({
     '@ant-design/icons': 'icons',
     moment: 'moment',
   },
+  headScripts: [
+    'https://gw.alipayobjects.com/os/lib/localforage/1.10.0/dist/localforage.min.js',
+  ],
   scripts: [
     'https://gw.alipayobjects.com/os/lib/react/17.0.2/umd/react.production.min.js',
     'https://gw.alipayobjects.com/os/lib/react-dom/17.0.2/umd/react-dom.production.min.js',
@@ -48,12 +51,18 @@ export default defineConfig({
     'https://gw.alipayobjects.com/os/lib/ant-design/charts/1.2.13/dist/charts.min.js',
     'https://gw.alipayobjects.com/os/lib/ant-design/icons/4.6.4/dist/index.umd.min.js',
     // <!--- G2/G2Plot DEPENDENCIES-->
+    'https://gw.alipayobjects.com/os/lib/antv/g6/4.8.14/dist/g6.min.js',
+    'https://gw.alipayobjects.com/os/lib/antv/graphin/2.7.16/dist/graphin.min.js',
     'https://gw.alipayobjects.com/os/lib/antv/g2plot/2.4.16/dist/g2plot.min.js',
+    'https://gw.alipayobjects.com/os/lib/antv/gi-sdk/2.3.5/dist/index.min.js',
   ],
   styles: [
     // "https://gw.alipayobjects.com/os/lib/antd/4.18.3/dist/antd.min.css",
     // "https://gw.alipayobjects.com/os/lib/alipay/theme-tools/0.3.0/dist/GraphInsight/light.css",
     'https://gw.alipayobjects.com/os/lib/antd/4.23.5/dist/antd.css',
+    'https://gw.alipayobjects.com/os/lib/antv/graphin/2.7.16/dist/index.css',
+    'https://gw.alipayobjects.com/os/lib/antv/gi-sdk/2.3.5/dist/index.css',
+    'https://gw.alipayobjects.com/os/lib/antv/gi-theme-antd/0.1.0/dist/light.css',
   ],
   theme: {
     'primary-color': '#1650ff',

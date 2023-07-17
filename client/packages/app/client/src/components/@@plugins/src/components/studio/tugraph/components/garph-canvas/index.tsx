@@ -8,14 +8,18 @@ export const GraphCanvasContextInitValue = {
   theme: null as any,
   layout: null as any,
 };
-export const GraphCanvasContext = createContext<GraphinContextType>(GraphCanvasContextInitValue);
+export const GraphCanvasContext = createContext<GraphinContextType>(
+  GraphCanvasContextInitValue
+);
 
 export const useGraphinContext = () => {
   return useContext(GraphCanvasContext);
 };
 
 interface GraphCanvasProps extends GraphinProps {
-  getGraphCanvasContextValue?: (contextValue: GraphinContextType | null) => void;
+  getGraphCanvasContextValue?: (
+    contextValue: GraphinContextType | null
+  ) => void;
   onElementShow?: (element: Item) => void;
   isPreview?: boolean;
 }

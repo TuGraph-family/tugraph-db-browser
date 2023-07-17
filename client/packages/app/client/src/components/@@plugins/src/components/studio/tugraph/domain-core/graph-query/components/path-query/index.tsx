@@ -94,11 +94,11 @@ export const PathQueryPanel: React.FC<Prop> = ({
               return (
                 <Option key={index} value={index}>
                   {map(item, (path, i) => (
-                    <>
+                    <div className={styles[`${PUBLIC_PERFIX_CLASS}-option`]}>
                       {i === 0 && nodeDiv(`n${i} | ${path.source}`)}
                       {edgeDiv(`r${i} | ${path.label}`)}
                       {nodeDiv(`n${i + 1} | ${path.target}`)}
-                    </>
+                    </div>
                   ))}
                 </Option>
               );

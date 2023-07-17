@@ -10,10 +10,12 @@ import {
   Button,
   Divider,
   Empty,
+  Popover,
   Select,
   Space,
   Spin,
   Switch,
+  Table,
   Tabs,
   Tooltip,
   message,
@@ -22,8 +24,14 @@ import { filter, find, isEmpty, join, map, uniqueId } from 'lodash';
 import { useCallback, useEffect } from 'react';
 import { useHistory } from 'umi';
 import { useImmer } from 'use-immer';
+import IconFont from '../../components/icon-font';
 import { SplitPane } from '../../components/split-panle';
-import { IQUIRE_LIST, PUBLIC_PERFIX_CLASS } from '../../constant';
+import {
+  IQUIRE_LIST,
+  PUBLIC_PERFIX_CLASS,
+  STORED_PROCEDURE_DESC,
+  STORED_PROCEDURE_RULE,
+} from '../../constant';
 import { useQuery } from '../../hooks/useQuery';
 import { useSchema } from '../../hooks/useSchema';
 import { SubGraph } from '../../interface/graph';
@@ -37,8 +45,8 @@ import ModelOverview from './components/model-overview';
 import { NodeQuery } from './components/node-query';
 import { PathQueryPanel } from './components/path-query';
 import { StatementList } from './components/statement-query-list';
+import { StoredProcedureModal } from './components/stored-procedure';
 
-import IconFont from '../../components/icon-font';
 import styles from './index.module.less';
 
 const { Option } = Select;
@@ -90,6 +98,7 @@ export const GraphQuery = (props: PluginPorps) => {
       }>;
     };
     editor: any;
+    storedVisible: boolean;
   }>({
     graphListOptions: map(graphList, (graph: SubGraph) => {
       return {
@@ -109,6 +118,7 @@ export const GraphQuery = (props: PluginPorps) => {
     editorKey: '',
     graphData: { nodes: [], edges: [] },
     editor: {},
+    storedVisible: false,
   });
   const {
     activeTab,
@@ -124,7 +134,25 @@ export const GraphQuery = (props: PluginPorps) => {
     editorKey,
     graphData,
     editor,
+    storedVisible,
   } = state;
+  const columns = [
+    {
+      title: '',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Procedure V1',
+      dataIndex: 'Procedure V1',
+      key: 'Procedure V1',
+    },
+    {
+      title: 'Procedure V2',
+      dataIndex: 'Procedure V2',
+      key: 'Procedure V2',
+    },
+  ];
   useEffect(() => {
     updateState((draft) => {
       if (isEmpty(getLocalData('TUGRAPH_STATEMENT_LISTS')[currentGraphName])) {
@@ -150,12 +178,21 @@ export const GraphQuery = (props: PluginPorps) => {
     });
   }, []);
   useEffect(() => {
-    updateState((draft) => {
-      draft.queryList = getLocalData('TUGRAPH_STATEMENT_LISTS')[
-        currentGraphName
-      ];
-    });
+    if (queryList.length) {
+      updateState((draft) => {
+        draft.queryList = getLocalData('TUGRAPH_STATEMENT_LISTS')[
+          currentGraphName
+        ];
+      });
+    }
   }, [activeTab]);
+  useEffect(() => {
+    if (history.location.hash) {
+      updateState((draft) => {
+        draft.storedVisible = true;
+      });
+    }
+  }, []);
   const onSplitPaneWidthChange = useCallback((size: number) => {
     updateState((draft) => {
       draft.editorWidth = size;
@@ -256,11 +293,54 @@ export const GraphQuery = (props: PluginPorps) => {
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerRight`]}>
         <Tooltip title="用户帮助">
           <QuestionCircleOutlined
+            style={{ color: 'rgba(147,147,152,1)' }}
             onClick={() => {
               window.open('https://tugraph.antgroup.com/doc');
             }}
           />
         </Tooltip>
+        <Popover
+          title="存储过程"
+          content={
+            <>
+              <Table
+                className={styles[`${PUBLIC_PERFIX_CLASS}-popover-table`]}
+                dataSource={STORED_PROCEDURE_DESC}
+                columns={columns}
+                bordered
+                pagination={false}
+              />
+              <div className={styles[`${PUBLIC_PERFIX_CLASS}-rule`]}>
+                {map(STORED_PROCEDURE_RULE, (rule, index) => (
+                  <div key={index}>{rule.desc}</div>
+                ))}
+              </div>
+            </>
+          }
+        >
+          <img
+            src="https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*aGalT7ShVCEAAAAAAAAAAAAADgOBAQ/original"
+            alt=""
+            style={{
+              color: 'rgba(106,107,113,1)',
+              marginLeft: '16px',
+              display: 'inline-block',
+              cursor: 'pointer',
+            }}
+            onClick={() => {
+              window.history.replaceState(
+                null,
+                null,
+                `${
+                  history.location.pathname + history.location.search
+                }#procedure`
+              );
+              updateState((draft) => {
+                draft.storedVisible = true;
+              });
+            }}
+          />
+        </Popover>
         <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerRight-btn`]}>
           <Button
             style={{ marginRight: '8px' }}
@@ -293,7 +373,14 @@ export const GraphQuery = (props: PluginPorps) => {
               type="primary"
               onClick={handleQuery}
               loading={StatementQueryLoading}
-              icon={<IconFont type="icon-zhihang" />}
+              icon={
+                <IconFont
+                  type="icon-zhihang"
+                  className={
+                    styles[`${PUBLIC_PERFIX_CLASS}-btn-implement-zhixing`]
+                  }
+                />
+              }
             >
               <span
                 className={styles[`${PUBLIC_PERFIX_CLASS}-btn-implement-text`]}
@@ -586,6 +673,20 @@ export const GraphQuery = (props: PluginPorps) => {
           </div>
         </div>
       )}
+      <StoredProcedureModal
+        visible={storedVisible}
+        graphName={currentGraphName}
+        onCancel={() => {
+          window.history.replaceState(
+            null,
+            null,
+            `${history.location.pathname + history.location.search}`
+          );
+          updateState((draft) => {
+            draft.storedVisible = false;
+          });
+        }}
+      />
     </div>
   );
 };
