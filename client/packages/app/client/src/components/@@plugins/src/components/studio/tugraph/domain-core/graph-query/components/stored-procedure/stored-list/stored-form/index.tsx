@@ -260,7 +260,6 @@ export const StoredForm: React.FC<Prop> = ({
               <Item
                 label="执行时是否修改数据库"
                 name="readonly"
-                // tooltip="执行时是否修改数据库"
                 rules={[{ required: true, message: "请选择" }]}
                 className={styles[`${PUBLIC_PERFIX_CLASS}-readonly-horizontal`]}
               >

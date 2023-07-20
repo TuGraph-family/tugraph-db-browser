@@ -277,7 +277,7 @@ export const GraphQuery = (props: PluginPorps) => {
         />
       </div>
       <Tabs
-        defaultActiveKey="statement"
+        defaultActiveKey='statement'
         centered
         items={IQUIRE_LIST}
         onChange={(val) => {
@@ -290,9 +290,8 @@ export const GraphQuery = (props: PluginPorps) => {
           <Tabs.TabPane tab={item.label} key={item.key} />
         ))}
       </Tabs>
-      {/* <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerRight`]}> */}
       <Space>
-        <Tooltip title="用户帮助">
+        <Tooltip title='用户帮助'>
           <QuestionCircleOutlined
             style={{ color: 'rgba(147,147,152,1)' }}
             onClick={() => {
@@ -301,7 +300,7 @@ export const GraphQuery = (props: PluginPorps) => {
           />
         </Tooltip>
         <Popover
-          title="存储过程"
+          title='存储过程'
           content={
             <>
               <Table
@@ -320,14 +319,6 @@ export const GraphQuery = (props: PluginPorps) => {
           }
         >
           <Button
-            // src="https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*aGalT7ShVCEAAAAAAAAAAAAADgOBAQ/original"
-            // alt=""
-            // style={{
-            //   color: 'rgba(106,107,113,1)',
-            //   marginLeft: '16px',
-            //   display: 'inline-block',
-            //   cursor: 'pointer',
-            // }}
             onClick={() => {
               window.history.replaceState(
                 null,
@@ -340,45 +331,42 @@ export const GraphQuery = (props: PluginPorps) => {
                 draft.storedVisible = true;
               });
             }}
-          >存储过程</Button>
-        </Popover>
-        {/* <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerRight-btn`]}> */}
-          <Button
-            // style={{ marginRight: '8px' }}
-            onClick={() => {
-              history.push(
-                `${redirectUrl?.[1]?.path}?graphName=${currentGraphName}` ?? '/'
-              );
-            }}
           >
-            返回图构建
+            存储过程
           </Button>
-          <Button disabled>前往图分析</Button>
-        {/* </div> */}
-        
-      {/* </div> */}
+        </Popover>
+        <Button
+          onClick={() => {
+            history.push(
+              `${redirectUrl?.[1]?.path}?graphName=${currentGraphName}` ?? '/'
+            );
+          }}
+        >
+          返回图构建
+        </Button>
+        <Button disabled>前往图分析</Button>
       </Space>
     </div>
   );
   const actionBar = (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-right-bar`]}>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-left-btn`]}>
-        <Space split={<Divider type="vertical" />}>
+        <Space split={<Divider type='vertical' />}>
           <div style={{ gap: '24px', display: 'flex' }}>
             <Select defaultValue={'Cypher'}>
-              <Option value="Cypher">Cypher</Option>
-              <Option disabled value="ISOGQL">
+              <Option value='Cypher'>Cypher</Option>
+              <Option disabled value='ISOGQL'>
                 ISOGQL
               </Option>
             </Select>
             <Button
               className={styles[`${PUBLIC_PERFIX_CLASS}-btn-implement`]}
-              type="primary"
+              type='primary'
               onClick={handleQuery}
               loading={StatementQueryLoading}
               icon={
                 <IconFont
-                  type="icon-zhihang"
+                  type='icon-zhihang'
                   className={
                     styles[`${PUBLIC_PERFIX_CLASS}-btn-implement-zhixing`]
                   }
@@ -393,9 +381,9 @@ export const GraphQuery = (props: PluginPorps) => {
             </Button>
           </div>
           <div>
-            <Tooltip title="保存语句">
+            <Tooltip title='保存语句'>
               <Button
-                type="text"
+                type='text'
                 icon={<SaveOutlined />}
                 onClick={() => {
                   setLocalData(`TUGRAPH_STATEMENT_LISTS`, {
@@ -416,9 +404,9 @@ export const GraphQuery = (props: PluginPorps) => {
                 保存
               </Button>
             </Tooltip>
-            <Tooltip title="收藏为模版">
+            <Tooltip title='收藏为模版'>
               <Button
-                type="text"
+                type='text'
                 icon={<AppstoreAddOutlined />}
                 onClick={() => {
                   updateState((draft) => {
@@ -463,9 +451,9 @@ export const GraphQuery = (props: PluginPorps) => {
                 收藏
               </Button>
             </Tooltip>
-            <Tooltip title="下载语句">
+            <Tooltip title='下载语句'>
               <Button
-                type="text"
+                type='text'
                 icon={<DownloadOutlined />}
                 onClick={() => {
                   downloadFile(script, '查询语句.txt');
@@ -523,7 +511,7 @@ export const GraphQuery = (props: PluginPorps) => {
                 className={styles[`${PUBLIC_PERFIX_CLASS}-split-pane`]}
               >
                 <SplitPane
-                  split="horizontal"
+                  split='horizontal'
                   defaultSize={editorHeight}
                   onChange={onSplitPaneHeightChange}
                 >
@@ -537,8 +525,8 @@ export const GraphQuery = (props: PluginPorps) => {
                     )}
                   >
                     <SplitPane
-                      split="vertical"
-                      primary="second"
+                      split='vertical'
+                      primary='second'
                       defaultSize={editorWidth}
                       onChange={onSplitPaneWidthChange}
                     >
@@ -552,7 +540,7 @@ export const GraphQuery = (props: PluginPorps) => {
                         }}
                       >
                         <GremlinEditor
-                          gremlinId="test"
+                          gremlinId='test'
                           initValue={script}
                           onInit={(initEditor) => {
                             updateState((draft) => {
@@ -626,7 +614,7 @@ export const GraphQuery = (props: PluginPorps) => {
             className={styles[`${PUBLIC_PERFIX_CLASS}-split-pane`]}
           >
             <SplitPane
-              split="horizontal"
+              split='horizontal'
               defaultSize={pathHeight}
               onChange={onSplitPanePathHeightChange}
             >
