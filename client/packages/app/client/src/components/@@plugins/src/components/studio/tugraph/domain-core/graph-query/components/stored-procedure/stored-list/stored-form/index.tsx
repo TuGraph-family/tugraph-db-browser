@@ -1,4 +1,4 @@
-import { UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined } from '@ant-design/icons';
 import {
   Button,
   Col,
@@ -11,29 +11,29 @@ import {
   Upload,
   UploadProps,
   message,
-} from "antd";
-import { FormInstance } from "antd/es/form";
-import { UploadChangeParam, UploadFile } from "antd/lib/upload";
-import { includes, map } from "lodash";
-import React from "react";
-import { useImmer } from "use-immer";
+} from 'antd';
+import { FormInstance } from 'antd/es/form';
+import { UploadChangeParam, UploadFile } from 'antd/lib/upload';
+import { includes, map } from 'lodash';
+import React from 'react';
+import { useImmer } from 'use-immer';
 import {
   CPP_CODE_TYPE,
   PUBLIC_PERFIX_CLASS,
   STORED_OPTIONS,
   STORED_PROCEDURE_RULE,
-} from "../../../../../../constant";
-import { useProcedure } from "../../../../../../hooks/useProcedure";
-import { StoredDownLoad } from "../../stored-download";
+} from '../../../../../../constant';
+import { useProcedure } from '../../../../../../hooks/useProcedure';
+import { StoredDownLoad } from '../../stored-download';
 
-import styles from "./index.module.less";
+import styles from './index.module.less';
 
 type Prop = {
   form: FormInstance<any>;
   visible: boolean;
   onCancel: () => void;
   graphName: string;
-  refreshList: (type: "cpp" | "python" | "all") => void;
+  refreshList: (type: 'cpp' | 'python' | 'all') => void;
 };
 type Options =
   | {
@@ -62,21 +62,21 @@ export const StoredForm: React.FC<Prop> = ({
     isPy: boolean;
   }>({
     demoVisible: false,
-    content: "",
-    demoValue: "cpp_v1",
+    content: '',
+    demoValue: 'cpp_v1',
     isPy: false,
   });
   const { demoVisible, content, demoValue, isPy } = state;
   const props: UploadProps = {
-    name: "file",
+    name: 'file',
     headers: {
-      authorization: "authorization-text",
+      authorization: 'authorization-text',
     },
     onChange(info: UploadChangeParam<UploadFile<any>>) {
-      if (info.file.status === "done") {
-        message.success("文件上传成功");
-      } else if (info.file.status === "error") {
-        message.error("文件上传失败");
+      if (info.file.status === 'done') {
+        message.success('文件上传成功');
+      } else if (info.file.status === 'error') {
+        message.error('文件上传失败');
       }
     },
     maxCount: 1,
@@ -101,14 +101,14 @@ export const StoredForm: React.FC<Prop> = ({
             label: (
               <div
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  width: "100%",
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  width: '100%',
                 }}
               >
                 <div>{item.label}</div>
-                {(item.value === "cpp" || item.value === "py") && (
+                {(item.value === 'cpp' || item.value === 'py') && (
                   <a
                     onClick={() => {
                       updateState((draft) => {
@@ -130,17 +130,17 @@ export const StoredForm: React.FC<Prop> = ({
   // 取消新增储存过程
   const cancelUpdate = () => {
     updateState((draft) => {
-      draft.content = "";
+      draft.content = '';
     });
     onCancel();
     form.resetFields();
   };
   // 填充空值的默认值
   const fillFormDefaultValue = (val: any) => {
-    const fillKeys = ["description"];
+    const fillKeys = ['description'];
     fillKeys.forEach((key) => {
       if ([undefined].includes(val[key])) {
-        val[key] = "";
+        val[key] = '';
       }
     });
   };
@@ -149,11 +149,11 @@ export const StoredForm: React.FC<Prop> = ({
     form.validateFields().then((val) => {
       const cacheVal = { ...val };
       fillFormDefaultValue(cacheVal);
-      let procedureType: "cpp" | "python";
+      let procedureType: 'cpp' | 'python';
       if (includes(CPP_CODE_TYPE, val.codeType)) {
-        procedureType = "cpp";
+        procedureType = 'cpp';
       } else {
-        procedureType = "python";
+        procedureType = 'python';
       }
       onUploadProcedure({
         ...cacheVal,
@@ -161,10 +161,10 @@ export const StoredForm: React.FC<Prop> = ({
         procedureType,
         content: btoa(content),
       }).then((res) => {
-        if (res.errorCode === "200") {
-          message.success("新增成功");
+        if (res.errorCode === '200') {
+          message.success('新增成功');
           updateState((draft) => {
-            draft.content = "";
+            draft.content = '';
           });
           onCancel();
           form.resetFields();
@@ -176,7 +176,7 @@ export const StoredForm: React.FC<Prop> = ({
   return (
     <>
       <Modal
-        title={"新建存储过程"}
+        title={'新建存储过程'}
         visible={visible}
         onCancel={onCancel}
         width={480}
@@ -184,12 +184,12 @@ export const StoredForm: React.FC<Prop> = ({
         className={styles[`${PUBLIC_PERFIX_CLASS}-form`]}
         footer={
           <>
-            <Button type="default" onClick={cancelUpdate}>
+            <Button type='default' onClick={cancelUpdate}>
               取消
             </Button>
             <Button
               loading={UploadProcedureLoading}
-              type="primary"
+              type='primary'
               onClick={uploadProcedure}
             >
               确定
@@ -197,25 +197,25 @@ export const StoredForm: React.FC<Prop> = ({
           </>
         }
       >
-        <Form form={form} layout="vertical">
+        <Form form={form} layout='vertical'>
           <Item
-            label="存储过程名称"
-            name="procedureName"
-            rules={[{ required: true, message: "请输入" }]}
+            label='存储过程名称'
+            name='procedureName'
+            rules={[{ required: true, message: '请输入' }]}
           >
-            <Input placeholder="请输入" />
+            <Input placeholder='请输入' />
           </Item>
           <Item
-            label="存储过程类型"
-            name="codeType"
-            rules={[{ required: true, message: "请选择" }]}
+            label='存储过程类型'
+            name='codeType'
+            rules={[{ required: true, message: '请选择' }]}
           >
             <Select
               onSelect={(val) => {
                 updateState((draft) => {
-                  if (val === "py") {
+                  if (val === 'py') {
                     draft.isPy = true;
-                    form.setFieldsValue({ version: "v1" });
+                    form.setFieldsValue({ version: 'v1' });
                   } else {
                     draft.isPy = false;
                   }
@@ -225,14 +225,14 @@ export const StoredForm: React.FC<Prop> = ({
             />
           </Item>
 
-          <Item label="存储过程描述" name="description">
-            <Input.TextArea placeholder="请输入" />
+          <Item label='存储过程描述' name='description'>
+            <Input.TextArea placeholder='请输入' />
           </Item>
 
           <Row>
             <Col span={24}>
               <Item
-                label="版本"
+                label='版本'
                 tooltip={
                   <>
                     <div className={styles[`${PUBLIC_PERFIX_CLASS}-rule`]}>
@@ -242,13 +242,13 @@ export const StoredForm: React.FC<Prop> = ({
                     </div>
                   </>
                 }
-                name="version"
-                rules={[{ required: true, message: "请选择" }]}
+                name='version'
+                rules={[{ required: true, message: '请选择' }]}
                 className={styles[`${PUBLIC_PERFIX_CLASS}-readonly-horizontal`]}
               >
                 <Group>
-                  <Radio value={"v1"}>v1</Radio>
-                  <Radio disabled={isPy} value={"v2"}>
+                  <Radio value={'v1'}>v1</Radio>
+                  <Radio disabled={isPy} value={'v2'}>
                     v2
                   </Radio>
                 </Group>
@@ -258,9 +258,9 @@ export const StoredForm: React.FC<Prop> = ({
           <Row>
             <Col span={24}>
               <Item
-                label="执行时是否修改数据库"
-                name="readonly"
-                rules={[{ required: true, message: "请选择" }]}
+                label='执行时是否修改数据库'
+                name='readonly'
+                rules={[{ required: true, message: '请选择' }]}
                 className={styles[`${PUBLIC_PERFIX_CLASS}-readonly-horizontal`]}
               >
                 <Group>
