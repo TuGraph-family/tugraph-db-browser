@@ -14,7 +14,7 @@ export const StoredResult: React.FC<Prop> = ({ result }) => {
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-container-header`]}>
         执行结果
       </div>
-      <div>
+      <div className={styles[`${PUBLIC_PERFIX_CLASS}-container-content`]}>
         {result ? (
           <ReactJson src={result} displayDataTypes={false} />
         ) : (

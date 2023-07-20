@@ -182,7 +182,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
           卸载
         </Button>
       </Popconfirm>
-      <Button
+      {/* <Button
         type="text"
         icon={<DownloadOutlined />}
         onClick={() => {
@@ -192,7 +192,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
         }}
       >
         Demo下载
-      </Button>
+      </Button> */}
     </div>
   );
   const getDetails = (detail: ProcedureItemParams) => {

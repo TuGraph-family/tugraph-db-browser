@@ -11,8 +11,36 @@
 .@{perfix-cls}-readonly {
   margin-bottom: 11px;
 }
+.@{perfix-cls}-readonly-horizontal {
+  margin-bottom: 11px;
+  :global {
+    .ant-form-item-control {
+      width: auto !important;
+    }
+    .ant-form-item-label {
+      line-height: 32px;
+      margin-right: 12px;
+    }
+  }
+}
 :global {
   .ant-select-item-option-content {
     justify-content: space-between;
+  }
+}
+
+.@{perfix-cls}-popover-table {
+  overflow: hidden;
+  :global {
+    .ant-table {
+      width: calc(100% + 2px);
+      left: -1px;
+      .ant-table-container {
+        background-color: #fbfbfb;
+      }
+      table {
+        border-top: none !important;
+      }
+    }
   }
 }
