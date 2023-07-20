@@ -6,9 +6,8 @@ import wandering_earth_data from './demo-json/wandering_earth.json';
 export type PROJECT_TAB = 'MY_PROJECT' | 'ALL_PROJEXCT';
 export const PUBLIC_PERFIX_CLASS = 'ant-tugraph';
 export const PROXY_HOST = `http://${window.location.hostname}:7001`;
-// export const SERVER_HOST = `http://${window.location.hostname}:9090/LGraphHttpService/Query`;
-export const SERVER_HOST = `http://11.124.171.15:9091/LGraphHttpService/Query`;
-// 11.124.171.15:9091
+export const SERVER_HOST = `http://${window.location.hostname}:9090/LGraphHttpService/Query`;
+
 export const STEP_LIST: CollasibleStep[] = [
   {
     title: '新建一张图',
