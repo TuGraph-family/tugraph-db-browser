@@ -1,13 +1,16 @@
-import { UploadOutlined } from '@ant-design/icons';
+import { QuestionCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import {
   Button,
   Col,
   Form,
   Input,
   Modal,
+  Popover,
   Radio,
   Row,
   Select,
+  Space,
+  Table,
   Upload,
   UploadProps,
   message,
@@ -21,12 +24,31 @@ import {
   CPP_CODE_TYPE,
   PUBLIC_PERFIX_CLASS,
   STORED_OPTIONS,
+  STORED_PROCEDURE_DESC,
   STORED_PROCEDURE_RULE,
 } from '../../../../../../constant';
 import { useProcedure } from '../../../../../../hooks/useProcedure';
 import { StoredDownLoad } from '../../stored-download';
 
 import styles from './index.module.less';
+
+const columns = [
+  {
+    title: '',
+    dataIndex: 'name',
+    key: 'name',
+  },
+  {
+    title: 'Procedure V1',
+    dataIndex: 'Procedure V1',
+    key: 'Procedure V1',
+  },
+  {
+    title: 'Procedure V2',
+    dataIndex: 'Procedure V2',
+    key: 'Procedure V2',
+  },
+];
 
 type Prop = {
   form: FormInstance<any>;
@@ -232,15 +254,38 @@ export const StoredForm: React.FC<Prop> = ({
           <Row>
             <Col span={24}>
               <Item
-                label='版本'
-                tooltip={
-                  <>
-                    <div className={styles[`${PUBLIC_PERFIX_CLASS}-rule`]}>
-                      {map(STORED_PROCEDURE_RULE, (rule, index) => (
-                        <div key={index}>{rule.desc}</div>
-                      ))}
-                    </div>
-                  </>
+                label={
+                  <Space>
+                    <span>版本</span>
+                    <Popover
+                      title='存储过程'
+                      content={
+                        <>
+                          <Table
+                            size='small'
+                            className={
+                              styles[`${PUBLIC_PERFIX_CLASS}-popover-table`]
+                            }
+                            dataSource={STORED_PROCEDURE_DESC}
+                            columns={columns}
+                            bordered
+                            pagination={false}
+                          />
+                          <div
+                            className={styles[`${PUBLIC_PERFIX_CLASS}-rule`]}
+                          >
+                            {map(STORED_PROCEDURE_RULE, (rule, index) => (
+                              <div key={index}>{rule.desc}</div>
+                            ))}
+                          </div>
+                        </>
+                      }
+                    >
+                      <QuestionCircleOutlined
+                        style={{ color: 'rgba(147,147,152,1)' }}
+                      />
+                    </Popover>
+                  </Space>
                 }
                 name='version'
                 rules={[{ required: true, message: '请选择' }]}
