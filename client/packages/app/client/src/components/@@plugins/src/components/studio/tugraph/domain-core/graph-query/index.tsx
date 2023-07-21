@@ -290,7 +290,7 @@ export const GraphQuery = (props: PluginPorps) => {
           <Tabs.TabPane tab={item.label} key={item.key} />
         ))}
       </Tabs>
-      <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerRight`]}>
+      <Space>
         <Tooltip title="用户帮助">
           <QuestionCircleOutlined
             style={{ color: 'rgba(147,147,152,1)' }}
@@ -318,15 +318,7 @@ export const GraphQuery = (props: PluginPorps) => {
             </>
           }
         >
-          <img
-            src="https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*aGalT7ShVCEAAAAAAAAAAAAADgOBAQ/original"
-            alt=""
-            style={{
-              color: 'rgba(106,107,113,1)',
-              marginLeft: '16px',
-              display: 'inline-block',
-              cursor: 'pointer',
-            }}
+          <Button
             onClick={() => {
               window.history.replaceState(
                 null,
@@ -339,22 +331,21 @@ export const GraphQuery = (props: PluginPorps) => {
                 draft.storedVisible = true;
               });
             }}
-          />
-        </Popover>
-        <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerRight-btn`]}>
-          <Button
-            style={{ marginRight: '8px' }}
-            onClick={() => {
-              history.push(
-                `${redirectUrl?.[1]?.path}?graphName=${currentGraphName}` ?? '/'
-              );
-            }}
           >
-            返回图构建
+            存储过程
           </Button>
-          <Button disabled>前往图分析</Button>
-        </div>
-      </div>
+        </Popover>
+        <Button
+          onClick={() => {
+            history.push(
+              `${redirectUrl?.[1]?.path}?graphName=${currentGraphName}` ?? '/'
+            );
+          }}
+        >
+          返回图构建
+        </Button>
+        <Button disabled>前往图分析</Button>
+      </Space>
     </div>
   );
   const actionBar = (

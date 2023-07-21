@@ -16,3 +16,26 @@
     justify-content: space-between;
   }
 }
+.@{perfix-cls}-readonly-horizontal {
+  margin-bottom: 11px;
+  :global {
+    .ant-form-item-control {
+      width: auto !important;
+    }
+    .ant-form-item-label {
+      line-height: 32px;
+      margin-right: 12px;
+    }
+  }
+}
+
+.@{perfix-cls}-popover-img {
+  width: 285px;
+  height: 241.5px;
+  user-select: none;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
+}
