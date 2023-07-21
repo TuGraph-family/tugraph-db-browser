@@ -182,17 +182,6 @@ export const StoredProcedureModal: React.FC<Props> = ({
           卸载
         </Button>
       </Popconfirm>
-      <Button
-        type="text"
-        icon={<DownloadOutlined />}
-        onClick={() => {
-          updateState((draft) => {
-            draft.demoVisible = true;
-          });
-        }}
-      >
-        Demo下载
-      </Button>
     </div>
   );
   const getDetails = (detail: ProcedureItemParams) => {
