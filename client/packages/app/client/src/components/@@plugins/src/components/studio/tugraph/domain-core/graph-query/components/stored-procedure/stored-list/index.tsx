@@ -17,6 +17,7 @@ type Prop = {
   getDetails: (detail: ProcedureItemParams) => void;
   getList: (list: ProcedureItemParams[]) => void;
   getRefresh: (fun: any) => void;
+  activeValue?: string;
 };
 const { Panel } = Collapse;
 export const StoredList: React.FC<Prop> = ({
@@ -24,12 +25,13 @@ export const StoredList: React.FC<Prop> = ({
   getDetails,
   getList,
   getRefresh,
+  activeValue,
 }) => {
   const { onGetProcedureList } = useProcedure();
   const [state, updateState] = useImmer<{
     visible: boolean;
     list: { name: string; items: ProcedureItemParams[] }[];
-    activeKey: string;
+    activeKey?: string;
     searchList: { name: string; items: ProcedureItemParams[] }[];
   }>({
     visible: false,
@@ -60,6 +62,11 @@ export const StoredList: React.FC<Prop> = ({
   useEffect(() => {
     getList([...list[0].items, ...list[1].items]);
   }, [searchList]);
+  useEffect(() => {
+    updateState((draft) => {
+      draft.activeKey = activeValue;
+    });
+  }, [activeValue]);
   const refreshList = (type: 'cpp' | 'python' | 'all') => {
     onGetProcedureList({
       graphName,
@@ -147,7 +154,7 @@ export const StoredList: React.FC<Prop> = ({
                 className={join(
                   [
                     styles[`${PUBLIC_PERFIX_CLASS}-list-item`],
-                    activeKey === `${key}-${index}`
+                    activeKey === item.name
                       ? styles[`${PUBLIC_PERFIX_CLASS}-list-active`]
                       : '',
                   ],
@@ -156,7 +163,7 @@ export const StoredList: React.FC<Prop> = ({
                 onClick={() => {
                   getDetails({ ...item });
                   updateState((draft) => {
-                    draft.activeKey = `${key}-${index}`;
+                    draft.activeKey = item.name;
                   });
                 }}
               >

@@ -6,7 +6,7 @@ import {
   EyeOutlined,
 } from '@ant-design/icons';
 import { Button, Empty, Modal, Popconfirm, message } from 'antd';
-import { filter, find, join, last, map } from 'lodash';
+import { filter, find, join, last, map, xorBy } from 'lodash';
 import React, { ReactChild, useCallback } from 'react';
 import { useImmer } from 'use-immer';
 import { SplitPane } from '../../../../components/split-panle';
@@ -38,7 +38,6 @@ export const StoredProcedureModal: React.FC<Props> = ({
   const [state, updateState] = useImmer<{
     height: number;
     tabs: { text?: ReactChild; key?: string }[];
-    activeTab?: string;
     drawerVisible: boolean;
     detail: ProcedureItemParams & { type: string };
     code: string;
@@ -52,7 +51,6 @@ export const StoredProcedureModal: React.FC<Props> = ({
   }>({
     height: 362,
     tabs: [],
-    activeTab: '',
     drawerVisible: false,
     detail: {},
     code: '',
@@ -67,7 +65,6 @@ export const StoredProcedureModal: React.FC<Props> = ({
   const {
     height,
     tabs,
-    activeTab,
     drawerVisible,
     detail,
     code,
@@ -84,9 +81,16 @@ export const StoredProcedureModal: React.FC<Props> = ({
       draft.height = size;
     });
   }, []);
-  const getList = (list: ProcedureItemParams[]) => {
+  const getList = (newList: ProcedureItemParams[]) => {
     updateState((draft) => {
-      draft.list = list;
+      draft.list = newList;
+      if (list.length && newList.length > list.length) {
+        const newTab = xorBy(list, newList, 'name')[0];
+        draft.tabs = [...tabs, { text: newTab.name, key: newTab.name }];
+        draft.detail = newTab;
+        draft.selectItem = newTab.name;
+        draft.result = null;
+      }
     });
   };
   const checkCode = () => {
@@ -108,15 +112,17 @@ export const StoredProcedureModal: React.FC<Props> = ({
         refreshList(detail.type);
         updateState((draft) => {
           draft.tabs = filter(tabs, (tab) => tab.key !== detail.name);
-          draft.activeTab = last(
+          const activekey = last(
             filter(tabs, (tab) => tab.key !== detail.name)
           )?.key;
+          draft.selectItem = activekey;
           draft.detail = find(
             list,
             (item) =>
               last(filter(tabs, (tab) => tab.key !== detail.name))?.key ===
               item.name
           );
+          draft.result = null;
         });
       }
     });
@@ -208,7 +214,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
           },
         ];
       }
-      draft.activeTab = detail.name;
+      draft.result = null;
     });
     onGetProcedureCode({
       graphName,
@@ -256,6 +262,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
               draft.refreshList = refresh;
             });
           }}
+          activeValue={selectItem}
         />
         <div
           className={join(
@@ -305,6 +312,11 @@ export const StoredProcedureModal: React.FC<Props> = ({
                                     tabs,
                                     (item) => item.key !== tab.key
                                   );
+                                  if (tab.key === selectItem) {
+                                    draft.selectItem = '';
+                                    draft.detail = {};
+                                    draft.result = null;
+                                  }
                                 });
                               }}
                             />
@@ -312,14 +324,16 @@ export const StoredProcedureModal: React.FC<Props> = ({
                         ),
                         key: tab.key,
                       }))}
-                      activeTab={activeTab}
+                      activeTab={selectItem}
                       autoWidth={false}
                       onChange={(val) => {
                         updateState((draft) => {
+                          draft.selectItem = val;
                           draft.detail = find(
                             list,
                             (item) => item.name === val
                           );
+                          draft.result = null;
                         });
                       }}
                     />

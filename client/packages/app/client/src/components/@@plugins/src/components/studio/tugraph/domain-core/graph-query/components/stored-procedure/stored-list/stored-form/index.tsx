@@ -185,7 +185,6 @@ export const StoredForm: React.FC<Prop> = ({
           >
             <Select
               onSelect={(val) => {
-                console.log(val);
                 updateState((draft) => {
                   if (val === 'py') {
                     draft.isPy = true;
