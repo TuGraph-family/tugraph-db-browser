@@ -28,12 +28,21 @@
     justify-content: space-between;
   }
 }
-
+.@{perfix-cls}-popover-img {
+  width: 285px;
+  height: 241.5px;
+  user-select: none;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
+}
 .@{perfix-cls}-popover-table {
   overflow: hidden;
   :global {
     .ant-table {
-      width: calc(100% + 2px);
+      width: 100%;
       left: -1px;
       .ant-table-container {
         background-color: #fbfbfb;

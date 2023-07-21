@@ -258,26 +258,17 @@ export const StoredForm: React.FC<Prop> = ({
                   <Space>
                     <span>版本</span>
                     <Popover
-                      title='存储过程'
                       content={
                         <>
-                          <Table
-                            size='small'
+                          <img
                             className={
-                              styles[`${PUBLIC_PERFIX_CLASS}-popover-table`]
+                              styles[`${PUBLIC_PERFIX_CLASS}-popover-img`]
                             }
-                            dataSource={STORED_PROCEDURE_DESC}
-                            columns={columns}
-                            bordered
-                            pagination={false}
+                            src={
+                              'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*BaEiS4MQPpYAAAAAAAAAAAAADgOBAQ/originall'
+                            }
+                            alt=''
                           />
-                          <div
-                            className={styles[`${PUBLIC_PERFIX_CLASS}-rule`]}
-                          >
-                            {map(STORED_PROCEDURE_RULE, (rule, index) => (
-                              <div key={index}>{rule.desc}</div>
-                            ))}
-                          </div>
                         </>
                       }
                     >
