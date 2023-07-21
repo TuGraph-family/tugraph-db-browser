@@ -12,6 +12,7 @@ type Prop = {
   selectItem?: string;
   getParamValue: (value: string) => void;
   getTimeout: (value: number) => void;
+  value?: string;
 };
 const emptyPanle = <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
 export const StoredKhopPanle: React.FC<Prop> = ({
@@ -19,12 +20,13 @@ export const StoredKhopPanle: React.FC<Prop> = ({
   selectItem,
   getParamValue,
   getTimeout,
+  value: selectValue,
 }) => {
-  const [state, updateState] = useImmer<{ value: string }>({ value: '' });
+  const [state, updateState] = useImmer<{ value?: string }>({ value: '' });
   const { value } = state;
   useEffect(() => {
     updateState((draft) => {
-      draft.value = '';
+      draft.value = selectValue;
     });
   }, [selectItem]);
   return (
