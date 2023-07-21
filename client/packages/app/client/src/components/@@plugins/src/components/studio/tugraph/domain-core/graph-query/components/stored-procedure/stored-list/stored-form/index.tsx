@@ -1,13 +1,13 @@
-import { UploadOutlined } from '@ant-design/icons';
+import { QuestionCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import {
   Button,
-  Col,
   Form,
   Input,
   Modal,
+  Popover,
   Radio,
-  Row,
   Select,
+  Space,
   Upload,
   UploadProps,
   message,
@@ -88,6 +88,14 @@ export const StoredForm: React.FC<Prop> = ({
       };
     },
   };
+  // 取消新增储存过程
+  const cancelUpdate = () => {
+    updateState((draft) => {
+      draft.content = '';
+    });
+    onCancel();
+    form.resetFields();
+  };
   // 处理OptGroup数据
   const options = (options: Options) => {
     return map(options, (option) => {
@@ -142,6 +150,9 @@ export const StoredForm: React.FC<Prop> = ({
       }).then((res) => {
         if (res.errorCode === '200') {
           message.success('新增成功');
+          updateState((draft) => {
+            draft.content = '';
+          });
           onCancel();
           form.resetFields();
           refreshList(procedureType);
@@ -152,17 +163,20 @@ export const StoredForm: React.FC<Prop> = ({
   return (
     <>
       <Modal
-        title={'添加存储过程'}
+        title={'新建存储过程'}
         visible={visible}
         onCancel={onCancel}
         width={480}
+        destroyOnClose
         className={styles[`${PUBLIC_PERFIX_CLASS}-form`]}
         footer={
           <>
-            <Button type="default">取消</Button>
+            <Button type='default' onClick={cancelUpdate}>
+              取消
+            </Button>
             <Button
               loading={UploadProcedureLoading}
-              type="primary"
+              type='primary'
               onClick={uploadProcedure}
             >
               确定
@@ -170,17 +184,17 @@ export const StoredForm: React.FC<Prop> = ({
           </>
         }
       >
-        <Form form={form} layout="vertical">
+        <Form form={form} layout='vertical'>
           <Item
-            label="存储过程名称"
-            name="procedureName"
+            label='存储过程名称'
+            name='procedureName'
             rules={[{ required: true, message: '请输入' }]}
           >
-            <Input placeholder="请输入" />
+            <Input placeholder='请输入' />
           </Item>
           <Item
-            label="存储过程类型"
-            name="codeType"
+            label='存储过程类型'
+            name='codeType'
             rules={[{ required: true, message: '请选择' }]}
           >
             <Select
@@ -199,40 +213,56 @@ export const StoredForm: React.FC<Prop> = ({
             />
           </Item>
 
-          <Item label="存储过程描述" name="description">
-            <Input.TextArea placeholder="请输入" />
+          <Item label='存储过程描述' name='description'>
+            <Input.TextArea placeholder='请输入' />
           </Item>
-          <Row>
-            <Col span={12}>
-              <Item
-                label="版本"
-                name="version"
-                rules={[{ required: true, message: '请选择' }]}
-                className={styles[`${PUBLIC_PERFIX_CLASS}-readonly`]}
-              >
-                <Group>
-                  <Radio value={'v1'}>v1</Radio>
-                  <Radio disabled={isPy} value={'v2'}>
-                    v2
-                  </Radio>
-                </Group>
-              </Item>
-            </Col>
-            <Col span={12}>
-              <Item
-                label="是否只读"
-                name="readonly"
-                tooltip="执行时是否修改数据库"
-                rules={[{ required: true, message: '请选择' }]}
-                className={styles[`${PUBLIC_PERFIX_CLASS}-readonly`]}
-              >
-                <Group>
-                  <Radio value={false}>否</Radio>
-                  <Radio value={true}>是</Radio>
-                </Group>
-              </Item>
-            </Col>
-          </Row>
+          <Item
+            label={
+              <Space>
+                <span>版本</span>
+                <Popover
+                  content={
+                    <>
+                      <img
+                        className={styles[`${PUBLIC_PERFIX_CLASS}-popover-img`]}
+                        src={
+                          'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*BaEiS4MQPpYAAAAAAAAAAAAADgOBAQ/originall'
+                        }
+                        alt=''
+                      />
+                    </>
+                  }
+                >
+                  <QuestionCircleOutlined
+                    style={{ color: 'rgba(147,147,152,1)' }}
+                  />
+                </Popover>
+              </Space>
+            }
+            name='version'
+            rules={[{ required: true, message: '请选择' }]}
+            className={styles[`${PUBLIC_PERFIX_CLASS}-readonly-horizontal`]}
+          >
+            <Group>
+              <Radio value={'v1'}>v1</Radio>
+              <Radio disabled={isPy} value={'v2'}>
+                v2
+              </Radio>
+            </Group>
+          </Item>
+
+          <Item
+            label='执行时是否修改数据库'
+            name='readonly'
+            rules={[{ required: true, message: '请选择' }]}
+            className={styles[`${PUBLIC_PERFIX_CLASS}-readonly-horizontal`]}
+          >
+            <Group>
+              <Radio value={false}>否</Radio>
+              <Radio value={true}>是</Radio>
+            </Group>
+          </Item>
+
           <Upload {...props}>
             <Button icon={<UploadOutlined />}>上传文件</Button>
           </Upload>
