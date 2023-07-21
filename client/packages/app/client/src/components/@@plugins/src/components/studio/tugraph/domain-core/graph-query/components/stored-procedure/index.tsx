@@ -6,7 +6,7 @@ import {
   EyeOutlined,
 } from '@ant-design/icons';
 import { Button, Empty, Modal, Popconfirm, message } from 'antd';
-import { filter, find, join, last, map } from 'lodash';
+import { filter, find, join, last, map, xorBy } from 'lodash';
 import React, { ReactChild, useCallback } from 'react';
 import { useImmer } from 'use-immer';
 import { SplitPane } from '../../../../components/split-panle';
@@ -21,6 +21,7 @@ import { StoredKhopPanle } from './stored-khop-panle';
 import { StoredList } from './stored-list';
 import { StoredResult } from './stored-result';
 
+import IconFont from '../../../../components/icon-font';
 import styles from './index.module.less';
 
 type Props = {
@@ -33,33 +34,36 @@ export const StoredProcedureModal: React.FC<Props> = ({
   onCancel,
   graphName,
 }) => {
-  const { onGetProcedureCode, onDeleteProcedure, onCallProcedure } =
-    useProcedure();
+  const {
+    onGetProcedureCode,
+    onDeleteProcedure,
+    onCallProcedure,
+    CallProcedureLoading,
+  } = useProcedure();
   const [state, updateState] = useImmer<{
     height: number;
-    tabs: { text?: ReactChild; key?: string }[];
-    activeTab?: string;
+    tabs: {
+      text?: ReactChild;
+      key?: string;
+      result?: any;
+      paramValue?: string;
+    }[];
     drawerVisible: boolean;
     detail: ProcedureItemParams & { type: string };
     code: string;
     selectItem?: string;
-    paramValue: string;
     timeout: number;
-    result: any;
     list: ProcedureItemParams[];
     refreshList: (type: 'cpp' | 'python' | 'all') => void;
     demoVisible: boolean;
   }>({
     height: 362,
     tabs: [],
-    activeTab: '',
     drawerVisible: false,
     detail: {},
     code: '',
     selectItem: '',
-    paramValue: '',
     timeout: 300,
-    result: null,
     list: [],
     refreshList: () => {},
     demoVisible: false,
@@ -67,14 +71,11 @@ export const StoredProcedureModal: React.FC<Props> = ({
   const {
     height,
     tabs,
-    activeTab,
     drawerVisible,
     detail,
     code,
     selectItem,
-    paramValue,
     timeout,
-    result,
     list,
     refreshList,
     demoVisible,
@@ -84,9 +85,15 @@ export const StoredProcedureModal: React.FC<Props> = ({
       draft.height = size;
     });
   }, []);
-  const getList = (list: ProcedureItemParams[]) => {
+  const getList = (newList: ProcedureItemParams[]) => {
     updateState((draft) => {
-      draft.list = list;
+      draft.list = newList;
+      if (list.length && newList.length > list.length) {
+        const newTab = xorBy(list, newList, 'name')[0];
+        draft.tabs = [...tabs, { text: newTab.name, key: newTab.name }];
+        draft.detail = newTab;
+        draft.selectItem = newTab.name;
+      }
     });
   };
   const checkCode = () => {
@@ -108,9 +115,10 @@ export const StoredProcedureModal: React.FC<Props> = ({
         refreshList(detail.type);
         updateState((draft) => {
           draft.tabs = filter(tabs, (tab) => tab.key !== detail.name);
-          draft.activeTab = last(
+          const activekey = last(
             filter(tabs, (tab) => tab.key !== detail.name)
           )?.key;
+          draft.selectItem = activekey;
           draft.detail = find(
             list,
             (item) =>
@@ -128,11 +136,16 @@ export const StoredProcedureModal: React.FC<Props> = ({
       procedureName: detail.name,
       timeout,
       inProcess: true,
-      param: paramValue,
+      param: tabs.find((item) => item.key === selectItem)?.paramValue,
       version: detail.version,
     }).then((res) => {
       updateState((draft) => {
-        draft.result = res;
+        draft.tabs = tabs.map((item) => {
+          if (item.key === selectItem) {
+            return { ...item, result: res };
+          }
+          return item;
+        });
       });
     });
   };
@@ -144,11 +157,23 @@ export const StoredProcedureModal: React.FC<Props> = ({
       }
     >
       <Button
+        className={styles[`${PUBLIC_PERFIX_CLASS}-stored-modal-callbtn`]}
         onClick={callProcedure}
         disabled={selectItem === ''}
         type="primary"
-        icon={<div></div>}
+        loading={CallProcedureLoading}
       >
+        {!CallProcedureLoading && (
+          <IconFont
+            type="icon-zhihang"
+            style={{
+              fontSize: 23,
+              position: 'absolute',
+              top: 3,
+              left: 6,
+            }}
+          />
+        )}
         执行
       </Button>
       <Button
@@ -208,7 +233,6 @@ export const StoredProcedureModal: React.FC<Props> = ({
           },
         ];
       }
-      draft.activeTab = detail.name;
     });
     onGetProcedureCode({
       graphName,
@@ -224,7 +248,12 @@ export const StoredProcedureModal: React.FC<Props> = ({
   };
   const getParamValue = (value: string) => {
     updateState((draft) => {
-      draft.paramValue = value;
+      draft.tabs = tabs.map((item) => {
+        if (item.key === selectItem) {
+          return { ...item, paramValue: value };
+        }
+        return item;
+      });
     });
   };
   const getTimeout = (val: number) => {
@@ -256,6 +285,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
               draft.refreshList = refresh;
             });
           }}
+          activeValue={selectItem}
         />
         <div
           className={join(
@@ -305,6 +335,10 @@ export const StoredProcedureModal: React.FC<Props> = ({
                                     tabs,
                                     (item) => item.key !== tab.key
                                   );
+                                  if (tab.key === selectItem) {
+                                    draft.selectItem = '';
+                                    draft.detail = {};
+                                  }
                                 });
                               }}
                             />
@@ -312,10 +346,11 @@ export const StoredProcedureModal: React.FC<Props> = ({
                         ),
                         key: tab.key,
                       }))}
-                      activeTab={activeTab}
+                      activeTab={selectItem}
                       autoWidth={false}
                       onChange={(val) => {
                         updateState((draft) => {
+                          draft.selectItem = val;
                           draft.detail = find(
                             list,
                             (item) => item.name === val
@@ -334,6 +369,9 @@ export const StoredProcedureModal: React.FC<Props> = ({
                   >
                     <StoredKhopPanle
                       getParamValue={getParamValue}
+                      value={
+                        tabs.find((item) => item.key === selectItem)?.paramValue
+                      }
                       detail={detail}
                       selectItem={selectItem}
                       getTimeout={getTimeout}
@@ -351,7 +389,9 @@ export const StoredProcedureModal: React.FC<Props> = ({
                 ]
               }
             >
-              <StoredResult result={result} />
+              <StoredResult
+                result={tabs.find((item) => item.key === selectItem)?.result}
+              />
             </div>
           </SplitPane>
         </div>

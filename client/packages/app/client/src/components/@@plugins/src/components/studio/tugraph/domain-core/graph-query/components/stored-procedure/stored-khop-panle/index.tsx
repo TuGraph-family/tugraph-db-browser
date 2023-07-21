@@ -1,9 +1,10 @@
 import { Empty, Input, InputNumber } from 'antd';
 import { join } from 'lodash';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { PUBLIC_PERFIX_CLASS } from '../../../../../constant';
 import { ProcedureItemParams } from '../../../../../interface/procedure';
 
+import { useImmer } from 'use-immer';
 import styles from './index.module.less';
 
 type Prop = {
@@ -11,6 +12,7 @@ type Prop = {
   selectItem?: string;
   getParamValue: (value: string) => void;
   getTimeout: (value: number) => void;
+  value?: string;
 };
 const emptyPanle = <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
 export const StoredKhopPanle: React.FC<Prop> = ({
@@ -18,7 +20,15 @@ export const StoredKhopPanle: React.FC<Prop> = ({
   selectItem,
   getParamValue,
   getTimeout,
+  value: selectValue,
 }) => {
+  const [state, updateState] = useImmer<{ value?: string }>({ value: '' });
+  const { value } = state;
+  useEffect(() => {
+    updateState((draft) => {
+      draft.value = selectValue;
+    });
+  }, [selectItem]);
   return (
     <div
       className={join(
@@ -61,8 +71,12 @@ export const StoredKhopPanle: React.FC<Prop> = ({
             >
               <Input.TextArea
                 style={{ resize: 'none' }}
+                value={value}
                 onChange={(e) => {
                   getParamValue(e.target.value);
+                  updateState((draft) => {
+                    draft.value = e.target.value;
+                  });
                 }}
               />
             </div>
