@@ -171,12 +171,12 @@ export const StoredForm: React.FC<Prop> = ({
         className={styles[`${PUBLIC_PERFIX_CLASS}-form`]}
         footer={
           <>
-            <Button type='default' onClick={cancelUpdate}>
+            <Button type="default" onClick={cancelUpdate}>
               取消
             </Button>
             <Button
               loading={UploadProcedureLoading}
-              type='primary'
+              type="primary"
               onClick={uploadProcedure}
             >
               确定
@@ -184,17 +184,17 @@ export const StoredForm: React.FC<Prop> = ({
           </>
         }
       >
-        <Form form={form} layout='vertical'>
+        <Form form={form} layout="vertical">
           <Item
-            label='存储过程名称'
-            name='procedureName'
+            label="存储过程名称"
+            name="procedureName"
             rules={[{ required: true, message: '请输入' }]}
           >
-            <Input placeholder='请输入' />
+            <Input placeholder="请输入" />
           </Item>
           <Item
-            label='存储过程类型'
-            name='codeType'
+            label="存储过程类型"
+            name="codeType"
             rules={[{ required: true, message: '请选择' }]}
           >
             <Select
@@ -213,8 +213,8 @@ export const StoredForm: React.FC<Prop> = ({
             />
           </Item>
 
-          <Item label='存储过程描述' name='description'>
-            <Input.TextArea placeholder='请输入' />
+          <Item label="存储过程描述" name="description">
+            <Input.TextArea placeholder="请输入" />
           </Item>
           <Item
             label={
@@ -228,7 +228,7 @@ export const StoredForm: React.FC<Prop> = ({
                         src={
                           'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*BaEiS4MQPpYAAAAAAAAAAAAADgOBAQ/originall'
                         }
-                        alt=''
+                        alt=""
                       />
                     </>
                   }
@@ -239,7 +239,7 @@ export const StoredForm: React.FC<Prop> = ({
                 </Popover>
               </Space>
             }
-            name='version'
+            name="version"
             rules={[{ required: true, message: '请选择' }]}
             className={styles[`${PUBLIC_PERFIX_CLASS}-readonly-horizontal`]}
           >
@@ -252,8 +252,8 @@ export const StoredForm: React.FC<Prop> = ({
           </Item>
 
           <Item
-            label='执行时是否修改数据库'
-            name='readonly'
+            label="执行时是否修改数据库"
+            name="readonly"
             rules={[{ required: true, message: '请选择' }]}
             className={styles[`${PUBLIC_PERFIX_CLASS}-readonly-horizontal`]}
           >
