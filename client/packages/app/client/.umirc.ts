@@ -7,6 +7,10 @@ import { defineConfig } from 'umi';
 const umiConfig = getUmiConfig();
 
 process.env.MFSU_AD = 'none';
+const GRAPHIN_VERSION = '2.7.24';
+const G6_VERSION = '4.8.20';
+const ANTD_VERSION = '4.23.5';
+const GI_SDK_APP_VERSION = '1.1.1';
 
 export default defineConfig({
   hash: true,
@@ -36,6 +40,8 @@ export default defineConfig({
     '@ant-design/charts': 'charts',
     '@ant-design/icons': 'icons',
     moment: 'moment',
+    '@antv/g6': 'G6',
+    '@antv/graphin': 'Graphin',
   },
   headScripts: [
     'https://gw.alipayobjects.com/os/lib/localforage/1.10.0/dist/localforage.min.js',
@@ -47,22 +53,19 @@ export default defineConfig({
     // <!--- Antd DEPENDENCIES-->
     'https://gw.alipayobjects.com/os/lib/lodash/4.17.21/lodash.min.js',
     'https://gw.alipayobjects.com/os/lib/moment/2.29.1/moment.js',
-    'https://gw.alipayobjects.com/os/lib/antd/4.20.6/dist/antd.min.js',
+    `https://gw.alipayobjects.com/os/lib/antd/${ANTD_VERSION}/dist/antd.min.js`,
     'https://gw.alipayobjects.com/os/lib/ant-design/charts/1.2.13/dist/charts.min.js',
     'https://gw.alipayobjects.com/os/lib/ant-design/icons/4.6.4/dist/index.umd.min.js',
     // <!--- G2/G2Plot DEPENDENCIES-->
-    'https://gw.alipayobjects.com/os/lib/antv/g6/4.8.14/dist/g6.min.js',
-    'https://gw.alipayobjects.com/os/lib/antv/graphin/2.7.16/dist/graphin.min.js',
+    `https://gw.alipayobjects.com/os/lib/antv/g6/${G6_VERSION}/dist/g6.min.js`,
+    `https://gw.alipayobjects.com/os/lib/antv/graphin/${GRAPHIN_VERSION}/dist/graphin.min.js`,
     'https://gw.alipayobjects.com/os/lib/antv/g2plot/2.4.16/dist/g2plot.min.js',
-    'https://gw.alipayobjects.com/os/lib/antv/gi-sdk/2.3.5/dist/index.min.js',
+    `https://gw.alipayobjects.com/os/lib/antv/gi-sdk-app/${GI_SDK_APP_VERSION}/dist/index.min.js`,
   ],
   styles: [
-    // "https://gw.alipayobjects.com/os/lib/antd/4.18.3/dist/antd.min.css",
-    // "https://gw.alipayobjects.com/os/lib/alipay/theme-tools/0.3.0/dist/GraphInsight/light.css",
-    'https://gw.alipayobjects.com/os/lib/antd/4.23.5/dist/antd.css',
-    'https://gw.alipayobjects.com/os/lib/antv/graphin/2.7.16/dist/index.css',
-    'https://gw.alipayobjects.com/os/lib/antv/gi-sdk/2.3.5/dist/index.css',
-    'https://gw.alipayobjects.com/os/lib/antv/gi-theme-antd/0.1.0/dist/light.css',
+    `https://gw.alipayobjects.com/os/lib/antd/${ANTD_VERSION}/dist/antd.css`,
+    `https://gw.alipayobjects.com/os/lib/antv/graphin/${GRAPHIN_VERSION}/dist/index.css`,
+    `https://gw.alipayobjects.com/os/lib/antv/gi-sdk-app/${GI_SDK_APP_VERSION}/dist/index.css`,
   ],
   theme: {
     'primary-color': '#1650ff',
