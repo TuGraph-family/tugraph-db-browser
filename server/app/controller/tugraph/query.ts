@@ -33,6 +33,13 @@ class TuGraphQueryController extends Controller {
     const result = await ctx.service.tugraph.query.queryNeighbors(params);
     responseData(ctx, result);
   }
+
+  async queryByConfig() {
+    const { ctx } = this;
+    const params = ctx.request.body;
+    const result = await ctx.service.tugraph.query.queryByConfig(params);
+    responseData(ctx, result);
+  }
 }
 
 export default TuGraphQueryController;

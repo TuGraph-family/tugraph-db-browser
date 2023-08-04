@@ -8,6 +8,7 @@
  */
 import { Service } from 'egg';
 import {
+  IConfigQueryParams,
   ILanguageQueryParams,
   INeighborsParams,
   INodeQueryParams,
@@ -17,6 +18,7 @@ import {
 import { QueryResultFormatter } from '../../util';
 import {
   formatVertexResponse,
+  generateCypherByConfig,
   generateCypherByNode,
   generateCypherByPath,
 } from '../../utils/query';
@@ -152,6 +154,31 @@ class TuGraphQueryService extends Service {
       code: 200,
       success: true,
     };
+  }
+
+  /**
+   * 根据配置查询数据
+   * @param params IConfigQueryParams
+   * @returns 
+   */
+  async queryByConfig(params: IConfigQueryParams) {
+    const { graphName } = params;
+    const script = generateCypherByConfig(params);
+    const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
+      headers: {
+        'content-type': 'application/json',
+        Authorization: this.ctx.request.header.authorization,
+      },
+      method: 'POST',
+      data: {
+        graph: graphName,
+        script,
+      },
+      timeout: [30000, 50000],
+      dataType: 'json',
+    });
+
+    return QueryResultFormatter(result, script);
   }
 }
 export default TuGraphQueryService;
