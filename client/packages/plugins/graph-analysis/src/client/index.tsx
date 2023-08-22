@@ -5,16 +5,17 @@ import {
   SchemaInitializerContext,
 } from '@tugraph/openpiece-client';
 import React, { useContext } from 'react';
+import TuGraphGraphAppConfig from './GI_EXPORT_FILES.json';
 import { PluginDesigner } from './PluginDesigner';
-
 //@ts-ignore
 const { default: GI_SDK_APP } = window.GI_SDK_APP;
 
 const GraphAnalysis = () => {
   const id = 'credit.json';
-  const url = `https://unpkg.alipay.com/@alipay/gi-assets-vip@latest/app/${id}`; // 内网 VIP 方案
+  // const url = `https://unpkg.alipay.com/@alipay/gi-assets-vip@latest/app/${id}`; // 内网 VIP 方案
   const service = async () => {
-    const config = await fetch(url).then(res => res.json());
+    // const config = await fetch(url).then(res => res.json());
+    const config = TuGraphGraphAppConfig;
     return {
       data: config,
       success: true,
