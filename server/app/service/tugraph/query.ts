@@ -136,24 +136,20 @@ class TuGraphQueryService extends Service {
    * @param params
    */
   async queryNeighbors(params: INeighborsParams) {
-    const { ids, graphName, sep = 1 } = params;
-    let cypher = `match(n)-[*..${sep}]-(m) WHERE id(n)=${ids[0]} RETURN n, m LIMIT 100`;
+    const { ids, graphName, sep = 1, limit = 200 } = params;
+    let cypher = `match p=(n)-[*..${sep}]-(m) WHERE id(n)=${ids[0]} RETURN p LIMIT ${limit}`;
 
     if (ids.length > 1) {
       // 查询两度关系，需要先查询节点，再查询子图
-      cypher = `match(n)-[*..${sep}]-(m) WHERE id(n) in [${ids}] RETURN n, m LIMIT 200`;
+      cypher = `match p=(n)-[*..${sep}]-(m) WHERE id(n) in [${ids}] RETURN p LIMIT  ${limit}`;
     }
 
     const responseData =
-      await this.service.openpiece.query.querySubGraphByCypher(
+      await this.ctx.service.tugraph.subgraph.querySubGraphByCypher(
+        graphName,
         cypher,
-        graphName
       );
-    return {
-      data: responseData,
-      code: 200,
-      success: true,
-    };
+    return responseData;
   }
 
   /**

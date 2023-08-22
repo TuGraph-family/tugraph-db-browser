@@ -9,7 +9,7 @@
  */
 
 import { Service } from 'egg';
-import { responseFormatter } from '../../util';
+import { QueryResultFormatter, responseFormatter } from '../../util';
 import { EngineServerURL } from './constant';
 import { ISubGraphConfig, ISubGraphTemplateParams } from './interface';
 
@@ -277,28 +277,8 @@ class TuGraphSubGraphService extends Service {
       timeout: [30000, 50000],
       dataType: 'json',
     });
-
-    if (result.data.errorCode != 200) {
-      return result.data;
-    }
-
-    // TODO： 这个逻辑需要等 TuGraph 重构完再调整
-    // const nodeIds = [...new Set([...getNodeIdsByEids(result).nodeIds, ...getNodeIds(result)])];
-    const nodeIds = [];
-    // 拿到节点 ID 后，查询子图
-
-    if (nodeIds.length === 0) {
-      return {
-        nodes: [],
-        edges: [],
-      };
-    }
-
-    const subGraphResult = await this.querySubGraphByNodeIds(
-      graphName,
-      nodeIds
-    );
-    return subGraphResult;
+      
+    return QueryResultFormatter(result as any, cypher)
   }
 
   /**

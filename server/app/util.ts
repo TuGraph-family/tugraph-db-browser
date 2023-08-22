@@ -167,7 +167,10 @@ export const QueryResultFormatter = (
       originalData: resultData,
       formatData:
         isEmpty(edges) && isEmpty(nodes)
-          ? null
+          ? {
+            nodes: [],
+            edges: []
+          }
           : {
               edges,
               nodes,
