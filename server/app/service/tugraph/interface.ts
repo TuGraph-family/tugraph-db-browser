@@ -184,6 +184,7 @@ export interface INeighborsParams {
   ids: string[];
   sep: number;
   graphName: string;
+  limit?: number;
 }
 
 export interface ISubGraphConfig {

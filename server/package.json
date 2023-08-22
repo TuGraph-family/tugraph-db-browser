@@ -56,5 +56,6 @@
     "coverage"
   ],
   "files.insertFinalNewline": true,
-  "files.trimFinalNewlines": true
+  "files.trimFinalNewlines": true,
+  "repository": "https://github.com/TuGraph-family/tugraph-db-browser.git"
 }

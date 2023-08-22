@@ -319,7 +319,7 @@ class TuGraphSchemaService extends Service {
       const currentEdgeSchema = await this.querySchemaByLabel(
         graphName,
         'edge',
-        d.edgeLabels
+        d.label
       );
       return currentEdgeSchema;
     });
@@ -371,8 +371,8 @@ class TuGraphSchemaService extends Service {
    */
   async querySchema(graphName: string) {
     const vertexSchema = await this.queryVertexSchema(graphName);
-
     const edgeSchema = await this.queryEdgeSchema(graphName);
+
     return {
       code: 200,
       success: true,
