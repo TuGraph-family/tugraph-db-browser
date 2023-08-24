@@ -1,50 +1,47 @@
 {
   "workbook": {
-    "id": "df7a6859-0a28-4103-8c88-0099ca6fa1e0",
-    "name": "test",
+    "id": "d72a7985-292f-4dc5-a9c9-c38f3e3639e5",
+    "name": "admin",
     "activeAssetsKeys": {
-      "elements": ["SimpleNode", "SimpleEdge"],
+      "elements": [
+        "SimpleNode",
+        "SimpleEdge"
+      ],
       "components": [
         "ActivateRelations",
-        "AddSheetbar",
+        "AdvanceNeighborsQuery",
         "CanvasSetting",
         "ClearCanvas",
         "ConfigQuery",
         "ContextMenu",
-        "Copyright",
-        "DownLoad",
-        "Export",
-        "FilterPanel",
-        "FitCenterView",
-        "ForceSimulation",
-        "GremlinQuery",
+        "Demo",
         "Initializer",
         "JSONMode",
         "LanguageQuery",
         "LargeGraph",
         "LassoSelect",
-        "LayoutSwitch",
+        "LayoutSwitchTool",
         "Loading",
-        "MapMode",
-        "NeighborsQuery",
         "NodeLegend",
         "PinNodeWithMenu",
         "Placeholder",
         "PropertiesPanel",
         "PropertyGraphInitializer",
         "RichContainer",
-        "ShortcutKeys",
-        "SubGraphLayout",
+        "SimpleQuery",
         "ToggleClusterWithMenu",
-        "Toolbar",
         "TuGraphAttributesFilter",
         "TuGraphBack",
+        "TuGraphStatisticsFilter",
         "TuGraphStyleSetting",
-        "ZoomIn",
-        "ZoomOut",
         "Sheetbar"
       ],
-      "layouts": ["Force2", "Concentric", "Dagre", "FundForce"]
+      "layouts": [
+        "Force2",
+        "Concentric",
+        "Dagre",
+        "FundForce"
+      ]
     },
     "projectConfig": {
       "nodes": [
@@ -94,29 +91,12 @@
           }
         },
         {
-          "id": "AddSheetbar",
-          "type": "GIAC",
-          "name": "新增页签",
+          "id": "AdvanceNeighborsQuery",
+          "type": "GIAC_MENU",
+          "name": "高级邻居查询",
           "props": {
-            "isRelayout": true,
-            "GI_CONTAINER_INDEX": 2,
-            "GIAC": {
-              "visible": false,
-              "disabled": false,
-              "isShowTitle": false,
-              "title": "将选中的节点与边添加到新画布中",
-              "isShowIcon": true,
-              "icon": "icon-plus",
-              "iconFontSize": "18px",
-              "buttonType": "text",
-              "isShowTooltip": true,
-              "tooltip": "",
-              "tooltipColor": "#3056e3",
-              "tooltipPlacement": "right",
-              "hasDivider": false,
-              "height": "46px",
-              "isVertical": true
-            }
+            "serviceId": "TuGraph-DB/neighborsQueryService",
+            "languageServiceId": "TuGraph-DB/languageQueryService"
           }
         },
         {
@@ -153,7 +133,7 @@
               "isShowTitle": false,
               "title": "清空画布",
               "isShowIcon": true,
-              "icon": "icon-clear",
+              "icon": "icon-tugraph-clear",
               "iconFontSize": "18px",
               "buttonType": "text",
               "isShowTooltip": true,
@@ -193,7 +173,10 @@
               "containerDraggable": false,
               "dragHandle": "header",
               "containerPlacement": "RT",
-              "offset": [0, 0],
+              "offset": [
+                0,
+                0
+              ],
               "containerWidth": "350px",
               "containerHeight": "calc(100% - 100px)",
               "contaienrMask": false
@@ -206,7 +189,7 @@
           "name": "右键菜单",
           "props": {
             "GI_CONTAINER": [
-              "NeighborsQuery",
+              "AdvanceNeighborsQuery",
               "ToggleClusterWithMenu",
               "PinNodeWithMenu"
             ],
@@ -218,192 +201,10 @@
           }
         },
         {
-          "id": "Copyright",
+          "id": "Demo",
           "type": "AUTO",
-          "name": "版权",
-          "props": {
-            "imageUrl": "https://gw.alipayobjects.com/zos/bmw-prod/c2d4b2f5-2a34-4ae5-86c4-df97f7136105.svg",
-            "width": 200,
-            "height": 30,
-            "placement": "RB",
-            "offset": [10, 10]
-          }
-        },
-        {
-          "id": "DownLoad",
-          "type": "GIAC",
-          "name": "下载",
-          "props": {
-            "GI_CONTAINER_INDEX": 2,
-            "GIAC": {
-              "visible": false,
-              "disabled": false,
-              "isShowTitle": false,
-              "title": "下载",
-              "isShowIcon": true,
-              "icon": "icon-download",
-              "iconFontSize": "18px",
-              "buttonType": "text",
-              "isShowTooltip": true,
-              "tooltip": "点击下载画布图片",
-              "tooltipColor": "#3056e3",
-              "tooltipPlacement": "right",
-              "hasDivider": false,
-              "height": "46px",
-              "isVertical": true
-            }
-          }
-        },
-        {
-          "id": "Export",
-          "type": "GIAC",
-          "name": "导出",
-          "props": {
-            "GI_CONTAINER_INDEX": 2,
-            "GIAC": {
-              "visible": false,
-              "disabled": false,
-              "isShowTitle": false,
-              "title": "导出",
-              "isShowIcon": true,
-              "icon": "icon-export",
-              "isShowTooltip": true,
-              "tooltip": "导出CSV,PNG,JSON数据",
-              "tooltipColor": "#3056e3",
-              "tooltipPlacement": "right",
-              "hasDivider": false,
-              "height": "46px",
-              "isVertical": true
-            }
-          }
-        },
-        {
-          "id": "FilterPanel",
-          "type": "GIAC_CONTENT",
-          "name": "筛选面板",
-          "props": {
-            "filterKeys": [],
-            "enableInfoDetect": true,
-            "isFilterIsolatedNodes": true,
-            "highlightMode": true,
-            "filterLogic": "and",
-            "histogramOptions": {
-              "isCustom": false,
-              "min": null,
-              "max": null,
-              "binWidth": null
-            },
-            "GI_CONTAINER_INDEX": 2,
-            "GIAC_CONTENT": {
-              "visible": false,
-              "disabled": false,
-              "isShowTitle": true,
-              "title": "筛选面板",
-              "isShowIcon": true,
-              "icon": "icon-filter",
-              "isShowTooltip": true,
-              "tooltip": "通过属性筛选画布信息，可自定义",
-              "tooltipColor": "#3056e3",
-              "tooltipPlacement": "right",
-              "hasDivider": false,
-              "height": "60px",
-              "isVertical": true,
-              "containerType": "div",
-              "containerAnimate": false,
-              "containerDraggable": false,
-              "dragHandle": "header",
-              "containerPlacement": "RT",
-              "offset": [0, 0],
-              "containerWidth": "400px",
-              "containerHeight": "calc(100% - 100px)",
-              "contaienrMask": false
-            }
-          }
-        },
-        {
-          "id": "FitCenterView",
-          "type": "GIAC",
-          "name": "自适应居中",
-          "props": {
-            "GI_CONTAINER_INDEX": 2,
-            "GIAC": {
-              "visible": false,
-              "disabled": false,
-              "isShowTitle": false,
-              "title": "视图自适应居中",
-              "isShowIcon": true,
-              "icon": "icon-fit-center",
-              "isShowTooltip": true,
-              "tooltip": "",
-              "tooltipColor": "#3056e3",
-              "tooltipPlacement": "right",
-              "hasDivider": false,
-              "height": "46px",
-              "isVertical": true
-            }
-          }
-        },
-        {
-          "id": "ForceSimulation",
-          "type": "GIAC",
-          "name": "力导布局控制器",
-          "props": {
-            "autoPin": true,
-            "dragNodeMass": 10000000,
-            "GI_CONTAINER_INDEX": 2,
-            "GIAC": {
-              "visible": false,
-              "disabled": false,
-              "isShowTitle": false,
-              "title": "力导布局控制器",
-              "isShowIcon": true,
-              "icon": "icon-layout-force",
-              "isShowTooltip": true,
-              "tooltip": "",
-              "tooltipColor": "#3056e3",
-              "tooltipPlacement": "right",
-              "hasDivider": false,
-              "height": "46px",
-              "isVertical": true
-            }
-          }
-        },
-        {
-          "id": "GremlinQuery",
-          "type": "GIAC_CONTENT",
-          "name": "Gremlin 查询",
-          "props": {
-            "serviceId": "TuGraph-DB/GremlinQuery",
-            "isShowPublishButton": false,
-            "saveTemplateServceId": "TuGraph-DB/PublishTemplate",
-            "initialValue": "g.V().limit(10)",
-            "height": 200,
-            "GI_CONTAINER_INDEX": 2,
-            "GIAC_CONTENT": {
-              "visible": false,
-              "disabled": false,
-              "isShowTitle": true,
-              "title": "Gremlin",
-              "isShowIcon": true,
-              "icon": "icon-query",
-              "isShowTooltip": true,
-              "tooltip": "",
-              "tooltipColor": "#3056e3",
-              "tooltipPlacement": "right",
-              "hasDivider": false,
-              "height": "60px",
-              "isVertical": true,
-              "containerType": "div",
-              "containerAnimate": false,
-              "containerPlacement": "RT",
-              "offset": [0, 0],
-              "containerWidth": "350px",
-              "containerHeight": "calc(100% - 100px)",
-              "containerMask": false
-            },
-            "isShowLimit": false,
-            "isShowTimeout": false
-          }
+          "name": "demo案例",
+          "props": {}
         },
         {
           "id": "Initializer",
@@ -443,7 +244,10 @@
               "containerDraggable": false,
               "dragHandle": "header",
               "containerPlacement": "RT",
-              "offset": [0, 0],
+              "offset": [
+                0,
+                0
+              ],
               "containerWidth": "400px",
               "containerHeight": "calc(100% - 100px)",
               "contaienrMask": false
@@ -476,7 +280,10 @@
               "containerDraggable": false,
               "dragHandle": "header",
               "containerPlacement": "RT",
-              "offset": [0, 0],
+              "offset": [
+                0,
+                0
+              ],
               "containerWidth": "350px",
               "containerHeight": "calc(100% - 100px)",
               "contaienrMask": false
@@ -489,10 +296,15 @@
           "name": "3D大图",
           "props": {
             "visible": false,
-            "minSize": "50%",
+            "backgroundColor": "#fff",
+            "highlightColor": "red",
+            "minSize": "20%",
             "maxSize": "100%",
             "placement": "RB",
-            "offset": [0, 0],
+            "offset": [
+              0,
+              0
+            ],
             "GI_CONTAINER_INDEX": 2,
             "GIAC": {
               "visible": false,
@@ -500,7 +312,9 @@
               "isShowTitle": false,
               "title": "3D大图",
               "isShowIcon": true,
-              "icon": "icon-3d",
+              "icon": "icon-GI-3D",
+              "iconFontSize": "18px",
+              "buttonType": "text",
               "isShowTooltip": true,
               "tooltip": "",
               "tooltipColor": "#3056e3",
@@ -508,9 +322,7 @@
               "hasDivider": false,
               "height": "46px",
               "isVertical": true
-            },
-            "backgroundColor": "#fff",
-            "highlightColor": "red"
+            }
           }
         },
         {
@@ -525,32 +337,36 @@
               "isShowTitle": false,
               "title": "自由圈选",
               "isShowIcon": true,
-              "icon": "icon-lasso",
+              "icon": "icon-tugraph-lasso",
               "isShowTooltip": true,
               "tooltip": "按住Shift，点击画布即可自由圈选",
               "tooltipColor": "#3056e3",
               "tooltipPlacement": "right",
               "hasDivider": false,
               "height": "46px",
-              "isVertical": true
+              "isVertical": true,
+              "iconFontSize": "18px",
+              "buttonType": "text"
             }
           }
         },
         {
-          "id": "LayoutSwitch",
+          "id": "LayoutSwitchTool",
           "type": "GIAC",
-          "name": "布局切换",
+          "name": "高级布局切换",
           "props": {
             "GI_CONTAINER_INDEX": 2,
             "GIAC": {
               "visible": false,
               "disabled": false,
               "isShowTitle": false,
-              "title": "布局切换",
+              "title": "布局",
               "isShowIcon": true,
-              "icon": "icon-layout",
-              "isShowTooltip": false,
-              "tooltip": "一键切换画布布局",
+              "icon": "icon-tugraph-layout",
+              "iconFontSize": "18px",
+              "buttonType": "text",
+              "isShowTooltip": true,
+              "tooltip": "",
               "tooltipColor": "#3056e3",
               "tooltipPlacement": "right",
               "hasDivider": false,
@@ -566,50 +382,6 @@
           "props": {}
         },
         {
-          "id": "MapMode",
-          "type": "GIAC",
-          "name": "地图模式",
-          "props": {
-            "visible": false,
-            "type": "amap",
-            "theme": "light",
-            "minSize": "50%",
-            "maxSize": "100%",
-            "placement": "RB",
-            "offset": [0, 0],
-            "longitudeKey": "longitude",
-            "latitudeKey": "latitude",
-            "GI_CONTAINER_INDEX": 2,
-            "GIAC": {
-              "visible": false,
-              "disabled": false,
-              "isShowTitle": false,
-              "title": "地图模式",
-              "isShowIcon": true,
-              "icon": "icon-global",
-              "isShowTooltip": true,
-              "tooltip": "",
-              "tooltipColor": "#3056e3",
-              "tooltipPlacement": "right",
-              "hasDivider": false,
-              "height": "46px",
-              "isVertical": true
-            }
-          }
-        },
-        {
-          "id": "NeighborsQuery",
-          "type": "GIAC_MENU",
-          "name": "邻居查询",
-          "props": {
-            "serviceId": "GI/NeighborsQuery",
-            "degree": "1",
-            "isFocus": true,
-            "menuServiceId": "GI/NeighborsQueryMenu",
-            "limit": 100
-          }
-        },
-        {
           "id": "NodeLegend",
           "type": "AUTO",
           "name": "节点图例",
@@ -617,17 +389,17 @@
             "sortKey": "type",
             "textColor": "#ddd",
             "placement": "LB",
-            "offset": [100, 20]
+            "offset": [
+              100,
+              20
+            ]
           }
         },
         {
           "id": "PinNodeWithMenu",
           "type": "GIAC_MENU",
           "name": "固定节点(MENU)",
-          "props": {
-            "color": "#fff",
-            "fill": "#262626"
-          }
+          "props": {}
         },
         {
           "id": "Placeholder",
@@ -636,7 +408,9 @@
           "props": {
             "img": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1BGfQ78mW4kAAAAAAAAAAAAADmJ7AQ/original",
             "text": "当前画布为空，请先试试「数据/图数据源/导入/示例数据」",
-            "width": 340
+            "width": 340,
+            "textColor": "#999",
+            "spacing": 8
           }
         },
         {
@@ -649,7 +423,10 @@
             "placement": "RT",
             "width": "356px",
             "height": "calc(100% - 0px)",
-            "offset": [10, 10],
+            "offset": [
+              10,
+              10
+            ],
             "animate": false,
             "enableInfoDetect": true,
             "defaultiStatistic": false
@@ -683,19 +460,22 @@
                 "id": "view-mode",
                 "name": "模式展示",
                 "required": true,
-                "GI_CONTAINER": []
+                "GI_CONTAINER": [],
+                "icon": "icon-deploymentunit1"
               },
               {
                 "id": "data-query",
                 "name": "数据查询",
                 "required": true,
-                "GI_CONTAINER": []
+                "GI_CONTAINER": [],
+                "icon": "icon-query"
               },
               {
                 "id": "data-filter",
                 "name": "数据筛选",
                 "required": true,
-                "GI_CONTAINER": []
+                "GI_CONTAINER": [],
+                "icon": "icon-filter"
               },
               {
                 "id": "styling-setting",
@@ -709,69 +489,15 @@
                 "required": true,
                 "GI_CONTAINER": []
               }
-            ]
+            ],
+            "isSheet": false
           }
         },
         {
-          "id": "ShortcutKeys",
-          "type": "GIAC",
-          "name": "快捷键",
-          "props": {
-            "GI_CONTAINER_INDEX": 2,
-            "GIAC": {
-              "visible": false,
-              "disabled": false,
-              "isShowTitle": true,
-              "title": "快捷键",
-              "isShowIcon": true,
-              "icon": "icon-shortcut",
-              "iconFontSize": "18px",
-              "buttonType": "text",
-              "isShowTooltip": true,
-              "tooltip": "",
-              "tooltipColor": "#3056e3",
-              "tooltipPlacement": "right",
-              "hasDivider": false,
-              "height": "46px",
-              "isVertical": false
-            }
-          }
-        },
-        {
-          "id": "SubGraphLayout",
-          "type": "GIAC_CONTENT",
-          "name": "子图布局",
-          "props": {
-            "isDefaultSubGraph": true,
-            "sortKey": "",
-            "gap": 200,
-            "direction": "horizontal",
-            "GI_CONTAINER_INDEX": 2,
-            "GIAC_CONTENT": {
-              "visible": false,
-              "disabled": false,
-              "isShowTitle": true,
-              "title": "子图布局",
-              "isShowIcon": true,
-              "icon": "icon-tugraph-layout",
-              "isShowTooltip": true,
-              "tooltip": "子图布局面板",
-              "tooltipColor": "#3056e3",
-              "tooltipPlacement": "right",
-              "hasDivider": false,
-              "height": "60px",
-              "isVertical": true,
-              "containerType": "div",
-              "containerAnimate": false,
-              "containerDraggable": false,
-              "dragHandle": "header",
-              "containerPlacement": "RT",
-              "offset": [0, 0],
-              "containerWidth": "400px",
-              "containerHeight": "calc(100% - 100px)",
-              "contaienrMask": false
-            }
-          }
+          "id": "SimpleQuery",
+          "type": "AUTO",
+          "name": "简单查询",
+          "props": {}
         },
         {
           "id": "ToggleClusterWithMenu",
@@ -780,26 +506,6 @@
           "props": {
             "isReLayout": false,
             "degree": 1
-          }
-        },
-        {
-          "id": "Toolbar",
-          "type": "GICC",
-          "name": "工具栏",
-          "props": {
-            "GI_CONTAINER": [
-              "ZoomIn",
-              "ZoomOut",
-              "FitCenterView",
-              "LargeGraph",
-              "MapMode",
-              "ForceSimulation",
-              "LayoutSwitch",
-              "Export"
-            ],
-            "direction": "vertical",
-            "placement": "LT",
-            "offset": [24, 64]
           }
         },
         {
@@ -828,7 +534,10 @@
               "containerDraggable": false,
               "dragHandle": "header",
               "containerPlacement": "RT",
-              "offset": [0, 0],
+              "offset": [
+                0,
+                0
+              ],
               "containerWidth": "350px",
               "containerHeight": "calc(100% - 100px)",
               "contaienrMask": false
@@ -839,25 +548,41 @@
           "id": "TuGraphBack",
           "type": "GIAC",
           "name": "返回按钮",
+          "props": {}
+        },
+        {
+          "id": "TuGraphStatisticsFilter",
+          "type": "GIAC_CONTENT",
+          "name": "统计筛选",
           "props": {
-            "serviceId": "TuGraph-DB/TuGraphBack",
+            "schemaServiceId": "TuGraph-DB/graphSchemaService",
             "GI_CONTAINER_INDEX": 2,
-            "GIAC": {
+            "GIAC_CONTENT": {
               "visible": false,
               "disabled": false,
-              "isShowTitle": false,
-              "title": "时序分析",
+              "isShowTitle": true,
+              "title": "未命名组件",
               "isShowIcon": true,
-              "icon": "icon-arrowleft",
-              "iconFontSize": "18px",
-              "buttonType": "text",
+              "icon": "icon-star",
               "isShowTooltip": true,
               "tooltip": "",
               "tooltipColor": "#3056e3",
               "tooltipPlacement": "right",
               "hasDivider": false,
-              "height": "46px",
-              "isVertical": true
+              "height": "60px",
+              "isVertical": true,
+              "containerType": "div",
+              "containerAnimate": false,
+              "containerDraggable": false,
+              "dragHandle": "header",
+              "containerPlacement": "RT",
+              "offset": [
+                0,
+                0
+              ],
+              "containerWidth": "350px",
+              "containerHeight": "calc(100% - 100px)",
+              "contaienrMask": false
             }
           }
         },
@@ -888,60 +613,13 @@
               "containerDraggable": false,
               "dragHandle": "header",
               "containerPlacement": "RT",
-              "offset": [0, 0],
+              "offset": [
+                0,
+                0
+              ],
               "containerWidth": "350px",
               "containerHeight": "calc(100% - 100px)",
               "contaienrMask": false
-            }
-          }
-        },
-        {
-          "id": "ZoomIn",
-          "type": "GIAC",
-          "name": "放大",
-          "props": {
-            "GI_CONTAINER_INDEX": 2,
-            "GIAC": {
-              "visible": false,
-              "disabled": false,
-              "isShowTitle": false,
-              "title": "放大",
-              "isShowIcon": true,
-              "icon": "icon-zoomin",
-              "iconFontSize": "18px",
-              "buttonType": "text",
-              "isShowTooltip": true,
-              "tooltip": "",
-              "tooltipColor": "#3056e3",
-              "tooltipPlacement": "right",
-              "hasDivider": false,
-              "height": "46px",
-              "isVertical": true
-            }
-          }
-        },
-        {
-          "id": "ZoomOut",
-          "type": "GIAC",
-          "name": "缩小",
-          "props": {
-            "GI_CONTAINER_INDEX": 2,
-            "GIAC": {
-              "visible": false,
-              "disabled": false,
-              "isShowTitle": false,
-              "title": "缩小",
-              "isShowIcon": true,
-              "icon": "icon-zoomout",
-              "iconFontSize": "18px",
-              "buttonType": "text",
-              "isShowTooltip": true,
-              "tooltip": "",
-              "tooltipColor": "#3056e3",
-              "tooltipPlacement": "right",
-              "hasDivider": false,
-              "height": "46px",
-              "isVertical": true
             }
           }
         },
@@ -950,8 +628,12 @@
           "type": "AUTO",
           "name": "多画布页签",
           "props": {
-            "placement": "bottom",
-            "height": 40
+            "placement": "top",
+            "height": 40,
+            "position": [
+              0,
+              54
+            ]
           }
         }
       ],
@@ -1016,12 +698,7 @@
               "id": "navbar-right",
               "name": "导航右区",
               "required": true,
-              "GI_CONTAINER": [
-                {
-                  "value": "ShortcutKeys",
-                  "label": "快捷键"
-                }
-              ],
+              "GI_CONTAINER": [],
               "display": true
             },
             {
@@ -1034,8 +711,8 @@
                   "label": "代码模式"
                 }
               ],
-              "display": true,
-              "icon": "icon-tugraph-graph-view"
+              "icon": "icon-tugraph-graph-view",
+              "display": true
             },
             {
               "id": "data-query",
@@ -1043,16 +720,16 @@
               "required": true,
               "GI_CONTAINER": [
                 {
-                  "value": "ConfigQuery",
-                  "label": "配置查询"
-                },
-                {
                   "value": "LanguageQuery",
                   "label": "语句查询"
+                },
+                {
+                  "value": "ConfigQuery",
+                  "label": "配置查询"
                 }
               ],
-              "display": true,
-              "icon": "icon-tugraph-query"
+              "icon": "icon-tugraph-query",
+              "display": true
             },
             {
               "id": "data-filter",
@@ -1064,12 +741,12 @@
                   "label": "属性筛选"
                 },
                 {
-                  "value": "FilterPanel",
-                  "label": "筛选面板"
+                  "value": "TuGraphStatisticsFilter",
+                  "label": "统计筛选"
                 }
               ],
-              "display": true,
-              "icon": "icon-tugraph-filter"
+              "icon": "icon-tugraph-filter",
+              "display": true
             },
             {
               "id": "styling-setting",
@@ -1078,11 +755,11 @@
               "GI_CONTAINER": [
                 {
                   "value": "TuGraphStyleSetting",
-                  "label": "样式设置"
+                  "label": "业务样式设置"
                 },
                 {
-                  "value": "SubGraphLayout",
-                  "label": "子图布局"
+                  "value": "LayoutSwitchTool",
+                  "label": "高级布局切换"
                 }
               ],
               "display": true
@@ -1093,36 +770,20 @@
               "required": true,
               "GI_CONTAINER": [
                 {
-                  "value": "LassoSelect",
-                  "label": "自由圈选"
-                },
-                {
-                  "value": "FitCenterView",
-                  "label": "自适应居中"
-                },
-                {
-                  "value": "DownLoad",
-                  "label": "下载"
-                },
-                {
                   "value": "ClearCanvas",
                   "label": "清空画布"
+                },
+                {
+                  "value": "LassoSelect",
+                  "label": "自由圈选"
                 },
                 {
                   "value": "LargeGraph",
                   "label": "3D大图"
                 },
                 {
-                  "value": "MapMode",
-                  "label": "地图模式"
-                },
-                {
-                  "value": "ForceSimulation",
-                  "label": "力导控制器"
-                },
-                {
-                  "value": "AddSheetbar",
-                  "label": "新增页签"
+                  "value": "LayoutSwitchTool",
+                  "label": "高级布局切换"
                 }
               ],
               "display": true
@@ -1242,10 +903,6 @@
                   "value": "ZoomStatus"
                 },
                 {
-                  "label": "多画布页签",
-                  "value": "Sheetbar"
-                },
-                {
                   "label": "分析历史沉淀",
                   "value": "AnalysisHistory"
                 },
@@ -1260,18 +917,23 @@
                 {
                   "label": "简单查询",
                   "value": "SimpleQuery"
+                },
+                {
+                  "label": "demo案例",
+                  "value": "Demo"
                 }
               ],
               "GI_CONTAINER": [
                 "CanvasSetting",
                 "Initializer",
                 "ActivateRelations",
-                "Copyright",
+                "Demo",
                 "Loading",
                 "NodeLegend",
                 "Placeholder",
                 "PropertiesPanel",
                 "PropertyGraphInitializer",
+                "SimpleQuery",
                 "Sheetbar"
               ],
               "display": true
@@ -1517,18 +1179,18 @@
     "theme": "light"
   },
   "dataset": {
-    "id": "ds_8b81e727-2eee-4e4e-8973-f06fb23f8656",
+    "id": "ds_504f732b-891d-4ff6-b807-430d9cc69cb8",
     "engineContext": {
       "engineId": "TuGraph-DB",
       "schemaData": {
         "nodes": [],
         "edges": []
       },
-      "name": "tugraph-db",
-      "HTTP_SERVER_URL": "http://127.0.0.1:7001"
+      "name": "TuGraph 服务",
+      "HTTP_SERVER_URL": "http://dev.alipay.net:7001"
     },
     "engineId": "TuGraph-DB",
-    "name": "tugraph-db",
+    "name": "TuGraph 服务",
     "schemaData": {
       "nodes": [],
       "edges": []
@@ -1611,15 +1273,15 @@
     },
     "GI_ASSETS_SCENE": {
       "name": "@antv/gi-assets-scene",
-      "version": "2.2.8",
-      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-assets-scene/2.2.8/dist/index.min.js",
+      "version": "2.2.9",
+      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-assets-scene/2.2.9/dist/index.min.js",
       "global": "GI_ASSETS_SCENE"
     },
     "GI_ASSETS_TUGRAPH_DB": {
       "name": "@tugraph/gi-assets-tugraph-db",
-      "version": "0.2.0",
+      "version": "0.6.1",
       "global": "GI_ASSETS_TUGRAPH_DB",
-      "url": "https://gw.alipayobjects.com/os/lib/tugraph/gi-assets-tugraph-db/0.2.0/dist/index.min.js"
+      "url": "https://gw.alipayobjects.com/os/lib/tugraph/gi-assets-tugraph-db/0.6.1/dist/index.min.js"
     }
   }
 }

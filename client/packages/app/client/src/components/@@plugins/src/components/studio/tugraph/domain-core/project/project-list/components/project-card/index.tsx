@@ -117,7 +117,11 @@ const ProjectCard = ({
               true,
               `${redirectPath?.[1]?.path}?graphName=${graphName}`
             ),
-            getActions('图分析', false, ''),
+            getActions(
+              '图分析', 
+              true, 
+              `${redirectPath?.[2]?.path}?graphName=${graphName}`
+            ),
           ]}
           bordered={false}
           hoverable

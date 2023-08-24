@@ -34,10 +34,7 @@ export default defineConfig({
     react: 'React',
     'react-dom': 'ReactDOM',
     antd: 'antd',
-    '@antv/g2plot': 'G2Plot',
     'antd/es/*': 'antd',
-    '@ant-design/charts': 'charts',
-    '@ant-design/icons': 'icons',
     moment: 'moment',
   },
   headScripts: [

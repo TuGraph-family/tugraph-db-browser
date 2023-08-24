@@ -27,3 +27,9 @@ npm run  dec
 ```
 
 浏览器访问 http://localhost:8888
+
+
+发布时打压缩包
+```
+tar -czvf tugraph-db-browser.tgz ./
+```
