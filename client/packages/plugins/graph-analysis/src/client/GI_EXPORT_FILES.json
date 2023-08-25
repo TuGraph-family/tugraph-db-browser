@@ -1187,7 +1187,7 @@
         "edges": []
       },
       "name": "TuGraph 服务",
-      "HTTP_SERVER_URL": "http://dev.alipay.net:7001"
+      "HTTP_SERVER_URL": "http://120.26.55.92/:7001"
     },
     "engineId": "TuGraph-DB",
     "name": "TuGraph 服务",
