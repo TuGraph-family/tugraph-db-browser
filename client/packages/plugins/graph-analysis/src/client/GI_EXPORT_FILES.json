@@ -14,7 +14,7 @@
         "ClearCanvas",
         "ConfigQuery",
         "ContextMenu",
-        "Demo",
+        "GraphDemo",
         "Initializer",
         "JSONMode",
         "LanguageQuery",
@@ -22,9 +22,10 @@
         "LassoSelect",
         "LayoutSwitchTool",
         "Loading",
-        "NodeLegend",
+        "PathAnalysis",
         "PinNodeWithMenu",
         "Placeholder",
+        "PointEdgeView",
         "PropertiesPanel",
         "PropertyGraphInitializer",
         "RichContainer",
@@ -32,9 +33,10 @@
         "ToggleClusterWithMenu",
         "TuGraphAttributesFilter",
         "TuGraphBack",
+        "TuGraphShortcutKeys",
         "TuGraphStatisticsFilter",
         "TuGraphStyleSetting",
-        "Sheetbar"
+        "ZoomStatus"
       ],
       "layouts": [
         "Force2",
@@ -106,7 +108,7 @@
           "props": {
             "styleCanvas": {
               "backgroundColor": "#fff",
-              "backgroundImage": "https://gw.alipayobjects.com/mdn/rms_0d75e8/afts/img/A*k9t4QamMuQ4AAAAAAAAAAAAAARQnAQ"
+              "backgroundImage": ""
             },
             "dragCanvas": {
               "disabled": false,
@@ -138,8 +140,8 @@
               "buttonType": "text",
               "isShowTooltip": true,
               "tooltip": "清空画布上的所有内容",
-              "tooltipColor": "#3056e3",
-              "tooltipPlacement": "right",
+              "tooltipColor": "rgba(0,0,0,1)",
+              "tooltipPlacement": "top",
               "hasDivider": false,
               "height": "46px",
               "isVertical": true
@@ -201,10 +203,29 @@
           }
         },
         {
-          "id": "Demo",
-          "type": "AUTO",
-          "name": "demo案例",
-          "props": {}
+          "id": "GraphDemo",
+          "type": "GIAC",
+          "name": "Graph Demo 示例",
+          "props": {
+            "GI_CONTAINER_INDEX": 2,
+            "GIAC": {
+              "visible": false,
+              "disabled": false,
+              "isShowTitle": false,
+              "title": "Demo 示例",
+              "isShowIcon": true,
+              "icon": "icon-xiaodengpao",
+              "iconFontSize": "25px",
+              "buttonType": "text",
+              "isShowTooltip": true,
+              "tooltip": "",
+              "tooltipColor": "rgba(0,0,0,1)",
+              "tooltipPlacement": "top",
+              "hasDivider": false,
+              "height": "46px",
+              "isVertical": true
+            }
+          }
         },
         {
           "id": "Initializer",
@@ -317,8 +338,8 @@
               "buttonType": "text",
               "isShowTooltip": true,
               "tooltip": "",
-              "tooltipColor": "#3056e3",
-              "tooltipPlacement": "right",
+              "tooltipColor": "rgba(0,0,0,1)",
+              "tooltipPlacement": "top",
               "hasDivider": false,
               "height": "46px",
               "isVertical": true
@@ -340,8 +361,8 @@
               "icon": "icon-tugraph-lasso",
               "isShowTooltip": true,
               "tooltip": "按住Shift，点击画布即可自由圈选",
-              "tooltipColor": "#3056e3",
-              "tooltipPlacement": "right",
+              "tooltipColor": "rgba(0,0,0,1)",
+              "tooltipPlacement": "top",
               "hasDivider": false,
               "height": "46px",
               "isVertical": true,
@@ -367,8 +388,8 @@
               "buttonType": "text",
               "isShowTooltip": true,
               "tooltip": "",
-              "tooltipColor": "#3056e3",
-              "tooltipPlacement": "right",
+              "tooltipColor": "rgba(0,0,0,1)",
+              "tooltipPlacement": "top",
               "hasDivider": false,
               "height": "46px",
               "isVertical": true
@@ -382,17 +403,45 @@
           "props": {}
         },
         {
-          "id": "NodeLegend",
-          "type": "AUTO",
-          "name": "节点图例",
+          "id": "PathAnalysis",
+          "type": "GIAC_CONTENT",
+          "name": "路径分析",
           "props": {
-            "sortKey": "type",
-            "textColor": "#ddd",
-            "placement": "LB",
-            "offset": [
-              100,
-              20
-            ]
+            "nodeSelectionMode": [
+              "List",
+              "Canvas"
+            ],
+            "pathNodeLabel": "id",
+            "hasDirection": false,
+            "hasMaxDeep": false,
+            "GI_CONTAINER_INDEX": 2,
+            "GIAC_CONTENT": {
+              "visible": false,
+              "disabled": false,
+              "isShowTitle": true,
+              "title": "路径分析",
+              "isShowIcon": true,
+              "icon": "icon-path-analysis",
+              "isShowTooltip": true,
+              "tooltip": "",
+              "tooltipColor": "#3056e3",
+              "tooltipPlacement": "right",
+              "hasDivider": false,
+              "height": "60px",
+              "isVertical": true,
+              "containerType": "div",
+              "containerAnimate": false,
+              "containerDraggable": false,
+              "dragHandle": "header",
+              "containerPlacement": "RT",
+              "offset": [
+                0,
+                0
+              ],
+              "containerWidth": "400px",
+              "containerHeight": "calc(100% - 100px)",
+              "contaienrMask": false
+            }
           }
         },
         {
@@ -407,11 +456,17 @@
           "name": "画布占位符",
           "props": {
             "img": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1BGfQ78mW4kAAAAAAAAAAAAADmJ7AQ/original",
-            "text": "当前画布为空，请先试试「数据/图数据源/导入/示例数据」",
+            "text": "画布为空时，请先试试查询-语句查询/配置查询",
             "width": 340,
             "textColor": "#999",
             "spacing": 8
           }
+        },
+        {
+          "id": "PointEdgeView",
+          "type": "AUTO",
+          "name": "TuGraph 图例",
+          "props": {}
         },
         {
           "id": "PropertiesPanel",
@@ -551,6 +606,31 @@
           "props": {}
         },
         {
+          "id": "TuGraphShortcutKeys",
+          "type": "GIAC",
+          "name": "图分析快捷键",
+          "props": {
+            "GI_CONTAINER_INDEX": 2,
+            "GIAC": {
+              "visible": false,
+              "disabled": false,
+              "isShowTitle": false,
+              "title": "图分析快捷键",
+              "isShowIcon": true,
+              "icon": "icon-kuaijiejian",
+              "iconFontSize": "25px",
+              "buttonType": "text",
+              "isShowTooltip": true,
+              "tooltip": "",
+              "tooltipColor": "rgba(0,0,0,1)",
+              "tooltipPlacement": "top",
+              "hasDivider": false,
+              "height": "46px",
+              "isVertical": true
+            }
+          }
+        },
+        {
           "id": "TuGraphStatisticsFilter",
           "type": "GIAC_CONTENT",
           "name": "统计筛选",
@@ -602,8 +682,7 @@
               "isShowIcon": true,
               "icon": "icon-tugraph-styling",
               "isShowTooltip": true,
-              "tooltip": "根据点上的属性值可指定颜色、大小、形状",
-              "tooltipColor": "#3056e3",
+              "tooltipColor": "rgba(0,0,0,1)",
               "tooltipPlacement": "right",
               "hasDivider": false,
               "height": "60px",
@@ -619,21 +698,18 @@
               ],
               "containerWidth": "350px",
               "containerHeight": "calc(100% - 100px)",
-              "contaienrMask": false
+              "contaienrMask": false,
+              "tooltip": "根据点上的属性值可指定颜色、大小、形状"
             }
           }
         },
         {
-          "id": "Sheetbar",
+          "id": "ZoomStatus",
           "type": "AUTO",
-          "name": "多画布页签",
+          "name": "缩放状态",
           "props": {
-            "placement": "top",
-            "height": 40,
-            "position": [
-              0,
-              54
-            ]
+            "minZoom": 0.6,
+            "statusName": "minZoom"
           }
         }
       ],
@@ -698,7 +774,16 @@
               "id": "navbar-right",
               "name": "导航右区",
               "required": true,
-              "GI_CONTAINER": [],
+              "GI_CONTAINER": [
+                {
+                  "value": "TuGraphShortcutKeys",
+                  "label": "图分析快捷键"
+                },
+                {
+                  "value": "GraphDemo",
+                  "label": "Graph Demo 示例"
+                }
+              ],
               "display": true
             },
             {
@@ -726,6 +811,10 @@
                 {
                   "value": "ConfigQuery",
                   "label": "配置查询"
+                },
+                {
+                  "value": "PathAnalysis",
+                  "label": "路径分析"
                 }
               ],
               "icon": "icon-tugraph-query",
@@ -780,10 +869,6 @@
                 {
                   "value": "LargeGraph",
                   "label": "3D大图"
-                },
-                {
-                  "value": "LayoutSwitchTool",
-                  "label": "高级布局切换"
                 }
               ],
               "display": true
@@ -927,14 +1012,13 @@
                 "CanvasSetting",
                 "Initializer",
                 "ActivateRelations",
-                "Demo",
                 "Loading",
-                "NodeLegend",
                 "Placeholder",
                 "PropertiesPanel",
                 "PropertyGraphInitializer",
                 "SimpleQuery",
-                "Sheetbar"
+                "ZoomStatus",
+                "PointEdgeView"
               ],
               "display": true
             }
@@ -1187,7 +1271,7 @@
         "edges": []
       },
       "name": "TuGraph 服务",
-      "HTTP_SERVER_URL": "http://120.26.55.92:7001"
+      "HTTP_SERVER_URL": "http://121.41.169.92:7001"
     },
     "engineId": "TuGraph-DB",
     "name": "TuGraph 服务",
@@ -1241,8 +1325,8 @@
     },
     "GISDK": {
       "name": "@antv/gi-sdk",
-      "version": "2.4.7",
-      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-sdk/2.4.7/dist/index.min.js",
+      "version": "2.4.10",
+      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-sdk/2.4.10/dist/index.min.js",
       "global": "GISDK"
     },
     "G2Plot": {
@@ -1253,22 +1337,22 @@
     },
     "@antv/gi-theme-antd": {
       "name": "@antv/gi-theme-antd",
-      "version": "0.6.0",
-      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-theme-antd/0.6.0/dist/index.min.js",
+      "version": "0.6.5",
+      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-theme-antd/0.6.5/dist/index.min.js",
       "global": "GI_THEME_ANTD"
     }
   },
   "GI_ASSETS_PACKAGES": {
     "GI_ASSETS_BASIC": {
       "name": "@antv/gi-assets-basic",
-      "version": "2.4.10",
-      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-assets-basic/2.4.10/dist/index.min.js",
+      "version": "2.4.14",
+      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-assets-basic/2.4.14/dist/index.min.js",
       "global": "GI_ASSETS_BASIC"
     },
     "GI_ASSETS_ADVANCE": {
       "name": "@antv/gi-assets-advance",
-      "version": "2.5.9",
-      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-assets-advance/2.5.9/dist/index.min.js",
+      "version": "2.5.12",
+      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-assets-advance/2.5.12/dist/index.min.js",
       "global": "GI_ASSETS_ADVANCE"
     },
     "GI_ASSETS_SCENE": {
@@ -1279,9 +1363,9 @@
     },
     "GI_ASSETS_TUGRAPH_DB": {
       "name": "@tugraph/gi-assets-tugraph-db",
-      "version": "0.6.2",
+      "version": "0.6.7",
       "global": "GI_ASSETS_TUGRAPH_DB",
-      "url": "https://gw.alipayobjects.com/os/lib/tugraph/gi-assets-tugraph-db/0.6.2/dist/index.min.js"
+      "url": "https://gw.alipayobjects.com/os/lib/tugraph/gi-assets-tugraph-db/0.6.7/dist/index.min.js"
     }
   }
 }
