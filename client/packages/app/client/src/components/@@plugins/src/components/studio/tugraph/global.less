@@ -41,6 +41,13 @@
 
 .gi-rich-container .gi-rich-container-toolbar {
   border-bottom: none !important;
+  .toolbar-item {
+    .anticon {
+      svg {
+        font-size: 16px;
+      }
+    }
+  }
 }
 
 .gi-rich-container-side > div:first-child {
@@ -48,10 +55,22 @@
   max-width: 720px;
 }
 
+.gi-rich-container-side {
+  .ant-segmented {
+    background: #eaeff9;
+    padding: 4px;
+    width: 100%
+  }
+  .ant-segmented:not(.ant-segmented-disabled):hover,
+  .ant-segmented:not(.ant-segmented-disabled):focus {
+    background: #eaeff9;
+  }
+}
+
 .style-setting-container {
   height: calc(100vh - 110px) !important;
   .style-setting-element-container .nodeConfigurationContainer, .style-setting-element-container .edgeConfigurationContainer {
-    height: calc(100vh - 260px) !important;
+    height: calc(100vh - 210px) !important;
   }
 }
 
