@@ -5,7 +5,8 @@ import {
   SchemaInitializerContext,
 } from '@tugraph/openpiece-client';
 import React, { useContext } from 'react';
-import TuGraphGraphAppConfig from './GI_EXPORT_FILES.json';
+// @ts-ignore
+import TuGraphGraphAppConfig from './GI_EXPORT_FILES.ts';
 import { PluginDesigner } from './PluginDesigner';
 //@ts-ignore
 const { default: GI_SDK_APP } = window.GI_SDK_APP;
