@@ -184,6 +184,7 @@ export interface INeighborsParams {
   ids: string[];
   sep: number;
   graphName: string;
+  limit?: number;
 }
 
 export interface ISubGraphConfig {
@@ -258,4 +259,11 @@ export interface ICypherResponse {
   }[];
   result: any[];
   size: number;
+}
+
+export interface IConfigQueryParams {
+  graphName: string;
+  nodeType: string;
+  conditions: Condition[];
+  limit: number;
 }

@@ -10,6 +10,7 @@ import {
   ISubGraphParams,
   IVertexResponse,
   IEdgeResponse,
+  IConfigQueryParams,
 } from '../service/tugraph/interface';
 
 import { find, has, map, isEmpty } from 'lodash';
@@ -329,4 +330,21 @@ export const generateCypherByNode = (params: INodeQueryParams) => {
   return `MATCH ${nodesScripts.join(',')} WHERE  ${conditionScripts.join(
     ' AND '
   )} RETURN ${nodesIndex.join(',')} LIMIT ${limit}`;
+};
+
+/**
+ * 根据配置转换查询的 Cypher 语句
+ * @param params IConfigQueryParams
+ * @return
+ */
+export const generateCypherByConfig = (params: IConfigQueryParams) => {
+  const { nodeType, conditions, limit } = params;
+  if (isEmpty(conditions)) {
+    return `MATCH (n: ${nodeType}) RETURN n LIMIT ${limit}`;
+  }
+  const conditionScripts = conditionToCypher(conditions);
+
+  return `MATCH (n: ${nodeType}) WHERE  ${conditionScripts.join(
+    ' AND '
+  )} RETURN n LIMIT ${limit}`;
 };
