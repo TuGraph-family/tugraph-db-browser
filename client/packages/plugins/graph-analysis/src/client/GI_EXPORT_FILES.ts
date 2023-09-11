@@ -33,7 +33,8 @@ export default {
         "TuGraphBack",
         "TuGraphStatisticsFilter",
         "TuGraphStyleSetting",
-        "ZoomStatus"
+        "ZoomStatus",
+        "TuGraphPathQuery"
       ],
       "layouts": [
         "Force2",
@@ -564,7 +565,7 @@ export default {
         {
           "id": "TuGraphStyleSetting",
           "type": "GIAC_CONTENT",
-          "name": "样式设置",
+          "name": "业务样式设置",
           "props": {
             "localServiceId": "TuGraph-DB/saveElementStyleToLocalService",
             "schemaServiceId": "TuGraph-DB/graphSchemaService",
@@ -577,6 +578,7 @@ export default {
               "isShowIcon": true,
               "icon": "icon-tugraph-styling",
               "isShowTooltip": true,
+              "tooltip": "根据点上的属性值可指定颜色、大小、形状",
               "tooltipColor": "rgba(0,0,0,1)",
               "tooltipPlacement": "right",
               "hasDivider": false,
@@ -593,8 +595,7 @@ export default {
               ],
               "containerWidth": "350px",
               "containerHeight": "calc(100% - 100px)",
-              "contaienrMask": false,
-              "tooltip": "根据点上的属性值可指定颜色、大小、形状"
+              "contaienrMask": false
             }
           }
         },
@@ -605,6 +606,48 @@ export default {
           "props": {
             "minZoom": 0.6,
             "statusName": "minZoom"
+          }
+        },
+        {
+          "id": "TuGraphPathQuery",
+          "type": "GIAC_CONTENT",
+          "name": "TuGraph 路径查询",
+          "props": {
+            "nodeSelectionMode": [
+              "List",
+              ""
+            ],
+            "pathNodeLabel": "id",
+            "hasDirection": false,
+            "hasMaxDeep": false,
+            "GI_CONTAINER_INDEX": 2,
+            "GIAC_CONTENT": {
+              "visible": false,
+              "disabled": false,
+              "isShowTitle": true,
+              "title": "TuGraph 路径查询",
+              "isShowIcon": true,
+              "icon": "icon-path-analysis",
+              "isShowTooltip": true,
+              "tooltip": "",
+              "tooltipColor": "#3056e3",
+              "tooltipPlacement": "right",
+              "hasDivider": false,
+              "height": "60px",
+              "isVertical": true,
+              "containerType": "div",
+              "containerAnimate": false,
+              "containerDraggable": false,
+              "dragHandle": "header",
+              "containerPlacement": "RT",
+              "offset": [
+                0,
+                0
+              ],
+              "containerWidth": "400px",
+              "containerHeight": "calc(100% - 100px)",
+              "contaienrMask": false
+            }
           }
         }
       ],
@@ -670,7 +713,10 @@ export default {
               "name": "导航右区",
               "required": true,
               "GI_CONTAINER": [
-                "GraphDemo"
+                {
+                  "value": "GraphDemo",
+                  "label": "Graph Demo 示例"
+                }
               ],
               "display": true
             },
@@ -692,14 +738,9 @@ export default {
               "name": "数据查询",
               "required": true,
               "GI_CONTAINER": [
-                {
-                  "value": "LanguageQuery",
-                  "label": "语句查询"
-                },
-                {
-                  "value": "ConfigQuery",
-                  "label": "配置查询"
-                }
+                "LanguageQuery",
+                "ConfigQuery",
+                "TuGraphPathQuery"
               ],
               "icon": "icon-tugraph-query",
               "display": true
@@ -727,12 +768,12 @@ export default {
               "required": true,
               "GI_CONTAINER": [
                 {
-                  "value": "TuGraphStyleSetting",
-                  "label": "业务样式设置"
-                },
-                {
                   "value": "LayoutSwitchTool",
                   "label": "高级布局切换"
+                },
+                {
+                  "value": "TuGraphStyleSetting",
+                  "label": "业务样式设置"
                 }
               ],
               "display": true
@@ -1205,8 +1246,8 @@ export default {
     },
     "GISDK": {
       "name": "@antv/gi-sdk",
-      "version": "2.4.10",
-      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-sdk/2.4.10/dist/index.min.js",
+      "version": "2.4.12",
+      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-sdk/2.4.12/dist/index.min.js",
       "global": "GISDK"
     },
     "G2Plot": {
@@ -1225,8 +1266,8 @@ export default {
   "GI_ASSETS_PACKAGES": {
     "GI_ASSETS_BASIC": {
       "name": "@antv/gi-assets-basic",
-      "version": "2.4.14",
-      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-assets-basic/2.4.14/dist/index.min.js",
+      "version": "2.4.16",
+      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-assets-basic/2.4.16/dist/index.min.js",
       "global": "GI_ASSETS_BASIC"
     },
     "GI_ASSETS_ADVANCE": {
@@ -1237,9 +1278,9 @@ export default {
     },
     "GI_ASSETS_TUGRAPH_DB": {
       "name": "@tugraph/gi-assets-tugraph-db",
-      "version": "0.6.12",
+      "version": "0.6.14",
       "global": "GI_ASSETS_TUGRAPH_DB",
-      "url": "https://gw.alipayobjects.com/os/lib/tugraph/gi-assets-tugraph-db/0.6.12/dist/index.min.js"
+      "url": "https://gw.alipayobjects.com/os/lib/tugraph/gi-assets-tugraph-db/0.6.14/dist/index.min.js"
     }
   }
 }
