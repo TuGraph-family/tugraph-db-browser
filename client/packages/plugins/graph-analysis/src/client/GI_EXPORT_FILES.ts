@@ -14,6 +14,7 @@ export default {
         "ClearCanvas",
         "ConfigQuery",
         "ContextMenu",
+        "DoubleClickExpandNode",
         "GraphDemo",
         "Initializer",
         "JSONMode",
@@ -24,17 +25,17 @@ export default {
         "PinNodeWithMenu",
         "Placeholder",
         "PointEdgeView",
-        "PropertiesPanel",
         "PropertyGraphInitializer",
         "RichContainer",
         "SimpleQuery",
         "ToggleClusterWithMenu",
         "TuGraphAttributesFilter",
         "TuGraphBack",
+        "TuGraphPathQuery",
         "TuGraphStatisticsFilter",
         "TuGraphStyleSetting",
         "ZoomStatus",
-        "TuGraphPathQuery"
+        "TuGraphPropertiesPanel"
       ],
       "layouts": [
         "Force2",
@@ -199,6 +200,12 @@ export default {
               "PinNodeWithMenu"
             ]
           }
+        },
+        {
+          "id": "DoubleClickExpandNode",
+          "type": "AUTO",
+          "name": "双击扩散节点",
+          "props": {}
         },
         {
           "id": "GraphDemo",
@@ -390,25 +397,6 @@ export default {
           "props": {}
         },
         {
-          "id": "PropertiesPanel",
-          "type": "AUTO",
-          "name": "属性面板",
-          "props": {
-            "serviceId": "GI/PropertiesPanel",
-            "title": "属性面板",
-            "placement": "RT",
-            "width": "356px",
-            "height": "calc(100% - 0px)",
-            "offset": [
-              10,
-              10
-            ],
-            "animate": false,
-            "enableInfoDetect": true,
-            "defaultiStatistic": false
-          }
-        },
-        {
           "id": "PropertyGraphInitializer",
           "type": "AUTO",
           "name": "属性图计算",
@@ -527,6 +515,48 @@ export default {
           "props": {}
         },
         {
+          "id": "TuGraphPathQuery",
+          "type": "GIAC_CONTENT",
+          "name": "TuGraph 路径查询",
+          "props": {
+            "nodeSelectionMode": [
+              "List",
+              ""
+            ],
+            "pathNodeLabel": "id",
+            "hasDirection": false,
+            "hasMaxDeep": false,
+            "GI_CONTAINER_INDEX": 2,
+            "GIAC_CONTENT": {
+              "visible": false,
+              "disabled": false,
+              "isShowTitle": true,
+              "title": "TuGraph 路径查询",
+              "isShowIcon": true,
+              "icon": "icon-path-analysis",
+              "isShowTooltip": true,
+              "tooltip": "",
+              "tooltipColor": "#3056e3",
+              "tooltipPlacement": "right",
+              "hasDivider": false,
+              "height": "60px",
+              "isVertical": true,
+              "containerType": "div",
+              "containerAnimate": false,
+              "containerDraggable": false,
+              "dragHandle": "header",
+              "containerPlacement": "RT",
+              "offset": [
+                0,
+                0
+              ],
+              "containerWidth": "400px",
+              "containerHeight": "calc(100% - 100px)",
+              "contaienrMask": false
+            }
+          }
+        },
+        {
           "id": "TuGraphStatisticsFilter",
           "type": "GIAC_CONTENT",
           "name": "统计筛选",
@@ -609,46 +639,10 @@ export default {
           }
         },
         {
-          "id": "TuGraphPathQuery",
-          "type": "GIAC_CONTENT",
-          "name": "TuGraph 路径查询",
-          "props": {
-            "nodeSelectionMode": [
-              "List",
-              ""
-            ],
-            "pathNodeLabel": "id",
-            "hasDirection": false,
-            "hasMaxDeep": false,
-            "GI_CONTAINER_INDEX": 2,
-            "GIAC_CONTENT": {
-              "visible": false,
-              "disabled": false,
-              "isShowTitle": true,
-              "title": "TuGraph 路径查询",
-              "isShowIcon": true,
-              "icon": "icon-path-analysis",
-              "isShowTooltip": true,
-              "tooltip": "",
-              "tooltipColor": "#3056e3",
-              "tooltipPlacement": "right",
-              "hasDivider": false,
-              "height": "60px",
-              "isVertical": true,
-              "containerType": "div",
-              "containerAnimate": false,
-              "containerDraggable": false,
-              "dragHandle": "header",
-              "containerPlacement": "RT",
-              "offset": [
-                0,
-                0
-              ],
-              "containerWidth": "400px",
-              "containerHeight": "calc(100% - 100px)",
-              "contaienrMask": false
-            }
-          }
+          "id": "TuGraphPropertiesPanel",
+          "type": "AUTO",
+          "name": "TuGraph 属性面板",
+          "props": {}
         }
       ],
       "layout": {
@@ -738,9 +732,18 @@ export default {
               "name": "数据查询",
               "required": true,
               "GI_CONTAINER": [
-                "LanguageQuery",
-                "ConfigQuery",
-                "TuGraphPathQuery"
+                {
+                  "value": "LanguageQuery",
+                  "label": "语句查询"
+                },
+                {
+                  "value": "ConfigQuery",
+                  "label": "配置查询"
+                },
+                {
+                  "value": "TuGraphPathQuery",
+                  "label": "路径查询"
+                }
               ],
               "icon": "icon-tugraph-query",
               "display": true
@@ -933,13 +936,14 @@ export default {
                 "CanvasSetting",
                 "Initializer",
                 "ActivateRelations",
+                "DoubleClickExpandNode",
                 "Loading",
                 "Placeholder",
                 "PointEdgeView",
-                "PropertiesPanel",
                 "PropertyGraphInitializer",
                 "SimpleQuery",
-                "ZoomStatus"
+                "ZoomStatus",
+                "TuGraphPropertiesPanel"
               ],
               "display": true
             }
@@ -1278,9 +1282,9 @@ export default {
     },
     "GI_ASSETS_TUGRAPH_DB": {
       "name": "@tugraph/gi-assets-tugraph-db",
-      "version": "0.6.14",
+      "version": "0.6.15",
       "global": "GI_ASSETS_TUGRAPH_DB",
-      "url": "https://gw.alipayobjects.com/os/lib/tugraph/gi-assets-tugraph-db/0.6.14/dist/index.min.js"
+      "url": "https://gw.alipayobjects.com/os/lib/tugraph/gi-assets-tugraph-db/0.6.15/dist/index.min.js"
     }
   }
 }

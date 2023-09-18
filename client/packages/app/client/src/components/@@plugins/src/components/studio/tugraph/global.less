@@ -49,6 +49,9 @@
         font-size: 16px;
       }
     }
+    .ant-btn {
+      color: #6A6B71;
+    }
   }
 }
 
@@ -67,23 +70,33 @@
   .ant-segmented:not(.ant-segmented-disabled):focus {
     background: #eaeff9;
   }
-}
 
-.style-setting-container {
-  height: calc(100vh - 110px) !important;
-  .style-setting-element-container .nodeConfigurationContainer, .style-setting-element-container .edgeConfigurationContainer {
-    height: calc(100vh - 210px) !important;
-    .ant-slider-mark-text {
-      font-size: 12px;
-      color: #6A6B71;
+  .style-setting-container {
+    height: calc(100vh - 110px) !important;
+    .style-setting-element-container .nodeConfigurationContainer, .style-setting-element-container .edgeConfigurationContainer {
+      height: calc(100vh - 210px) !important;
+      .ant-slider-mark-text {
+        font-size: 12px;
+        color: #6A6B71;
+      }
     }
   }
-}
+  
+  .attribute-filter-container .attribute-filter-container-form {
+    height: calc(100vh - 205px) !important;
+  }
+  
+  .statictics-filter-container .statictics-filter-container-form {
+    height: calc(100vh - 205px) !important;
+  }
 
-.attribute-filter-container .attribute-filter-container-form {
-  height: calc(100vh - 195px) !important;
-}
-
-.statictics-filter-container .statictics-filter-container-form {
-  height: calc(100vh - 195px) !important;
+  .tugraph-path-analysis {
+    height: calc(100vh - 176px);
+    .tugraph-path-analysis-result-container {
+      height: calc(100vh - 475px) !important;
+    }
+    .path-query-btn-group {
+      right: 10px;
+    }
+  }
 }
