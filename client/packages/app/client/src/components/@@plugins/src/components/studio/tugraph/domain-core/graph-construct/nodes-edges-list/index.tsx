@@ -65,16 +65,10 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
     nodesTotal: data.nodes.length,
     edgeTotal: data.edges.length,
   });
-  const {
-    activeElementId,
-    activeTab,
-    edges,
-    nodes,
-    nodesTotal,
-    edgeTotal,
-  } = state;
+  const { activeElementId, activeTab, edges, nodes, nodesTotal, edgeTotal } =
+    state;
   useEffect(() => {
-    setState((draft) => {
+    setState(draft => {
       draft.nodesTotal = data.nodes.length;
       draft.edgeTotal = data.edges.length;
       draft.edges = [...data.edges];
@@ -102,8 +96,8 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
         <div style={{ overflow: 'hidden' }}>
           <TextTabs
             type="card"
-            onChange={(value) => {
-              setState((draft) => {
+            onChange={value => {
+              setState(draft => {
                 draft.activeTab = value;
               });
             }}
@@ -115,14 +109,14 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
                   <div
                     className={join(
                       [styles[`${PUBLIC_PERFIX_CLASS}-title`], 'title'],
-                      ' '
+                      ' ',
                     )}
                   >
                     点类型
                     <span
                       className={join(
                         [styles[`${PUBLIC_PERFIX_CLASS}-total`], 'total'],
-                        ' '
+                        ' ',
                       )}
                     >
                       {nodesTotal}
@@ -136,14 +130,14 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
                   <div
                     className={join(
                       [styles[`${PUBLIC_PERFIX_CLASS}-title`], 'title'],
-                      ' '
+                      ' ',
                     )}
                   >
                     边类型
                     <span
                       className={join(
                         [styles[`${PUBLIC_PERFIX_CLASS}-total`], 'total'],
-                        ' '
+                        ' ',
                       )}
                     >
                       {edgeTotal}
@@ -157,26 +151,28 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
 
         <div className={styles[`${PUBLIC_PERFIX_CLASS}-content`]}>
           <SearchInput
+            className={styles[`${PUBLIC_PERFIX_CLASS}-content-search`]}
             placeholder={`请输入搜索关键字`}
-            onChange={(e) => {
-              setState((draft) => {
+            onChange={e => {
+              setState(draft => {
                 if (isNodeTab) {
                   draft.nodes = filter(
                     data.nodes,
-                    (item) => item.labelName.indexOf(e.target.value) !== -1
+                    item => item.labelName.indexOf(e.target.value) !== -1,
                   );
                 } else {
                   draft.edges = filter(
                     data.edges,
-                    (item) =>
-                      (item.id || item.labelName).indexOf(e.target.value) !== -1
+                    item =>
+                      (item.id || item.labelName).indexOf(e.target.value) !==
+                      -1,
                   );
                 }
               });
             }}
           />
           <div className={styles[`${PUBLIC_PERFIX_CLASS}-content-list`]}>
-            {(isNodeTab ? nodes : edges).map((item) => {
+            {(isNodeTab ? nodes : edges).map(item => {
               const isActive =
                 activeElementId === item.labelName && isActiveItem;
               const styleList = [
@@ -184,7 +180,7 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
               ];
               if (isActive) {
                 styleList.push(
-                  styles[`${PUBLIC_PERFIX_CLASS}-content-list-item-active`]
+                  styles[`${PUBLIC_PERFIX_CLASS}-content-list-item-active`],
                 );
               }
               return (
@@ -192,7 +188,7 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
                   <div
                     className={styles[`${PUBLIC_PERFIX_CLASS}-element-type`]}
                     onClick={() => {
-                      setState((draft) => {
+                      setState(draft => {
                         draft.activeElementId = item.labelName;
                       });
                       onClick(item, activeTab);
@@ -206,7 +202,7 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
                     >
                       <Tooltip title="复制">
                         <IconFont
-                          onClick={(e) => {
+                          onClick={e => {
                             e.stopPropagation();
                             copy(item.labelName);
                             message.success('复制成功');
@@ -217,7 +213,7 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
                       </Tooltip>
                       <Popconfirm
                         title="确定要删除吗"
-                        onConfirm={(e) => {
+                        onConfirm={e => {
                           e?.stopPropagation();
                           onDelete?.(item.labelName, activeTab);
                         }}

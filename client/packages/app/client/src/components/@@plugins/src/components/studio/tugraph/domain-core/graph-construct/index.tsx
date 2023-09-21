@@ -131,16 +131,16 @@ export const GraphConstruct = (props: PluginPorps) => {
   const { onGetGraphSchema, onCreateLabelSchema, onDeleteLabelSchema } =
     useSchema();
   const getGraphCanvasContextValue = useCallback((contextValue: any) => {
-    setState((draft) => {
+    setState(draft => {
       if (contextValue) {
         draft.graphCanvasContextValue = contextValue;
       }
     });
   }, []);
   const getGraphSchema = (graphName: string) => {
-    onGetGraphSchema({ graphName }).then((res) => {
+    onGetGraphSchema({ graphName }).then(res => {
       if (res.success) {
-        setState((draft) => {
+        setState(draft => {
           draft.data = res.data;
         });
       }
@@ -163,11 +163,11 @@ export const GraphConstruct = (props: PluginPorps) => {
   useEffect(() => {
     if (data.nodes?.length || data.edges?.length) {
       onAddClose?.();
-      setState((draft) => {
+      setState(draft => {
         draft.activeBtnType = '';
       });
     } else {
-      setState((draft) => {
+      setState(draft => {
         draft.activeBtnType = 'node';
       });
     }
@@ -176,17 +176,17 @@ export const GraphConstruct = (props: PluginPorps) => {
   const onLayoutChange = useCallback(
     (layout: Layout) => {
       if (data.edges.length || data.nodes.length) {
-        setState((draft) => {
+        setState(draft => {
           draft.layouting = true;
         });
       }
       setTimeout(() => {
-        setState((draft) => {
+        setState(draft => {
           draft.currentLayout = layout;
         });
       });
     },
-    [graphCanvasContextValue]
+    [graphCanvasContextValue],
   );
   const dealEdges = (edges: Array<any>) => {
     return Utils.processEdges([...edges], { poly: 50, loop: 10 });
@@ -199,7 +199,7 @@ export const GraphConstruct = (props: PluginPorps) => {
       graphName: currentGraphName,
       labelType,
       labelName: newSchema.labelName,
-      properties: newSchema.properties.map((item) => ({
+      properties: newSchema.properties.map(item => ({
         name: item.name,
         type: item.type,
         optional: item.optional,
@@ -207,15 +207,14 @@ export const GraphConstruct = (props: PluginPorps) => {
     } as LabelSchema;
     if (labelType === 'node') {
       if (
-        filter(newSchema.indexs, (item) => item.primaryField === true).length >
-        1
+        filter(newSchema.indexs, item => item.primaryField === true).length > 1
       ) {
         return message.error('主键必须唯一');
       }
       (params.primaryField = newSchema.indexs.find(
-        (item) => item.primaryField === true
+        item => item.primaryField === true,
       )?.propertyName),
-        (params.indexs = newSchema.indexs.map((item) => ({
+        (params.indexs = newSchema.indexs.map(item => ({
           propertyName: item?.propertyName,
           isUnique: item?.isUnique,
           labelName: newSchema.labelName,
@@ -227,7 +226,7 @@ export const GraphConstruct = (props: PluginPorps) => {
       return message.error('请设置主键');
     }
 
-    onCreateLabelSchema(params).then((res) => {
+    onCreateLabelSchema(params).then(res => {
       if (res.success) {
         message.success('创建成功');
         window.location.reload();
@@ -246,11 +245,12 @@ export const GraphConstruct = (props: PluginPorps) => {
           }}
         />
         <Select
-          onChange={(value) => {
+          onChange={value => {
             window.location.href = `${location.pathname}?graphName=${value}`;
           }}
           defaultValue={currentGraphName}
           options={graphListOptions}
+          style={{ fontSize: 16 }}
         />
       </div>
       <Steps
@@ -266,7 +266,7 @@ export const GraphConstruct = (props: PluginPorps) => {
           style={{ marginRight: '8px' }}
           onClick={() => {
             history.push(
-              `${redirectPath?.[1]?.path}?graphName=${currentGraphName}` ?? '/'
+              `${redirectPath?.[1]?.path}?graphName=${currentGraphName}` ?? '/',
             );
           }}
         >
@@ -275,8 +275,9 @@ export const GraphConstruct = (props: PluginPorps) => {
         {currentStep === 0 ? (
           <Button
             disabled={isEmpty(data.edges) && isEmpty(data.nodes)}
+            type="primary"
             onClick={() => {
-              setState((draft) => {
+              setState(draft => {
                 draft.currentStep += 1;
               });
             }}
@@ -286,7 +287,7 @@ export const GraphConstruct = (props: PluginPorps) => {
         ) : (
           <Button
             onClick={() => {
-              setState((draft) => {
+              setState(draft => {
                 draft.currentStep -= 1;
               });
             }}
@@ -299,7 +300,7 @@ export const GraphConstruct = (props: PluginPorps) => {
   );
   const operate = (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-operate`]}>
-      {GRAPH_OPERATE.map((item) => (
+      {GRAPH_OPERATE.map(item => (
         <div
           key={item.lable}
           className={join(
@@ -309,10 +310,10 @@ export const GraphConstruct = (props: PluginPorps) => {
                 ? styles[`${PUBLIC_PERFIX_CLASS}-operate-item-active`]
                 : '',
             ],
-            ' '
+            ' ',
           )}
           onClick={() => {
-            setState((draft) => {
+            setState(draft => {
               if (item.value === 'node' || item.value === 'edge') {
                 onAddShow();
                 draft.labelName = '';
@@ -325,7 +326,7 @@ export const GraphConstruct = (props: PluginPorps) => {
               if (item.value === 'export') {
                 downloadFile(
                   JSON.stringify(schemaTransform(data)),
-                  `${currentGraphName}.json`
+                  `${currentGraphName}.json`,
                 );
                 message.success('模型导出成功');
               }
@@ -342,15 +343,15 @@ export const GraphConstruct = (props: PluginPorps) => {
     </div>
   );
   useEffect(() => {
-    graphCanvasContextValue.graph?.on('click', (val) => {
+    graphCanvasContextValue.graph?.on('click', val => {
       onEditShow();
       if (val.shape) {
-        setState((draft) => {
+        setState(draft => {
           draft.activeElementType = val.item._cfg.type;
           draft.labelName = val.item._cfg.model.label;
         });
       } else {
-        setState((draft) => {
+        setState(draft => {
           draft.isActiveItem = false;
         });
       }
@@ -366,11 +367,11 @@ export const GraphConstruct = (props: PluginPorps) => {
         message.error(`${info.file.name} 文件上传失败`);
       }
     },
-    beforeUpload: (file) => {
+    beforeUpload: file => {
       const reader = new FileReader();
       reader.readAsText(file);
-      reader.onload = (result) => {
-        setState((draft) => {
+      reader.onload = result => {
+        setState(draft => {
           try {
             draft.schema = JSON.parse(result.target?.result);
           } catch (e) {
@@ -393,18 +394,18 @@ export const GraphConstruct = (props: PluginPorps) => {
         onClick={(item, type) => {
           const edgeChildrenList = filter(
             nodesEdgesListTranslator('edge', data),
-            (edge) => edge.label === item.labelName
+            edge => edge.label === item.labelName,
           );
           onEditShow();
           const isEdges = edgeChildrenList.length !== 1 && type === 'edge';
-          setState((draft) => {
+          setState(draft => {
             draft.activeElementType = type;
             draft.labelName = item.labelName;
             draft.isActiveItem = true;
             let selectedValue;
             if (item.edgeConstraints?.length > 0 || type === 'node') {
               if (isEdges) {
-                selectedValue = edgeChildrenList.map((child) => child.id);
+                selectedValue = edgeChildrenList.map(child => child.id);
               } else {
                 if (type === 'node') {
                   selectedValue = item.labelName;
@@ -412,19 +413,19 @@ export const GraphConstruct = (props: PluginPorps) => {
                   selectedValue = edgeChildrenList[0]?.id;
                 }
               }
-              graphCanvasContextValue.graph?.getNodes().forEach((node) => {
+              graphCanvasContextValue.graph?.getNodes().forEach(node => {
                 graphCanvasContextValue.graph?.clearItemStates(node);
               });
-              graphCanvasContextValue.graph?.getEdges().forEach((node) => {
+              graphCanvasContextValue.graph?.getEdges().forEach(node => {
                 graphCanvasContextValue.graph?.clearItemStates(node);
               });
               if (Array.isArray(selectedValue)) {
-                selectedValue.forEach((item) => {
+                selectedValue.forEach(item => {
                   graphCanvasContextValue.graph.focusItem(item, true);
                   graphCanvasContextValue.graph.setItemState(
                     item,
                     'selected',
-                    true
+                    true,
                   );
                 });
               } else {
@@ -432,7 +433,7 @@ export const GraphConstruct = (props: PluginPorps) => {
                 graphCanvasContextValue.graph.setItemState(
                   selectedValue,
                   'selected',
-                  true
+                  true,
                 );
               }
             }
@@ -445,7 +446,7 @@ export const GraphConstruct = (props: PluginPorps) => {
             graphName: currentGraphName,
             labelType: type,
             labelName: name,
-          }).then((res) => {
+          }).then(res => {
             if (res.success) {
               message.success('删除成功');
               window.location.reload();
@@ -491,7 +492,7 @@ export const GraphConstruct = (props: PluginPorps) => {
                 getGraphSchema(currentGraphName);
               }}
               onSwitch={(onShow, onClose) => {
-                setState((draft) => {
+                setState(draft => {
                   draft.onEditShow = onShow;
                   draft.onEditClose = onClose;
                 });
@@ -500,7 +501,7 @@ export const GraphConstruct = (props: PluginPorps) => {
           ) : (
             <AddNodesEdges
               onSwitch={(onShow, onClose) => {
-                setState((draft) => {
+                setState(draft => {
                   draft.onAddShow = onShow;
                   draft.onAddClose = onClose;
                 });
@@ -515,7 +516,7 @@ export const GraphConstruct = (props: PluginPorps) => {
         <ImportData
           graphName={currentGraphName}
           onSwitch={(onShow, onClose) => {
-            setState((draft) => {
+            setState(draft => {
               draft.onImportShow = onShow;
               draft.onImportClose = onClose;
             });
@@ -532,7 +533,7 @@ export const GraphConstruct = (props: PluginPorps) => {
         width={480}
         visible={isModelOpen}
         onCancel={() => {
-          setState((draft) => {
+          setState(draft => {
             draft.isModelOpen = false;
           });
         }}
@@ -543,11 +544,11 @@ export const GraphConstruct = (props: PluginPorps) => {
             graph: currentGraphName,
             schema,
             override,
-          }).then((res) => {
+          }).then(res => {
             if (res.success) {
               message.success('导入成功');
               window.location.reload();
-              setState((draft) => {
+              setState(draft => {
                 draft.isModelOpen = false;
               });
             } else {
@@ -579,8 +580,8 @@ export const GraphConstruct = (props: PluginPorps) => {
         </div>
 
         <Checkbox
-          onChange={(e) => {
-            setState((draft) => {
+          onChange={e => {
+            setState(draft => {
               draft.override = e.target.checked;
             });
           }}

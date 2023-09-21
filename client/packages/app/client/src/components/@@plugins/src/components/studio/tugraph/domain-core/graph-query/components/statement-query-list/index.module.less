@@ -7,6 +7,7 @@
   &-drawer {
     height: 100%;
     border-top: 1px solid #ececec;
+    box-shadow: 1px 0 0 0 #f6f6f6;
     &-content {
       padding: 0 20px;
       &-title {
@@ -27,11 +28,13 @@
       &-search {
         :global {
           .ant-input-affix-wrapper {
-            background-color: #ededee;
+            border-radius: 4px;
+            background-color: rgba(26, 27, 37, 0.08);
             border: none;
           }
         }
       }
+
       &-list {
         padding-top: 20px;
         &-item {

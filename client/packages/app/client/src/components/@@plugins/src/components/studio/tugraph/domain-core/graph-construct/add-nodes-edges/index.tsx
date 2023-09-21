@@ -52,16 +52,16 @@ export const AddNodesEdges: React.FC<Prop> = ({
   }, []);
   const propertyList = () => {
     const attrPropertyNames = map(
-      filter(attrList, (attr) => !attr.optional),
-      (item) => item.name
+      filter(attrList, attr => !attr.optional),
+      item => item.name,
     );
-    const indexPropertyNames = map(configList, (item) => item.propertyName);
+    const indexPropertyNames = map(configList, item => item.propertyName);
     return map(
       filter(
         xor(attrPropertyNames, indexPropertyNames),
-        (item) => item !== undefined
+        item => item !== undefined,
       ),
-      (item) => ({ label: item, value: item })
+      item => ({ label: item, value: item }),
     );
   };
   const addButton = (handleAdd?: () => void, text: string = '添加属性') => {
@@ -87,7 +87,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
         return {
           inputType: EditType.SELECT,
           prop: {
-            options: map(data.nodes, (item) => ({
+            options: map(data.nodes, item => ({
               label: item.labelName,
               value: item.labelName,
             })),
@@ -104,7 +104,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
         return {
           inputType: EditType.SELECT,
           prop: {
-            options: map(data.nodes, (item) => ({
+            options: map(data.nodes, item => ({
               label: item.labelName,
               value: item.labelName,
             })),
@@ -120,9 +120,9 @@ export const AddNodesEdges: React.FC<Prop> = ({
         <Popconfirm
           title="确定要删除吗？"
           onConfirm={() => {
-            updateState((draft) => {
+            updateState(draft => {
               draft.startList = [
-                ...startList.filter((item) => item.id !== record?.id),
+                ...startList.filter(item => item.id !== record?.id),
               ];
             });
           }}
@@ -194,9 +194,9 @@ export const AddNodesEdges: React.FC<Prop> = ({
         <Popconfirm
           title="确定要删除吗？"
           onConfirm={() => {
-            updateState((draft) => {
+            updateState(draft => {
               draft.attrList = [
-                ...attrList.filter((item) => item.id !== record?.id),
+                ...attrList.filter(item => item.id !== record?.id),
               ];
             });
           }}
@@ -294,9 +294,9 @@ export const AddNodesEdges: React.FC<Prop> = ({
         <Popconfirm
           title="确定要删除吗？"
           onConfirm={() => {
-            updateState((draft) => {
+            updateState(draft => {
               draft.configList = [
-                ...configList.filter((item) => item.id !== record?.id),
+                ...configList.filter(item => item.id !== record?.id),
               ];
             });
           }}
@@ -309,14 +309,14 @@ export const AddNodesEdges: React.FC<Prop> = ({
     },
   ];
   const addNodeAttr = () => {
-    updateState((draft) => {
+    updateState(draft => {
       const list = [...attrList];
       list.push({ id: attrList.length + 1 });
       draft.attrList = [...list];
     });
   };
   const addNodeConfig = () => {
-    updateState((draft) => {
+    updateState(draft => {
       const list = [...configList];
       list.push({
         id: configList.length + 1,
@@ -326,7 +326,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
     });
   };
   const addEdge = () => {
-    updateState((draft) => {
+    updateState(draft => {
       const list = [...startList];
       list.push({ id: `${startList.length + 1}` });
       draft.startList = [...list];
@@ -347,7 +347,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
             onClick={() => {
               onClose();
               form.resetFields();
-              updateState((draft) => {
+              updateState(draft => {
                 draft.startList = [];
                 draft.configList = [];
                 draft.attrList = [];
@@ -359,7 +359,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
           <Button
             onClick={() => {
               const isEdgeRepeat =
-                uniq(map(startList, (item) => `${item.source}_${item.target}`))
+                uniq(map(startList, item => `${item.source}_${item.target}`))
                   .length === startList.length;
               if (!isEdgeRepeat) {
                 return message.error('两条边的起点和终点不能相同');
@@ -375,7 +375,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
                   },
                   indexs: configList,
                   properties: attrList,
-                  edgeConstraints: map(startList, (item) => {
+                  edgeConstraints: map(startList, item => {
                     return [item.source, item.target];
                   }),
                 });
@@ -391,7 +391,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
         <div className={styles[`${PUBLIC_PERFIX_CLASS}-container-header`]}>
           <span> 添加{`${isNode ? '点' : '边'}`}类型</span>
           <div>
-            命令行建模
+            <span style={{ marginRight: 4 }}>命令行建模</span>
             <a href="https://tugraph.antgroup.com/doc" target="_blank">
               参见文档
             </a>
@@ -409,12 +409,12 @@ export const AddNodesEdges: React.FC<Prop> = ({
                     var reg = new RegExp('^[a-zA-Z0-9_\u4e00-\u9fa5]+$');
                     if (!value) {
                       return Promise.reject(
-                        `请填写${isNode ? '点' : '边'}类型名称！`
+                        `请填写${isNode ? '点' : '边'}类型名称！`,
                       );
                     }
                     if (!reg.test(value)) {
                       return Promise.reject(
-                        '名称由中文、字母、数字、下划线组成。'
+                        '名称由中文、字母、数字、下划线组成。',
                       );
                     } else {
                       return Promise.resolve();
@@ -426,6 +426,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
               <Input
                 autoComplete="off"
                 placeholder={`请输入${isNode ? '点' : '边'}类型名称`}
+                className={styles[`${PUBLIC_PERFIX_CLASS}-container-name`]}
               />
             </Form.Item>
           </Form>
@@ -434,11 +435,13 @@ export const AddNodesEdges: React.FC<Prop> = ({
               属性列表
             </p>
             <EditTable
+              // className={styles[`${PUBLIC_PERFIX_CLASS}-container-attributes`]}
+              // style={{ background: 'red' }}
               columns={defaultColumns}
               dataSource={attrList}
               rowKey="id"
-              onChange={(newData) => {
-                updateState((draft) => {
+              onChange={newData => {
+                updateState(draft => {
                   draft.attrList = [...(newData || [])];
                 });
               }}
@@ -460,9 +463,9 @@ export const AddNodesEdges: React.FC<Prop> = ({
                 rowKey="id"
                 bordered
                 pagination={false}
-                onChange={(newData) => {
-                  updateState((draft) => {
-                    draft.startList = map([...newData], (item) => ({
+                onChange={newData => {
+                  updateState(draft => {
+                    draft.startList = map([...newData], item => ({
                       ...item,
                       label: form.getFieldValue('name'),
                       style: { label: { value: form.getFieldValue('name') } },
@@ -485,8 +488,8 @@ export const AddNodesEdges: React.FC<Prop> = ({
                 columns={nodeConfigColumns}
                 dataSource={configList}
                 rowKey="id"
-                onChange={(newData) => {
-                  updateState((draft) => {
+                onChange={newData => {
+                  updateState(draft => {
                     draft.configList = [...newData];
                   });
                 }}
