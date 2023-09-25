@@ -67,6 +67,7 @@ export const GraphConstruct = (props: PluginPorps) => {
     onEditClose: () => void;
     onAddShow: () => void;
     onAddClose: () => void;
+    visible: boolean;
     onImportShow: () => void;
     onImportClose: () => void;
     isModelOpen: boolean;
@@ -99,6 +100,7 @@ export const GraphConstruct = (props: PluginPorps) => {
     onEditClose: () => {},
     onAddShow: () => {},
     onAddClose: () => {},
+    visible: false,
     onImportShow: () => {},
     onImportClose: () => {},
     isModelOpen: false,
@@ -126,6 +128,7 @@ export const GraphConstruct = (props: PluginPorps) => {
     isModelOpen,
     override,
     schema,
+    visible,
   } = state;
 
   const { onGetGraphSchema, onCreateLabelSchema, onDeleteLabelSchema } =
@@ -472,6 +475,9 @@ export const GraphConstruct = (props: PluginPorps) => {
         </div>
         <div
           className={styles[`${PUBLIC_PERFIX_CLASS}-construct-canvas-layout`]}
+          style={{
+            right: visible ? 596 : 24,
+          }}
         >
           <GraphCanvasTools />
           <GraphCanvasLayout
@@ -504,6 +510,11 @@ export const GraphConstruct = (props: PluginPorps) => {
                 setState(draft => {
                   draft.onAddShow = onShow;
                   draft.onAddClose = onClose;
+                });
+              }}
+              onVisible={visible => {
+                setState(draft => {
+                  draft.visible = visible;
                 });
               }}
               type={btnType}

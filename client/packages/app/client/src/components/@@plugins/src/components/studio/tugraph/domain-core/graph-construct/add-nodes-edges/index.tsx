@@ -17,6 +17,7 @@ type Prop = {
   data?: any;
   onFinish?: (value?: any) => void;
   onSwitch?: (onShow: () => void, onClose: () => void) => void;
+  onVisible?: (visible: boolean) => void;
 };
 interface EditColumnsType<T> extends ColumnsType<T> {
   editorConfig: {
@@ -33,6 +34,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
   data = [],
   onFinish,
   onSwitch,
+  onVisible,
 }) => {
   const [form] = Form.useForm();
   const { visible, onShow, onClose } = useVisible({ defaultVisible: true });
@@ -50,6 +52,10 @@ export const AddNodesEdges: React.FC<Prop> = ({
   useEffect(() => {
     onSwitch?.(onShow, onClose);
   }, []);
+  useEffect(() => {
+    onVisible?.(visible);
+  }, [visible]);
+
   const propertyList = () => {
     const attrPropertyNames = map(
       filter(attrList, attr => !attr.optional),
