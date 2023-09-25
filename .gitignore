@@ -19,3 +19,4 @@ test/**/*.map
 config/**/*.map
 .github
 .umi
+yarn.lock
