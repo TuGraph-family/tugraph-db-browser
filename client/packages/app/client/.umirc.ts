@@ -8,7 +8,7 @@ const umiConfig = getUmiConfig();
 
 process.env.MFSU_AD = 'none';
 
-const ANTD_VERSION = '4.23.5';
+const ANTD_VERSION = '4.24.0';
 const GI_SDK_APP_VERSION = '1.2.0';
 
 export default defineConfig({

@@ -1448,9 +1448,9 @@ export default {
     },
     "GI_ASSETS_TUGRAPH_DB": {
       "name": "@tugraph/gi-assets-tugraph-db",
-      "version": "0.6.19",
+      "version": "0.6.25",
       "global": "GI_ASSETS_TUGRAPH_DB",
-      "url": "https://gw.alipayobjects.com/os/lib/tugraph/gi-assets-tugraph-db/0.6.19/dist/index.min.js"
+      "url": "https://gw.alipayobjects.com/os/lib/tugraph/gi-assets-tugraph-db/0.6.25/dist/index.min.js"
     }
   }
 }
