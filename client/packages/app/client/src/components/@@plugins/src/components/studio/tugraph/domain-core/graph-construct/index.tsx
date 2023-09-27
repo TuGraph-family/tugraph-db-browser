@@ -476,7 +476,7 @@ export const GraphConstruct = (props: PluginPorps) => {
         <div
           className={styles[`${PUBLIC_PERFIX_CLASS}-construct-canvas-layout`]}
           style={{
-            right: visible ? 596 : 24,
+            right: visible ? 617 : 24,
           }}
         >
           <GraphCanvasTools />
@@ -501,6 +501,11 @@ export const GraphConstruct = (props: PluginPorps) => {
                 setState(draft => {
                   draft.onEditShow = onShow;
                   draft.onEditClose = onClose;
+                });
+              }}
+              onVisible={visible => {
+                setState(draft => {
+                  draft.visible = visible;
                 });
               }}
             />
