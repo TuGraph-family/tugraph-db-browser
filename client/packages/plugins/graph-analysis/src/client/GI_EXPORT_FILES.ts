@@ -9,13 +9,13 @@ export default {
       ],
       "components": [
         "ActivateRelations",
+        "AdvanceNeighborsQuery",
         "CanvasSetting",
         "ClearCanvas",
         "ConfigQuery",
         "ContextMenu",
         "DoubleClickExpandNode",
         "FilterPanel",
-        "GraphDemo",
         "GremlinQuery",
         "Initializer",
         "JSONMode",
@@ -24,12 +24,13 @@ export default {
         "LayoutContent",
         "LayoutSwitchTool",
         "Loading",
-        "NeighborsQuery",
         "PinNodeWithMenu",
         "Placeholder",
         "PointEdgeView",
         "PropertyGraphInitializer",
+        "RemoveNodeWithMenu",
         "RichContainer",
+        "SimpleQuery",
         "ToggleClusterWithMenu",
         "Toolbar",
         "TuGraphAttributesFilter",
@@ -37,8 +38,7 @@ export default {
         "TuGraphPathQuery",
         "TuGraphPropertiesPanel",
         "TuGraphStatisticsFilter",
-        "TuGraphStyleSetting",
-        "RemoveNodeWithMenu"
+        "TuGraphStyleSetting"
       ],
       "layouts": [
         "Force2",
@@ -97,6 +97,15 @@ export default {
             "downstreamDegree": 1,
             "multiSelectEnabled": false,
             "modifierKey": "alt"
+          }
+        },
+        {
+          "id": "AdvanceNeighborsQuery",
+          "type": "GIAC_MENU",
+          "name": "高级邻居查询",
+          "props": {
+            "serviceId": "TuGraph-DB/neighborsQueryService",
+            "languageServiceId": "TuGraph-DB/languageQueryService"
           }
         },
         {
@@ -190,7 +199,7 @@ export default {
           "name": "右键菜单",
           "props": {
             "GI_CONTAINER": [
-              "NeighborsQuery",
+              "AdvanceNeighborsQuery",
               "ToggleClusterWithMenu",
               "PinNodeWithMenu",
               "RemoveNodeWithMenu"
@@ -250,31 +259,6 @@ export default {
               "min": null,
               "max": null,
               "binWidth": null
-            }
-          }
-        },
-        {
-          "id": "GraphDemo",
-          "type": "GIAC",
-          "name": "Graph Demo 示例",
-          "props": {
-            "GI_CONTAINER_INDEX": 2,
-            "GIAC": {
-              "visible": false,
-              "disabled": false,
-              "isShowTitle": false,
-              "title": "Demo 示例",
-              "isShowIcon": true,
-              "icon": "icon-xiaodengpao",
-              "iconFontSize": "25px",
-              "buttonType": "text",
-              "isShowTooltip": true,
-              "tooltip": "",
-              "tooltipColor": "rgba(0,0,0,1)",
-              "tooltipPlacement": "top",
-              "hasDivider": false,
-              "height": "46px",
-              "isVertical": true
             }
           }
         },
@@ -494,25 +478,10 @@ export default {
           "props": {}
         },
         {
-          "id": "NeighborsQuery",
-          "type": "GIAC_MENU",
-          "name": "邻居查询",
-          "props": {
-            "serviceId": "GI/NeighborsQuery",
-            "degree": "1",
-            "isFocus": true,
-            "menuServiceId": "GI/NeighborsQueryMenu",
-            "limit": 100
-          }
-        },
-        {
           "id": "PinNodeWithMenu",
           "type": "GIAC_MENU",
           "name": "固定节点(MENU)",
-          "props": {
-            "color": "#fff",
-            "fill": "#262626"
-          }
+          "props": {}
         },
         {
           "id": "Placeholder",
@@ -536,6 +505,12 @@ export default {
           "id": "PropertyGraphInitializer",
           "type": "AUTO",
           "name": "属性图计算",
+          "props": {}
+        },
+        {
+          "id": "RemoveNodeWithMenu",
+          "type": "GIAC_MENU",
+          "name": "节点删除",
           "props": {}
         },
         {
@@ -598,6 +573,12 @@ export default {
             ],
             "isSheet": false
           }
+        },
+        {
+          "id": "SimpleQuery",
+          "type": "AUTO",
+          "name": "简单查询",
+          "props": {}
         },
         {
           "id": "ToggleClusterWithMenu",
@@ -780,12 +761,6 @@ export default {
               "contaienrMask": false
             }
           }
-        },
-        {
-          "id": "RemoveNodeWithMenu",
-          "type": "GIAC_MENU",
-          "name": "节点删除",
-          "props": {}
         }
       ],
       "layout": {
@@ -849,12 +824,7 @@ export default {
               "id": "navbar-right",
               "name": "导航右区",
               "required": true,
-              "GI_CONTAINER": [
-                {
-                  "value": "GraphDemo",
-                  "label": "Graph Demo 示例"
-                }
-              ],
+              "GI_CONTAINER": [],
               "display": true
             },
             {
@@ -1108,6 +1078,7 @@ export default {
                 "Placeholder",
                 "PointEdgeView",
                 "PropertyGraphInitializer",
+                "SimpleQuery",
                 "TuGraphPropertiesPanel"
               ],
               "display": true
@@ -1448,9 +1419,9 @@ export default {
     },
     "GI_ASSETS_TUGRAPH_DB": {
       "name": "@tugraph/gi-assets-tugraph-db",
-      "version": "0.6.25",
+      "version": "0.6.26",
       "global": "GI_ASSETS_TUGRAPH_DB",
-      "url": "https://gw.alipayobjects.com/os/lib/tugraph/gi-assets-tugraph-db/0.6.25/dist/index.min.js"
+      "url": "https://gw.alipayobjects.com/os/lib/tugraph/gi-assets-tugraph-db/0.6.26/dist/index.min.js"
     }
   }
 }
