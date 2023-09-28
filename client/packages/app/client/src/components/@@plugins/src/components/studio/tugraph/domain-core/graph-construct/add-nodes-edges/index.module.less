@@ -17,6 +17,14 @@
         overflow: hidden;
       }
     }
+    .ant-table-cell {
+      font-weight: 400;
+      font-size: 14px;
+      color: #6a6b71;
+    }
+    .ant-form-item-required {
+      color: #363740;
+    }
   }
   &-content {
     padding: 0 24px 24px;
@@ -41,6 +49,12 @@
   }
   &-addbtn {
     margin: 8px 0 10px 0;
+    &:hover {
+      border: 1px dashed #1650ff;
+    }
+  }
+  &-name:focus {
+    border: 1px solid #1650ff;
   }
   &-attr {
     margin-bottom: 16px;
@@ -49,5 +63,8 @@
     font-weight: 400;
     font-size: 14px;
     color: rgba(54, 55, 64, 1);
+  }
+  &-attributes {
+    background-color: #1650ff;
   }
 }

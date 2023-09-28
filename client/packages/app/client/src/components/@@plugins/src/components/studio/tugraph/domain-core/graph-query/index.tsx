@@ -154,7 +154,7 @@ export const GraphQuery = (props: PluginPorps) => {
     },
   ];
   useEffect(() => {
-    updateState((draft) => {
+    updateState(draft => {
       if (isEmpty(getLocalData('TUGRAPH_STATEMENT_LISTS')[currentGraphName])) {
         draft.queryList = [
           {
@@ -169,9 +169,9 @@ export const GraphQuery = (props: PluginPorps) => {
         ];
       }
     });
-    onGetGraphSchema({ graphName: currentGraphName }).then((res) => {
+    onGetGraphSchema({ graphName: currentGraphName }).then(res => {
       if (res.success) {
-        updateState((draft) => {
+        updateState(draft => {
           draft.graphData = { ...res.data };
         });
       }
@@ -179,7 +179,7 @@ export const GraphQuery = (props: PluginPorps) => {
   }, []);
   useEffect(() => {
     if (queryList.length) {
-      updateState((draft) => {
+      updateState(draft => {
         draft.queryList = getLocalData('TUGRAPH_STATEMENT_LISTS')[
           currentGraphName
         ];
@@ -188,46 +188,46 @@ export const GraphQuery = (props: PluginPorps) => {
   }, [activeTab]);
   useEffect(() => {
     if (history.location.hash) {
-      updateState((draft) => {
+      updateState(draft => {
         draft.storedVisible = true;
       });
     }
   }, []);
   const onSplitPaneWidthChange = useCallback((size: number) => {
-    updateState((draft) => {
+    updateState(draft => {
       draft.editorWidth = size;
     });
   }, []);
   const onSplitPaneHeightChange = useCallback((size: number) => {
-    updateState((draft) => {
+    updateState(draft => {
       draft.editorHeight = size;
     });
   }, []);
   const onSplitPanePathHeightChange = useCallback((size: number) => {
-    updateState((draft) => {
+    updateState(draft => {
       draft.pathHeight = size;
     });
   }, []);
   const redirectUrl = props?.redirectPath;
   const onResultClose = useCallback(
     (id: string) => {
-      updateState((draft) => {
-        draft.resultData = [...filter(resultData, (item) => item.id !== id)];
+      updateState(draft => {
+        draft.resultData = [...filter(resultData, item => item.id !== id)];
       });
     },
-    [resultData]
+    [resultData],
   );
   const handleQuery = (
     limit: number,
     conditions: Array<{ property: string; value: string; operator: string }>,
-    queryParams: string
+    queryParams: string,
   ) => {
     if (activeTab === IQUIRE_LIST[0].key) {
       onStatementQuery({
         graphName: currentGraphName,
         script,
-      }).then((res) => {
-        updateState((draft) => {
+      }).then(res => {
+        updateState(draft => {
           draft.resultData = [...resultData, { ...res, id: uniqueId('id_') }];
         });
       });
@@ -238,8 +238,8 @@ export const GraphQuery = (props: PluginPorps) => {
         path: queryParams,
         limit,
         conditions,
-      }).then((res) => {
-        updateState((draft) => {
+      }).then(res => {
+        updateState(draft => {
           draft.resultData = [...resultData, { ...res, id: uniqueId('id_') }];
           draft.script = res.script;
         });
@@ -251,8 +251,8 @@ export const GraphQuery = (props: PluginPorps) => {
         limit,
         conditions,
         nodes: queryParams,
-      }).then((res) => {
-        updateState((draft) => {
+      }).then(res => {
+        updateState(draft => {
           draft.resultData = [...resultData, { ...res, id: uniqueId('id_') }];
           draft.script = res.script;
         });
@@ -269,7 +269,7 @@ export const GraphQuery = (props: PluginPorps) => {
           }}
         />
         <Select
-          onChange={(value) => {
+          onChange={value => {
             window.location.href = `${location.pathname}?graphName=${value}`;
           }}
           defaultValue={currentGraphName}
@@ -280,13 +280,13 @@ export const GraphQuery = (props: PluginPorps) => {
         defaultActiveKey="statement"
         centered
         items={IQUIRE_LIST}
-        onChange={(val) => {
-          updateState((draft) => {
+        onChange={val => {
+          updateState(draft => {
             draft.activeTab = val;
           });
         }}
       >
-        {map(IQUIRE_LIST, (item) => (
+        {map(IQUIRE_LIST, item => (
           <Tabs.TabPane tab={item.label} key={item.key} />
         ))}
       </Tabs>
@@ -301,6 +301,7 @@ export const GraphQuery = (props: PluginPorps) => {
         </Tooltip>
         <Popover
           title="存储过程"
+          placement="bottomRight"
           content={
             <>
               <Table
@@ -318,27 +319,28 @@ export const GraphQuery = (props: PluginPorps) => {
             </>
           }
         >
-          <Button
+          <img
+            src="https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*kLPaSLhIEmoAAAAAAAAAAAAADgOBAQ/original"
+            alt=""
+            style={{ width: 24, height: 24 }}
             onClick={() => {
               window.history.replaceState(
                 null,
                 null,
                 `${
                   history.location.pathname + history.location.search
-                }#procedure`
+                }#procedure`,
               );
-              updateState((draft) => {
+              updateState(draft => {
                 draft.storedVisible = true;
               });
             }}
-          >
-            存储过程
-          </Button>
+          />
         </Popover>
         <Button
           onClick={() => {
             history.push(
-              `${redirectUrl?.[1]?.path}?graphName=${currentGraphName}` ?? '/'
+              `${redirectUrl?.[1]?.path}?graphName=${currentGraphName}` ?? '/',
             );
           }}
         >
@@ -390,12 +392,12 @@ export const GraphQuery = (props: PluginPorps) => {
                     ...getLocalData(`TUGRAPH_STATEMENT_LISTS`),
                     [currentGraphName]: map(
                       getLocalData(`TUGRAPH_STATEMENT_LISTS`)[currentGraphName],
-                      (item) => {
+                      item => {
                         if (item.id === editorKey) {
                           return { ...item, script };
                         }
                         return item;
-                      }
+                      },
                     ),
                   });
                   message.success('保存成功');
@@ -409,12 +411,12 @@ export const GraphQuery = (props: PluginPorps) => {
                 type="text"
                 icon={<AppstoreAddOutlined />}
                 onClick={() => {
-                  updateState((draft) => {
+                  updateState(draft => {
                     draft.queryList = [
                       ...(isEmpty(
                         getLocalData('TUGRAPH_STATEMENT_LISTS')[
                           currentGraphName
-                        ]
+                        ],
                       )
                         ? []
                         : getLocalData('TUGRAPH_STATEMENT_LISTS')[
@@ -433,7 +435,7 @@ export const GraphQuery = (props: PluginPorps) => {
                       ...(isEmpty(
                         getLocalData('TUGRAPH_STATEMENT_LISTS')[
                           currentGraphName
-                        ]
+                        ],
                       )
                         ? getLocalData('TUGRAPH_STATEMENT_LISTS')[
                             currentGraphName
@@ -469,8 +471,8 @@ export const GraphQuery = (props: PluginPorps) => {
         查看图模型
         <Switch
           defaultChecked
-          onChange={(val) => {
-            updateState((draft) => {
+          onChange={val => {
+            updateState(draft => {
               draft.isListShow = val;
               if (val) {
                 draft.editorWidth = editorWidth;
@@ -489,15 +491,15 @@ export const GraphQuery = (props: PluginPorps) => {
           <StatementList
             list={queryList}
             garphName={currentGraphName}
-            onSelect={(activeId) => {
+            onSelect={activeId => {
               const value = find(
                 getLocalData('TUGRAPH_STATEMENT_LISTS')[currentGraphName],
-                (item) => item.id === activeId
+                item => item.id === activeId,
               )?.script;
               if (!isEmpty(editor)) {
                 editor?.editorInstance?.setValue?.(value);
               }
-              updateState((draft) => {
+              updateState(draft => {
                 draft.editorKey = activeId;
                 draft.script = value;
               });
@@ -521,7 +523,7 @@ export const GraphQuery = (props: PluginPorps) => {
                         styles[`${PUBLIC_PERFIX_CLASS}-right-center`],
                         styles[`${PUBLIC_PERFIX_CLASS}-split-pane`],
                       ],
-                      ' '
+                      ' ',
                     )}
                   >
                     <SplitPane
@@ -542,23 +544,23 @@ export const GraphQuery = (props: PluginPorps) => {
                         <GremlinEditor
                           gremlinId="test"
                           initValue={script}
-                          onInit={(initEditor) => {
-                            updateState((draft) => {
+                          onInit={initEditor => {
+                            updateState(draft => {
                               draft.editor = initEditor;
                               if (editorKey) {
                                 const value = find(
                                   getLocalData('TUGRAPH_STATEMENT_LISTS')[
                                     currentGraphName
                                   ],
-                                  (item) => item.id === editorKey
+                                  item => item.id === editorKey,
                                 )?.script;
                                 initEditor?.editorInstance?.setValue?.(value);
                                 draft.script = value;
                               }
                             });
                           }}
-                          onValueChange={(val) => {
-                            updateState((draft) => {
+                          onValueChange={val => {
+                            updateState(draft => {
                               draft.script = val;
                             });
                           }}
@@ -671,9 +673,9 @@ export const GraphQuery = (props: PluginPorps) => {
           window.history.replaceState(
             null,
             null,
-            `${history.location.pathname + history.location.search}`
+            `${history.location.pathname + history.location.search}`,
           );
-          updateState((draft) => {
+          updateState(draft => {
             draft.storedVisible = false;
           });
         }}

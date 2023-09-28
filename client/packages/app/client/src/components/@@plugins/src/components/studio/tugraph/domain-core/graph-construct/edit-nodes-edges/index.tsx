@@ -20,6 +20,7 @@ type Prop = {
   currentGraphName: string;
   onRefreshSchema?: () => void;
   onSwitch?: (onShow: () => void, onClose: () => void) => void;
+  onVisible?: (visible: boolean) => void;
 };
 type EditColumnsType<T> = ColumnsType & {
   inputType?: string;
@@ -36,6 +37,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
   currentGraphName,
   onRefreshSchema,
   onSwitch,
+  onVisible,
 }) => {
   const [form] = Form.useForm();
   const {
@@ -62,18 +64,23 @@ export const EditNodesEdges: React.FC<Prop> = ({
   useEffect(() => {
     onSwitch?.(onShow, onClose);
   }, []);
+
+  useEffect(() => {
+    onVisible?.(visible);
+  }, [visible]);
+
   const propertyList = () => {
     const attrPropertyNames = map(
-      filter(attrList, (attr) => !attr.optional),
-      (item) => item.name
+      filter(attrList, attr => !attr.optional),
+      item => item.name,
     );
-    const indexPropertyNames = map(configList, (item) => item.propertyName);
+    const indexPropertyNames = map(configList, item => item.propertyName);
     return map(
       filter(
         xor(attrPropertyNames, indexPropertyNames),
-        (item) => item !== undefined
+        item => item !== undefined,
       ),
-      (item) => ({ label: item, value: item })
+      item => ({ label: item, value: item }),
     );
   };
   const operateEdit = (record: AttrData) => {
@@ -82,8 +89,8 @@ export const EditNodesEdges: React.FC<Prop> = ({
         <Button
           disabled={isPrimaryField(record.name) || false}
           onClick={() => {
-            updateState((draft) => {
-              draft.attrList = map(attrList, (item) => {
+            updateState(draft => {
+              draft.attrList = map(attrList, item => {
                 if (record.id === item.id) {
                   return { ...item, disabled: false };
                 }
@@ -130,12 +137,12 @@ export const EditNodesEdges: React.FC<Prop> = ({
         </Button>
         <Button
           onClick={() => {
-            updateState((draft) => {
+            updateState(draft => {
               if (record.disabled !== undefined) {
-                const list = map(attrList, (item) => {
+                const list = map(attrList, item => {
                   if (item.id === record.id) {
                     return {
-                      ...find(currentAttrList, (attr) => attr.id === record.id),
+                      ...find(currentAttrList, attr => attr.id === record.id),
                     };
                   } else {
                     return item;
@@ -144,7 +151,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
                 draft.attrList = list;
               } else {
                 draft.attrList = [
-                  ...filter(attrList, (item) => item.id !== record.id),
+                  ...filter(attrList, item => item.id !== record.id),
                 ];
               }
             });
@@ -169,9 +176,9 @@ export const EditNodesEdges: React.FC<Prop> = ({
         </Button>
         <Button
           onClick={() => {
-            updateState((draft) => {
+            updateState(draft => {
               draft.configList = [
-                ...configList.filter((item) => item.id !== record?.id),
+                ...configList.filter(item => item.id !== record?.id),
               ];
             });
           }}
@@ -214,7 +221,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
         return {
           inputType: EditType.SELECT,
           prop: {
-            options: map(data.nodes, (item) => ({
+            options: map(data.nodes, item => ({
               label: item.labelName,
               value: item.labelName,
             })),
@@ -231,7 +238,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
         return {
           inputType: EditType.SELECT,
           prop: {
-            options: map(data.nodes, (item) => ({
+            options: map(data.nodes, item => ({
               label: item.labelName,
               value: item.labelName,
             })),
@@ -420,7 +427,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
   const findLabelItem = (labelName: string) => {
     return find(
       type === 'node' ? data.nodes : data.edges,
-      (item) => item.labelName === labelName
+      item => item.labelName === labelName,
     );
   };
   const isPrimaryField = (name: string) => {
@@ -433,12 +440,12 @@ export const EditNodesEdges: React.FC<Prop> = ({
       labelType: type,
       propertyNames: [record.name],
     })
-      .then((res) => {
+      .then(res => {
         if (res.success) {
           message.success('属性删除成功');
-          updateState((draft) => {
+          updateState(draft => {
             draft.attrList = [
-              ...attrList.filter((item) => item.id !== record?.id),
+              ...attrList.filter(item => item.id !== record?.id),
             ];
           });
           onRefreshSchema?.();
@@ -446,7 +453,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
           message.error('属性删除失败' + res.errorMessage);
         }
       })
-      .catch((res) => {
+      .catch(res => {
         message.error('属性删除失败' + res.errorMessage);
       });
   };
@@ -459,12 +466,12 @@ export const EditNodesEdges: React.FC<Prop> = ({
         { name: record.name, type: record.type, optional: record.optional },
       ],
     })
-      .then((res) => {
+      .then(res => {
         if (res.success) {
           message.success('属性修改成功');
-          updateState((draft) => {
+          updateState(draft => {
             draft.attrList = [
-              ...attrList.map((item) => {
+              ...attrList.map(item => {
                 if (item.id === record?.id) {
                   return { ...item, disabled: true };
                 } else {
@@ -478,7 +485,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
           message.error('属性修改失败' + res.errorMessage);
         }
       })
-      .catch((res) => {
+      .catch(res => {
         message.error('属性修改失败' + res.errorMessage);
       });
   };
@@ -491,12 +498,12 @@ export const EditNodesEdges: React.FC<Prop> = ({
         { name: record.name, type: record.type, optional: record.optional },
       ],
     })
-      .then((res) => {
+      .then(res => {
         if (res.success) {
           message.success('属性添加成功');
-          updateState((draft) => {
+          updateState(draft => {
             draft.attrList = [
-              ...attrList.map((item) => {
+              ...attrList.map(item => {
                 if (item.id === record?.id) {
                   return { ...item, disabled: true };
                 } else {
@@ -510,7 +517,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
           message.error('属性添加失败' + res.errorMessage);
         }
       })
-      .catch((res) => {
+      .catch(res => {
         message.error('属性添加失败' + res.errorMessage);
       });
   };
@@ -521,12 +528,12 @@ export const EditNodesEdges: React.FC<Prop> = ({
       labelName,
       isUnique: record.isUnique,
     })
-      .then((res) => {
+      .then(res => {
         if (res.success) {
           message.success('索引添加成功');
-          updateState((draft) => {
+          updateState(draft => {
             draft.configList = [
-              ...configList.map((item) => {
+              ...configList.map(item => {
                 if (item.id === record?.id) {
                   return { ...item, disabled: true };
                 } else {
@@ -540,7 +547,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
           message.error('索引添加失败' + res.errorMessage);
         }
       })
-      .catch((res) => {
+      .catch(res => {
         message.error('索引添加失败' + res.errorMessage);
       });
   };
@@ -550,12 +557,12 @@ export const EditNodesEdges: React.FC<Prop> = ({
       graphName: currentGraphName,
       labelName,
     })
-      .then((res) => {
+      .then(res => {
         if (res.success) {
           message.success('索引删除成功');
-          updateState((draft) => {
+          updateState(draft => {
             draft.configList = [
-              ...configList.filter((item) => item.id !== record?.id),
+              ...configList.filter(item => item.id !== record?.id),
             ];
           });
           onRefreshSchema?.();
@@ -563,19 +570,19 @@ export const EditNodesEdges: React.FC<Prop> = ({
           message.error('索引删除失败' + res.errorMessage);
         }
       })
-      .catch((res) => {
+      .catch(res => {
         message.error('索引删除失败' + res.errorMessage);
       });
   };
   const addNodeAttr = () => {
-    updateState((draft) => {
+    updateState(draft => {
       const list = [...attrList];
       list.push({ id: uniqueId(`attr_`) });
       draft.attrList = [...list];
     });
   };
   const addNodeConfig = () => {
-    updateState((draft) => {
+    updateState(draft => {
       const list = [...configList];
       list.push({ id: uniqueId(`index_`), index: `#${configList.length + 1}` });
       draft.configList = [...list];
@@ -583,14 +590,14 @@ export const EditNodesEdges: React.FC<Prop> = ({
   };
   useEffect(() => {
     form.setFieldsValue({ name: labelName });
-    updateState((draft) => {
+    updateState(draft => {
       const newAttrList = map(
         findLabelItem(labelName)?.properties,
         (item, index) => ({
           ...item,
           id: uniqueId(`attr_`),
           disabled: true,
-        })
+        }),
       );
       draft.attrList = [...newAttrList];
       draft.currentAttrList = [...newAttrList];
@@ -604,11 +611,11 @@ export const EditNodesEdges: React.FC<Prop> = ({
             disabled: true,
             id: uniqueId(`index_`),
             disabled: true,
-          })
+          }),
         );
       } else {
         draft.startList = [
-          ...map(findLabelItem(labelName)?.edgeConstraints, (item) => ({
+          ...map(findLabelItem(labelName)?.edgeConstraints, item => ({
             source: item[0],
             target: item[1],
             id: uniqueId(`edge_`),
@@ -670,8 +677,8 @@ export const EditNodesEdges: React.FC<Prop> = ({
               columns={defaultColumns}
               dataSource={attrList}
               rowKey="id"
-              onChange={(newData) => {
-                updateState((draft) => {
+              onChange={newData => {
+                updateState(draft => {
                   draft.attrList = [...newData];
                 });
               }}
@@ -708,8 +715,8 @@ export const EditNodesEdges: React.FC<Prop> = ({
                 columns={nodeConfigColumns}
                 dataSource={configList}
                 rowKey="id"
-                onChange={(newData) => {
-                  updateState((draft) => {
+                onChange={newData => {
+                  updateState(draft => {
                     draft.configList = [...newData];
                   });
                 }}

@@ -1,7 +1,7 @@
 export default {
   "workbook": {
-    "id": "d72a7985-292f-4dc5-a9c9-c38f3e3639e5",
-    "name": "admin",
+    "id": "d1cd7ab4-82dd-45da-a0c0-04507ce06b9a",
+    "name": "TuGraph 图分析",
     "activeAssetsKeys": {
       "elements": [
         "SimpleNode",
@@ -14,26 +14,31 @@ export default {
         "ClearCanvas",
         "ConfigQuery",
         "ContextMenu",
-        "GraphDemo",
+        "DoubleClickExpandNode",
+        "FilterPanel",
+        "GremlinQuery",
         "Initializer",
         "JSONMode",
         "LanguageQuery",
         "LassoSelect",
+        "LayoutContent",
         "LayoutSwitchTool",
         "Loading",
         "PinNodeWithMenu",
         "Placeholder",
         "PointEdgeView",
-        "PropertiesPanel",
         "PropertyGraphInitializer",
+        "RemoveNodeWithMenu",
         "RichContainer",
         "SimpleQuery",
         "ToggleClusterWithMenu",
+        "Toolbar",
         "TuGraphAttributesFilter",
         "TuGraphBack",
+        "TuGraphPathQuery",
+        "TuGraphPropertiesPanel",
         "TuGraphStatisticsFilter",
-        "TuGraphStyleSetting",
-        "ZoomStatus"
+        "TuGraphStyleSetting"
       ],
       "layouts": [
         "Force2",
@@ -49,7 +54,12 @@ export default {
           "props": {
             "size": 26,
             "color": "#ddd",
-            "label": []
+            "label": [],
+            "advanced": {
+              "label": {
+                "fill": "#000"
+              }
+            }
           },
           "name": "官方节点",
           "order": -1,
@@ -105,7 +115,8 @@ export default {
           "props": {
             "styleCanvas": {
               "backgroundColor": "#fff",
-              "backgroundImage": ""
+              "backgroundImage": "https://gw.alipayobjects.com/mdn/rms_0d75e8/afts/img/A*k9t4QamMuQ4AAAAAAAAAAAAAARQnAQ",
+              "background": "#fff"
             },
             "dragCanvas": {
               "disabled": false,
@@ -190,7 +201,8 @@ export default {
             "GI_CONTAINER": [
               "AdvanceNeighborsQuery",
               "ToggleClusterWithMenu",
-              "PinNodeWithMenu"
+              "PinNodeWithMenu",
+              "RemoveNodeWithMenu"
             ],
             "nodeMenuComponents": [
               "NeighborsQuery",
@@ -200,28 +212,94 @@ export default {
           }
         },
         {
-          "id": "GraphDemo",
-          "type": "GIAC",
-          "name": "Graph Demo 示例",
+          "id": "DoubleClickExpandNode",
+          "type": "AUTO",
+          "name": "双击扩散节点",
+          "props": {}
+        },
+        {
+          "id": "FilterPanel",
+          "type": "GIAC_CONTENT",
+          "name": "筛选面板",
           "props": {
+            "histogramColor": "#3056E3",
+            "isFilterIsolatedNodes": true,
+            "highlightMode": true,
+            "filterKeys": [],
             "GI_CONTAINER_INDEX": 2,
-            "GIAC": {
+            "GIAC_CONTENT": {
               "visible": false,
               "disabled": false,
-              "isShowTitle": false,
-              "title": "Demo 示例",
+              "isShowTitle": true,
+              "title": "筛选面板",
               "isShowIcon": true,
-              "icon": "icon-xiaodengpao",
-              "iconFontSize": "25px",
-              "buttonType": "text",
+              "icon": "icon-filter",
               "isShowTooltip": true,
-              "tooltip": "",
-              "tooltipColor": "rgba(0,0,0,1)",
+              "tooltip": "通过属性筛选画布信息，可自定义",
+              "tooltipColor": "#3056e3",
               "tooltipPlacement": "top",
               "hasDivider": false,
               "height": "46px",
-              "isVertical": true
+              "isVertical": true,
+              "containerType": "div",
+              "containerAnimate": false,
+              "containerPlacement": "RT",
+              "offset": [
+                0,
+                0
+              ],
+              "containerWidth": "400px",
+              "containerHeight": "calc(100% - 100px)",
+              "contaienrMask": false
+            },
+            "enableInfoDetect": true,
+            "filterLogic": "and",
+            "histogramOptions": {
+              "isCustom": false,
+              "min": null,
+              "max": null,
+              "binWidth": null
             }
+          }
+        },
+        {
+          "id": "GremlinQuery",
+          "type": "GIAC_CONTENT",
+          "name": "Gremlin 查询",
+          "props": {
+            "serviceId": "TuGraph-DB/GremlinQuery",
+            "isShowPublishButton": false,
+            "saveTemplateServceId": "TuGraph-DB/PublishTemplate",
+            "initialValue": "g.V().limit(10)",
+            "height": 200,
+            "GI_CONTAINER_INDEX": 2,
+            "GIAC_CONTENT": {
+              "visible": false,
+              "disabled": false,
+              "isShowTitle": true,
+              "title": "Gremlin",
+              "isShowIcon": true,
+              "icon": "icon-query",
+              "isShowTooltip": true,
+              "tooltip": "",
+              "tooltipColor": "#3056e3",
+              "tooltipPlacement": "right",
+              "hasDivider": false,
+              "height": "60px",
+              "isVertical": true,
+              "containerType": "div",
+              "containerAnimate": false,
+              "containerPlacement": "RT",
+              "offset": [
+                0,
+                0
+              ],
+              "containerWidth": "350px",
+              "containerHeight": "calc(100% - 100px)",
+              "containerMask": false
+            },
+            "isShowLimit": false,
+            "isShowTimeout": false
           }
         },
         {
@@ -334,8 +412,43 @@ export default {
           }
         },
         {
+          "id": "LayoutContent",
+          "type": "GIAC_CONTENT",
+          "name": "布局参数配置",
+          "props": {
+            "GI_CONTAINER_INDEX": 2,
+            "GIAC_CONTENT": {
+              "visible": false,
+              "disabled": false,
+              "isShowTitle": true,
+              "title": "布局参数配置",
+              "isShowIcon": true,
+              "icon": "icon-kinship",
+              "isShowTooltip": true,
+              "tooltip": "",
+              "tooltipColor": "#3056e3",
+              "tooltipPlacement": "right",
+              "hasDivider": false,
+              "height": "60px",
+              "isVertical": true,
+              "containerType": "div",
+              "containerAnimate": false,
+              "containerDraggable": false,
+              "dragHandle": "header",
+              "containerPlacement": "RT",
+              "offset": [
+                0,
+                0
+              ],
+              "containerWidth": "400px",
+              "containerHeight": "calc(100% - 100px)",
+              "contaienrMask": false
+            }
+          }
+        },
+        {
           "id": "LayoutSwitchTool",
-          "type": "GIAC",
+          "type": "GIAC_CONTENT",
           "name": "高级布局切换",
           "props": {
             "GI_CONTAINER_INDEX": 2,
@@ -389,28 +502,15 @@ export default {
           "props": {}
         },
         {
-          "id": "PropertiesPanel",
-          "type": "AUTO",
-          "name": "属性面板",
-          "props": {
-            "serviceId": "GI/PropertiesPanel",
-            "title": "属性面板",
-            "placement": "RT",
-            "width": "356px",
-            "height": "calc(100% - 0px)",
-            "offset": [
-              10,
-              10
-            ],
-            "animate": false,
-            "enableInfoDetect": true,
-            "defaultiStatistic": false
-          }
-        },
-        {
           "id": "PropertyGraphInitializer",
           "type": "AUTO",
           "name": "属性图计算",
+          "props": {}
+        },
+        {
+          "id": "RemoveNodeWithMenu",
+          "type": "GIAC_MENU",
+          "name": "节点删除",
           "props": {}
         },
         {
@@ -463,6 +563,12 @@ export default {
                 "name": "画布操作",
                 "required": true,
                 "GI_CONTAINER": []
+              },
+              {
+                "id": "condition-content",
+                "name": "条件展示容器",
+                "required": true,
+                "GI_CONTAINER": []
               }
             ],
             "isSheet": false
@@ -481,6 +587,20 @@ export default {
           "props": {
             "isReLayout": false,
             "degree": 1
+          }
+        },
+        {
+          "id": "Toolbar",
+          "type": "GICC",
+          "name": "工具栏",
+          "props": {
+            "GI_CONTAINER": [],
+            "direction": "vertical",
+            "placement": "LT",
+            "offset": [
+              24,
+              64
+            ]
           }
         },
         {
@@ -526,6 +646,50 @@ export default {
           "props": {}
         },
         {
+          "id": "TuGraphPathQuery",
+          "type": "GIAC_CONTENT",
+          "name": "路径查询",
+          "props": {
+            "pathNodeLabel": "id",
+            "hasDirection": false,
+            "hasMaxDeep": false,
+            "GI_CONTAINER_INDEX": 2,
+            "GIAC_CONTENT": {
+              "visible": false,
+              "disabled": false,
+              "isShowTitle": true,
+              "title": "路径查询",
+              "isShowIcon": true,
+              "icon": "icon-path-analysis",
+              "isShowTooltip": true,
+              "tooltip": "",
+              "tooltipColor": "#3056e3",
+              "tooltipPlacement": "right",
+              "hasDivider": false,
+              "height": "60px",
+              "isVertical": true,
+              "containerType": "div",
+              "containerAnimate": false,
+              "containerDraggable": false,
+              "dragHandle": "header",
+              "containerPlacement": "RT",
+              "offset": [
+                0,
+                0
+              ],
+              "containerWidth": "400px",
+              "containerHeight": "calc(100% - 100px)",
+              "contaienrMask": false
+            }
+          }
+        },
+        {
+          "id": "TuGraphPropertiesPanel",
+          "type": "AUTO",
+          "name": "TuGraph 属性面板",
+          "props": {}
+        },
+        {
           "id": "TuGraphStatisticsFilter",
           "type": "GIAC_CONTENT",
           "name": "统计筛选",
@@ -564,7 +728,7 @@ export default {
         {
           "id": "TuGraphStyleSetting",
           "type": "GIAC_CONTENT",
-          "name": "样式设置",
+          "name": "业务样式设置",
           "props": {
             "localServiceId": "TuGraph-DB/saveElementStyleToLocalService",
             "schemaServiceId": "TuGraph-DB/graphSchemaService",
@@ -577,6 +741,7 @@ export default {
               "isShowIcon": true,
               "icon": "icon-tugraph-styling",
               "isShowTooltip": true,
+              "tooltip": "根据点上的属性值可指定颜色、大小、形状",
               "tooltipColor": "rgba(0,0,0,1)",
               "tooltipPlacement": "right",
               "hasDivider": false,
@@ -593,18 +758,8 @@ export default {
               ],
               "containerWidth": "350px",
               "containerHeight": "calc(100% - 100px)",
-              "contaienrMask": false,
-              "tooltip": "根据点上的属性值可指定颜色、大小、形状"
+              "contaienrMask": false
             }
-          }
-        },
-        {
-          "id": "ZoomStatus",
-          "type": "AUTO",
-          "name": "缩放状态",
-          "props": {
-            "minZoom": 0.6,
-            "statusName": "minZoom"
           }
         }
       ],
@@ -669,9 +824,7 @@ export default {
               "id": "navbar-right",
               "name": "导航右区",
               "required": true,
-              "GI_CONTAINER": [
-                "GraphDemo"
-              ],
+              "GI_CONTAINER": [],
               "display": true
             },
             {
@@ -699,6 +852,10 @@ export default {
                 {
                   "value": "ConfigQuery",
                   "label": "配置查询"
+                },
+                {
+                  "value": "TuGraphPathQuery",
+                  "label": "路径查询"
                 }
               ],
               "icon": "icon-tugraph-query",
@@ -727,12 +884,12 @@ export default {
               "required": true,
               "GI_CONTAINER": [
                 {
-                  "value": "TuGraphStyleSetting",
-                  "label": "业务样式设置"
-                },
-                {
                   "value": "LayoutSwitchTool",
                   "label": "高级布局切换"
+                },
+                {
+                  "value": "TuGraphStyleSetting",
+                  "label": "业务样式设置"
                 }
               ],
               "display": true
@@ -749,6 +906,18 @@ export default {
                 {
                   "value": "ClearCanvas",
                   "label": "清空画布"
+                }
+              ],
+              "display": true
+            },
+            {
+              "id": "condition-content",
+              "name": "条件展示容器",
+              "required": true,
+              "GI_CONTAINER": [
+                {
+                  "value": "LayoutContent",
+                  "label": "布局参数配置"
                 }
               ],
               "display": true
@@ -868,6 +1037,10 @@ export default {
                   "value": "ZoomStatus"
                 },
                 {
+                  "label": "多画布页签",
+                  "value": "Sheetbar"
+                },
+                {
                   "label": "分析历史沉淀",
                   "value": "AnalysisHistory"
                 },
@@ -884,25 +1057,34 @@ export default {
                   "value": "SimpleQuery"
                 },
                 {
-                  "label": "demo案例",
-                  "value": "Demo"
+                  "label": "TuGraph 图例",
+                  "value": "PointEdgeView"
+                },
+                {
+                  "label": "TuGraph 属性面板",
+                  "value": "TuGraphPropertiesPanel"
+                },
+                {
+                  "label": "双击扩散节点",
+                  "value": "DoubleClickExpandNode"
                 }
               ],
               "GI_CONTAINER": [
                 "CanvasSetting",
                 "Initializer",
                 "ActivateRelations",
+                "DoubleClickExpandNode",
                 "Loading",
                 "Placeholder",
                 "PointEdgeView",
-                "PropertiesPanel",
                 "PropertyGraphInitializer",
                 "SimpleQuery",
-                "ZoomStatus"
+                "TuGraphPropertiesPanel"
               ],
               "display": true
             }
-          ]
+          ],
+          "isSheet": false
         }
       }
     },
@@ -1205,8 +1387,8 @@ export default {
     },
     "GISDK": {
       "name": "@antv/gi-sdk",
-      "version": "2.4.10",
-      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-sdk/2.4.10/dist/index.min.js",
+      "version": "2.4.12",
+      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-sdk/2.4.12/dist/index.min.js",
       "global": "GISDK"
     },
     "G2Plot": {
@@ -1225,8 +1407,8 @@ export default {
   "GI_ASSETS_PACKAGES": {
     "GI_ASSETS_BASIC": {
       "name": "@antv/gi-assets-basic",
-      "version": "2.4.14",
-      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-assets-basic/2.4.14/dist/index.min.js",
+      "version": "2.4.22",
+      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-assets-basic/2.4.22/dist/index.min.js",
       "global": "GI_ASSETS_BASIC"
     },
     "GI_ASSETS_ADVANCE": {
@@ -1237,9 +1419,9 @@ export default {
     },
     "GI_ASSETS_TUGRAPH_DB": {
       "name": "@tugraph/gi-assets-tugraph-db",
-      "version": "0.6.12",
+      "version": "0.6.26",
       "global": "GI_ASSETS_TUGRAPH_DB",
-      "url": "https://gw.alipayobjects.com/os/lib/tugraph/gi-assets-tugraph-db/0.6.12/dist/index.min.js"
+      "url": "https://gw.alipayobjects.com/os/lib/tugraph/gi-assets-tugraph-db/0.6.26/dist/index.min.js"
     }
   }
 }
