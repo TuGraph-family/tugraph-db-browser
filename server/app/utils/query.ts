@@ -112,7 +112,7 @@ export const formatPathResponse = (
       for (const cp of currentPath) {
         const { identity, src, dst, label_id, temporal_id, label } = cp;
         // src & dst 都存在，则为边
-        if (src === 0 || (src && dst)) {
+        if (src === 0 || dst === 0 || (src && dst)) {
           const edgeId = `${src}_${label_id}_${temporal_id}_${dst}_${identity}`;
           const hasEdge = pedges.find((d: any) => d.id === edgeId);
           if (!hasEdge) {
