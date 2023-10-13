@@ -2,7 +2,7 @@ import React from 'react';
 import { StepUIProps } from './types';
 import StyleBtnImage from './assets/style-btn.png';
 import StylePanelImage from './assets/style-panel.png';
-import NextBtnImage from './assets/next-btn.png';
+import NextBtnImage from './assets/btn-next.png';
 import CloseImage from './assets/close.svg';
 import styles from './index.module.less';
 

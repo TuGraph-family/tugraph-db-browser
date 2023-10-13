@@ -1,7 +1,7 @@
 import React from 'react';
 import { StepUIProps } from './types';
 import WelcomeImage from './assets/welcome.png';
-import StartBtnImage from './assets/btn-start.png';
+import StartBtnImage from './assets/btn-welcome.png';
 import CloseImage from './assets/close.svg';
 import styles from './index.module.less';
 
