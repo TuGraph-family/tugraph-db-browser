@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { useLocalStorageState } from 'ahooks';
 import { Driver, Step } from '../driver';
 
 import { Welcome } from './welcome';
@@ -18,11 +19,16 @@ const Steps = [
   { element: '.footer', popover: { title: 'Title', description: 'Description' } },
 ];
 
+const LocalStorageKey = '__guidance_key__'
+
 /**
  * 新手引导组件
  * @returns 
  */
 export const Guidance: React.FC = () => {
+  // localStorage 存储
+  const [isGuidanceFinished, setGuidanceFinished] = useLocalStorageState<string>(LocalStorageKey);
+
   const driver = useRef(null);
   const [step, setStep] = useState<number>(0);
 
@@ -39,13 +45,34 @@ export const Guidance: React.FC = () => {
     setStep(0);
   }, []);
 
+  // step 变化的时候，需要根据 step 自动打开对应的 dom 节点。
+  useEffect(() => {
+    /**
+      查询：gi-richcontainer-query-button
+      筛选：gi-richcontainer-filter-button
+      样式：gi-richcontainer-stylesetting-button
+      下载按钮：tugraph-download-container
+      左侧面板：gi-richcontainer-side
+     */
+    if (step === 1) {
+      // 查询
+    } else if (step === 3) {
+      // 样式
+    } else if (step === 5) {
+      // 筛选
+    }
+  }, [step]);
+
   const props = {
     prev: () => setStep(step - 1),
     next: () => setStep(step + 1),
-    end: () => setStep(-1),
+    end: () => {
+      setStep(-1);
+      setGuidanceFinished('1');
+    },
   }
 
-  return (
+  return !isGuidanceFinished && 
     <div className={styles.guidance} style={{ display: step >= 0 && step <= 8 ? 'unset' : 'none' }}>
       { step === 0 && <Welcome {...props} /> }
       { step === 1 && <Query {...props } x={300} y={100} /> }
@@ -56,6 +83,5 @@ export const Guidance: React.FC = () => {
       { step === 6 && <FilterPanel {...props } x={300} y={200} /> }
       { step === 7 && <Download {...props } /> }
       { step === 8 && <End {...props } /> }
-    </div>
-  );
+    </div>;
 };

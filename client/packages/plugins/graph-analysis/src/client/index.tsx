@@ -1,10 +1,11 @@
 import { TableOutlined } from '@ant-design/icons';
+import { useRafInterval } from 'ahooks';
 import {
   SchemaComponentOptions,
   SchemaInitializer,
   SchemaInitializerContext,
 } from '@tugraph/openpiece-client';
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 // @ts-ignore
 import TuGraphGraphAppConfig from './GI_EXPORT_FILES.ts';
 import { PluginDesigner } from './PluginDesigner';
@@ -23,6 +24,19 @@ const GraphAnalysis = () => {
       success: true,
     };
   };
+
+  // 循环检测 GI SDK 是否已经渲染，只有在渲染结束之后，才去渲染新手引导！
+  const [ready, setReady] = useState(false)
+  const clearInterval = useRafInterval(() => {
+    if (document.querySelector('div[id^="GI_STUDIO_credit"]')) {
+      setReady(true);
+    }
+  }, 100);
+  useEffect(() => {
+    if (ready) clearInterval();
+  }, [ready]);
+  // end 循环检测
+
   return (
     <div
       style={{
@@ -32,7 +46,7 @@ const GraphAnalysis = () => {
       }}
     >
       <GI_SDK_APP id={id} service={service} />
-      <Guidance />
+      { ready && <Guidance /> }
     </div>
   );
 };
