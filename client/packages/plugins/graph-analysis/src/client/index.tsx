@@ -8,6 +8,7 @@ import React, { useContext } from 'react';
 // @ts-ignore
 import TuGraphGraphAppConfig from './GI_EXPORT_FILES.ts';
 import { PluginDesigner } from './PluginDesigner';
+import { Guidance } from './components/guidance';
 //@ts-ignore
 const { default: GI_SDK_APP } = window.GI_SDK_APP;
 
@@ -31,6 +32,7 @@ const GraphAnalysis = () => {
       }}
     >
       <GI_SDK_APP id={id} service={service} />
+      <Guidance />
     </div>
   );
 };
