@@ -1,5 +1,4 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { Card, Row, Col, Skeleton, message } from 'antd';
 import { Driver, Step } from '../driver';
 
 import { Welcome } from './welcome';
@@ -38,23 +37,25 @@ export const Guidance: React.FC = () => {
     driver.current = new Driver(Steps, onStepChange);
     // 如果没有阅读过新手引导（localStorage），启动新手引导
     setStep(0);
-    setInterval(() => {
-      setStep(step + 1);
-    }, 2000)
   }, []);
 
+  const props = {
+    prev: () => setStep(step - 1),
+    next: () => setStep(step + 1),
+    end: () => setStep(-1),
+  }
+
   return (
-    <div className={styles.guidance}>
-      <div>guidance</div>
-      { step === 0 && <Welcome /> }
-      { step === 1 && <Query /> }
-      { step === 2 && <Spread /> }
-      { step === 3 && <StyleBtn /> }
-      { step === 4 && <StylePanel /> }
-      { step === 5 && <FilterBtn /> }
-      { step === 6 && <FilterPanel /> }
-      { step === 7 && <Download /> }
-      { step === 8 && <End /> }
+    <div className={styles.guidance} style={{ display: step >= 0 && step <= 8 ? 'unset' : 'none' }}>
+      { step === 0 && <Welcome {...props} /> }
+      { step === 1 && <Query {...props } x={300} y={100} /> }
+      { step === 2 && <Spread {...props } x={800} y={200} /> }
+      { step === 3 && <StyleBtn {...props } x={465} y={90} /> }
+      { step === 4 && <StylePanel {...props } x={300} y={200} /> }
+      { step === 5 && <FilterBtn {...props } x={300} y={90} /> }
+      { step === 6 && <FilterPanel {...props } x={300} y={200} /> }
+      { step === 7 && <Download {...props } /> }
+      { step === 8 && <End {...props } /> }
     </div>
   );
 };

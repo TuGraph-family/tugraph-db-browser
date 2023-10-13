@@ -1,6 +1,114 @@
 .guidance {
-  display: inline-block;
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+
+  .welcome, .end {
+    display: flex;
+    justify-content: center; /* 水平垂直居中 */
+    align-items: center; 
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+
+    .container {
+      position: relative;
+    }
+
+    .background {
+      max-width: 764px;
+    }
+
+    .startBtn {
+      margin-top: 24px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center; 
+      cursor: pointer;
+
+       &:hover {
+        .startText {
+          color: rgb(32, 32, 224);
+        }
+      }
+
+      .btnBackground {
+        width: 160px;
+      }
+
+      .startText {
+        position: absolute;
+        font-size: 18px;
+        color: #FFFFFF;
+        text-shadow: 0 1px 0 rgba(0,17,102,0.15);
+      }
+    }
+
+    .close {
+      position: absolute;
+      right: 16px;
+      top: 0px;
+      cursor: pointer;
+    }
+  }
+
+  .query, .spread, .styleBtn, .stylePanel, .filterBtn, .filterPanel, .download {
+    display: inline-block;
+    position: absolute;
+
+    .container {
+      position: relative;
+    }
+
+    .background {
+      max-width: 350px;
+    }
+
+    .btnContainer {
+      display: flex;
+      justify-content: end;
+      align-items: center;
+
+      .nextBtn {
+        margin-top: 12px;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center; 
+        cursor: pointer;
+    
+        &:hover {
+          .startText {
+            color: rgb(32, 32, 224);
+          }
+        }
+    
+        .btnBackground {
+          width: 100px;
+        }
+    
+        .nextText {
+          position: absolute;
+          font-size: 18px;
+          color: #FFFFFF;
+          text-shadow: 0 1px 0 rgba(0, 17, 102, 0.15);
+        }
+      }
+    }
+
+    .close {
+      position: absolute;
+      right: -32px;
+      top: 72px;
+      cursor: pointer;
+    }
+  }
+
+  .spread {
+
+  }
 }
