@@ -1,8 +1,6 @@
 import React from 'react';
 import { StepUIProps } from './types';
-import QueryImage from './assets/query.png';
-import NextBtnImage from './assets/btn-next.png';
-import CloseImage from './assets/close.svg';
+import { Assets } from './assets';
 import styles from './index.module.less';
 
 /**
@@ -13,15 +11,15 @@ export const Query: React.FC<StepUIProps> = ({ prev, next, end, x = 0, y = 0 }) 
   return (
     <div className={styles.query} style={{ top: y, left: x }}>
       <div className={styles.container}>
-        <img className={styles.background} src={QueryImage} />
-        <div className={styles.btnContainer}>
+        <img className={styles.background} src={Assets.query} />
+        <div className={styles.btnContainer} style={{ top: 465, left: 248 }}>
           <div className={styles.nextBtn}>
-            <img className={styles.btnBackground} src={NextBtnImage} />
+            <img className={styles.btnBackground} src={Assets.btnNext} />
             <div className={styles.nextText} onClick={next}>下一步</div>
           </div>
         </div>
-        <div className={styles.close} onClick={end}>
-          <img src={CloseImage} />
+        <div className={styles.close} onClick={end} style={{ top: 72, left: 358 }}>
+          <img src={Assets.close} />
         </div>
       </div>
     </div>

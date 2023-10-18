@@ -1,0 +1,18 @@
+export const Assets = {
+  welcome: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*gACYRIZ5m0YAAAAAAAAAAAAADgOBAQ/fmt.webp',
+  query: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*UhR6QpIWBmIAAAAAAAAAAAAADgOBAQ/fmt.webp',
+  spread: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*6g-mS7BKH_kAAAAAAAAAAAAADgOBAQ/fmt.webp',
+  styleBtn: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*Ls3WRaRHU30AAAAAAAAAAAAADgOBAQ/original',
+  stylePanel: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*4OutRZw69QIAAAAAAAAAAAAADgOBAQ/fmt.webp',
+  filterBtn: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*CiM9R73L10cAAAAAAAAAAAAADgOBAQ/original',
+  filterPanel: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*QlKsS4gxcT8AAAAAAAAAAAAADgOBAQ/fmt.webp',
+  download: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*QjWNRZ-LQ2kAAAAAAAAAAAAADgOBAQ/original',
+  end: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*-a6uRYo-9qEAAAAAAAAAAAAADgOBAQ/fmt.webp',
+  close: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*1qMxQ4fS3e0AAAAAAAAAAAAADgOBAQ/original',
+  btnWelcome: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*T7bRTrLqVcUAAAAAAAAAAAAADgOBAQ/original',
+  btnNext: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*T7bRTrLqVcUAAAAAAAAAAAAADgOBAQ/original',
+  btnEnd: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*8lvqQr_me34AAAAAAAAAAAAADgOBAQ/original',
+  afterStyle: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*HGX-S4sElRQAAAAAAAAAAAAADgOBAQ/original',
+  afterFilter: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*49UiTaFF8E4AAAAAAAAAAAAADgOBAQ/original',
+  afterSpread: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*2XqOQ4y9pjsAAAAAAAAAAAAADgOBAQ/original',
+};

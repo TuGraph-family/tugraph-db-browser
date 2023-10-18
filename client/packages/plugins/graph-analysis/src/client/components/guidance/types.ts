@@ -4,4 +4,6 @@ export type StepUIProps = {
   end: () => void;
   x?: number;
   y?: number;
+  canvasX?: number;
+  canvasY?: number;
 }
