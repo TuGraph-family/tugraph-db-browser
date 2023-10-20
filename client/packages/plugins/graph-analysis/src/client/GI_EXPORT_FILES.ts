@@ -9,6 +9,7 @@ export default {
       ],
       "components": [
         "ActivateRelations",
+        "AddIconLabel",
         "AdvanceNeighborsQuery",
         "CanvasSetting",
         "ClearCanvas",
@@ -24,7 +25,6 @@ export default {
         "LayoutContent",
         "LayoutSwitchTool",
         "Loading",
-        "PinNodeWithMenu",
         "Placeholder",
         "PointEdgeView",
         "PropertyGraphInitializer",
@@ -35,10 +35,12 @@ export default {
         "Toolbar",
         "TuGraphAttributesFilter",
         "TuGraphBack",
+        "TuGraphLockNode",
         "TuGraphPathQuery",
         "TuGraphPropertiesPanel",
         "TuGraphStatisticsFilter",
-        "TuGraphStyleSetting"
+        "TuGraphStyleSetting",
+        "TuGraphDownload"
       ],
       "layouts": [
         "Force2",
@@ -100,6 +102,12 @@ export default {
           }
         },
         {
+          "id": "AddIconLabel",
+          "type": "GIAC_MENU",
+          "name": "节点打标",
+          "props": {}
+        },
+        {
           "id": "AdvanceNeighborsQuery",
           "type": "GIAC_MENU",
           "name": "高级邻居查询",
@@ -115,7 +123,7 @@ export default {
           "props": {
             "styleCanvas": {
               "backgroundColor": "#fff",
-              "backgroundImage": "https://gw.alipayobjects.com/mdn/rms_0d75e8/afts/img/A*k9t4QamMuQ4AAAAAAAAAAAAAARQnAQ",
+              "backgroundImage": "",
               "background": "#fff"
             },
             "dragCanvas": {
@@ -201,8 +209,9 @@ export default {
             "GI_CONTAINER": [
               "AdvanceNeighborsQuery",
               "ToggleClusterWithMenu",
-              "PinNodeWithMenu",
-              "RemoveNodeWithMenu"
+              "RemoveNodeWithMenu",
+              "AddIconLabel",
+              "TuGraphLockNode"
             ],
             "nodeMenuComponents": [
               "NeighborsQuery",
@@ -478,12 +487,6 @@ export default {
           "props": {}
         },
         {
-          "id": "PinNodeWithMenu",
-          "type": "GIAC_MENU",
-          "name": "固定节点(MENU)",
-          "props": {}
-        },
-        {
           "id": "Placeholder",
           "type": "AUTO",
           "name": "画布占位符",
@@ -491,7 +494,7 @@ export default {
             "img": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1BGfQ78mW4kAAAAAAAAAAAAADmJ7AQ/original",
             "text": "画布为空时，请先试试查询-语句查询/配置查询",
             "width": 340,
-            "textColor": "#999",
+            "textColor": "#909FCE",
             "spacing": 8
           }
         },
@@ -646,6 +649,12 @@ export default {
           "props": {}
         },
         {
+          "id": "TuGraphLockNode",
+          "type": "GIAC_MENU",
+          "name": "TuGraph节点锁定",
+          "props": {}
+        },
+        {
           "id": "TuGraphPathQuery",
           "type": "GIAC_CONTENT",
           "name": "路径查询",
@@ -761,6 +770,42 @@ export default {
               "contaienrMask": false
             }
           }
+        },
+        {
+          "id": "TuGraphDownload",
+          "type": "GIAC",
+          "name": "下载",
+          "props": {
+            "schemaServiceId": "TuGraph-DB/graphSchemaService",
+            "GI_CONTAINER_INDEX": 2,
+            "GIAC_CONTENT": {
+              "visible": false,
+              "disabled": false,
+              "isShowTitle": true,
+              "title": "未命名组件",
+              "isShowIcon": true,
+              "icon": "icon-star",
+              "isShowTooltip": true,
+              "tooltip": "",
+              "tooltipColor": "#3056e3",
+              "tooltipPlacement": "right",
+              "hasDivider": false,
+              "height": "60px",
+              "isVertical": true,
+              "containerType": "div",
+              "containerAnimate": false,
+              "containerDraggable": false,
+              "dragHandle": "header",
+              "containerPlacement": "RT",
+              "offset": [
+                0,
+                0
+              ],
+              "containerWidth": "350px",
+              "containerHeight": "calc(100% - 100px)",
+              "contaienrMask": false
+            }
+          }
         }
       ],
       "layout": {
@@ -824,7 +869,9 @@ export default {
               "id": "navbar-right",
               "name": "导航右区",
               "required": true,
-              "GI_CONTAINER": [],
+              "GI_CONTAINER": [
+                "TuGraphDownload"
+              ],
               "display": true
             },
             {
@@ -1407,8 +1454,8 @@ export default {
   "GI_ASSETS_PACKAGES": {
     "GI_ASSETS_BASIC": {
       "name": "@antv/gi-assets-basic",
-      "version": "2.4.22",
-      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-assets-basic/2.4.22/dist/index.min.js",
+      "version": "2.4.29",
+      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-assets-basic/2.4.29/dist/index.min.js",
       "global": "GI_ASSETS_BASIC"
     },
     "GI_ASSETS_ADVANCE": {
@@ -1419,9 +1466,9 @@ export default {
     },
     "GI_ASSETS_TUGRAPH_DB": {
       "name": "@tugraph/gi-assets-tugraph-db",
-      "version": "0.6.26",
+      "version": "0.6.29",
       "global": "GI_ASSETS_TUGRAPH_DB",
-      "url": "https://gw.alipayobjects.com/os/lib/tugraph/gi-assets-tugraph-db/0.6.26/dist/index.min.js"
+      "url": "https://gw.alipayobjects.com/os/lib/tugraph/gi-assets-tugraph-db/0.6.29/dist/index.min.js"
     }
   }
 }
