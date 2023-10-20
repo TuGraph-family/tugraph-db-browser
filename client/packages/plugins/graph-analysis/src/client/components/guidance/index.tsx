@@ -26,6 +26,7 @@ const SelectorStyle = '.gi-richcontainer-stylesetting-button';
 const SelectorDownload = '.tugraph-download-container';
 const SelectorSidebar = '.gi-richcontainer-side';
 const SelectorCanvas = '.gi-rich-container-canvas';
+const SelectorPlaceholder = '.gi-placeholder';
 
 function getElement(selector: string): HTMLElement {
   return document.querySelector(selector);
@@ -71,9 +72,12 @@ export const Guidance: React.FC = () => {
     } else if (step === 3) {
       // 样式
       getElement(SelectorStyle).click();
+      getElement(SelectorPlaceholder).style.display = 'none';
     } else if (step === 5) {
       // 筛选
       getElement(SelectorFilter).click();
+    } else if (step === -1) {
+      getElement(SelectorPlaceholder).style.display = 'flex';
     }
   }, [step]);
 
