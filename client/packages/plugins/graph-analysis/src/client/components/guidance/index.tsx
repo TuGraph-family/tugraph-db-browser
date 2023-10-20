@@ -82,8 +82,7 @@ export const Guidance: React.FC = () => {
     next: () => setStep(step + 1),
     end: () => {
       setStep(-1);
-      // todo 便于本地开发测试
-      // setGuidanceFinished('1');
+      setGuidanceFinished('1');
     },
   }
 

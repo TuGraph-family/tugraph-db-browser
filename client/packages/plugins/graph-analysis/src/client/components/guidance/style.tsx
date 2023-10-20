@@ -38,6 +38,7 @@ export const StylePanel: React.FC<StepUIProps> = ({ prev, next, end, x = 0, y = 
       <div className={styles.container}>
         <img className={styles.background} style={{ width: 384 }} src={Assets.stylePanel} />
         <img className={styles.background} style={{ top: canvasY - y, left: canvasX - x }} src={Assets.afterStyle} />
+        <img className={styles.gif} src={Assets.styleGif} style={{ top: 49, left: 43, maxWidth: 288 }} />
         <div className={styles.btnContainer} style={{ top: 362, left: 248 }}>
           <div className={styles.nextBtn}>
             <img className={styles.btnBackground} src={Assets.btnNext} />

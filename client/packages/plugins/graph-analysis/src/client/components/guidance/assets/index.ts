@@ -15,4 +15,8 @@ export const Assets = {
   afterStyle: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*HGX-S4sElRQAAAAAAAAAAAAADgOBAQ/original',
   afterFilter: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*49UiTaFF8E4AAAAAAAAAAAAADgOBAQ/original',
   afterSpread: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*2XqOQ4y9pjsAAAAAAAAAAAAADgOBAQ/original',
+  styleGif: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*v8SsRJ0mkFAAAAAAAAAAAAAADgOBAQ/original',
+  spreadGif: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*P2nrTLAjhCkAAAAAAAAAAAAADgOBAQ/original',
+  queryGif: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*hsYDRLBPUj8AAAAAAAAAAAAADgOBAQ/original',
+  filterGif: 'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*p8zcR7cc0tQAAAAAAAAAAAAADgOBAQ/original',
 };
