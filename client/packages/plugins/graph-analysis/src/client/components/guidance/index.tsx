@@ -8,7 +8,6 @@ import { FilterBtn, FilterPanel } from './filter';
 import { Download } from './download';
 import { End } from './end';
 
-// @ts-ignore
 import styles from './index.module.less';
 
 const LocalStorageKey = '__guidance_key__';
@@ -70,10 +69,11 @@ export const Guidance: React.FC = () => {
     if (step === 1) {
       // 查询
       getElement(SelectorQuery).click();
+    } else if (step === 2) {
+      getElement(SelectorPlaceholder).style.display = 'none';
     } else if (step === 3) {
       // 样式
       getElement(SelectorStyle).click();
-      getElement(SelectorPlaceholder).style.display = 'none';
     } else if (step === 5) {
       // 筛选
       getElement(SelectorFilter).click();
@@ -138,7 +138,8 @@ export const Guidance: React.FC = () => {
     const fullscreen = document.body.getBoundingClientRect();
     if (step === 1 || step === 4 || step === 6) {
       const rect = getBoundings(SelectorSidebar);
-      return getClipPathByTwoRect(rect, fullscreen);
+      const newRect = new DOMRect(rect.x, rect.y, rect.width, rect.height - 64);
+      return getClipPathByTwoRect(newRect, fullscreen);
     }
     if (step === 3) {
       const rect = getBoundings(SelectorStyle);
