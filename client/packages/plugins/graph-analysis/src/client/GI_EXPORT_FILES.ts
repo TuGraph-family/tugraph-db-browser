@@ -1,6 +1,6 @@
 export default {
   "workbook": {
-    "id": "d1cd7ab4-82dd-45da-a0c0-04507ce06b9a",
+    "id": "b8c1cf25-af21-4b1c-92e1-beb7c824c774",
     "name": "TuGraph 图分析",
     "activeAssetsKeys": {
       "elements": [
@@ -15,7 +15,7 @@ export default {
         "ClearCanvas",
         "ConfigQuery",
         "ContextMenu",
-        "DoubleClickExpandNode",
+        "EnabledUserGuidance",
         "FilterPanel",
         "GremlinQuery",
         "Initializer",
@@ -35,12 +35,14 @@ export default {
         "Toolbar",
         "TuGraphAttributesFilter",
         "TuGraphBack",
+        "TuGraphDownload",
         "TuGraphLockNode",
         "TuGraphPathQuery",
         "TuGraphPropertiesPanel",
         "TuGraphStatisticsFilter",
         "TuGraphStyleSetting",
-        "TuGraphDownload"
+        "ZoomInOut",
+        "DoubleClickExpandNode"
       ],
       "layouts": [
         "Force2",
@@ -209,9 +211,9 @@ export default {
             "GI_CONTAINER": [
               "AdvanceNeighborsQuery",
               "ToggleClusterWithMenu",
-              "RemoveNodeWithMenu",
               "AddIconLabel",
-              "TuGraphLockNode"
+              "TuGraphLockNode",
+              "RemoveNodeWithMenu"
             ],
             "nodeMenuComponents": [
               "NeighborsQuery",
@@ -221,10 +223,29 @@ export default {
           }
         },
         {
-          "id": "DoubleClickExpandNode",
-          "type": "AUTO",
-          "name": "双击扩散节点",
-          "props": {}
+          "id": "EnabledUserGuidance",
+          "type": "GIAC",
+          "name": "开启新手引导",
+          "props": {
+            "GI_CONTAINER_INDEX": 2,
+            "GIAC": {
+              "visible": false,
+              "disabled": false,
+              "isShowTitle": false,
+              "title": "开启新手引导",
+              "isShowIcon": true,
+              "icon": "icon-xiaodengpao",
+              "iconFontSize": "18px",
+              "buttonType": "text",
+              "isShowTooltip": true,
+              "tooltip": "新手引导",
+              "tooltipColor": "rgba(0,0,0,1)",
+              "tooltipPlacement": "top",
+              "hasDivider": false,
+              "height": "46px",
+              "isVertical": true
+            }
+          }
         },
         {
           "id": "FilterPanel",
@@ -572,6 +593,14 @@ export default {
                 "name": "条件展示容器",
                 "required": true,
                 "GI_CONTAINER": []
+              },
+              {
+                "id": "timebar-container-bottom",
+                "name": "底部时序容器",
+                "required": true,
+                "GI_CONTAINER": [],
+                "height": 150,
+                "padding": "0px 0px"
               }
             ],
             "isSheet": false
@@ -647,6 +676,42 @@ export default {
           "type": "GIAC",
           "name": "返回按钮",
           "props": {}
+        },
+        {
+          "id": "TuGraphDownload",
+          "type": "GIAC",
+          "name": "下载",
+          "props": {
+            "schemaServiceId": "TuGraph-DB/graphSchemaService",
+            "GI_CONTAINER_INDEX": 2,
+            "GIAC_CONTENT": {
+              "visible": false,
+              "disabled": false,
+              "isShowTitle": true,
+              "title": "未命名组件",
+              "isShowIcon": true,
+              "icon": "icon-star",
+              "isShowTooltip": true,
+              "tooltip": "",
+              "tooltipColor": "#3056e3",
+              "tooltipPlacement": "right",
+              "hasDivider": false,
+              "height": "60px",
+              "isVertical": true,
+              "containerType": "div",
+              "containerAnimate": false,
+              "containerDraggable": false,
+              "dragHandle": "header",
+              "containerPlacement": "RT",
+              "offset": [
+                0,
+                0
+              ],
+              "containerWidth": "350px",
+              "containerHeight": "calc(100% - 100px)",
+              "contaienrMask": false
+            }
+          }
         },
         {
           "id": "TuGraphLockNode",
@@ -752,7 +817,7 @@ export default {
               "isShowTooltip": true,
               "tooltip": "根据点上的属性值可指定颜色、大小、形状",
               "tooltipColor": "rgba(0,0,0,1)",
-              "tooltipPlacement": "right",
+              "tooltipPlacement": "top",
               "hasDivider": false,
               "height": "60px",
               "isVertical": true,
@@ -772,40 +837,16 @@ export default {
           }
         },
         {
-          "id": "TuGraphDownload",
-          "type": "GIAC",
-          "name": "下载",
-          "props": {
-            "schemaServiceId": "TuGraph-DB/graphSchemaService",
-            "GI_CONTAINER_INDEX": 2,
-            "GIAC_CONTENT": {
-              "visible": false,
-              "disabled": false,
-              "isShowTitle": true,
-              "title": "未命名组件",
-              "isShowIcon": true,
-              "icon": "icon-star",
-              "isShowTooltip": true,
-              "tooltip": "",
-              "tooltipColor": "#3056e3",
-              "tooltipPlacement": "right",
-              "hasDivider": false,
-              "height": "60px",
-              "isVertical": true,
-              "containerType": "div",
-              "containerAnimate": false,
-              "containerDraggable": false,
-              "dragHandle": "header",
-              "containerPlacement": "RT",
-              "offset": [
-                0,
-                0
-              ],
-              "containerWidth": "350px",
-              "containerHeight": "calc(100% - 100px)",
-              "contaienrMask": false
-            }
-          }
+          "id": "ZoomInOut",
+          "type": "AUTO",
+          "name": "minimap",
+          "props": {}
+        },
+        {
+          "id": "DoubleClickExpandNode",
+          "type": "AUTO",
+          "name": "双击扩散节点",
+          "props": {}
         }
       ],
       "layout": {
@@ -870,7 +911,14 @@ export default {
               "name": "导航右区",
               "required": true,
               "GI_CONTAINER": [
-                "TuGraphDownload"
+                {
+                  "value": "EnabledUserGuidance",
+                  "label": "开启新手引导"
+                },
+                {
+                  "value": "TuGraphDownload",
+                  "label": "下载"
+                }
               ],
               "display": true
             },
@@ -967,6 +1015,15 @@ export default {
                   "label": "布局参数配置"
                 }
               ],
+              "display": true
+            },
+            {
+              "id": "timebar-container-bottom",
+              "name": "底部时序容器",
+              "required": true,
+              "GI_CONTAINER": [],
+              "height": 150,
+              "padding": "0px 0px",
               "display": true
             },
             {
@@ -1120,13 +1177,14 @@ export default {
                 "CanvasSetting",
                 "Initializer",
                 "ActivateRelations",
-                "DoubleClickExpandNode",
                 "Loading",
                 "Placeholder",
                 "PointEdgeView",
                 "PropertyGraphInitializer",
                 "SimpleQuery",
-                "TuGraphPropertiesPanel"
+                "TuGraphPropertiesPanel",
+                "ZoomInOut",
+                "DoubleClickExpandNode"
               ],
               "display": true
             }
@@ -1372,7 +1430,7 @@ export default {
     "theme": "light"
   },
   "dataset": {
-    "id": "ds_504f732b-891d-4ff6-b807-430d9cc69cb8",
+    "id": "ds_a3f416d3-9c22-4efe-8513-6a7fd57cd3b3",
     "engineContext": {
       "engineId": "TuGraph-DB",
       "schemaData": {
@@ -1454,8 +1512,8 @@ export default {
   "GI_ASSETS_PACKAGES": {
     "GI_ASSETS_BASIC": {
       "name": "@antv/gi-assets-basic",
-      "version": "2.4.29",
-      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-assets-basic/2.4.29/dist/index.min.js",
+      "version": "2.4.30",
+      "url": "https://gw.alipayobjects.com/os/lib/antv/gi-assets-basic/2.4.30/dist/index.min.js",
       "global": "GI_ASSETS_BASIC"
     },
     "GI_ASSETS_ADVANCE": {
@@ -1466,9 +1524,9 @@ export default {
     },
     "GI_ASSETS_TUGRAPH_DB": {
       "name": "@tugraph/gi-assets-tugraph-db",
-      "version": "0.6.29",
+      "version": "0.6.31",
       "global": "GI_ASSETS_TUGRAPH_DB",
-      "url": "https://gw.alipayobjects.com/os/lib/tugraph/gi-assets-tugraph-db/0.6.29/dist/index.min.js"
+      "url": "https://gw.alipayobjects.com/os/lib/tugraph/gi-assets-tugraph-db/0.6.31/dist/index.min.js"
     }
   }
 }

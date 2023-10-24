@@ -287,7 +287,7 @@ export const ImportData: React.FC<Prop> = ({
             <span>数据导入</span>
             <div>
               命令行导入
-              <a href="https://tugraph.antgroup.com/doc" target="_blank">
+              <a href="https://tugraph-db.readthedocs.io/zh_CN/latest/5.developer-manual/3.server-tools/1.data-import.html" target="_blank">
                 参见文档
               </a>
             </div>

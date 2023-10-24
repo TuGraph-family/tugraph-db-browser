@@ -112,7 +112,7 @@ export const GraphQuery = (props: PluginPorps) => {
     editorWidth: 350,
     editorHeight: 372,
     pathHeight: 388,
-    script: '',
+    script: 'match (n) return n limit 10',
     resultData: [],
     queryList: [],
     editorKey: '',
