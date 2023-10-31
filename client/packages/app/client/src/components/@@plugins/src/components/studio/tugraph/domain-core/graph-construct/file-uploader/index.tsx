@@ -103,6 +103,10 @@ export const FileUploader = (props: FileUploaderProps) => {
     name: 'file',
     multiple: true,
     accept: '.csv',
+    customRequest(options) {
+      // @ts-ignore
+      options.onSuccess(options.filename)
+    },
     onChange(info) {
       const { file } = info;
       handleFileFormate(file);
