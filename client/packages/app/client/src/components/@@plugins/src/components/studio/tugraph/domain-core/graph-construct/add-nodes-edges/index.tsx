@@ -25,6 +25,7 @@ interface EditColumnsType<T> extends ColumnsType<T> {
     prop: {
       options: Array<{ label: string; value: string }>;
       mode: 'multiple' | 'tags';
+      name?: boolean;
     };
   };
   editable: boolean;
@@ -157,6 +158,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
       editorConfig: (record: AttrData) => {
         return {
           inputType: EditType.INPUT,
+          prop: { name: true },
         };
       },
     },

@@ -40,10 +40,10 @@ const EditableRow: React.FC<EditableRowProps> = ({ index, ...props }) => {
       form={form}
       component={false}
       disabled={
-        data?.find((item) => item[rowKey] === props[`data-row-key`])?.disabled
+        data?.find(item => item[rowKey] === props[`data-row-key`])?.disabled
       }
       onValuesChange={() => {
-        const newData = data?.map((item) => {
+        const newData = data?.map(item => {
           if (item[rowKey] === props[`data-row-key`]) {
             return { ...item, ...form.getFieldsValue() };
           }
@@ -76,10 +76,33 @@ const EditableCell: React.FC<EditableCellProps> = ({
     }
   }, [record]);
   if (editable) {
-    const { inputType, prop } = editorConfig(record);
+    const { inputType, prop, name } = editorConfig(record);
     if (inputType === EditType.INPUT) {
       childNode = (
-        <Form.Item style={{ margin: 0 }} name={dataIndex}>
+        <Form.Item
+          style={{ margin: 0 }}
+          name={dataIndex}
+          rules={
+            prop?.name && [
+              {
+                required: true,
+                validator: (_props, value) => {
+                  var reg = new RegExp('^[a-zA-Z0-9_\u4e00-\u9fa5]+$');
+                  if (!value) {
+                    return Promise.reject(`请填写属性名称！`);
+                  }
+                  if (!reg.test(value)) {
+                    return Promise.reject(
+                      '名称由中文、字母、数字、下划线组成。',
+                    );
+                  } else {
+                    return Promise.resolve();
+                  }
+                },
+              },
+            ]
+          }
+        >
           <Input {...prop} />
         </Form.Item>
       );
