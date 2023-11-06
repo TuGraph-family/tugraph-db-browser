@@ -17,7 +17,6 @@
     "@codemirror/lang-python": "^6.1.2",
     "@uiw/react-codemirror": "^4.20.2",
     "@umijs/plugin-request": "^2.9.0",
-    "ace-gremlin-editor": "1.0.2",
     "ahooks": "^3.7.2",
     "antd": "^4.24.8",
     "immer": "^9.0.19",
@@ -32,7 +31,9 @@
     "tsparticles": "2.9.3",
     "umi": "^3.5.20",
     "umi-request": "^1.4.0",
-    "use-immer": "^0.8.1"
+    "use-immer": "^0.8.1",
+    "@difizen/cofine-editor-core": "^0.0.1-alpha.4",
+    "@difizen/cofine-language-cypher": "^0.0.1-alpha.4"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
