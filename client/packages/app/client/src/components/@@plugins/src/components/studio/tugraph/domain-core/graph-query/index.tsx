@@ -5,7 +5,6 @@ import {
   QuestionCircleOutlined,
   SaveOutlined,
 } from '@ant-design/icons';
-import GremlinEditor from 'ace-gremlin-editor';
 import {
   Button,
   Divider,
@@ -21,11 +20,13 @@ import {
   message,
 } from 'antd';
 import { filter, find, isEmpty, join, map, uniqueId } from 'lodash';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useHistory } from 'umi';
 import { useImmer } from 'use-immer';
 import IconFont from '../../components/icon-font';
 import { SplitPane } from '../../components/split-panle';
+import CypherEdit from './cypherEditor';
+
 import {
   IQUIRE_LIST,
   PUBLIC_PERFIX_CLASS,
@@ -54,6 +55,7 @@ const { Option } = Select;
 export const GraphQuery = (props: PluginPorps) => {
   const history = useHistory();
   const location = history.location;
+  const editorRef = useRef<any>(null);
 
   const graphList = getLocalData('TUGRAPH_SUBGRAPH_LIST') as SubGraph[];
   const {
@@ -208,6 +210,7 @@ export const GraphQuery = (props: PluginPorps) => {
       draft.pathHeight = size;
     });
   }, []);
+
   const redirectUrl = props?.redirectPath;
   const onResultClose = useCallback(
     (id: string) => {
@@ -225,7 +228,7 @@ export const GraphQuery = (props: PluginPorps) => {
     if (activeTab === IQUIRE_LIST[0].key) {
       onStatementQuery({
         graphName: currentGraphName,
-        script,
+        script: editorRef?.current?.codeEditor?.getValue() || script,
       }).then(res => {
         updateState(draft => {
           draft.resultData = [...resultData, { ...res, id: uniqueId('id_') }];
@@ -541,7 +544,7 @@ export const GraphQuery = (props: PluginPorps) => {
                           marginTop: 20,
                         }}
                       >
-                        <GremlinEditor
+                        {/* <GremlinEditor
                           gremlinId="test"
                           initValue={script}
                           onInit={initEditor => {
@@ -551,7 +554,7 @@ export const GraphQuery = (props: PluginPorps) => {
                                 const value = find(
                                   getLocalData('TUGRAPH_STATEMENT_LISTS')[
                                     currentGraphName
-                                  ],
+                                  ],editorK
                                   item => item.id === editorKey,
                                 )?.script;
                                 initEditor?.editorInstance?.setValue?.(value);
@@ -562,6 +565,30 @@ export const GraphQuery = (props: PluginPorps) => {
                           onValueChange={val => {
                             updateState(draft => {
                               draft.script = val;
+                            });
+                          }}
+                        /> */}
+                        <CypherEdit
+                          ref={editorRef}
+                          value={script}
+                          onChange={(value: any) => {
+                            updateState(draft => {
+                              draft.script = value;
+                            });
+                          }}
+                          onInit={(initEditor: any) => {
+                            updateState(draft => {
+                              draft.editor = initEditor;
+                              if (editorKey) {
+                                const value = find(
+                                  getLocalData('TUGRAPH_STATEMENT_LISTS')[
+                                    currentGraphName
+                                  ],
+                                  item => item.id === editorKey,
+                                )?.script;
+                                initEditor?.setValue?.(value);
+                                draft.script = value;
+                              }
                             });
                           }}
                         />
