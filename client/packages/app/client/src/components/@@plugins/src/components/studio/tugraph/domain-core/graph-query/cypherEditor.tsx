@@ -3,7 +3,7 @@ import React, { forwardRef } from 'react';
 import { MonacoEnvironment, EditorProvider } from '@difizen/cofine-editor-core';
 
 const Editor = forwardRef<any, any>((props, editorRef) => {
-  const { value, onCreated, onChange, language, onInit } = props;
+  const { value, onCreated, onChange, language = 'cypher', onInit } = props;
   let codeEditor: monaco.editor.IStandaloneCodeEditor;
 
   // 监听事件
@@ -28,7 +28,7 @@ const Editor = forwardRef<any, any>((props, editorRef) => {
         const editorProvider =
           MonacoEnvironment.container.get<EditorProvider>(EditorProvider);
         const editor = editorProvider.create(editorRef.current, {
-          language: 'cypher',
+          language,
           value,
           theme: 'cypherTheme',
           suggestLineHeight: 24,
