@@ -192,6 +192,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
           inputType: EditType.SELECT,
           prop: {
             defaultValue: false,
+            disabled: record.id === 'primary-key',
             options: [
               { label: '否', value: false },
               { label: '是', value: true },
