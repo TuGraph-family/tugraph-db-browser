@@ -46,7 +46,12 @@ export const AddNodesEdges: React.FC<Prop> = ({
     configList: Array<IndexData>;
   }>({
     startList: [],
-    attrList: [],
+    attrList: [{
+      id: 'primary-key',
+      name: '',
+      type: '',
+      optional: false
+    }],
     configList: [],
   });
   const { startList, attrList, configList } = state;
@@ -59,7 +64,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
 
   const propertyList = () => {
     const attrPropertyNames = map(
-      filter(attrList, attr => !attr.optional),
+      filter(attrList, attr => !attr.optional && attr.id !== 'primary-key'),
       item => item.name,
     );
     const indexPropertyNames = map(configList, item => item.propertyName);
@@ -141,6 +146,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
       ),
     },
   ];
+
   const defaultColumns: EditColumnsType<AttrData> = [
     {
       title: (
@@ -198,7 +204,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
       title: '操作',
       dataIndex: 'operate',
       key: 'operate',
-      render: (_, record: any) => (
+      render: (_, record: any) => (record.id === 'primary-key' ? <a style={{ color: 'rgba(54,55,64,1)' }}>主键</a>  :
         <Popconfirm
           title="确定要删除吗？"
           onConfirm={() => {
@@ -269,31 +275,31 @@ export const AddNodesEdges: React.FC<Prop> = ({
         };
       },
     },
-    {
-      title: (
-        <>
-          主键
-          <Tooltip title="主键必须是唯一索引">
-            <QuestionCircleOutlined />
-          </Tooltip>
-        </>
-      ),
-      dataIndex: 'primaryField',
-      width: '17.5%',
-      key: 'primaryField',
-      editable: true,
-      editorConfig: (record: IndexData) => {
-        return {
-          inputType: EditType.SELECT,
-          prop: {
-            options: [
-              { label: '否', value: false },
-              { label: '是', value: true },
-            ],
-          },
-        };
-      },
-    },
+    // {
+    //   title: (
+    //     <>
+    //       主键
+    //       <Tooltip title="主键必须是唯一索引">
+    //         <QuestionCircleOutlined />
+    //       </Tooltip>
+    //     </>
+    //   ),
+    //   dataIndex: 'primaryField',
+    //   width: '17.5%',
+    //   key: 'primaryField',
+    //   editable: true,
+    //   editorConfig: (record: IndexData) => {
+    //     return {
+    //       inputType: EditType.SELECT,
+    //       prop: {
+    //         options: [
+    //           { label: '否', value: false },
+    //           { label: '是', value: true },
+    //         ],
+    //       },
+    //     };
+    //   },
+    // },
     {
       title: '操作',
       dataIndex: 'operate',
@@ -340,6 +346,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
       draft.startList = [...list];
     });
   };
+
   return (
     <SwitchDrawer
       visible={visible}

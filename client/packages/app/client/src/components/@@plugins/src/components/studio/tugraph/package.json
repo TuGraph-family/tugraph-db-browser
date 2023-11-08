@@ -15,6 +15,8 @@
     "@codemirror/lang-java": "^6.0.1",
     "@codemirror/lang-json": "^6.0.1",
     "@codemirror/lang-python": "^6.1.2",
+    "@difizen/cofine-editor-core": "^0.0.1-alpha.4",
+    "@difizen/cofine-language-cypher": "^0.0.1-alpha.4",
     "@uiw/react-codemirror": "^4.20.2",
     "@umijs/plugin-request": "^2.9.0",
     "ahooks": "^3.7.2",
@@ -31,9 +33,7 @@
     "tsparticles": "2.9.3",
     "umi": "^3.5.20",
     "umi-request": "^1.4.0",
-    "use-immer": "^0.8.1",
-    "@difizen/cofine-editor-core": "^0.0.1-alpha.4",
-    "@difizen/cofine-language-cypher": "^0.0.1-alpha.4"
+    "use-immer": "^0.8.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
