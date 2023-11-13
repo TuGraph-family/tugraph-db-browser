@@ -1,11 +1,11 @@
 module.exports = () => {
   return async function errorHandler(ctx, next) {
     // 检查是否登录
-    if (!ctx.request.header.authorization && ctx.request.url !== '/login') {
-      ctx.status = 401;
-      ctx.body = { success: false, errorMessage: '未登录', data: null };
-      return;
-    }
+    // if (!ctx.request.header.authorization && ctx.request.url !== '/login') {
+    //   ctx.status = 401;
+    //   ctx.body = { success: false, errorMessage: '未登录', data: null };
+    //   return;
+    // }
     try {
       await next();
     } catch (err: any) {

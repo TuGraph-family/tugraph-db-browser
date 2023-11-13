@@ -15,12 +15,12 @@
     "bootstrap": "yarn run client-bootstrap && yarn run server-bootstrap",
     "client-dev": "cd client && yarn run dev",
     "server-dev": "cd server && yarn run dev",
-    "client-start": "cd client && yarn run start",
     "server-start": "cd server && yarn run start",
-    "start": "yarn run server-start && yarn run client-start",
+    "start": "yarn run server-start",
     "client-build": "cd client && yarn run build",
     "server-build": "cd server && yarn run build",
-    "build": "npm run client-build && npm run server-build"
+    "sycnfile": "cd server && yarn run sycnfile",
+    "build": "npm run client-build && npm run server-build && npm run sycnfile"
   },
   "repository": "https://github.com/TuGraph-family/tugraph-db-browser.git"
 }

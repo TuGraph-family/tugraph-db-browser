@@ -1,1 +1,0 @@
-export { default } from '@tugraph/plugin-user-center/client';
