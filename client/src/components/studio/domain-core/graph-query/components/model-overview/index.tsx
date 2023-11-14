@@ -43,27 +43,22 @@ const ModelOverview: React.FC<ModelOverviewProps> = ({
     activeTab: 'list',
     graphData: { nodes: [], edges: [] },
   });
-  const {
-    isNodeTab,
-    keyword,
-    activeTab,
-    graphCanvasContextValue,
-    graphData,
-  } = viewState;
+  const { isNodeTab, keyword, activeTab, graphCanvasContextValue, graphData } =
+    viewState;
   const { onGetGraphSchema } = useSchema();
   const dealEdges = (edges: Array<any>) => {
     return Utils.processEdges([...edges], { poly: 50, loop: 10 });
   };
   const onSearchChange = (keyword: string) => {
-    setViewState((draft) => {
+    setViewState(draft => {
       draft.keyword = keyword;
     });
   };
   useEffect(() => {
     if (graphName) {
-      onGetGraphSchema({ graphName }).then((res) => {
+      onGetGraphSchema({ graphName }).then(res => {
         if (res.success) {
-          setViewState((draft) => {
+          setViewState(draft => {
             draft.graphData = res.data;
           });
         } else {
@@ -73,28 +68,28 @@ const ModelOverview: React.FC<ModelOverviewProps> = ({
     }
   }, []);
   const onSegmentedChange = (e: 'node' | 'edge') => {
-    setViewState((draft) => {
+    setViewState(draft => {
       draft.isNodeTab = e === 'node';
     });
   };
 
   const getGraphCanvasContextValue = useCallback(
     (contextValue: { graph: any; apis: any; theme: any; layout: any }) => {
-      setViewState((draft) => {
+      setViewState(draft => {
         if (contextValue) {
           draft.graphCanvasContextValue = contextValue;
         }
       });
     },
-    []
+    [],
   );
 
   useEffect(() => {
     const canvasContainer = document.querySelector(
-      `.${PUBLIC_PERFIX_CLASS}-view-graph-model-canvas`
+      `.${PUBLIC_PERFIX_CLASS}-view-graph-model-canvas`,
     );
-    const objResizeObserver = new ResizeObserver((entries) => {
-      entries.forEach((entry) => {
+    const objResizeObserver = new ResizeObserver(entries => {
+      entries.forEach(entry => {
         const cr = entry.contentRect;
         graphCanvasContextValue?.graph?.changeSize(cr.width, cr.height);
         graphCanvasContextValue?.graph?.fitCenter();
@@ -118,7 +113,7 @@ const ModelOverview: React.FC<ModelOverviewProps> = ({
           styles[`${PUBLIC_PERFIX_CLASS}-model-overview`],
           open ? styles[`${PUBLIC_PERFIX_CLASS}-model-overview__open`] : '',
         ],
-        ' '
+        ' ',
       )}
       style={{ height, width }}
     >
@@ -126,8 +121,8 @@ const ModelOverview: React.FC<ModelOverviewProps> = ({
         <TextTabs
           type="card"
           tabs={MODEL_OVER_VIEW_TABS}
-          onChange={(e) => {
-            setViewState((draft) => {
+          onChange={e => {
+            setViewState(draft => {
               draft.activeTab = e;
             });
           }}

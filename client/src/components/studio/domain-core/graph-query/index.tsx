@@ -5,7 +5,7 @@ import {
   QuestionCircleOutlined,
   SaveOutlined,
 } from '@ant-design/icons';
-import GremlinEditor from 'ace-gremlin-editor';
+
 import {
   Button,
   Divider,
@@ -21,11 +21,12 @@ import {
   Tooltip,
 } from 'antd';
 import { filter, find, isEmpty, join, map, uniqueId } from 'lodash';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { history } from 'umi';
 import { useImmer } from 'use-immer';
 import IconFont from '../../components/icon-font';
 import { SplitPane } from '../../components/split-panle';
+import CypherEdit from './cypherEditor';
 import {
   IQUIRE_LIST,
   PUBLIC_PERFIX_CLASS,
@@ -53,7 +54,7 @@ const { Option } = Select;
 
 export const GraphQuery = () => {
   const location = history.location;
-
+  const editorRef = useRef<any>(null);
   const graphList = getLocalData('TUGRAPH_SUBGRAPH_LIST') as SubGraph[];
   const {
     onStatementQuery,
@@ -153,7 +154,7 @@ export const GraphQuery = () => {
     },
   ];
   useEffect(() => {
-    updateState((draft) => {
+    updateState(draft => {
       if (isEmpty(getLocalData('TUGRAPH_STATEMENT_LISTS')[currentGraphName])) {
         draft.queryList = [
           {
@@ -168,9 +169,9 @@ export const GraphQuery = () => {
         ];
       }
     });
-    onGetGraphSchema({ graphName: currentGraphName }).then((res) => {
+    onGetGraphSchema({ graphName: currentGraphName }).then(res => {
       if (res.success) {
-        updateState((draft) => {
+        updateState(draft => {
           draft.graphData = { ...res.data };
         });
       }
@@ -178,7 +179,7 @@ export const GraphQuery = () => {
   }, []);
   useEffect(() => {
     if (queryList.length) {
-      updateState((draft) => {
+      updateState(draft => {
         draft.queryList = getLocalData('TUGRAPH_STATEMENT_LISTS')[
           currentGraphName
         ];
@@ -187,45 +188,45 @@ export const GraphQuery = () => {
   }, [activeTab]);
   useEffect(() => {
     if (history.location.hash) {
-      updateState((draft) => {
+      updateState(draft => {
         draft.storedVisible = true;
       });
     }
   }, []);
   const onSplitPaneWidthChange = useCallback((size: number) => {
-    updateState((draft) => {
+    updateState(draft => {
       draft.editorWidth = size;
     });
   }, []);
   const onSplitPaneHeightChange = useCallback((size: number) => {
-    updateState((draft) => {
+    updateState(draft => {
       draft.editorHeight = size;
     });
   }, []);
   const onSplitPanePathHeightChange = useCallback((size: number) => {
-    updateState((draft) => {
+    updateState(draft => {
       draft.pathHeight = size;
     });
   }, []);
   const onResultClose = useCallback(
     (id: string) => {
-      updateState((draft) => {
-        draft.resultData = [...filter(resultData, (item) => item.id !== id)];
+      updateState(draft => {
+        draft.resultData = [...filter(resultData, item => item.id !== id)];
       });
     },
-    [resultData]
+    [resultData],
   );
   const handleQuery = (
     limit: number,
     conditions: Array<{ property: string; value: string; operator: string }>,
-    queryParams: string
+    queryParams: string,
   ) => {
     if (activeTab === IQUIRE_LIST[0].key) {
       onStatementQuery({
         graphName: currentGraphName,
-        script,
-      }).then((res) => {
-        updateState((draft) => {
+        script: editorRef?.current?.codeEditor?.getValue() || script,
+      }).then(res => {
+        updateState(draft => {
           draft.resultData = [...resultData, { ...res, id: uniqueId('id_') }];
         });
       });
@@ -236,8 +237,8 @@ export const GraphQuery = () => {
         path: queryParams,
         limit,
         conditions,
-      }).then((res) => {
-        updateState((draft) => {
+      }).then(res => {
+        updateState(draft => {
           draft.resultData = [...resultData, { ...res, id: uniqueId('id_') }];
           draft.script = res.script;
         });
@@ -249,8 +250,8 @@ export const GraphQuery = () => {
         limit,
         conditions,
         nodes: queryParams,
-      }).then((res) => {
-        updateState((draft) => {
+      }).then(res => {
+        updateState(draft => {
           draft.resultData = [...resultData, { ...res, id: uniqueId('id_') }];
           draft.script = res.script;
         });
@@ -267,7 +268,7 @@ export const GraphQuery = () => {
           }}
         />
         <Select
-          onChange={(value) => {
+          onChange={value => {
             window.location.href = `${location.pathname}?graphName=${value}`;
           }}
           defaultValue={currentGraphName}
@@ -278,13 +279,13 @@ export const GraphQuery = () => {
         defaultActiveKey="statement"
         centered
         items={IQUIRE_LIST}
-        onChange={(val) => {
-          updateState((draft) => {
+        onChange={val => {
+          updateState(draft => {
             draft.activeTab = val;
           });
         }}
       >
-        {map(IQUIRE_LIST, (item) => (
+        {map(IQUIRE_LIST, item => (
           <Tabs.TabPane tab={item.label} key={item.key} />
         ))}
       </Tabs>
@@ -327,9 +328,9 @@ export const GraphQuery = () => {
                 null,
                 `${
                   history.location.pathname + history.location.search
-                }#procedure`
+                }#procedure`,
               );
-              updateState((draft) => {
+              updateState(draft => {
                 draft.storedVisible = true;
               });
             }}
@@ -337,9 +338,7 @@ export const GraphQuery = () => {
         </Popover>
         <Button
           onClick={() => {
-            history.push(
-              `/construct?graphName=${currentGraphName}`
-            );
+            history.push(`/construct?graphName=${currentGraphName}`);
           }}
         >
           返回图构建
@@ -390,12 +389,12 @@ export const GraphQuery = () => {
                     ...getLocalData(`TUGRAPH_STATEMENT_LISTS`),
                     [currentGraphName]: map(
                       getLocalData(`TUGRAPH_STATEMENT_LISTS`)[currentGraphName],
-                      (item) => {
+                      item => {
                         if (item.id === editorKey) {
                           return { ...item, script };
                         }
                         return item;
-                      }
+                      },
                     ),
                   });
                   message.success('保存成功');
@@ -409,12 +408,12 @@ export const GraphQuery = () => {
                 type="text"
                 icon={<AppstoreAddOutlined />}
                 onClick={() => {
-                  updateState((draft) => {
+                  updateState(draft => {
                     draft.queryList = [
                       ...(isEmpty(
                         getLocalData('TUGRAPH_STATEMENT_LISTS')[
                           currentGraphName
-                        ]
+                        ],
                       )
                         ? []
                         : getLocalData('TUGRAPH_STATEMENT_LISTS')[
@@ -443,7 +442,7 @@ export const GraphQuery = () => {
                   const addData = {
                     [currentGraphName]: [].concat(
                       localData[currentGraphName],
-                      addItem
+                      addItem,
                     ),
                   };
                   const saveData = Object.assign(localData, addData);
@@ -472,8 +471,8 @@ export const GraphQuery = () => {
         查看图模型
         <Switch
           defaultChecked
-          onChange={(val) => {
-            updateState((draft) => {
+          onChange={val => {
+            updateState(draft => {
               draft.isListShow = val;
               if (val) {
                 draft.editorWidth = editorWidth;
@@ -492,15 +491,15 @@ export const GraphQuery = () => {
           <StatementList
             list={queryList}
             garphName={currentGraphName}
-            onSelect={(activeId) => {
+            onSelect={activeId => {
               const value = find(
                 getLocalData('TUGRAPH_STATEMENT_LISTS')[currentGraphName],
-                (item) => item.id === activeId
+                item => item.id === activeId,
               )?.script;
               if (!isEmpty(editor)) {
                 editor?.editorInstance?.setValue?.(value);
               }
-              updateState((draft) => {
+              updateState(draft => {
                 draft.editorKey = activeId;
                 draft.script = value;
               });
@@ -524,7 +523,7 @@ export const GraphQuery = () => {
                         styles[`${PUBLIC_PERFIX_CLASS}-right-center`],
                         styles[`${PUBLIC_PERFIX_CLASS}-split-pane`],
                       ],
-                      ' '
+                      ' ',
                     )}
                   >
                     <SplitPane
@@ -542,27 +541,27 @@ export const GraphQuery = () => {
                           marginTop: 20,
                         }}
                       >
-                        <GremlinEditor
-                          gremlinId="test"
-                          initValue={script}
-                          onInit={(initEditor) => {
-                            updateState((draft) => {
+                        <CypherEdit
+                          ref={editorRef}
+                          value={script}
+                          onChange={(value: any) => {
+                            updateState(draft => {
+                              draft.script = value;
+                            });
+                          }}
+                          onInit={(initEditor: any) => {
+                            updateState(draft => {
                               draft.editor = initEditor;
                               if (editorKey) {
                                 const value = find(
                                   getLocalData('TUGRAPH_STATEMENT_LISTS')[
                                     currentGraphName
                                   ],
-                                  (item) => item.id === editorKey
+                                  item => item.id === editorKey,
                                 )?.script;
-                                initEditor?.editorInstance?.setValue?.(value);
+                                initEditor?.setValue?.(value);
                                 draft.script = value;
                               }
-                            });
-                          }}
-                          onValueChange={(val) => {
-                            updateState((draft) => {
-                              draft.script = val;
                             });
                           }}
                         />
@@ -674,9 +673,9 @@ export const GraphQuery = () => {
           window.history.replaceState(
             null,
             null,
-            `${history.location.pathname + history.location.search}`
+            `${history.location.pathname + history.location.search}`,
           );
-          updateState((draft) => {
+          updateState(draft => {
             draft.storedVisible = false;
           });
         }}
