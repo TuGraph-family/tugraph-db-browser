@@ -1,7 +1,7 @@
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Divider, Dropdown, Menu, Space, Tooltip, message } from 'antd';
 import { isEmpty } from 'lodash';
-import { history } from 'umi'
+import { history } from 'umi';
 import React from 'react';
 import { useImmer } from 'use-immer';
 import { useAuth } from '@/components/studio/hooks/useAuth';
@@ -16,10 +16,10 @@ export const UserCenter: React.FC<Prop> = () => {
   });
   const { isEditPassword } = state;
   const handleLogout = () => {
-    onLogout().then((res) => {
+    onLogout().then(res => {
       if (res.errorCode == 200) {
         setLocalData('TUGRAPH_TOKEN', '');
-        history.push('/login')
+        history.push('/login');
       } else {
         message.error('登出失败' + res.errorMessage);
       }
@@ -31,9 +31,10 @@ export const UserCenter: React.FC<Prop> = () => {
       label: (
         <div
           onClick={() => {
-            updateState((draft) => {
-              draft.isEditPassword = true;
-            });
+            // updateState(draft => {
+            //   draft.isEditPassword = true;
+            // });
+            history.push('/resetPassword');
           }}
         >
           修改密码
@@ -68,7 +69,7 @@ export const UserCenter: React.FC<Prop> = () => {
       <EditPasswordModal
         open={isEditPassword}
         onCancel={() => {
-          updateState((draft) => {
+          updateState(draft => {
             draft.isEditPassword = false;
           });
         }}

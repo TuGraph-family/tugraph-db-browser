@@ -1,6 +1,6 @@
 import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Form, Input, message } from 'antd';
-import { history } from 'umi'
+import { history } from 'umi';
 import { useCallback } from 'react';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
@@ -26,13 +26,18 @@ export const Login = () => {
     const values = await form.validateFields();
     if (values) {
       try {
-        onLogin(values).then((res) => {
+        onLogin(values).then(res => {
           if (res.errorCode == 200) {
             message.success('登录成功！');
-            setLocalData('TUGRAPH_TOKEN', res.data.authorization);
-            setLocalData('TUGRAPH_USER_NAME', values.userName);
-            // 登录成功后跳转到首页
-            window.open(window.location.origin + '/home', '_self');
+            if (res?.data?.default_password) {
+              setLocalData('TUGRAPH_TOKEN', '');
+              window.open(window.location.origin + '/resetPassword', '_self');
+            } else {
+              setLocalData('TUGRAPH_TOKEN', res.data.authorization);
+              setLocalData('TUGRAPH_USER_NAME', values.userName);
+              // 登录成功后跳转到首页
+              window.open(window.location.origin + '/home', '_self');
+            }
           } else {
             message.error('登录失败！' + res.errorMessage);
           }
@@ -45,8 +50,8 @@ export const Login = () => {
 
   if (localStorage.getItem('TUGRAPH_TOKEN')) {
     // 已经登录过，则跳转到首页
-    history.push('/home')
-    return
+    history.push('/home');
+    return;
   }
   return (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-login-container`]}>
@@ -105,7 +110,7 @@ export const Login = () => {
             >
               <Input.Password
                 placeholder="密码"
-                iconRender={(visible) =>
+                iconRender={visible =>
                   visible ? <EyeOutlined /> : <EyeInvisibleOutlined />
                 }
               />

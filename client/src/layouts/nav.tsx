@@ -5,10 +5,10 @@ import { Col, Row } from 'antd';
 import { useState } from 'react';
 import { history, useLocation } from 'umi';
 import styles from './index.less';
-const Nav = () => {
+const Nav = ({ linkView = true }) => {
   const location = useLocation();
   const [curPath, setPath] = useState<any>(
-    location?.pathname === '/' ? '/home' : location?.pathname
+    location?.pathname === '/' ? '/home' : location?.pathname,
   );
 
   return (
@@ -20,21 +20,23 @@ const Nav = () => {
         ></img>
       </Col>
       <Col span={18}>
-        <div className={styles.links}>
-          {APP_LINKS.map(({ title, key, path }) => {
-            return (
-              <div
-                className={path === curPath ? styles?.linked : styles?.link}
-                key={key}
-                onClick={() => {
-                  history.push(path);
-                }}
-              >
-                {title}
-              </div>
-            );
-          })}
-        </div>
+        {linkView && (
+          <div className={styles.links}>
+            {APP_LINKS.map(({ title, key, path }) => {
+              return (
+                <div
+                  className={path === curPath ? styles?.linked : styles?.link}
+                  key={key}
+                  onClick={() => {
+                    history.push(path);
+                  }}
+                >
+                  {title}
+                </div>
+              );
+            })}
+          </div>
+        )}
       </Col>
       <Col span={3}>
         <div className={styles?.userInfo}>

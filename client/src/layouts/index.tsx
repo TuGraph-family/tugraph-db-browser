@@ -5,7 +5,11 @@ import { Outlet, useLocation } from 'umi';
 import styles from './index.less';
 
 export const Container = (props: React.ComponentProps<any>) => {
-  return <div className={styles?.umiContainer}>{props?.children}</div>;
+  return (
+    <div className={styles?.umiContainer} style={props?.style}>
+      {props?.children}
+    </div>
+  );
 };
 
 export const ConsoleContainer = (props: React.ComponentProps<any>) => {
@@ -29,7 +33,7 @@ export default function Layout() {
   const location = useLocation();
   useEffect(() => {
     const current: any = routes.findLast(({ path }) =>
-      `${location.pathname}`.includes(path)
+      `${location.pathname}`.includes(path),
     );
     document.title = current?.title + '- Openpiece';
   }, [location]);

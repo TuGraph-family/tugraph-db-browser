@@ -1,1 +1,1 @@
-export const EngineServerURL = '120.27.17.199:9090/LGraphHttpService/Query';
+export const EngineServerURL = '100.83.30.35:9093/LGraphHttpService/Query';

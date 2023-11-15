@@ -15,7 +15,7 @@ const request = extend({
   crossOrigin: true, // 开启CORS跨域
 });
 // 中间件
-request.interceptors.response.use(async (response) => {
+request.interceptors.response.use(async response => {
   const data = await response.clone().json();
   if (data.errorCode === 401) {
     message.warning('登录过期，请重新登录');
