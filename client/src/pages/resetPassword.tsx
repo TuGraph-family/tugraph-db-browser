@@ -134,7 +134,7 @@ const ResetPassword = () => {
           }).then(res => {
             if (res.success) {
               message.success('密码修改成功');
-              window.open(window.location.origin + '/home', '_self');
+              window.open(window.location.origin + '/login', '_self');
             }
           });
         } else {
