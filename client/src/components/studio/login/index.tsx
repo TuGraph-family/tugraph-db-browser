@@ -1,13 +1,13 @@
 import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Form, Input, message } from 'antd';
 import { history } from 'umi';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import type { Engine } from 'tsparticles-engine';
 import { PUBLIC_PERFIX_CLASS } from '../constant';
 import { useAuth } from '../hooks/useAuth';
-import { setLocalData } from '../utils/localStorage';
+import { getLocalData, setLocalData } from '../utils/localStorage';
 import particlesOptions from './particles-config';
 
 import styles from './index.module.less';
@@ -24,6 +24,7 @@ export const Login = () => {
 
   const login = async () => {
     const values = await form.validateFields();
+    setLocalData('TUGRAPH_PRE_USER', values?.userName);
     if (values) {
       try {
         onLogin(values).then(res => {
@@ -52,6 +53,12 @@ export const Login = () => {
     history.push('/home');
     return;
   }
+  useEffect(() => {
+    const preUser = getLocalData('TUGRAPH_PRE_USER') || '';
+    if (preUser && form && typeof preUser === 'string') {
+      form.setFieldValue('userName', preUser);
+    }
+  }, []);
   return (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-login-container`]}>
       <img
