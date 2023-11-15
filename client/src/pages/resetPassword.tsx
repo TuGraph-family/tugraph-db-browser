@@ -141,9 +141,7 @@ const ResetPassword = () => {
           message.error('新密码不一致，请重新输入');
         }
       })
-      .catch(err => {
-        console.log(err, 'err');
-      });
+      .catch(err => {});
   };
 
   return (
