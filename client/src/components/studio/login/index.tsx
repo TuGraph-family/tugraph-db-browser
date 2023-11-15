@@ -28,13 +28,12 @@ export const Login = () => {
       try {
         onLogin(values).then(res => {
           if (res.errorCode == 200) {
+            setLocalData('TUGRAPH_USER_NAME', values.userName);
+            setLocalData('TUGRAPH_TOKEN', res.data.authorization);
             message.success('登录成功！');
             if (res?.data?.default_password) {
-              setLocalData('TUGRAPH_TOKEN', '');
               window.open(window.location.origin + '/resetPassword', '_self');
             } else {
-              setLocalData('TUGRAPH_TOKEN', res.data.authorization);
-              setLocalData('TUGRAPH_USER_NAME', values.userName);
               // 登录成功后跳转到首页
               window.open(window.location.origin + '/home', '_self');
             }
