@@ -16,6 +16,9 @@
     padding: 0 24px;
     .@{perfix-cls}-headerLeft {
       width: 185px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       :global {
         .ant-select {
           width: 152px;
@@ -136,6 +139,16 @@
     }
     .ant-modal-footer {
       border-top: none;
+    }
+  }
+}
+
+.@{perfix-cls}-select {
+  display: inline-block;
+  :global {
+    .ant-select-selection-item {
+      display: inline-block;
+      width: 80px;
     }
   }
 }
