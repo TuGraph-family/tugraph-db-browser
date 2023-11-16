@@ -84,6 +84,9 @@ export const EditNodesEdges: React.FC<Prop> = ({
     );
   };
   const operateEdit = (record: AttrData) => {
+    if (isPrimaryField(record.name)) {
+      return <Button type="text">主键</Button>
+    }
     return (
       <>
         <Button
@@ -340,7 +343,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
     {
       title: '属性',
       dataIndex: 'propertyName',
-      width: '20%',
+      width: '40%',
       key: 'propertyName',
       editable: true,
       editorConfig: (record: IndexData) => {
@@ -356,7 +359,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
     {
       title: '唯一',
       dataIndex: 'isUnique',
-      width: '17.5%',
+      width: '25%',
       key: 'isUnique',
       editable: true,
       editorConfig: (record: IndexData) => {
@@ -375,32 +378,32 @@ export const EditNodesEdges: React.FC<Prop> = ({
         };
       },
     },
-    {
-      title: (
-        <>
-          主键
-          <Tooltip title="主键必须是唯一索引">
-            <QuestionCircleOutlined />
-          </Tooltip>
-        </>
-      ),
-      dataIndex: 'primaryField',
-      width: '17.5%',
-      key: 'primaryField',
-      editable: true,
-      editorConfig: (record: IndexData) => {
-        return {
-          inputType: EditType.SELECT,
-          prop: {
-            options: [
-              { label: '否', value: false },
-              { label: '是', value: true },
-            ],
-            disabled: record.disabled,
-          },
-        };
-      },
-    },
+    // {
+    //   title: (
+    //     <>
+    //       主键
+    //       <Tooltip title="主键必须是唯一索引">
+    //         <QuestionCircleOutlined />
+    //       </Tooltip>
+    //     </>
+    //   ),
+    //   dataIndex: 'primaryField',
+    //   width: '17.5%',
+    //   key: 'primaryField',
+    //   editable: true,
+    //   editorConfig: (record: IndexData) => {
+    //     return {
+    //       inputType: EditType.SELECT,
+    //       prop: {
+    //         options: [
+    //           { label: '否', value: false },
+    //           { label: '是', value: true },
+    //         ],
+    //         disabled: record.disabled,
+    //       },
+    //     };
+    //   },
+    // },
     {
       title: '操作',
       dataIndex: 'operate',
