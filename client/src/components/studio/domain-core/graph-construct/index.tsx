@@ -191,7 +191,14 @@ export const GraphConstruct = () => {
     [graphCanvasContextValue]
   );
   const dealEdges = (edges: Array<any>) => {
-    return Utils.processEdges([...edges], { poly: 50, loop: 10 });
+    const renderEdges = Utils.processEdges([...edges], { poly: 50, loop: 10 })
+    renderEdges.forEach(d => {
+      if (d.style?.label?.offset) {
+        // 删掉 offset，否则渲染的文本会重叠到一起，https://aone.alipay.com/v2/project/28400317/bug#viewIdentifier=a6498b4c967d6d4e928ff630&openWorkitemIdentifier=101158780
+        delete d.style?.label?.offset
+      }
+    })
+    return renderEdges;
   };
 
   const createLabelSchema = (newSchema: LabelSchema) => {

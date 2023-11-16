@@ -9,6 +9,7 @@ import { PUBLIC_PERFIX_CLASS } from '../constant';
 import { useAuth } from '../hooks/useAuth';
 import { getLocalData, setLocalData } from '../utils/localStorage';
 import particlesOptions from './particles-config';
+import DEFAULT_STYLE_CONFIG from '@/constants/DEFAULT_STYLE_CONFIG';
 
 import styles from './index.module.less';
 
@@ -35,6 +36,13 @@ export const Login = () => {
             if (res?.data?.default_password) {
               window.open(window.location.origin + '/resetPassword', '_self');
             } else {
+              // 登录成功以后，设置默认的样式到 localstorage 中
+              const customStyleConfig = JSON.parse(localStorage.getItem('CUSTOM_STYLE_CONFIG') as string || '{}')
+              const styleConfig = {
+                ...DEFAULT_STYLE_CONFIG,
+                ...customStyleConfig
+              }
+              localStorage.setItem('CUSTOM_STYLE_CONFIG', JSON.stringify(styleConfig))
               // 登录成功后跳转到首页
               window.open(window.location.origin + '/home', '_self');
             }
