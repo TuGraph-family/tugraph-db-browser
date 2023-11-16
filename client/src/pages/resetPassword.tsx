@@ -39,7 +39,7 @@ const PopoverCheckInput = (props: PopoverCheckInputInterFace) => {
   const { value, onChange, itemProps, form, ...otherProps } = props;
   const [state, setState] = useState({
     level: '低',
-    levelProgress: 1,
+    levelProgress: 0,
   });
   const Content = () => {
     return (
@@ -109,6 +109,11 @@ const PopoverCheckInput = (props: PopoverCheckInputInterFace) => {
             setState({
               level: '低',
               levelProgress: 1,
+            });
+          } else {
+            setState({
+              level: '低',
+              levelProgress: 0,
             });
           }
           onChange && onChange(e);
