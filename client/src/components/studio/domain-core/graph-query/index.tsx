@@ -273,6 +273,8 @@ export const GraphQuery = () => {
           }}
           defaultValue={currentGraphName}
           options={graphListOptions}
+          style={{ fontSize: 16 }}
+          className={styles[`${PUBLIC_PERFIX_CLASS}-select`]}
         />
       </div>
       <Tabs
