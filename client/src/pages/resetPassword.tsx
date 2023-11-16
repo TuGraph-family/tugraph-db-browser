@@ -3,10 +3,19 @@ import Nav from '@/layouts/nav';
 import { CloseCircleFilled, CheckCircleFilled } from '@ant-design/icons';
 import styles from './resetPassword.less';
 
-import { Form, Popover, Input, Button, Progress, message } from 'antd';
+import {
+  Form,
+  Popover,
+  Input,
+  Button,
+  Progress,
+  message,
+  ProgressProps,
+} from 'antd';
 import { FormItemProps, FormInstance } from 'antd';
 import { useState } from 'react';
 import { useUser } from '@/components/studio/hooks/useUser';
+import React from 'react';
 
 const Item = Form.Item;
 const useForm = Form.useForm;
@@ -37,6 +46,14 @@ export interface PopoverCheckInputInterFace {
 
 const PopoverCheckInput = (props: PopoverCheckInputInterFace) => {
   const { value, onChange, itemProps, form, ...otherProps } = props;
+
+  const levelMap = new Map<number, string>([
+    [0, '#ff4d4f'],
+    [1, '#ff4d4f'],
+    [2, '#ffa000'],
+    [3, '#52c41a'],
+  ]);
+
   const [state, setState] = useState({
     level: '低',
     levelProgress: 0,
@@ -46,8 +63,8 @@ const PopoverCheckInput = (props: PopoverCheckInputInterFace) => {
       <div className={styles?.checkContent}>
         <div className={styles?.checkProgress}>
           <Progress
-            percent={33.33 * state.levelProgress}
-            status="success"
+            percent={!value ? 0 : 10 + 30 * state.levelProgress}
+            strokeColor={levelMap.get(state.levelProgress)}
             showInfo={false}
           />
           <div className={styles?.checkLevel}>{state.level}</div>
