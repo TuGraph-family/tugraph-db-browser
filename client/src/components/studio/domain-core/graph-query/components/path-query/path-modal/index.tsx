@@ -51,15 +51,63 @@ export const PathModal: React.FC<PathModalProp> = ({
     tabList: [],
   });
   const { tabList } = state;
+  const FormItems = () => (
+    <>
+      {map(tabList, item => (
+        <Tabs.TabPane key={item.name} tab={item.name}>
+          <Row>
+            {item.properties?.length ? (
+              map(item.properties, propey => (
+                <Col span={12}>
+                  <Item
+                    name={[item.name, propey.name, 'property']}
+                    initialValue={`${item.id}.${propey.name}`}
+                    label={propey.name}
+                  />
+                  <Input.Group compact>
+                    <Item name={[item.name, propey.name, 'operator']}>
+                      <Select
+                        className={styles[`${PUBLIC_PERFIX_CLASS}-div-select`]}
+                        placeholder="选择关系"
+                        options={getConnectOptions(propey.type)}
+                      />
+                    </Item>
+                    <Item name={[item.name, propey.name, 'value']}>
+                      {propey.type === 'BOOL' ? (
+                        <Select
+                          className={styles[`${PUBLIC_PERFIX_CLASS}-div-ipt`]}
+                        >
+                          <Select.Option value={true}>是</Select.Option>
+                          <Select.Option value={false}>否</Select.Option>
+                        </Select>
+                      ) : (
+                        <Input
+                          className={styles[`${PUBLIC_PERFIX_CLASS}-div-ipt`]}
+                        />
+                      )}
+                    </Item>
+                  </Input.Group>
+                </Col>
+              ))
+            ) : (
+              <div className={styles[`${PUBLIC_PERFIX_CLASS}-empty`]}>
+                无可配置项
+              </div>
+            )}
+          </Row>
+        </Tabs.TabPane>
+      ))}
+    </>
+  );
   useEffect(() => {
-    updateState((draft) => {
+    updateState(draft => {
       draft.tabList = flatMapDeep(
         map(path, (item, index) => {
           return [
             ...(index === 0
               ? [
                   {
-                    ...find(nodes, (node) => node.labelName === item.source),
+                    ...find(nodes, node => node.labelName === item.source),
                     name: `n${index} | ${item.source}`,
                     id: `n${index}`,
                   },
@@ -71,12 +119,12 @@ export const PathModal: React.FC<PathModalProp> = ({
               id: `r${index}`,
             },
             {
-              ...find(nodes, (node) => node.labelName === item.target),
+              ...find(nodes, node => node.labelName === item.target),
               name: `n${index + 1} | ${item.target}`,
               id: `n${index + 1}`,
             },
           ];
-        })
+        }),
       );
     });
   }, [path]);
@@ -87,11 +135,11 @@ export const PathModal: React.FC<PathModalProp> = ({
       title="高级配置"
       visible={open}
       onOk={() => {
-        form.validateFields().then((val) => {
+        form.validateFields().then(val => {
           const { limit } = val;
           const conditions = filter(
-            flatMapDeep(map(tabList, (item) => toArray(val[item.name]))),
-            (item) => item.operator && item.value
+            flatMapDeep(map(tabList, item => toArray(val[item.name]))),
+            item => item.operator && item.value,
           );
           onOK({ limit, conditions });
           onCancel();
@@ -110,56 +158,7 @@ export const PathModal: React.FC<PathModalProp> = ({
           <InputNumber placeholder="请输入路径数目" />
         </Item>
         <Tabs>
-          {map(tabList, (item) => (
-            <Tabs.TabPane key={item.name} tab={item.name}>
-              <Row>
-                {item.properties?.length ? (
-                  map(item.properties, (propey) => (
-                    <Col span={12}>
-                      <Item
-                        name={[item.name, propey.name, 'property']}
-                        initialValue={`${item.id}.${propey.name}`}
-                        label={propey.name}
-                      />
-                      <Input.Group compact>
-                        <Item name={[item.name, propey.name, 'operator']}>
-                          <Select
-                            className={
-                              styles[`${PUBLIC_PERFIX_CLASS}-div-select`]
-                            }
-                            placeholder="选择关系"
-                            options={getConnectOptions(propey.type)}
-                          />
-                        </Item>
-                        <Item name={[item.name, propey.name, 'value']}>
-                          {propey.type === 'BOOL' ? (
-                            <Select
-                              className={
-                                styles[`${PUBLIC_PERFIX_CLASS}-div-ipt`]
-                              }
-                            >
-                              <Select.Option value={true}>是</Select.Option>
-                              <Select.Option value={false}>否</Select.Option>
-                            </Select>
-                          ) : (
-                            <Input
-                              className={
-                                styles[`${PUBLIC_PERFIX_CLASS}-div-ipt`]
-                              }
-                            />
-                          )}
-                        </Item>
-                      </Input.Group>
-                    </Col>
-                  ))
-                ) : (
-                  <div className={styles[`${PUBLIC_PERFIX_CLASS}-empty`]}>
-                    无可配置项
-                  </div>
-                )}
-              </Row>
-            </Tabs.TabPane>
-          ))}
+          <FormItems />
         </Tabs>
       </Form>
     </Modal>
