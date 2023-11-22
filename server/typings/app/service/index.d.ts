@@ -7,6 +7,7 @@ type AnyClass = new (...args: any[]) => any;
 type AnyFunc<T = any> = (...args: any[]) => T;
 type CanExportFunc = AnyFunc<Promise<any>> | AnyFunc<IterableIterator<any>>;
 type AutoInstanceType<T, U = T extends CanExportFunc ? T : T extends AnyFunc ? ReturnType<T> : T> = U extends AnyClass ? InstanceType<U> : U;
+import ExportTugraphAlgorithm from '../../../app/service/tugraph/algorithm';
 import ExportTugraphAuth from '../../../app/service/tugraph/auth';
 import ExportTugraphConstant from '../../../app/service/tugraph/constant';
 import ExportTugraphData from '../../../app/service/tugraph/data';
@@ -19,6 +20,7 @@ import ExportTugraphSubgraph from '../../../app/service/tugraph/subgraph';
 declare module 'egg' {
   interface IService {
     tugraph: {
+      algorithm: AutoInstanceType<typeof ExportTugraphAlgorithm>;
       auth: AutoInstanceType<typeof ExportTugraphAuth>;
       constant: AutoInstanceType<typeof ExportTugraphConstant>;
       data: AutoInstanceType<typeof ExportTugraphData>;
