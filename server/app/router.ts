@@ -24,6 +24,25 @@ export default (app: Application) => {
     controller.tugraph.algorithm.uploadAlgorithm,
   );
 
+  router.post(
+    '/api/query/listProceduresAlgorithm',
+    controller.tugraph.algorithm.listProceduresAlgorithm,
+  );
+
+  router.post(
+    '/api/query/deleteAlgorithm,',
+    controller.tugraph.algorithm.deleteAlgorithm,
+  );
+
+  router.post(
+    '/api/query/callAlgorithm,',
+    controller.tugraph.algorithm.callAlgorithm,
+  );
+  router.post(
+    '/api/query/getProceduresAlgorithm',
+    controller.tugraph.algorithm.getProceduresAlgorithm,
+  );
+
   // 静态资源路由
   router.get('/', controller.home.index);
   router.get('/login', controller.home.index);

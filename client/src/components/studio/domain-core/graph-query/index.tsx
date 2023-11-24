@@ -531,7 +531,7 @@ export const GraphQuery = () => {
                     <SplitPane
                       split="vertical"
                       primary="second"
-                      defaultSize={editorWidth}
+                      defaultSize={isListShow ? editorWidth : 0}
                       onChange={onSplitPaneWidthChange}
                     >
                       <div
@@ -568,7 +568,7 @@ export const GraphQuery = () => {
                           }}
                         />
                       </div>
-                      {isListShow && (
+                      {isListShow ? (
                         <div
                           style={{
                             width: editorWidth,
@@ -580,7 +580,7 @@ export const GraphQuery = () => {
                         >
                           <ModelOverview graphName={currentGraphName} />
                         </div>
-                      )}
+                      ) : null}
                     </SplitPane>
                   </div>
                   <div
