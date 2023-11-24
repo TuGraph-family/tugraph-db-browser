@@ -5,7 +5,11 @@ const plugin: EggPlugin = {
     enable: true,
     package: 'egg-cors',
   },
-  static: true,
+  // static: true,
+  // assets: {
+  //   enable: true,
+  //   package: 'egg-view-assets',
+  // },
   nunjucks: {
     enable: true,
     package: 'egg-view-nunjucks',

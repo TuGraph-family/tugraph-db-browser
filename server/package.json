@@ -21,16 +21,17 @@
     "ci": "npm run lint && npm run cov && npm run tsc",
     "autod": "autod",
     "lint": "eslint . --ext .ts --resolve-plugins-relative-to .",
-    "clean": "ets clean"
+    "clean": "ets clean",
+    "sycnfile": "node sync-static-file.js"
   },
   "dependencies": {
     "egg": "^2.6.1",
     "egg-cors": "^2.2.3",
     "egg-scripts": "^2.6.0",
+    "egg-view-assets": "^1.9.0",
     "egg-view-nunjucks": "^2.3.0",
     "gremlin_patch": "^3.5.1",
-    "lodash": "^4.17.21",
-    "neo4j-driver": "^4.4.6"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.40",

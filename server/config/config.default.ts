@@ -1,4 +1,5 @@
 import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
+import path from 'path'
 
 export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig>;
@@ -13,6 +14,11 @@ export default (appInfo: EggAppInfo) => {
   config.errorHandler = {
     enable: true,
   };
+
+  config.static = {
+    prefix: '/',
+    dir: path.join(appInfo.baseDir, 'app/view')
+  }
 
   config.multipart = {
     mode: 'file',
@@ -49,6 +55,10 @@ export default (appInfo: EggAppInfo) => {
       '.html': 'nunjucks',
     },
   };
+
+  // config.assets = {
+  //   publicPath: 'app/public',
+  // }
 
   config.cluster = {
     listen: {
