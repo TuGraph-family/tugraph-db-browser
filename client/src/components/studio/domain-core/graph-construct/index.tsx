@@ -191,13 +191,13 @@ export const GraphConstruct = () => {
     [graphCanvasContextValue],
   );
   const dealEdges = (edges: Array<any>) => {
-    const renderEdges = Utils.processEdges([...edges], { poly: 50, loop: 10 })
+    const renderEdges = Utils.processEdges([...edges], { poly: 50, loop: 10 });
     renderEdges.forEach(d => {
       if (d.style?.label?.offset) {
         // 删掉 offset，否则渲染的文本会重叠到一起，https://aone.alipay.com/v2/project/28400317/bug#viewIdentifier=a6498b4c967d6d4e928ff630&openWorkitemIdentifier=101158780
-        delete d.style?.label?.offset
+        delete d.style?.label?.offset;
       }
-    })
+    });
     return renderEdges;
   };
 
@@ -216,7 +216,8 @@ export const GraphConstruct = () => {
     } as LabelSchema;
     if (labelType === 'node') {
       if (
-        filter(newSchema.properties, item => item.primaryField === true).length > 1
+        filter(newSchema.properties, item => item.primaryField === true)
+          .length > 1
       ) {
         return message.error('主键必须唯一');
       }
@@ -231,7 +232,7 @@ export const GraphConstruct = () => {
     } else {
       params.edgeConstraints = newSchema?.edgeConstraints ?? [];
     }
-    
+
     if (isEmpty(params.primaryField) && labelType === 'node') {
       return message.error('请设置主键');
     }
@@ -397,219 +398,228 @@ export const GraphConstruct = () => {
     >
       {header}
       {currentStep === 0 ? operate : null}
-      <NodesEdgesList
-        graphName={currentGraphName}
-        isActiveItem={isActiveItem}
-        onClick={(item, type) => {
-          const edgeChildrenList = filter(
-            nodesEdgesListTranslator('edge', data),
-            edge => edge.label === item.labelName,
-          );
-          onEditShow();
-          const isEdges = edgeChildrenList.length !== 1 && type === 'edge';
-          setState(draft => {
-            draft.activeElementType = type;
-            draft.labelName = item.labelName;
-            draft.isActiveItem = true;
-            let selectedValue;
-            if (item.edgeConstraints?.length > 0 || type === 'node') {
-              if (isEdges) {
-                selectedValue = edgeChildrenList.map(child => child.id);
-              } else {
-                if (type === 'node') {
-                  selectedValue = item.labelName;
+      <div
+        className={styles[`${PUBLIC_PERFIX_CLASS}-construct-body`]}
+        style={
+          currentStep === 0
+            ? { height: 'calc(100% - 140px)' }
+            : { height: 'calc(100% - 52px)' }
+        }
+      >
+        <NodesEdgesList
+          graphName={currentGraphName}
+          isActiveItem={isActiveItem}
+          onClick={(item, type) => {
+            const edgeChildrenList = filter(
+              nodesEdgesListTranslator('edge', data),
+              edge => edge.label === item.labelName,
+            );
+            onEditShow();
+            const isEdges = edgeChildrenList.length !== 1 && type === 'edge';
+            setState(draft => {
+              draft.activeElementType = type;
+              draft.labelName = item.labelName;
+              draft.isActiveItem = true;
+              let selectedValue;
+              if (item.edgeConstraints?.length > 0 || type === 'node') {
+                if (isEdges) {
+                  selectedValue = edgeChildrenList.map(child => child.id);
                 } else {
-                  selectedValue = edgeChildrenList[0]?.id;
+                  if (type === 'node') {
+                    selectedValue = item.labelName;
+                  } else {
+                    selectedValue = edgeChildrenList[0]?.id;
+                  }
                 }
-              }
-              graphCanvasContextValue.graph?.getNodes().forEach(node => {
-                graphCanvasContextValue.graph?.clearItemStates(node);
-              });
-              graphCanvasContextValue.graph?.getEdges().forEach(node => {
-                graphCanvasContextValue.graph?.clearItemStates(node);
-              });
-              if (Array.isArray(selectedValue)) {
-                selectedValue.forEach(item => {
-                  graphCanvasContextValue.graph.focusItem(item, true);
+                graphCanvasContextValue.graph?.getNodes().forEach(node => {
+                  graphCanvasContextValue.graph?.clearItemStates(node);
+                });
+                graphCanvasContextValue.graph?.getEdges().forEach(node => {
+                  graphCanvasContextValue.graph?.clearItemStates(node);
+                });
+                if (Array.isArray(selectedValue)) {
+                  selectedValue.forEach(item => {
+                    graphCanvasContextValue.graph.focusItem(item, true);
+                    graphCanvasContextValue.graph.setItemState(
+                      item,
+                      'selected',
+                      true,
+                    );
+                  });
+                } else {
+                  graphCanvasContextValue.graph.focusItem(selectedValue, true);
                   graphCanvasContextValue.graph.setItemState(
-                    item,
+                    selectedValue,
                     'selected',
                     true,
                   );
-                });
-              } else {
-                graphCanvasContextValue.graph.focusItem(selectedValue, true);
-                graphCanvasContextValue.graph.setItemState(
-                  selectedValue,
-                  'selected',
-                  true,
-                );
+                }
               }
-            }
-          });
-        }}
-        data={data}
-        currentStep={currentStep}
-        onDelete={(name, type) => {
-          onDeleteLabelSchema({
-            graphName: currentGraphName,
-            labelType: type,
-            labelName: name,
-          }).then(res => {
-            if (res.success) {
-              message.success('删除成功');
-              window.location.reload();
-            } else {
-              message.error('删除失败' + res.errorMessage);
-            }
-          });
-        }}
-      />
-      <GraphCanvasContext.Provider value={{ ...graphCanvasContextValue }}>
-        <div
-          className={styles[`${PUBLIC_PERFIX_CLASS}-construct-canvas`]}
-          style={currentStep !== 0 ? { height: '100vh' } : {}}
-        >
-          <GraphCanvas
-            data={{
-              nodes: nodesEdgesListTranslator('node', data),
-              edges: dealEdges(nodesEdgesListTranslator('edge', data)),
-            }}
-            getGraphCanvasContextValue={getGraphCanvasContextValue}
-            layout={currentLayout}
-          />
-        </div>
-        <div
-          className={styles[`${PUBLIC_PERFIX_CLASS}-construct-canvas-layout`]}
-          style={{
-            right: visible ? 617 : 24,
-          }}
-        >
-          <GraphCanvasTools />
-          <GraphCanvasLayout
-            onLayoutChange={onLayoutChange}
-            currentLayout={currentLayout}
-          />
-        </div>
-      </GraphCanvasContext.Provider>
-      {currentStep === 0 ? (
-        <>
-          {labelName ? (
-            <EditNodesEdges
-              type={activeElementType}
-              data={data}
-              labelName={labelName}
-              currentGraphName={currentGraphName}
-              onRefreshSchema={() => {
-                getGraphSchema(currentGraphName);
-              }}
-              onSwitch={(onShow, onClose) => {
-                setState(draft => {
-                  draft.onEditShow = onShow;
-                  draft.onEditClose = onClose;
-                });
-              }}
-              onVisible={visible => {
-                setState(draft => {
-                  draft.visible = visible;
-                });
-              }}
-            />
-          ) : (
-            <AddNodesEdges
-              onSwitch={(onShow, onClose) => {
-                setState(draft => {
-                  draft.onAddShow = onShow;
-                  draft.onAddClose = onClose;
-                });
-              }}
-              onVisible={visible => {
-                setState(draft => {
-                  draft.visible = visible;
-                });
-              }}
-              type={btnType}
-              data={data}
-              onFinish={createLabelSchema}
-            />
-          )}
-        </>
-      ) : (
-        <ImportData
-          graphName={currentGraphName}
-          onSwitch={(onShow, onClose) => {
-            setState(draft => {
-              draft.onImportShow = onShow;
-              draft.onImportClose = onClose;
             });
           }}
-          activeElementType={activeElementType}
-          activeElementLabelName={labelName}
-          graphData={data}
           data={data}
+          currentStep={currentStep}
+          onDelete={(name, type) => {
+            onDeleteLabelSchema({
+              graphName: currentGraphName,
+              labelType: type,
+              labelName: name,
+            }).then(res => {
+              if (res.success) {
+                message.success('删除成功');
+                window.location.reload();
+              } else {
+                message.error('删除失败' + res.errorMessage);
+              }
+            });
+          }}
         />
-      )}
-      <Modal
-        title="导入模型"
-        width={480}
-        visible={isModelOpen}
-        onCancel={() => {
-          setState(draft => {
-            draft.isModelOpen = false;
-          });
-        }}
-        confirmLoading={ImportGraphSchemaLoading}
-        className={styles[`${PUBLIC_PERFIX_CLASS}-model`]}
-        onOk={() => {
-          onImportGraphSchema({
-            graph: currentGraphName,
-            schema,
-            override,
-          }).then(res => {
-            if (res.success) {
-              message.success('导入成功');
-              window.location.reload();
-              setState(draft => {
-                draft.isModelOpen = false;
-              });
-            } else {
-              message.error('导入失败' + res.errorMessage);
-            }
-          });
-        }}
-      >
-        <div className={styles[`${PUBLIC_PERFIX_CLASS}-upload`]}>
-          <Upload {...uploadProps}>
-            <Button type="ghost" shape="round" icon={<UploadOutlined />}>
-              上传文件
-            </Button>
-          </Upload>
-        </div>
-        <div className={styles[`${PUBLIC_PERFIX_CLASS}-model-demo`]}>
-          <div className={styles[`${PUBLIC_PERFIX_CLASS}-model-json`]}>
-            支持扩展名：.JSON
+        <GraphCanvasContext.Provider value={{ ...graphCanvasContextValue }}>
+          <div
+            className={styles[`${PUBLIC_PERFIX_CLASS}-construct-canvas`]}
+            style={currentStep !== 0 ? { height: '100vh' } : {}}
+          >
+            <GraphCanvas
+              data={{
+                nodes: nodesEdgesListTranslator('node', data),
+                edges: dealEdges(nodesEdgesListTranslator('edge', data)),
+              }}
+              getGraphCanvasContextValue={getGraphCanvasContextValue}
+              layout={currentLayout}
+            />
           </div>
-          <Button
-            type="link"
-            icon={<DownloadOutlined />}
-            onClick={() => {
-              downloadFile(JSON.stringify(demoData), 'demo.json');
+          <div
+            className={styles[`${PUBLIC_PERFIX_CLASS}-construct-canvas-layout`]}
+            style={{
+              right: visible ? 617 : 24,
             }}
           >
-            示例下载
-          </Button>
-        </div>
-
-        <Checkbox
-          onChange={e => {
+            <GraphCanvasTools />
+            <GraphCanvasLayout
+              onLayoutChange={onLayoutChange}
+              currentLayout={currentLayout}
+            />
+          </div>
+        </GraphCanvasContext.Provider>
+        {currentStep === 0 ? (
+          <>
+            {labelName ? (
+              <EditNodesEdges
+                type={activeElementType}
+                data={data}
+                labelName={labelName}
+                currentGraphName={currentGraphName}
+                onRefreshSchema={() => {
+                  getGraphSchema(currentGraphName);
+                }}
+                onSwitch={(onShow, onClose) => {
+                  setState(draft => {
+                    draft.onEditShow = onShow;
+                    draft.onEditClose = onClose;
+                  });
+                }}
+                onVisible={visible => {
+                  setState(draft => {
+                    draft.visible = visible;
+                  });
+                }}
+              />
+            ) : (
+              <AddNodesEdges
+                onSwitch={(onShow, onClose) => {
+                  setState(draft => {
+                    draft.onAddShow = onShow;
+                    draft.onAddClose = onClose;
+                  });
+                }}
+                onVisible={visible => {
+                  setState(draft => {
+                    draft.visible = visible;
+                  });
+                }}
+                type={btnType}
+                data={data}
+                onFinish={createLabelSchema}
+              />
+            )}
+          </>
+        ) : (
+          <ImportData
+            graphName={currentGraphName}
+            onSwitch={(onShow, onClose) => {
+              setState(draft => {
+                draft.onImportShow = onShow;
+                draft.onImportClose = onClose;
+              });
+            }}
+            activeElementType={activeElementType}
+            activeElementLabelName={labelName}
+            graphData={data}
+            data={data}
+          />
+        )}
+        <Modal
+          title="导入模型"
+          width={480}
+          visible={isModelOpen}
+          onCancel={() => {
             setState(draft => {
-              draft.override = e.target.checked;
+              draft.isModelOpen = false;
+            });
+          }}
+          confirmLoading={ImportGraphSchemaLoading}
+          className={styles[`${PUBLIC_PERFIX_CLASS}-model`]}
+          onOk={() => {
+            onImportGraphSchema({
+              graph: currentGraphName,
+              schema,
+              override,
+            }).then(res => {
+              if (res.success) {
+                message.success('导入成功');
+                window.location.reload();
+                setState(draft => {
+                  draft.isModelOpen = false;
+                });
+              } else {
+                message.error('导入失败' + res.errorMessage);
+              }
             });
           }}
         >
-          覆盖当前画布中的模型
-        </Checkbox>
-      </Modal>
+          <div className={styles[`${PUBLIC_PERFIX_CLASS}-upload`]}>
+            <Upload {...uploadProps}>
+              <Button type="ghost" shape="round" icon={<UploadOutlined />}>
+                上传文件
+              </Button>
+            </Upload>
+          </div>
+          <div className={styles[`${PUBLIC_PERFIX_CLASS}-model-demo`]}>
+            <div className={styles[`${PUBLIC_PERFIX_CLASS}-model-json`]}>
+              支持扩展名：.JSON
+            </div>
+            <Button
+              type="link"
+              icon={<DownloadOutlined />}
+              onClick={() => {
+                downloadFile(JSON.stringify(demoData), 'demo.json');
+              }}
+            >
+              示例下载
+            </Button>
+          </div>
+
+          <Checkbox
+            onChange={e => {
+              setState(draft => {
+                draft.override = e.target.checked;
+              });
+            }}
+          >
+            覆盖当前画布中的模型
+          </Checkbox>
+        </Modal>
+      </div>
     </div>
   );
 };

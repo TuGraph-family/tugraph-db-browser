@@ -85,11 +85,6 @@ const NodesEdgesList: React.FC<NodesEdgesListProps> = ({
       onClose={onClose}
       position="left"
       className={styles[`${PUBLIC_PERFIX_CLASS}-nodes-edges-drawer`]}
-      style={
-        currentStep !== 0
-          ? { height: 'calc(100% - 52px)', marginTop: '52px' }
-          : {}
-      }
       width={260}
     >
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-nodes-edges-content`]}>
