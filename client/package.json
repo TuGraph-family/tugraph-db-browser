@@ -1,6 +1,6 @@
 {
   "private": true,
-  "author": "聚则 <zhanning.bzn@antgroup.com>",
+  "author": "baizn<576375879@qq.com>",
   "scripts": {
     "dev": "umi dev",
     "build": "NODE_ENV=production && umi build",
@@ -87,6 +87,5 @@
     "tsparticles-shape-text": "2.9.3",
     "tsparticles-updater-life": "2.9.3",
     "tsparticles-updater-stroke-color": "2.9.3"
-  },
-  "repository": "git@code.alipay.com:Ant_Graph/geaflow-console.git"
+  }
 }

@@ -4,7 +4,6 @@ TuGraph DB BROWSER 是 TuGraph 图数据库的可视化工具。可以完成图�
 ### 0. 环境准备
 
 - node.js
-- python2
 
 ### 1. 安装项目
 
@@ -20,7 +19,7 @@ yarn run bootstrap
 ```bash
 
 # 开发环境
-yarn run client-dev // 一定要 yarn
+yarn run client-dev
 
 ```
 
@@ -40,15 +39,18 @@ yarn run server-dev
 
 ```bash
 
-# 开发环境
+# 安装依赖
+yarn run bootstrap
+
+# 构建
 yarn run build
 
 # 生产环境
-yarn start // 切记，一定要 yarn start，npm run start 会存在若干问题！
+yarn start
 
 ```
 
-浏览器访问 http://localhost:8888
+浏览器访问 http://localhost:7001
 
 
 发布时打压缩包
