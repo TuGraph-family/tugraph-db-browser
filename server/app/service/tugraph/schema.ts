@@ -90,7 +90,7 @@ class TuGraphSchemaService extends Service {
       const indexPromise = indexs.map(async (d) => {
         // 主键即为索引，无需再创建
         if (d.propertyName !== primaryField) {
-          const currentEdgeSchema = await this.createIndex(graphName, d);
+          const currentEdgeSchema = await this.createIndex(graphName, d, true);
           return currentEdgeSchema;
         }
       });
@@ -102,7 +102,7 @@ class TuGraphSchemaService extends Service {
         return responseFormatter(result);
       }
 
-      const indexError = indexsResult?.find((d) => d?.success !== 0);
+      const indexError = indexsResult?.find((d) => !d?.success);
 
       if (indexError) {
         // 说明有索引创建失败，则提示用户

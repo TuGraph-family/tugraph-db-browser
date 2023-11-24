@@ -51,6 +51,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
         id: 'primary-key',
         name: '',
         type: '',
+        primaryField: true,
         optional: false,
       },
     ],
@@ -66,7 +67,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
 
   const propertyList = () => {
     const attrPropertyNames = map(
-      filter(attrList, (attr) => !attr.optional && attr.id !== 'primary-key'),
+      filter(attrList, (attr) => !attr.optional && !attr.primaryField),
       (item) => item.name
     );
     const indexPropertyNames = map(configList, (item) => item.propertyName);
@@ -194,6 +195,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
           inputType: EditType.SELECT,
           prop: {
             defaultValue: false,
+            disabled: record.primaryField,
             options: [
               { label: '否', value: false },
               { label: '是', value: true },
@@ -206,7 +208,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
       title: '操作',
       dataIndex: 'operate',
       key: 'operate',
-      render: (_, record: any) => (record.id === 'primary-key' ? <a style={{ color: 'rgba(54,55,64,1)' }}>主键</a> :
+      render: (_, record: any) => (record.primaryField ? <a style={{ color: 'rgba(54,55,64,1)' }}>主键</a> :
         <Popconfirm
           title="确定要删除吗？"
           onConfirm={() => {

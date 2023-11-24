@@ -5,6 +5,7 @@ export interface SchemaProperties {
   type: string;
   optional?: boolean;
   index?: false;
+  primaryField?: boolean;
 }
 
 export interface IndexParams {
@@ -36,6 +37,7 @@ export interface AttrData {
   type: string;
   optional: boolean;
   disabled?: boolean;
+  primaryField?: boolean;
 }
 export interface IndexData {
   id: string | number;
