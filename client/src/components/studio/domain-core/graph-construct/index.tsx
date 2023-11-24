@@ -216,13 +216,13 @@ export const GraphConstruct = () => {
     } as LabelSchema;
     if (labelType === 'node') {
       if (
-        filter(newSchema.indexs, item => item.primaryField === true).length > 1
+        filter(newSchema.properties, item => item.primaryField === true).length > 1
       ) {
         return message.error('主键必须唯一');
       }
-      (params.primaryField = newSchema.indexs.find(
+      (params.primaryField = newSchema.properties.find(
         item => item.primaryField === true,
-      )?.propertyName),
+      )?.name),
         (params.indexs = newSchema.indexs.map(item => ({
           propertyName: item?.propertyName,
           isUnique: item?.isUnique,
@@ -231,6 +231,7 @@ export const GraphConstruct = () => {
     } else {
       params.edgeConstraints = newSchema?.edgeConstraints ?? [];
     }
+    
     if (isEmpty(params.primaryField) && labelType === 'node') {
       return message.error('请设置主键');
     }

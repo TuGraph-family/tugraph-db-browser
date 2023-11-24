@@ -1,5 +1,7 @@
 import React, { forwardRef } from 'react';
 import { MonacoEnvironment, EditorProvider } from '@difizen/cofine-editor-core';
+import cypherLanguage from '@difizen/cofine-language-cypher'
+
 const Editor = forwardRef<any, any>((props, editorRef) => {
   const { value, onCreated, onChange, language = 'cypher', onInit } = props;
   let codeEditor: monaco.editor.IStandaloneCodeEditor;
@@ -14,8 +16,8 @@ const Editor = forwardRef<any, any>((props, editorRef) => {
   React.useEffect(() => {
     MonacoEnvironment.loadModule(
       async (container: { load: (arg0: Syringe.Module) => void }) => {
-        const dsl = await import('@difizen/cofine-language-cypher');
-        container.load(dsl.default);
+        // const dsl = await import('@difizen/cofine-language-cypher');
+        container.load(cypherLanguage);
       },
     );
     MonacoEnvironment.init().then(async () => {

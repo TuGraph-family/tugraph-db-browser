@@ -531,6 +531,131 @@ const ExecuteResult: React.FC<ResultProps> = ({
       },
     },
   ];
+
+  const IDResultPanel = () => {
+    return  <>
+      <div className={styles[`${PUBLIC_PERFIX_CLASS}-title`]}>
+        <span>{`${
+          activeElementType === 'node' ? '点' : '边'
+        }ID：${id}`}</span>
+        <Tag>{tagName}</Tag>
+      </div>
+      <Form
+        className={styles[`${PUBLIC_PERFIX_CLASS}-form`]}
+        disabled={formDisable}
+        layout="vertical"
+        form={form}
+      >
+        {map(properties, (value, name) => {
+          const property = find(
+            propertyTypes,
+            (item) => item.name === name
+          );
+          if (PROPERTY_TYPE[property?.type] === 'boolean') {
+            return (
+              <Form.Item
+                label={
+                  <>
+                    <div>{name}</div>
+                    <Tooltip title="复制">
+                      <IconFont
+                        type="icon-fuzhi1"
+                        className={
+                          styles[`${PUBLIC_PERFIX_CLASS}-icon-copy`]
+                        }
+                        onClick={() => {
+                          copy(form.getFieldValue(name));
+                        }}
+                      />
+                    </Tooltip>
+                  </>
+                }
+                key={name}
+                name={name}
+                rules={[
+                  {
+                    required: !property?.optional,
+                    message: `${name}是必填项`,
+                  },
+                ]}
+                required={false}
+              >
+                <Select disabled={formDisable}>
+                  <Select.Option value={true}>是</Select.Option>
+                  <Select.Option value={false}>否</Select.Option>
+                </Select>
+              </Form.Item>
+            );
+          }
+          if (PROPERTY_TYPE[property?.type] === 'number') {
+            return (
+              <Form.Item
+                label={
+                  <>
+                    <div>{name}</div>
+                    <Tooltip title="复制">
+                      <IconFont
+                        type="icon-fuzhi1"
+                        className={
+                          styles[`${PUBLIC_PERFIX_CLASS}-icon-copy`]
+                        }
+                        onClick={() => {
+                          copy(form.getFieldValue(name));
+                        }}
+                      />
+                    </Tooltip>
+                  </>
+                }
+                key={name}
+                name={name}
+                rules={[
+                  {
+                    required: !property?.optional,
+                    message: `${name}是必填项`,
+                  },
+                ]}
+                required={false}
+              >
+                <InputNumber disabled={formDisable} />
+              </Form.Item>
+            );
+          }
+          return (
+            <Form.Item
+              label={
+                <>
+                  <div>{name}</div>
+                  <Tooltip title="复制">
+                    <IconFont
+                      type="icon-fuzhi1"
+                      className={
+                        styles[`${PUBLIC_PERFIX_CLASS}-icon-copy`]
+                      }
+                      onClick={() => {
+                        copy(form.getFieldValue(name));
+                      }}
+                    />
+                  </Tooltip>
+                </>
+              }
+              name={name}
+              key={name}
+              rules={[
+                {
+                  required: !property?.optional,
+                  message: `${name}是必填项`,
+                },
+              ]}
+              required={false}
+            >
+              <Input disabled={formDisable} />
+            </Form.Item>
+          );
+        })}
+      </Form>
+    </>
+  }
+
   return (
     <GraphCanvasContext.Provider value={{ ...graphCanvasContextValue }}>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-excecute-result`]}>
@@ -685,126 +810,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
                 </>
               }
             >
-              {id ? (
-                <>
-                  <div className={styles[`${PUBLIC_PERFIX_CLASS}-title`]}>
-                    <span>{`${
-                      activeElementType === 'node' ? '点' : '边'
-                    }ID：${id}`}</span>
-                    <Tag>{tagName}</Tag>
-                  </div>
-                  <Form
-                    className={styles[`${PUBLIC_PERFIX_CLASS}-form`]}
-                    disabled={formDisable}
-                    layout="vertical"
-                    form={form}
-                  >
-                    {map(properties, (value, name) => {
-                      const property = find(
-                        propertyTypes,
-                        (item) => item.name === name
-                      );
-                      if (PROPERTY_TYPE[property?.type] === 'boolean') {
-                        return (
-                          <Form.Item
-                            label={
-                              <>
-                                <div>{name}</div>
-                                <Tooltip title="复制">
-                                  <IconFont
-                                    type="icon-fuzhi1"
-                                    className={
-                                      styles[`${PUBLIC_PERFIX_CLASS}-icon-copy`]
-                                    }
-                                    onClick={() => {
-                                      copy(form.getFieldValue(name));
-                                    }}
-                                  />
-                                </Tooltip>
-                              </>
-                            }
-                            name={name}
-                            rules={[
-                              {
-                                required: !property?.optional,
-                                message: `${name}是必填项`,
-                              },
-                            ]}
-                            required={false}
-                          >
-                            <Select disabled={formDisable}>
-                              <Select.Option value={true}>是</Select.Option>
-                              <Select.Option value={false}>否</Select.Option>
-                            </Select>
-                          </Form.Item>
-                        );
-                      }
-                      if (PROPERTY_TYPE[property?.type] === 'number') {
-                        return (
-                          <Form.Item
-                            label={
-                              <>
-                                <div>{name}</div>
-                                <Tooltip title="复制">
-                                  <IconFont
-                                    type="icon-fuzhi1"
-                                    className={
-                                      styles[`${PUBLIC_PERFIX_CLASS}-icon-copy`]
-                                    }
-                                    onClick={() => {
-                                      copy(form.getFieldValue(name));
-                                    }}
-                                  />
-                                </Tooltip>
-                              </>
-                            }
-                            name={name}
-                            rules={[
-                              {
-                                required: !property?.optional,
-                                message: `${name}是必填项`,
-                              },
-                            ]}
-                            required={false}
-                          >
-                            <InputNumber disabled={formDisable} />
-                          </Form.Item>
-                        );
-                      }
-                      return (
-                        <Form.Item
-                          label={
-                            <>
-                              <div>{name}</div>
-                              <Tooltip title="复制">
-                                <IconFont
-                                  type="icon-fuzhi1"
-                                  className={
-                                    styles[`${PUBLIC_PERFIX_CLASS}-icon-copy`]
-                                  }
-                                  onClick={() => {
-                                    copy(form.getFieldValue(name));
-                                  }}
-                                />
-                              </Tooltip>
-                            </>
-                          }
-                          name={name}
-                          rules={[
-                            {
-                              required: !property?.optional,
-                              message: `${name}是必填项`,
-                            },
-                          ]}
-                          required={false}
-                        >
-                          <Input disabled={formDisable} />
-                        </Form.Item>
-                      );
-                    })}
-                  </Form>
-                </>
-              ) : (
+              {id ? <IDResultPanel />: (
                 <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
               )}
             </SwitchDrawer>
