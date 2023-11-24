@@ -531,7 +531,7 @@ export const GraphQuery = () => {
                     <SplitPane
                       split="vertical"
                       primary="second"
-                      defaultSize={editorWidth}
+                      defaultSize={isListShow ? editorWidth : 0}
                       onChange={onSplitPaneWidthChange}
                     >
                       <div
