@@ -8,6 +8,7 @@ import { FilterBtn, FilterPanel } from './filter';
 import { Download } from './download';
 import { End } from './end';
 
+// @ts-ignore
 import styles from './index.module.less';
 
 const LocalStorageKey = '__guidance_key__';
