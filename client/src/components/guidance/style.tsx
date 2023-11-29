@@ -1,6 +1,7 @@
 import React from 'react';
 import { StepUIProps } from './types';
 import { Assets } from './assets';
+// @ts-ignore
 import styles from './index.module.less';
 
 /**
