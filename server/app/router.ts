@@ -11,6 +11,7 @@ export default (app: Application) => {
    router.get('/construct', controller.home.index);
    router.get('/analysis', controller.home.index);
    router.get('/console', controller.home.index);
+   router.get('/reset', controller.home.index);
 
   // TuGraph Auth
   router.get('/api/auth/user', controller.tugraph.auth.getUserList);

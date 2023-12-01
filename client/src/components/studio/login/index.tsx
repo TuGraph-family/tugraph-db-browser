@@ -34,7 +34,7 @@ export const Login = () => {
             setLocalData('TUGRAPH_TOKEN', res.data.authorization);
             message.success('登录成功！');
             if (res?.data?.default_password) {
-              window.open(window.location.origin + '/resetPassword', '_self');
+              window.open(window.location.origin + '/reset', '_self');
             } else {
               // 登录成功以后，设置默认的样式到 localstorage 中
               const customStyleConfig = JSON.parse(localStorage.getItem('CUSTOM_STYLE_CONFIG') as string || '{}')
