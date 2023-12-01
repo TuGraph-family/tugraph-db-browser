@@ -34,7 +34,7 @@ export const UserCenter: React.FC<Prop> = () => {
             // updateState(draft => {
             //   draft.isEditPassword = true;
             // });
-            history.push('/resetPassword');
+            history.push('/reset');
           }}
         >
           修改密码
