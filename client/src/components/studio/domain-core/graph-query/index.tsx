@@ -303,6 +303,7 @@ export const GraphQuery = () => {
         <Popover
           title="存储过程"
           placement="bottomRight"
+          className="popoverTitle"
           content={
             <>
               <Table
@@ -355,9 +356,11 @@ export const GraphQuery = () => {
         <Space split={<Divider type="vertical" />}>
           <div style={{ gap: '24px', display: 'flex' }}>
             <Select defaultValue={'Cypher'}>
-              <Option value="Cypher">Cypher</Option>
+              <Option value="Cypher">
+                <span style={{ color: 'rgba(106,106, 112, .6)' }}>Cypher</span>
+              </Option>
               <Option disabled value="ISOGQL">
-                ISOGQL
+                <span style={{ color: 'rgb(106,106, 112, .6)' }}>ISOGQL</span>
               </Option>
             </Select>
             <Button
