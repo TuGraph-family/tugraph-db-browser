@@ -3,6 +3,7 @@ import { Col, Row } from 'antd';
 import React, { useEffect } from 'react';
 import { Outlet, useLocation } from 'umi';
 import styles from './index.less';
+import './global.less';
 
 export const Container = (props: React.ComponentProps<any>) => {
   return (

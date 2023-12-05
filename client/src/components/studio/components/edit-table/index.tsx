@@ -109,7 +109,11 @@ const EditableCell: React.FC<EditableCellProps> = ({
       );
     } else if (inputType === EditType.SELECT) {
       childNode = (
-        <Form.Item style={{ margin: 0 }} name={dataIndex} key={`col-select-${dataIndex}`}>
+        <Form.Item
+          style={{ margin: 0 }}
+          name={dataIndex}
+          key={`col-select-${dataIndex}`}
+        >
           <Select {...prop} options={prop?.options} />
         </Form.Item>
       );
@@ -117,7 +121,11 @@ const EditableCell: React.FC<EditableCellProps> = ({
       childNode = <span key={`col-element-${dataIndex}`}>{children}</span>;
     }
   }
-  return <td {...restProps} key={`col-td-${dataIndex}`}>{childNode}</td>;
+  return (
+    <td {...restProps} key={`col-td-${dataIndex}`}>
+      {childNode}
+    </td>
+  );
 };
 
 export const EditTable: React.FC<Prop & TableProps<RecordType>> = ({
