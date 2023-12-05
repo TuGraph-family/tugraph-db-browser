@@ -5,11 +5,11 @@
 .ant-btn-dashed {
   border-radius: 6px !important;
 }
-
+.ant-steps .ant-steps-item-process .ant-steps-item-icon,
 .ant-btn-dashed:hover,
 .ant-btn-dashed:focus {
-  color: @focus;
-  border-color: @focus;
+  color: @focus !important;
+  border-color: @focus !important;
 }
 
 .ant-input:hover,
@@ -42,4 +42,8 @@
 .ant-segmented-item {
   border-radius: 6px !important;
   overflow: hidden;
+}
+
+.ant-menu-item-selected {
+  color: @focus !important;
 }
