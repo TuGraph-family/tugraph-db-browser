@@ -17,5 +17,3 @@ export const PERSSIONS_ENUM_TEXT = [
   { label: '只读', value: PERSSIONS_ENUM.READ },
   { label: '无', value: PERSSIONS_ENUM.NONE },
 ];
-
-export const PROXY_HOST = `http://${window.location.hostname}:7001`;
