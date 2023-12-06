@@ -145,17 +145,17 @@ const ExecuteResult: React.FC<ResultProps> = ({
   const [form] = Form.useForm();
   const [addForm] = Form.useForm();
   const onTableTypeChange = (e: any) => {
-    setState((draft) => {
+    setState(draft => {
       draft.tableType = e.target.value;
     });
   };
   const onLayoutChange = useCallback((layout: Layout) => {
-    setState((draft) => {
+    setState(draft => {
       draft.currentLayout = { ...layout };
     });
   }, []);
   const getGraphCanvasContextValue = useCallback((contextValue: any) => {
-    setState((draft) => {
+    setState(draft => {
       if (contextValue) {
         draft.graphCanvasContextValue = contextValue;
       }
@@ -165,12 +165,12 @@ const ExecuteResult: React.FC<ResultProps> = ({
   useEffect(() => {
     if (excecuteResult?.success) {
       const canvasContainer = document.querySelector(`.canvas`);
-      const objResizeObserver = new ResizeObserver((entries) => {
+      const objResizeObserver = new ResizeObserver(entries => {
         window.requestAnimationFrame(() => {
           if (!Array.isArray(entries) || !entries.length) {
             return;
           }
-          entries.forEach((entry) => {
+          entries.forEach(entry => {
             const cr = entry.contentRect;
             if (
               graphCanvasContextValue?.graph &&
@@ -186,22 +186,22 @@ const ExecuteResult: React.FC<ResultProps> = ({
       if (canvasContainer) {
         objResizeObserver.observe(canvasContainer);
       }
-      graphCanvasContextValue.graph?.on('node:click', (val) => {
-        setState((draft) => {
+      graphCanvasContextValue.graph?.on('node:click', val => {
+        setState(draft => {
           draft.id = val.item._cfg.id;
           draft.tagName = val.item._cfg.model.label;
           draft.activeElementType = val.item._cfg.type;
           draft.properties = { ...val.item._cfg.model.properties };
           draft.propertyTypes = find(
             graphData.nodes,
-            (node) => node.labelName === val.item._cfg.model.label
+            node => node.labelName === val.item._cfg.model.label,
           )?.properties;
           form.setFieldsValue({ ...val.item._cfg.model.properties });
           onShow();
         });
       });
-      graphCanvasContextValue.graph?.on('edge:click', (val) => {
-        setState((draft) => {
+      graphCanvasContextValue.graph?.on('edge:click', val => {
+        setState(draft => {
           draft.id = val.item._cfg.id;
           draft.tagName = val.item._cfg.model.label;
           draft.activeElementType = val.item._cfg.type;
@@ -209,12 +209,12 @@ const ExecuteResult: React.FC<ResultProps> = ({
           form.setFieldsValue({ ...val.item._cfg.model.properties });
           draft.propertyTypes = find(
             graphData.nodes,
-            (node) => node.labelName === tagName
+            node => node.labelName === tagName,
           )?.properties;
           const sourceTargetParams = editEdgeParamsTransform(
             val.item._cfg.source._cfg.model,
             val.item._cfg.target._cfg.model,
-            graphData.nodes
+            graphData.nodes,
           );
           draft.editEdgeParams = {
             graphName,
@@ -234,7 +234,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
   }, [graphCanvasContextValue]);
   useEffect(() => {
     if (formatData) {
-      setState((draft) => {
+      setState(draft => {
         draft.activeKey = 'canvas';
         draft.sourceProperity = nodes;
         draft.targetProperity = nodes;
@@ -247,11 +247,11 @@ const ExecuteResult: React.FC<ResultProps> = ({
     nodes: Array<FormatDataNodeProp>;
     edges: Array<FormatDataEdgeProp>;
   }) => {
-    const newNodes = map(formatData?.nodes, (item) => ({
+    const newNodes = map(formatData?.nodes, item => ({
       ...item,
       style: { label: { value: item.properties?.name || item.label } },
     }));
-    const newEdge = map(formatData?.edges, (item) => ({
+    const newEdge = map(formatData?.edges, item => ({
       ...item,
       style: {
         label: {
@@ -277,7 +277,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
       <span style={{ marginLeft: 22 }}> {excecuteResult?.script}</span>
     </div>
   );
-  const dealGraphData = (data) => {
+  const dealGraphData = data => {
     return {
       nodes: data.nodes,
       edges: Utils.processEdges(dealFormatData(data).edges, {
@@ -287,10 +287,10 @@ const ExecuteResult: React.FC<ResultProps> = ({
     };
   };
   const editNode = () => {
-    form.validateFields().then((val) => {
+    form.validateFields().then(val => {
       const primaryKey = find(
         graphData?.nodes,
-        (node) => node.labelName === tagName
+        node => node.labelName === tagName,
       )?.primaryField;
       onEditNode({
         graphName,
@@ -298,10 +298,10 @@ const ExecuteResult: React.FC<ResultProps> = ({
         primaryValue: properties[primaryKey],
         properties: { ...val },
         labelName: tagName,
-      }).then((res) => {
+      }).then(res => {
         if (res.success) {
           message.success('编辑成功');
-          setState((draft) => {
+          setState(draft => {
             draft.formDisable = true;
           });
           onClose();
@@ -312,15 +312,15 @@ const ExecuteResult: React.FC<ResultProps> = ({
     });
   };
   const editEdge = () => {
-    form.validateFields().then((val) => {
+    form.validateFields().then(val => {
       const primaryKey = find(
         graphData?.nodes,
-        (node) => node.labelName === tagName
+        node => node.labelName === tagName,
       )?.primaryField;
-      onEditEdge({ ...editEdgeParams, properties: { ...val } }).then((res) => {
+      onEditEdge({ ...editEdgeParams, properties: { ...val } }).then(res => {
         if (res.success) {
           message.success('编辑成功');
-          setState((draft) => {
+          setState(draft => {
             draft.formDisable = true;
           });
           onClose();
@@ -331,7 +331,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
     });
   };
   const createNode = () => {
-    addForm.validateFields().then((val) => {
+    addForm.validateFields().then(val => {
       const { labelName, properties } = val;
       const data = {
         ...currentData,
@@ -340,18 +340,18 @@ const ExecuteResult: React.FC<ResultProps> = ({
           { id: `${new Date().getTime()}`, label: labelName, properties },
         ],
       };
-      setState((draft) => {
+      setState(draft => {
         draft.currentData = cloneDeep(data);
       });
       onCreateNode({
         graphName,
         labelName,
         properties: { ...properties },
-      }).then((res) => {
+      }).then(res => {
         if (res.success) {
           message.success('插入点类型成功');
           graphCanvasContextValue?.graph?.read(
-            dealGraphData(dealFormatData(data))
+            dealGraphData(dealFormatData(data)),
           );
           onCancel?.();
           graphCanvasContextValue?.graph?.updateLayout({
@@ -365,7 +365,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
     });
   };
   const createEdge = () => {
-    addForm.validateFields().then((val) => {
+    addForm.validateFields().then(val => {
       const {
         labelName,
         properties,
@@ -376,11 +376,11 @@ const ExecuteResult: React.FC<ResultProps> = ({
       } = val;
       const sourceNode = find(
         graphData?.nodes,
-        (item) => item.labelName === source
+        item => item.labelName === source,
       );
       const targetNode = find(
         graphData?.nodes,
-        (item) => item.labelName === target
+        item => item.labelName === target,
       );
       const sourcePrimaryKey = sourceNode?.primaryField;
       const targetPrimaryKey = targetNode?.primaryField;
@@ -402,21 +402,21 @@ const ExecuteResult: React.FC<ResultProps> = ({
           {
             id: `${new Date().getTime()}`,
             label: labelName,
-            source: find(nodes, (node) => node.label === source)?.id,
-            target: find(nodes, (node) => node.label === target)?.id,
+            source: find(nodes, node => node.label === source)?.id,
+            target: find(nodes, node => node.label === target)?.id,
             direction: 'OUT',
             properties,
           },
         ],
       };
-      setState((draft) => {
+      setState(draft => {
         draft.currentData = cloneDeep(data);
       });
-      onCreateEdge({ ...params }).then((res) => {
+      onCreateEdge({ ...params }).then(res => {
         if (res.success) {
           message.success('插入边类型成功');
           graphCanvasContextValue?.graph?.read(
-            dealGraphData(dealFormatData(data))
+            dealGraphData(dealFormatData(data)),
           );
           onCancel?.();
           graphCanvasContextValue?.graph?.updateLayout({
@@ -432,13 +432,13 @@ const ExecuteResult: React.FC<ResultProps> = ({
   const deleteNode = () => {
     const primaryKey = find(
       graphData?.nodes,
-      (node) => node.labelName === tagName
+      node => node.labelName === tagName,
     )?.primaryField;
     const data = {
       ...currentData,
-      nodes: filter(currentData?.nodes, (item) => item.id !== id),
+      nodes: filter(currentData?.nodes, item => item.id !== id),
     };
-    setState((draft) => {
+    setState(draft => {
       draft.currentData = cloneDeep(data);
     });
     onDeleteNode({
@@ -446,12 +446,12 @@ const ExecuteResult: React.FC<ResultProps> = ({
       graphName,
       primaryKey,
       primaryValue: properties[primaryKey],
-    }).then((res) => {
+    }).then(res => {
       if (res.success) {
         message.success('删除成功');
         onClose();
         graphCanvasContextValue?.graph?.read(
-          dealGraphData(dealFormatData(data))
+          dealGraphData(dealFormatData(data)),
         );
         graphCanvasContextValue?.graph?.updateLayout({
           type: 'graphin-force',
@@ -465,17 +465,17 @@ const ExecuteResult: React.FC<ResultProps> = ({
   const deleteEdge = () => {
     const data = {
       ...currentData,
-      edges: filter(currentData?.edges, (item) => item.id !== id),
+      edges: filter(currentData?.edges, item => item.id !== id),
     };
-    setState((draft) => {
+    setState(draft => {
       draft.currentData = cloneDeep(data);
     });
-    onDeleteEdge({ ...editEdgeParams }).then((res) => {
+    onDeleteEdge({ ...editEdgeParams }).then(res => {
       if (res.success) {
         message.success('删除成功');
         onClose();
         graphCanvasContextValue?.graph?.read(
-          dealGraphData(dealFormatData(data))
+          dealGraphData(dealFormatData(data)),
         );
         graphCanvasContextValue?.graph?.updateLayout({
           type: 'graphin-force',
@@ -533,25 +533,87 @@ const ExecuteResult: React.FC<ResultProps> = ({
   ];
 
   const IDResultPanel = () => {
-    return  <>
-      <div className={styles[`${PUBLIC_PERFIX_CLASS}-title`]}>
-        <span>{`${
-          activeElementType === 'node' ? '点' : '边'
-        }ID：${id}`}</span>
-        <Tag>{tagName}</Tag>
-      </div>
-      <Form
-        className={styles[`${PUBLIC_PERFIX_CLASS}-form`]}
-        disabled={formDisable}
-        layout="vertical"
-        form={form}
-      >
-        {map(properties, (value, name) => {
-          const property = find(
-            propertyTypes,
-            (item) => item.name === name
-          );
-          if (PROPERTY_TYPE[property?.type] === 'boolean') {
+    return (
+      <>
+        <div className={styles[`${PUBLIC_PERFIX_CLASS}-title`]}>
+          <span>{`${
+            activeElementType === 'node' ? '点' : '边'
+          }ID：${id}`}</span>
+          <Tag>{tagName}</Tag>
+        </div>
+        <Form
+          className={styles[`${PUBLIC_PERFIX_CLASS}-form`]}
+          disabled={formDisable}
+          layout="vertical"
+          form={form}
+        >
+          {map(properties, (value, name) => {
+            const property = find(propertyTypes, item => item.name === name);
+            if (PROPERTY_TYPE[property?.type] === 'boolean') {
+              return (
+                <Form.Item
+                  label={
+                    <>
+                      <div>{name}</div>
+                      <Tooltip title="复制">
+                        <IconFont
+                          type="icon-fuzhi1"
+                          className={styles[`${PUBLIC_PERFIX_CLASS}-icon-copy`]}
+                          onClick={() => {
+                            copy(form.getFieldValue(name));
+                          }}
+                        />
+                      </Tooltip>
+                    </>
+                  }
+                  key={name}
+                  name={name}
+                  rules={[
+                    {
+                      required: !property?.optional,
+                      message: `${name}是必填项`,
+                    },
+                  ]}
+                  required={false}
+                >
+                  <Select disabled={formDisable}>
+                    <Select.Option value={true}>是</Select.Option>
+                    <Select.Option value={false}>否</Select.Option>
+                  </Select>
+                </Form.Item>
+              );
+            }
+            if (PROPERTY_TYPE[property?.type] === 'number') {
+              return (
+                <Form.Item
+                  label={
+                    <>
+                      <div>{name}</div>
+                      <Tooltip title="复制">
+                        <IconFont
+                          type="icon-fuzhi1"
+                          className={styles[`${PUBLIC_PERFIX_CLASS}-icon-copy`]}
+                          onClick={() => {
+                            copy(form.getFieldValue(name));
+                          }}
+                        />
+                      </Tooltip>
+                    </>
+                  }
+                  key={name}
+                  name={name}
+                  rules={[
+                    {
+                      required: !property?.optional,
+                      message: `${name}是必填项`,
+                    },
+                  ]}
+                  required={false}
+                >
+                  <InputNumber disabled={formDisable} />
+                </Form.Item>
+              );
+            }
             return (
               <Form.Item
                 label={
@@ -560,9 +622,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
                     <Tooltip title="复制">
                       <IconFont
                         type="icon-fuzhi1"
-                        className={
-                          styles[`${PUBLIC_PERFIX_CLASS}-icon-copy`]
-                        }
+                        className={styles[`${PUBLIC_PERFIX_CLASS}-icon-copy`]}
                         onClick={() => {
                           copy(form.getFieldValue(name));
                         }}
@@ -570,8 +630,8 @@ const ExecuteResult: React.FC<ResultProps> = ({
                     </Tooltip>
                   </>
                 }
-                key={name}
                 name={name}
+                key={name}
                 rules={[
                   {
                     required: !property?.optional,
@@ -580,81 +640,14 @@ const ExecuteResult: React.FC<ResultProps> = ({
                 ]}
                 required={false}
               >
-                <Select disabled={formDisable}>
-                  <Select.Option value={true}>是</Select.Option>
-                  <Select.Option value={false}>否</Select.Option>
-                </Select>
+                <Input disabled={formDisable} />
               </Form.Item>
             );
-          }
-          if (PROPERTY_TYPE[property?.type] === 'number') {
-            return (
-              <Form.Item
-                label={
-                  <>
-                    <div>{name}</div>
-                    <Tooltip title="复制">
-                      <IconFont
-                        type="icon-fuzhi1"
-                        className={
-                          styles[`${PUBLIC_PERFIX_CLASS}-icon-copy`]
-                        }
-                        onClick={() => {
-                          copy(form.getFieldValue(name));
-                        }}
-                      />
-                    </Tooltip>
-                  </>
-                }
-                key={name}
-                name={name}
-                rules={[
-                  {
-                    required: !property?.optional,
-                    message: `${name}是必填项`,
-                  },
-                ]}
-                required={false}
-              >
-                <InputNumber disabled={formDisable} />
-              </Form.Item>
-            );
-          }
-          return (
-            <Form.Item
-              label={
-                <>
-                  <div>{name}</div>
-                  <Tooltip title="复制">
-                    <IconFont
-                      type="icon-fuzhi1"
-                      className={
-                        styles[`${PUBLIC_PERFIX_CLASS}-icon-copy`]
-                      }
-                      onClick={() => {
-                        copy(form.getFieldValue(name));
-                      }}
-                    />
-                  </Tooltip>
-                </>
-              }
-              name={name}
-              key={name}
-              rules={[
-                {
-                  required: !property?.optional,
-                  message: `${name}是必填项`,
-                },
-              ]}
-              required={false}
-            >
-              <Input disabled={formDisable} />
-            </Form.Item>
-          );
-        })}
-      </Form>
-    </>
-  }
+          })}
+        </Form>
+      </>
+    );
+  };
 
   return (
     <GraphCanvasContext.Provider value={{ ...graphCanvasContextValue }}>
@@ -666,8 +659,8 @@ const ExecuteResult: React.FC<ResultProps> = ({
           style={{
             height: '100%',
           }}
-          onChange={(val) => {
-            setState((draft) => {
+          onChange={val => {
+            setState(draft => {
               draft.activeKey = val;
             });
           }}
@@ -697,7 +690,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
                   ? omit(excecuteResult, 'id')
                   : originalData,
                 null,
-                2
+                2,
               )}
             </pre>
           </TabPane>
@@ -766,7 +759,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
                     style={{ marginRight: 12 }}
                     onClick={() => {
                       if (!formDisable) {
-                        setState((draft) => {
+                        setState(draft => {
                           draft.formDisable = true;
                         });
                       }
@@ -793,7 +786,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
                     }
                     onClick={() => {
                       if (formDisable) {
-                        setState((draft) => {
+                        setState(draft => {
                           draft.formDisable = false;
                         });
                       } else {
@@ -810,7 +803,9 @@ const ExecuteResult: React.FC<ResultProps> = ({
                 </>
               }
             >
-              {id ? <IDResultPanel />: (
+              {id ? (
+                <IDResultPanel />
+              ) : (
                 <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
               )}
             </SwitchDrawer>
@@ -850,8 +845,8 @@ const ExecuteResult: React.FC<ResultProps> = ({
                 >
                   <Select
                     defaultValue={'node'}
-                    onChange={(val) => {
-                      setState((draft) => {
+                    onChange={val => {
+                      setState(draft => {
                         draft.selectType = val;
                       });
                     }}
@@ -870,11 +865,11 @@ const ExecuteResult: React.FC<ResultProps> = ({
                     className={
                       styles[`${PUBLIC_PERFIX_CLASS}-add-modal-select`]
                     }
-                    onChange={(val) => {
-                      setState((draft) => {
+                    onChange={val => {
+                      setState(draft => {
                         draft.selectProperties = find(
                           graphData[`${selectType}s`],
-                          (item) => item.labelName === val
+                          item => item.labelName === val,
                         )?.properties;
                       });
                     }}
@@ -883,11 +878,14 @@ const ExecuteResult: React.FC<ResultProps> = ({
                       selectType === 'node'
                         ? graphData?.nodes
                         : graphData?.edges,
-                      (item) => (
-                        <Select.Option key={`options-${item.labelName}`} value={item.labelName}>
+                      item => (
+                        <Select.Option
+                          key={`options-${item.labelName}`}
+                          value={item.labelName}
+                        >
                           {item.labelName}
                         </Select.Option>
-                      )
+                      ),
                     )}
                   </Select>
                 </Form.Item>
@@ -906,19 +904,19 @@ const ExecuteResult: React.FC<ResultProps> = ({
                     <Form.Item name="source">
                       <AutoComplete
                         placeholder="请选择起点类型"
-                        onChange={(val) => {
-                          setState((draft) => {
+                        onChange={val => {
+                          setState(draft => {
                             draft.sourceProperity = filter(
                               nodes,
-                              (item) => item.label.indexOf(val) !== -1
+                              item => item.label.indexOf(val) !== -1,
                             );
                             draft.sourcePrimaryKey = find(
                               graphData.nodes,
-                              (item) => item.labelName === val
+                              item => item.labelName === val,
                             )?.primaryField;
                           });
                         }}
-                        options={map(uniqBy(nodes, 'label'), (item) => ({
+                        options={map(uniqBy(nodes, 'label'), item => ({
                           value: item.label,
                         }))}
                       />
@@ -931,7 +929,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
                     >
                       <AutoComplete
                         placeholder="请输入起点值"
-                        options={map(sourceProperity, (item) => ({
+                        options={map(sourceProperity, item => ({
                           value: item.properties[sourcePrimaryKey],
                         }))}
                       />
@@ -949,19 +947,19 @@ const ExecuteResult: React.FC<ResultProps> = ({
                     <Form.Item name="target">
                       <AutoComplete
                         placeholder="请选择终点类型"
-                        onChange={(val) => {
-                          setState((draft) => {
+                        onChange={val => {
+                          setState(draft => {
                             draft.targetProperity = filter(
                               nodes,
-                              (item) => item.label.indexOf(val) !== -1
+                              item => item.label.indexOf(val) !== -1,
                             );
                             draft.targetPrimaryKey = find(
                               graphData?.nodes,
-                              (item) => item.labelName === val
+                              item => item.labelName === val,
                             )?.primaryField;
                           });
                         }}
-                        options={map(uniqBy(nodes, 'label'), (item) => ({
+                        options={map(uniqBy(nodes, 'label'), item => ({
                           value: item.label,
                         }))}
                       />
@@ -974,7 +972,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
                     >
                       <AutoComplete
                         placeholder="请输终点值"
-                        options={map(targetProperity, (item) => ({
+                        options={map(targetProperity, item => ({
                           value: item.properties[targetPrimaryKey],
                         }))}
                       />
