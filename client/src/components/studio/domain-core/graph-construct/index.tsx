@@ -8,7 +8,7 @@ import { GraphinContextType, Layout, Utils } from '@antv/graphin';
 import type { UploadProps } from 'antd';
 import { Button, Checkbox, message, Modal, Select, Steps, Upload } from 'antd';
 import { filter, isEmpty, join } from 'lodash';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { history } from 'umi';
 import { useImmer } from 'use-immer';
 import {
@@ -45,7 +45,7 @@ import styles from './index.module.less';
 
 export const GraphConstruct = () => {
   const location = history.location;
-
+  const [hoverType, setHoverType] = useState('');
   const graphList = getLocalData('TUGRAPH_SUBGRAPH_LIST') as SubGraph[];
   const { onImportGraphSchema, ImportGraphSchemaLoading } = useImport();
   const [state, setState] = useImmer<{
@@ -313,10 +313,16 @@ export const GraphConstruct = () => {
       {GRAPH_OPERATE.map(item => (
         <div
           key={item.lable}
+          onMouseOver={() => {
+            setHoverType(item?.value);
+          }}
+          onMouseLeave={() => {
+            setHoverType('');
+          }}
           className={join(
             [
               styles[`${PUBLIC_PERFIX_CLASS}-operate-item`],
-              activeBtnType === item.value
+              [activeBtnType, hoverType].includes(item?.value)
                 ? styles[`${PUBLIC_PERFIX_CLASS}-operate-item-active`]
                 : '',
             ],

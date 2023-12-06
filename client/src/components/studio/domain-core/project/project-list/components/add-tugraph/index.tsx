@@ -41,7 +41,7 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
     loading: false,
   });
   useEffect(() => {
-    setState((draft) => {
+    setState(draft => {
       draft.active = 0;
       draft.current = 0;
     });
@@ -56,7 +56,7 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
       content: 'Second-content',
     },
   ];
-  const items = steps.map((item) => ({ key: item.title, title: item.title }));
+  const items = steps.map(item => ({ key: item.title, title: item.title }));
   const { current, active, loading } = state;
   const cardList = [
     {
@@ -74,7 +74,7 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
         <Button
           type="primary"
           onClick={() => {
-            setState((draft) => {
+            setState(draft => {
               draft.current = 1;
             });
           }}
@@ -86,7 +86,7 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
       <>
         <Button
           onClick={() => {
-            setState((draft) => {
+            setState(draft => {
               draft.current = 0;
             });
           }}
@@ -97,13 +97,13 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
           loading={createGraphLoading}
           type="primary"
           onClick={() => {
-            form.validateFields().then((values) => {
+            form.validateFields().then(values => {
               const { graphName, description, maxSizeGB } = values;
               if (!active) {
                 onCreateGraph({
                   graphName,
                   config: { description, maxSizeGB },
-                }).then((res) => {
+                }).then(res => {
                   if (res.success) {
                     message.success('新建成功');
                     onGetGraphList({
@@ -120,17 +120,17 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                   graphName,
                   config: { description, maxSizeGB },
                   description: cardList[active].data,
-                }).then((res) => {
-                  setState((draft) => {
+                }).then(res => {
+                  setState(draft => {
                     draft.loading = true;
                   });
                   if (res.success) {
-                    onImportProgress(res.data.taskId).then((res) => {
+                    onImportProgress(res.data.taskId).then(res => {
                       if (res.errorCode == 200) {
                         if (res.data.state === '2') {
                           message.success('模版创建成功');
                           importProgressCancel();
-                          setState((draft) => {
+                          setState(draft => {
                             draft.loading = false;
                           });
                           onGetGraphList({
@@ -140,7 +140,7 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                           onClose();
                         } else if (res.data.state === '3') {
                           message.error('模版创建失败' + res.data.reason);
-                          setState((draft) => {
+                          setState(draft => {
                             draft.loading = false;
                           });
                         }
@@ -148,7 +148,7 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                     });
                   } else {
                     message.error('模版创建失败' + res.errorMessage);
-                    setState((draft) => {
+                    setState(draft => {
                       draft.loading = false;
                     });
                   }
@@ -173,7 +173,7 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
       <Spin spinning={loading}>
         <div>
           <Steps current={current} items={items}>
-            {map(items, (item) => (
+            {map(items, item => (
               <Steps.Step title={item.title} key={item.title} />
             ))}
           </Steps>
@@ -192,7 +192,7 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                       detail={item}
                       isActive={active === index}
                       onClick={() => {
-                        setState((draft) => {
+                        setState(draft => {
                           draft.active = index;
                         });
                         form.setFieldsValue({
