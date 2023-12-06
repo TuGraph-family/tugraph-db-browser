@@ -27,3 +27,4 @@ export const CONSOLE_LINKS = [
 
 export const ANTD_VERSION = '4.24.0';
 export const GI_SDK_APP_VERSION = '1.2.0';
+export const PROXY_HOST = `http://${window.location.hostname}:7001`;

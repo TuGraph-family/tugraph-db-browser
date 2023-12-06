@@ -5,7 +5,7 @@ import three_kingdoms_data from './demo-json/three_kingdoms.json';
 import wandering_earth_data from './demo-json/wandering_earth.json';
 export type PROJECT_TAB = 'MY_PROJECT' | 'ALL_PROJEXCT';
 export const PUBLIC_PERFIX_CLASS = 'ant-tugraph';
-export const PROXY_HOST = `http://${window.location.hostname}:7001`;
+export { PROXY_HOST } from '@/constants';
 export const SERVER_HOST = `http://${window.location.hostname}:9090/LGraphHttpService/Query`;
 export const STEP_LIST: CollasibleStep[] = [
   {

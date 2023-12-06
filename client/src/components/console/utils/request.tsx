@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { extend } from 'umi-request';
-import { PROXY_HOST } from '../constant';
+import { PROXY_HOST } from '@/constants';
 import { getLocalData } from './localStorage';
 
 const request = extend({

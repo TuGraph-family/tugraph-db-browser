@@ -10,6 +10,7 @@
     }
   ],
   "scripts": {
+    "dev": "pnpm -r --stream run dev",
     "client-bootstrap": "cd client && yarn install --frozen-lockfile",
     "server-bootstrap": "cd server && yarn install --frozen-lockfile",
     "bootstrap": "yarn run client-bootstrap && yarn run server-bootstrap",
