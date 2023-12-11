@@ -7,7 +7,11 @@ import './global.less';
 
 export const Container = (props: React.ComponentProps<any>) => {
   return (
-    <div className={styles?.umiContainer} style={props?.style}>
+    <div
+      className={styles?.umiContainer}
+      style={props?.style}
+      id="TUGRAPH_DB_BROWSER"
+    >
       {props?.children}
     </div>
   );

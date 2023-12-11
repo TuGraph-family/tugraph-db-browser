@@ -62,12 +62,12 @@ const ProjectCard = ({
   );
   // 点边统计
   const nodeEdgeStatistics = (graphName: string) => {
-    updateState((draft) => {
+    updateState(draft => {
       draft.isNodeEdgeObj = true;
     });
-    onGetNodeEdgeStatistics(graphName).then((res) => {
+    onGetNodeEdgeStatistics(graphName).then(res => {
       if (res.success) {
-        updateState((draft) => {
+        updateState(draft => {
           draft.nodeEdgeObjList = [
             { text: '类点', value: res.data.vertexLabels },
             { text: '点', value: res.data.vertexCount },
@@ -79,7 +79,7 @@ const ProjectCard = ({
     });
   };
   const isOfficial =
-    TUGRAPH_DEOM.filter((item) => item.graph_name === graphName).length > 0;
+    TUGRAPH_DEOM.filter(item => item.graph_name === graphName).length > 0;
   return (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-card-box`]}>
       {index === 0 ? (
@@ -90,7 +90,7 @@ const ProjectCard = ({
           hoverable
           className={styles[`${PUBLIC_PERFIX_CLASS}-create-card`]}
           onClick={() => {
-            updateState((draft) => {
+            updateState(draft => {
               draft.isAdd = true;
             });
           }}
@@ -107,7 +107,7 @@ const ProjectCard = ({
             getActions(
               '图构建',
               true,
-              `${'/construct'}?graphName=${graphName}`
+              `${'/construct'}?graphName=${graphName}`,
             ),
             getActions('图查询', true, `${'/query'}?graphName=${graphName}`),
             getActions('图分析', true, `${'/analysis'}?graphName=${graphName}`),
@@ -186,7 +186,7 @@ const ProjectCard = ({
                         placement="top"
                         title={`你确定将子图「${graphName}」永久删除吗？`}
                         onConfirm={() => {
-                          onDeleteGraph({ graphName }).then((res) => {
+                          onDeleteGraph({ graphName }).then(res => {
                             if (res.success) {
                               onRefreshProjectList();
                               message.success('删除成功');
@@ -205,12 +205,11 @@ const ProjectCard = ({
                       <IconFont
                         type="icon-bianjimoxing"
                         onClick={() => {
-                          updateState((draft) => {
+                          updateState(draft => {
                             draft.isEdit = true;
                           });
                         }}
                         style={{
-                          marginRight: 12,
                           color: `rgba(152, 152, 157, 1)`,
                         }}
                       />
@@ -228,7 +227,7 @@ const ProjectCard = ({
                     <div
                       className={styles[`${PUBLIC_PERFIX_CLASS}-env-node-edge`]}
                     >
-                      {nodeEdgeObjList?.map((item) => {
+                      {nodeEdgeObjList?.map(item => {
                         return (
                           <div
                             className={
@@ -296,7 +295,7 @@ const ProjectCard = ({
         open={state.isEdit}
         detail={{ graphName, description, maxSizeGB }}
         onClose={() => {
-          updateState((draft) => {
+          updateState(draft => {
             draft.isEdit = false;
           });
         }}
@@ -305,7 +304,7 @@ const ProjectCard = ({
       <AddTuGraphModal
         open={state.isAdd}
         onClose={() => {
-          updateState((draft) => {
+          updateState(draft => {
             draft.isAdd = false;
           });
           onRefreshProjectList();

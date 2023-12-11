@@ -118,6 +118,7 @@
         height: 48px;
         padding: 12px 24px;
         box-shadow: 0 1px 0 0 #f2f2f2;
+        margin-bottom: 1px;
         :global {
           .ant-space {
             gap: 0 !important;
@@ -126,9 +127,6 @@
               .ant-divider-vertical {
                 margin: 0 0 0 8px;
               }
-            }
-            .ant-btn-text {
-              padding: 0 0 0 16px;
             }
           }
         }
@@ -141,6 +139,13 @@
             }
             .ant-btn {
               border-radius: 4px;
+              &:hover,
+              &:focus {
+                background-color: #f2f2f2 !important;
+                border-radius: 4px !important;
+                color: rgba(0, 0, 0, 0.85) !important;
+                border-color: transparent !important;
+              }
             }
           }
           .@{perfix-cls}-btn-implement {
@@ -274,12 +279,17 @@
 }
 .@{perfix-cls}-popover-table {
   overflow: hidden;
+  margin-top: 0px;
   :global {
     .ant-table {
       width: calc(100% + 2px);
       left: -1px;
       .ant-table-container {
         background-color: #fbfbfb;
+      }
+      .ant-table-thead > tr > th,
+      .ant-table-tbody > tr > td {
+        padding: 10px;
       }
       table {
         border-top: none !important;
