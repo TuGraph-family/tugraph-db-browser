@@ -1,4 +1,4 @@
-import { PROXY_HOST } from '@/constants';
+import { PROXY_HOST } from '@/constants/proxy';
 
 export default {
   workbook: {

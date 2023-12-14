@@ -1,6 +1,7 @@
 import request from 'umi-request';
-import { PROXY_HOST, SERVER_HOST } from '../constant';
+import { SERVER_HOST } from '../constant';
 import { getLocalData } from '../utils';
+import { PROXY_HOST } from '@/constants/proxy';
 
 /* Login */
 export async function login(params: { userName: string; password: string }) {

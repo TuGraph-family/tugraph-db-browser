@@ -1,7 +1,8 @@
 import request from 'umi-request';
-import { PROXY_HOST, SERVER_HOST } from '../constant';
+import { SERVER_HOST } from '../constant';
 import { ImportDataParams, ImportSchemaParams } from '../interface/import';
 import { getLocalData } from '../utils/localStorage';
+import { PROXY_HOST } from '@/constants/proxy';
 
 /* Import Data */
 export async function importData(params: ImportDataParams) {
