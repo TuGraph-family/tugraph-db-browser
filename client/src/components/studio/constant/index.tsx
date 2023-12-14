@@ -5,6 +5,8 @@ import three_kingdoms_data from './demo-json/three_kingdoms.json';
 import wandering_earth_data from './demo-json/wandering_earth.json';
 export type PROJECT_TAB = 'MY_PROJECT' | 'ALL_PROJEXCT';
 export const PUBLIC_PERFIX_CLASS = 'ant-tugraph';
+export { PROXY_HOST } from '@/constants';
+
 export { EngineServerURL as SERVER_HOST } from '../../../../../server/app/service/tugraph/constant';
 
 export const STEP_LIST: CollasibleStep[] = [
