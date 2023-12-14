@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRafInterval } from 'ahooks';
 import { Guidance } from '@/components/guidance';
 import TuGraphGraphAppConfig from '@/constants/GI_EXPORT_FILES';
-import '../components/studio/global.less'
+import '../components/studio/global.less';
 
 //@ts-ignore
 const { default: GI_SDK_APP } = window?.GI_SDK_APP;
