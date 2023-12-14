@@ -6,21 +6,41 @@ import styles from './index.module.less';
 
 /**
  * 新手引导 - 扩散
- * @returns 
+ * @returns
  */
-export const Spread: React.FC<StepUIProps> = ({ prev, next, end, x = 0, y = 0 }) => {
+export const Spread: React.FC<StepUIProps> = ({
+  prev,
+  next,
+  end,
+  x = 0,
+  y = 0,
+}) => {
   return (
     <div className={styles.spread} style={{ top: y, left: x }}>
       <div className={styles.container}>
-        <img className={styles.background} style={{ width: 430 }} src={Assets.spread} />
-        <img className={styles.gif} src={Assets.spreadGif} style={{ top: 82, left: 77, maxWidth: 246 }} />
+        <img
+          className={styles.background}
+          style={{ width: 430 }}
+          src={Assets.spread}
+        />
+        <img
+          className={styles.gif}
+          src={Assets.spreadGif}
+          style={{ top: 105, left: 92, width: '238px', height: '206px' }}
+        />
         <div className={styles.btnContainer} style={{ top: 356, left: 245 }}>
           <div className={styles.nextBtn}>
             <img className={styles.btnBackground} src={Assets.btnNext} />
-            <div className={styles.nextText} onClick={next}>下一步</div>
+            <div className={styles.nextText} onClick={next}>
+              下一步
+            </div>
           </div>
         </div>
-        <div className={styles.close} onClick={end} style={{ top: 0, left: 358 }}>
+        <div
+          className={styles.close}
+          onClick={end}
+          style={{ top: 0, left: 358 }}
+        >
           <img src={Assets.close} />
         </div>
       </div>
