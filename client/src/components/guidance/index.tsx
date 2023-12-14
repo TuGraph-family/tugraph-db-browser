@@ -39,29 +39,50 @@ function getBoundings(selector: string): DOMRect {
 
 function getClipPathByTwoRect(rect: DOMRect, fullscreen: DOMRect) {
   const rects = [
-    [[fullscreen.left, fullscreen.top], [rect.left, fullscreen.bottom]],
-    [[rect.right, fullscreen.top], [fullscreen.right, fullscreen.bottom]],
-    [[rect.left, fullscreen.top], [rect.right, rect.top]],
-    [[rect.left, rect.bottom], [rect.right, fullscreen.bottom]],
+    [
+      [fullscreen.left, fullscreen.top],
+      [rect.left, fullscreen.bottom],
+    ],
+    [
+      [rect.right, fullscreen.top],
+      [fullscreen.right, fullscreen.bottom],
+    ],
+    [
+      [rect.left, fullscreen.top],
+      [rect.right, rect.top],
+    ],
+    [
+      [rect.left, rect.bottom],
+      [rect.right, fullscreen.bottom],
+    ],
   ];
 
   const points = rects.map(([p1, p2]) => {
-    return [[p1[0], p1[1]], [p2[0], p1[1]], [p2[0], p2[1]], [p1[0], p2[1]]];
-  })
+    return [
+      [p1[0], p1[1]],
+      [p2[0], p1[1]],
+      [p2[0], p2[1]],
+      [p1[0], p2[1]],
+    ];
+  });
 
-  const path = points.map(point => (
-    point.map(([x, y], idx) => idx === 0 ? `M${x},${y}` : `L${x},${y}`).join(' ') + 'Z'
-  ));
+  const path = points.map(
+    point =>
+      point
+        .map(([x, y], idx) => (idx === 0 ? `M${x},${y}` : `L${x},${y}`))
+        .join(' ') + 'Z',
+  );
   return `path("${path.join(' ')}")`;
 }
 
 /**
  * 新手引导组件
- * @returns 
+ * @returns
  */
 export const Guidance: React.FC = () => {
   // localStorage 存储
-  const [isGuidanceFinished, setGuidanceFinished] = useLocalStorageState<string>(LocalStorageKey);
+  const [isGuidanceFinished, setGuidanceFinished] =
+    useLocalStorageState<string>(LocalStorageKey);
 
   const [step, setStep] = useState<number>(0);
 
@@ -90,47 +111,87 @@ export const Guidance: React.FC = () => {
       setStep(-1);
       setGuidanceFinished('1');
     },
-  }
+  };
 
   function getGuidanceUI() {
-    if (step === 0) return (<Welcome {...props} />);
+    if (step === 0) return <Welcome {...props} />;
     if (step === 1) {
       const rect = getBoundings(SelectorSidebar);
-      return (<Query {...props } x={rect.right - 16} y={rect.top + 100} />);
+      return <Query {...props} x={rect.right - 16} y={rect.top + 100} />;
     }
     if (step === 2) {
       const rect = getBoundings(SelectorCanvas);
-      return (<Spread {...props } x={rect.x + rect.width * 0.382} y={300} />);
+      return <Spread {...props} x={rect.x + rect.width * 0.382} y={300} />;
     }
     if (step === 3) {
       const rect = getBoundings(SelectorStyle);
       const canvasRect = getBoundings(SelectorCanvas);
       // 32px 是箭头的偏移
-      return (<StyleBtn {...props } x={rect.x + rect.width / 2 - 32} y={rect.bottom} canvasX={canvasRect.x + canvasRect.width * 0.382} canvasY={300} />);
+      return (
+        <StyleBtn
+          {...props}
+          x={rect.x + rect.width / 2 - 32}
+          y={rect.bottom}
+          canvasX={canvasRect.x + canvasRect.width * 0.382}
+          canvasY={300}
+        />
+      );
     }
     if (step === 4) {
       const rect = getBoundings(SelectorSidebar);
       const canvasRect = getBoundings(SelectorCanvas);
-      return (<StylePanel {...props } x={rect.right - 16} y={rect.top + 200} canvasX={canvasRect.x + canvasRect.width * 0.382} canvasY={300} />);
+      return (
+        <StylePanel
+          {...props}
+          x={rect.right - 16}
+          y={rect.top + 200}
+          canvasX={canvasRect.x + canvasRect.width * 0.382}
+          canvasY={300}
+        />
+      );
     }
     if (step === 5) {
       const rect = getBoundings(SelectorFilter);
       const canvasRect = getBoundings(SelectorCanvas);
       // 32px 是箭头的偏移
-      return (<FilterBtn {...props } x={rect.x + rect.width / 2 - 32} y={rect.bottom} canvasX={canvasRect.x + canvasRect.width * 0.382} canvasY={300} />);
+      return (
+        <FilterBtn
+          {...props}
+          x={rect.x + rect.width / 2 - 32}
+          y={rect.bottom}
+          canvasX={canvasRect.x + canvasRect.width * 0.382}
+          canvasY={300}
+        />
+      );
     }
     if (step === 6) {
       const rect = getBoundings(SelectorSidebar);
       const canvasRect = getBoundings(SelectorCanvas);
-      return (<FilterPanel {...props }  x={rect.right - 16} y={rect.top + 100} canvasX={canvasRect.x + canvasRect.width * 0.382} canvasY={300} />);
+      return (
+        <FilterPanel
+          {...props}
+          x={rect.right - 16}
+          y={rect.top + 100}
+          canvasX={canvasRect.x + canvasRect.width * 0.382}
+          canvasY={300}
+        />
+      );
     }
     if (step === 7) {
       const rect = getBoundings(SelectorDownload);
       const canvasRect = getBoundings(SelectorCanvas);
-      return (<Download {...props } x={rect.x + rect.width / 2} y={rect.bottom} canvasX={canvasRect.x + canvasRect.width * 0.382} canvasY={300} />);
+      return (
+        <Download
+          {...props}
+          x={rect.x + rect.width / 2}
+          y={rect.bottom}
+          canvasX={canvasRect.x + canvasRect.width * 0.382}
+          canvasY={300}
+        />
+      );
     }
     if (step === 8) {
-      return (<End {...props } />);
+      return <End {...props} />;
     }
     return null;
   }
@@ -157,9 +218,15 @@ export const Guidance: React.FC = () => {
     return 'none';
   }
 
-  return !isGuidanceFinished && 
-    <div className={styles.guidance} style={{ display: step >= 0 && step <= 8 ? 'unset' : 'none' }}>
-      <div className={styles.mask} style={{ clipPath: getClipPath() }} />
-      { getGuidanceUI() }
-    </div>;
+  return (
+    !isGuidanceFinished && (
+      <div
+        className={styles.guidance}
+        style={{ display: step >= 0 && step <= 8 ? 'unset' : 'none' }}
+      >
+        <div className={styles.mask} style={{ clipPath: getClipPath() }} />
+        {getGuidanceUI()}
+      </div>
+    )
+  );
 };
