@@ -3,7 +3,6 @@ import { useRafInterval } from 'ahooks';
 import { Guidance } from '@/components/guidance';
 import TuGraphGraphAppConfig from '@/constants/GI_EXPORT_FILES';
 import '../components/studio/global.less';
-import { setLocalData } from '@/components/studio';
 
 //@ts-ignore
 const { default: GI_SDK_APP } = window?.GI_SDK_APP;
@@ -26,7 +25,6 @@ const GraphAnalysis = () => {
     }
   }, 100);
   useEffect(() => {
-    setLocalData('ActiveAssetID', 'ConfigQuery');
     if (ready) clearInterval();
   }, [ready]);
   // end 循环检测
