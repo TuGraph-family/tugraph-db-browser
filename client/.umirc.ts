@@ -1,8 +1,10 @@
 import { defineConfig } from 'umi';
 import routes from './src/config/routes';
-import { ANTD_VERSION, GI_SDK_APP_VERSION } from './src/constants/index';
 
 process.env.MFSU_AD = 'none';
+
+export const ANTD_VERSION = '4.24.0';
+export const GI_SDK_APP_VERSION = '1.2.0';
 
 export default defineConfig({
   // only proxy when using `umi dev`
