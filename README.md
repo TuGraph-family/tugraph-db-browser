@@ -12,6 +12,7 @@ yarn run bootstrap
 ```
 
 ### 2. 启动客户端
+
 #### 2.1 开发环境
 
 ##### 2.1.1. web 端
@@ -33,9 +34,11 @@ yarn run server-dev
 
 浏览器访问 http://localhost:8888
 
+##### 注意 ⚠️ 2.1.3 本地调试
+
+上一步 `yarn run server-dev` 启动的只是本地一个代理服务器，用于连接的 `TuGraph-db`服务，那么 `TuGraph-db`本身的服务地址在 `server/app/service/tugraph/constant.ts` 中，默认的`HOST_URL` 值是 docker 启动地址 `127.0.0.1:9090`,如果是云环境，请修改这里,例如 `http://x.x.x.x:9090`
 
 #### 2.2 生产环境
-
 
 ```bash
 
@@ -52,8 +55,8 @@ yarn start
 
 浏览器访问 http://localhost:7001
 
-
 发布时打压缩包
+
 ```
 tar -czvf tugraph-db-browser.tgz ./
 ```

@@ -6,7 +6,9 @@ import wandering_earth_data from './demo-json/wandering_earth.json';
 export type PROJECT_TAB = 'MY_PROJECT' | 'ALL_PROJEXCT';
 export const PUBLIC_PERFIX_CLASS = 'ant-tugraph';
 export { PROXY_HOST } from '@/constants';
-export const SERVER_HOST = `http://${window.location.hostname}:9090/LGraphHttpService/Query`;
+
+export { EngineServerURL as SERVER_HOST } from '../../../../../server/app/service/tugraph/constant';
+
 export const STEP_LIST: CollasibleStep[] = [
   {
     title: '新建一张图',
