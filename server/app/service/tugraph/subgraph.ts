@@ -22,7 +22,6 @@ class TuGraphSubGraphService extends Service {
    */
   async createSubGraph(graphName: string, config: ISubGraphConfig) {
     const { maxSizeGB, description } = config;
-
     const createCypher = `CALL dbms.graph.createGraph('${graphName}',  '${description}', ${maxSizeGB})`;
 
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
@@ -85,7 +84,7 @@ class TuGraphSubGraphService extends Service {
         },
         timeout: [30000, 50000],
         dataType: 'json',
-      }
+      },
     );
 
     if (
@@ -204,14 +203,14 @@ class TuGraphSubGraphService extends Service {
         timeout: [30000, 50000],
         dataType: 'json',
       })
-      .then((res) => {
+      .then(res => {
         const graphData = JSON.parse(res.data.result[0]);
 
-        graphData.nodes.forEach((item) => {
+        graphData.nodes.forEach(item => {
           item.vid = item.identity;
         });
 
-        graphData.relationships.forEach((item) => {
+        graphData.relationships.forEach(item => {
           item.source = item.src;
           item.destination = item.dst;
           item.uid = `${item.src}_${item.dst}_${item.label_id}_${item.temporal_id}_${item.identity}`;
@@ -229,7 +228,7 @@ class TuGraphSubGraphService extends Service {
     const { nodes, relationships } = subGraphResult.data;
 
     const graphData = {
-      nodes: nodes.map((node) => {
+      nodes: nodes.map(node => {
         const { vid, label, ...others } = node;
         return {
           ...others.properties,
@@ -239,7 +238,7 @@ class TuGraphSubGraphService extends Service {
           id: `${vid}`,
         };
       }),
-      edges: relationships.map((r) => {
+      edges: relationships.map(r => {
         const { uid, label, destination, source, ...others } = r;
         return {
           ...others.properties,
@@ -277,8 +276,8 @@ class TuGraphSubGraphService extends Service {
       timeout: [30000, 50000],
       dataType: 'json',
     });
-      
-    return QueryResultFormatter(result as any, cypher)
+
+    return QueryResultFormatter(result as any, cypher);
   }
 
   /**
