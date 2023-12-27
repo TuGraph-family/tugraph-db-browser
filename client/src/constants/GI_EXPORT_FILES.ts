@@ -1441,9 +1441,9 @@ export default {
       global: 'antd',
     },
     G6: {
-      url: 'https://gw.alipayobjects.com/os/lib/antv/g6/4.8.14/dist/g6.min.js',
+      url: 'https://gw.alipayobjects.com/os/lib/antv/g6/4.8.24/dist/g6.min.js',
       name: '@antv/g6',
-      version: '4.8.14',
+      version: '4.8.24',
       global: 'G6',
     },
     Graphin: {
@@ -1454,8 +1454,8 @@ export default {
     },
     GISDK: {
       name: '@antv/gi-sdk',
-      version: '2.4.12',
-      url: 'https://gw.alipayobjects.com/os/lib/antv/gi-sdk/2.4.12/dist/index.min.js',
+      version: '2.4.20',
+      url: 'https://gw.alipayobjects.com/os/lib/antv/gi-sdk/2.4.20/dist/index.min.js',
       global: 'GISDK',
     },
     G2Plot: {
@@ -1474,21 +1474,21 @@ export default {
   GI_ASSETS_PACKAGES: {
     GI_ASSETS_BASIC: {
       name: '@antv/gi-assets-basic',
-      version: '2.4.30',
-      url: 'https://gw.alipayobjects.com/os/lib/antv/gi-assets-basic/2.4.30/dist/index.min.js',
+      version: '2.4.37',
+      url: 'https://gw.alipayobjects.com/os/lib/antv/gi-assets-basic/2.4.37/dist/index.min.js',
       global: 'GI_ASSETS_BASIC',
     },
     GI_ASSETS_ADVANCE: {
       name: '@antv/gi-assets-advance',
-      version: '2.5.12',
-      url: 'https://gw.alipayobjects.com/os/lib/antv/gi-assets-advance/2.5.12/dist/index.min.js',
+      version: '2.5.20',
+      url: 'https://gw.alipayobjects.com/os/lib/antv/gi-assets-advance/2.5.20/dist/index.min.js',
       global: 'GI_ASSETS_ADVANCE',
     },
     GI_ASSETS_TUGRAPH_DB: {
       name: '@tugraph/gi-assets-tugraph-db',
-      version: '0.6.39',
+      version: '0.6.41',
       global: 'GI_ASSETS_TUGRAPH_DB',
-      url: 'https://gw.alipayobjects.com/os/lib/tugraph/gi-assets-tugraph-db/0.6.39/dist/index.min.js',
+      url: 'https://gw.alipayobjects.com/os/lib/tugraph/gi-assets-tugraph-db/0.6.41/dist/index.min.js',
     },
   },
 };
