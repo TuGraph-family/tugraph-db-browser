@@ -10,6 +10,7 @@ import { End } from './end';
 
 // @ts-ignore
 import styles from './index.module.less';
+import { setLocalData } from '../studio';
 
 const LocalStorageKey = '__guidance_key__';
 /**
@@ -83,7 +84,6 @@ export const Guidance: React.FC = () => {
   // localStorage 存储
   const [isGuidanceFinished, setGuidanceFinished] =
     useLocalStorageState<string>(LocalStorageKey);
-
   const [step, setStep] = useState<number>(0);
 
   // step 变化的时候，需要根据 step 自动打开对应的 dom 节点。

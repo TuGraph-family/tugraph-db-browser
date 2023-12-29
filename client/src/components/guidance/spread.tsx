@@ -26,7 +26,7 @@ export const Spread: React.FC<StepUIProps> = ({
         <img
           className={styles.gif}
           src={Assets.spreadGif}
-          style={{ top: 105, left: 92, width: '238px', height: '206px' }}
+          style={{ top: 105, left: 92, width: '232px' }}
         />
         <div className={styles.btnContainer} style={{ top: 356, left: 245 }}>
           <div className={styles.nextBtn}>

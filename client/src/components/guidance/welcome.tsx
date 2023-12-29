@@ -6,18 +6,20 @@ import styles from './index.module.less';
 
 /**
  * 新手引导 - 欢迎页
- * @returns 
+ * @returns
  */
 export const Welcome: React.FC<StepUIProps> = ({ prev, next, end }) => {
   return (
     <div className={styles.welcome}>
       <div className={styles.container}>
         <img className={styles.background} src={Assets.welcome} />
-        <div className={styles.startBtn}>
+        <div className={styles.startBtnStart}>
           <img className={styles.btnBackground} src={Assets.btnWelcome} />
-          <div className={styles.startText} onClick={next}>开启破案之旅</div>
+          <div className={styles.startText} onClick={next}>
+            开启破案之旅
+          </div>
         </div>
-      
+
         <div className={styles.close} onClick={end}>
           <img src={Assets.close} />
         </div>

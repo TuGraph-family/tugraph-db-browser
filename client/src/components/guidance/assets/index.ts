@@ -25,7 +25,7 @@ export const Assets = {
   btnEnd:
     'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*8lvqQr_me34AAAAAAAAAAAAADgOBAQ/original',
   afterStyle:
-    'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*x3QnTr_EA2oAAAAAAAAAAAAADgOBAQ/original',
+    'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*jZR3RaNpAI8AAAAAAAAAAAAADgOBAQ/original',
   afterFilter:
     'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*q5jTQ5vZLAQAAAAAAAAAAAAADgOBAQ/original',
   afterSpread:

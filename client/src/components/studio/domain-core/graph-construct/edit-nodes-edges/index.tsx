@@ -85,7 +85,19 @@ export const EditNodesEdges: React.FC<Prop> = ({
   };
   const operateEdit = (record: AttrData) => {
     if (isPrimaryField(record.name)) {
-      return <Button type="text">主键</Button>;
+      return (
+        <Button
+          disabled
+          type="text"
+          style={{
+            color: 'rgba(54,55,64,1)',
+            background: 'transparent',
+            border: 'none',
+          }}
+        >
+          -
+        </Button>
+      );
     }
     return (
       <>
