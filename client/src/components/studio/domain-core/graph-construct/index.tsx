@@ -573,6 +573,18 @@ export const GraphConstruct = () => {
               draft.isModelOpen = false;
             });
           }}
+          cancelText="取消"
+          okText="确认"
+          okButtonProps={{
+            style: {
+              borderRadius: '6px',
+            },
+          }}
+          cancelButtonProps={{
+            style: {
+              borderRadius: '6px',
+            },
+          }}
           confirmLoading={ImportGraphSchemaLoading}
           className={styles[`${PUBLIC_PERFIX_CLASS}-model`]}
           onOk={() => {
@@ -595,7 +607,13 @@ export const GraphConstruct = () => {
         >
           <div className={styles[`${PUBLIC_PERFIX_CLASS}-upload`]}>
             <Upload {...uploadProps}>
-              <Button type="ghost" shape="round" icon={<UploadOutlined />}>
+              <Button
+                type="ghost"
+                icon={<UploadOutlined />}
+                style={{
+                  borderRadius: '6px',
+                }}
+              >
                 上传文件
               </Button>
             </Upload>
