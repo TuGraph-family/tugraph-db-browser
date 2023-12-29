@@ -213,7 +213,17 @@ export const AddNodesEdges: React.FC<Prop> = ({
       key: 'operate',
       render: (_, record: any) =>
         record.primaryField ? (
-          <a style={{ color: 'rgba(54,55,64,1)' }}>主键</a>
+          <Button
+            disabled
+            type="text"
+            style={{
+              color: 'rgba(54,55,64,1)',
+              background: 'transparent',
+              border: 'none',
+            }}
+          >
+            -
+          </Button>
         ) : (
           <Popconfirm
             title="确定要删除吗？"
