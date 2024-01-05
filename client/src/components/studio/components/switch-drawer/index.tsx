@@ -19,7 +19,7 @@ export interface SwitchDrawerProps {
   backgroundColor?: string;
 }
 
-const SwitchDrawer: React.FC<SwitchDrawerProps> = (props) => {
+const SwitchDrawer: React.FC<SwitchDrawerProps> = props => {
   const {
     children,
     width,
@@ -74,7 +74,7 @@ const SwitchDrawer: React.FC<SwitchDrawerProps> = (props) => {
     <div
       className={join(
         [styles[`${PUBLIC_PERFIX_CLASS}-switch-drawer`], className],
-        ' '
+        ' ',
       )}
       style={{ ...style, ...wrapperStyles }}
     >
@@ -108,7 +108,7 @@ const SwitchDrawer: React.FC<SwitchDrawerProps> = (props) => {
             styles[`${PUBLIC_PERFIX_CLASS}-switch-drawer-switcher`],
             styles[`${PUBLIC_PERFIX_CLASS}-switch-drawer-switcher-${position}`],
           ],
-          ' '
+          ' ',
         )}
         onClick={visible ? onClose : onShow}
       >

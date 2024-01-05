@@ -10,6 +10,7 @@ import { End } from './end';
 
 // @ts-ignore
 import styles from './index.module.less';
+import { setLocalData } from '../studio';
 
 const LocalStorageKey = '__guidance_key__';
 /**
@@ -83,26 +84,40 @@ export const Guidance: React.FC = () => {
   // localStorage 存储
   const [isGuidanceFinished, setGuidanceFinished] =
     useLocalStorageState<string>(LocalStorageKey);
-
+  const [isPreLocalSet, setIsPreLocalSet] = useLocalStorageState<string>('');
   const [step, setStep] = useState<number>(0);
+
+  useEffect(() => {
+    new Promise(res => {
+      setLocalData('ActiveAssetID', 'ConfigQuery');
+      res('');
+    }).then(() => {
+      setIsPreLocalSet('ConfigQuery');
+    });
+    return () => {
+      setIsPreLocalSet('');
+    };
+  }, []);
 
   // step 变化的时候，需要根据 step 自动打开对应的 dom 节点。
   useEffect(() => {
-    if (step === 1) {
-      // 查询
-      getElement(SelectorQuery).click();
-    } else if (step === 2) {
-      getElement(SelectorPlaceholder).style.display = 'none';
-    } else if (step === 3) {
-      // 样式
-      getElement(SelectorStyle).click();
-    } else if (step === 5) {
-      // 筛选
-      getElement(SelectorFilter).click();
-    } else if (step === -1) {
-      getElement(SelectorPlaceholder).style.display = 'flex';
+    if (isPreLocalSet) {
+      if (step === 1) {
+        // 查询
+        getElement(SelectorQuery).click();
+      } else if (step === 2) {
+        getElement(SelectorPlaceholder).style.display = 'none';
+      } else if (step === 3) {
+        // 样式
+        getElement(SelectorStyle).click();
+      } else if (step === 5) {
+        // 筛选
+        getElement(SelectorFilter).click();
+      } else if (step === -1) {
+        getElement(SelectorPlaceholder).style.display = 'flex';
+      }
     }
-  }, [step]);
+  }, [step, isPreLocalSet]);
 
   const props = {
     prev: () => setStep(step - 1),

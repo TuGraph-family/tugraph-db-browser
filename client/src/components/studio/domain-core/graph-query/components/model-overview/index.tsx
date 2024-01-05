@@ -91,12 +91,7 @@ const ModelOverview: React.FC<ModelOverviewProps> = ({
     const objResizeObserver = new ResizeObserver(entries => {
       entries.forEach(entry => {
         const cr = entry.contentRect;
-        if (
-          cr &&
-          graphCanvasContextValue?.graph?.changeSize &&
-          graphCanvasContextValue?.graph?.fitCenter &&
-          graphCanvasContextValue?.graph?.fitView
-        ) {
+        if (cr && !graphCanvasContextValue?.graph?.destroyed) {
           graphCanvasContextValue?.graph?.changeSize(cr.width, cr.height);
           graphCanvasContextValue?.graph?.fitCenter();
           graphCanvasContextValue?.graph?.fitView();

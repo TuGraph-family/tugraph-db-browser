@@ -16,10 +16,11 @@
     opacity: 0.35;
   }
 
-  .welcome, .end {
+  .welcome,
+  .end {
     display: flex;
     justify-content: center; /* 水平垂直居中 */
-    align-items: center; 
+    align-items: center;
     width: 100%;
     height: 100%;
     flex-direction: column;
@@ -32,15 +33,18 @@
       max-width: 764px;
     }
 
-    .startBtn {
-      margin-top: 24px;
+    .startBtnEnd {
       position: relative;
       display: flex;
       justify-content: center;
-      align-items: center; 
+      align-items: center;
       cursor: pointer;
+      width: 210px;
+      padding-top: 24px;
+      margin: 0 auto;
+      transform: translateX(36px);
 
-       &:hover {
+      &:hover {
         .startText {
           text-shadow: -3px 2px 0 rgba(0, 17, 102, 0.47);
         }
@@ -53,11 +57,38 @@
       .startText {
         position: absolute;
         font-size: 18px;
-        color: #FFFFFF;
-        text-shadow: 0 1px 0 rgba(0,17,102,0.15);
+        color: #ffffff;
+        text-shadow: 0 1px 0 rgba(0, 17, 102, 0.15);
       }
     }
+    .startBtnStart {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      width: 210px;
+      padding-top: 24px;
+      margin: 0 auto;
+      transform: translateX(4px);
 
+      &:hover {
+        .startText {
+          text-shadow: -3px 2px 0 rgba(0, 17, 102, 0.47);
+        }
+      }
+
+      .btnBackground {
+        width: 160px;
+      }
+
+      .startText {
+        position: absolute;
+        font-size: 18px;
+        color: #ffffff;
+        text-shadow: 0 1px 0 rgba(0, 17, 102, 0.15);
+      }
+    }
     .close {
       position: absolute;
       right: 16px;
@@ -66,7 +97,13 @@
     }
   }
 
-  .query, .spread, .styleBtn, .stylePanel, .filterBtn, .filterPanel, .download {
+  .query,
+  .spread,
+  .styleBtn,
+  .stylePanel,
+  .filterBtn,
+  .filterPanel,
+  .download {
     display: inline-block;
     position: absolute;
 
@@ -95,23 +132,23 @@
         position: relative;
         display: flex;
         justify-content: center;
-        align-items: center; 
+        align-items: center;
         cursor: pointer;
-    
+
         &:hover {
           .nextText {
             text-shadow: -3px 2px 0 rgba(0, 17, 102, 0.47);
           }
         }
-    
+
         .btnBackground {
           width: 100px;
         }
-    
+
         .nextText {
           position: absolute;
           font-size: 18px;
-          color: #FFFFFF;
+          color: #ffffff;
         }
       }
     }
@@ -125,6 +162,5 @@
   }
 
   .spread {
-
   }
 }

@@ -41,7 +41,8 @@
 
 .gi-rich-container .gi-rich-container-toolbar {
   border-bottom: none !important;
-  box-shadow: 0px 1px 2px 0 rgba(0, 0, 0, 0.04), 0px 1px 6px -1px rgba(0, 0, 0, 0.04), 0px 2px 4px 0 rgba(0, 0, 0, 0.04);
+  box-shadow: 0px 1px 2px 0 rgba(0, 0, 0, 0.04),
+    0px 1px 6px -1px rgba(0, 0, 0, 0.04), 0px 2px 4px 0 rgba(0, 0, 0, 0.04);
   z-index: 12;
   .toolbar-item {
     .anticon {
@@ -50,7 +51,7 @@
       }
     }
     .ant-btn {
-      color: #6A6B71;
+      color: #6a6b71;
     }
   }
 }
@@ -64,7 +65,7 @@
   .ant-segmented {
     background: #eaeff9;
     padding: 4px;
-    width: 100%
+    width: 100%;
   }
   .ant-segmented:not(.ant-segmented-disabled):hover,
   .ant-segmented:not(.ant-segmented-disabled):focus {
@@ -73,13 +74,14 @@
 
   .style-setting-container {
     height: calc(100vh - 110px) !important;
-    .style-setting-element-container .nodeConfigurationContainer, .style-setting-element-container .edgeConfigurationContainer {
+    .style-setting-element-container .nodeConfigurationContainer,
+    .style-setting-element-container .edgeConfigurationContainer {
       height: calc(100vh - 210px) !important;
       .ant-slider-mark-text {
         font-size: 12px;
-        color: #6A6B71;
+        color: #6a6b71;
       }
-      
+
       #nodeConfigurationForm_badgeValue {
         .ant-checkbox {
           left: 4px;
@@ -87,11 +89,11 @@
       }
     }
   }
-  
+
   .attribute-filter-container .attribute-filter-container-form {
     height: calc(100vh - 205px) !important;
   }
-  
+
   .statictics-filter-container .statictics-filter-container-form {
     height: calc(100vh - 205px) !important;
   }
@@ -105,4 +107,28 @@
       right: 10px;
     }
   }
+}
+
+.ant-input-number {
+  border-radius: 6px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.ant-input-number-group-addon {
+  border-radius: 6px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.ant-upload,
+.ant-input,
+.ant-select-selector,
+.ant-input-affix-wrapper,
+.ant-btn,
+textarea .ant-input,
+.ant-input-number-group,
+.ant-modal-content,
+.ant-btn-dashed {
+  border-radius: 6px;
+  overflow: hidden;
 }
