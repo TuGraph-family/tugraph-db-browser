@@ -134,6 +134,18 @@ export const PathModal: React.FC<PathModalProp> = ({
       className={styles[`${PUBLIC_PERFIX_CLASS}-path-modal`]}
       title="高级配置"
       visible={open}
+      cancelText="取消"
+      okText="确认"
+      cancelButtonProps={{
+        style: {
+          borderRadius: 6,
+        },
+      }}
+      okButtonProps={{
+        style: {
+          borderRadius: 6,
+        },
+      }}
       onOk={() => {
         form.validateFields().then(val => {
           const { limit } = val;

@@ -16,7 +16,7 @@ type Prop = {
   onQueryPath: (
     limit: number,
     conditions: Array<{ property: string; value: string; operator: string }>,
-    path: string
+    path: string,
   ) => void;
 };
 export const PathQueryPanel: React.FC<Prop> = ({
@@ -31,7 +31,7 @@ export const PathQueryPanel: React.FC<Prop> = ({
     limit: number;
     conditions: Array<{ property: string; value: string; operator: string }>;
   }>({
-    pathList: map(edges, (item) => [item]),
+    pathList: map(edges, item => [item]),
     selectPath: [],
     open: false,
     limit: 100,
@@ -59,14 +59,14 @@ export const PathQueryPanel: React.FC<Prop> = ({
             placeholder="请选择下列路径"
             allowClear
             onClear={() => {
-              updateState((draft) => {
-                draft.pathList = map(edges, (item) => [item]);
+              updateState(draft => {
+                draft.pathList = map(edges, item => [item]);
               });
             }}
-            onSelect={(val) => {
-              updateState((draft) => {
+            onSelect={val => {
+              updateState(draft => {
                 const clickItem = last(
-                  find(pathList, (item, index) => val === index)
+                  find(pathList, (item, index) => val === index),
                 );
                 if (clickItem?.source === clickItem?.target) {
                   draft.pathList = [
@@ -79,10 +79,10 @@ export const PathQueryPanel: React.FC<Prop> = ({
                 } else {
                   const optionPath = filter(
                     edges,
-                    (item) => item.source === clickItem?.target
+                    item => item.source === clickItem?.target,
                   );
                   draft.selectPath = [...pathList[val]];
-                  draft.pathList = map(optionPath, (item) => [
+                  draft.pathList = map(optionPath, item => [
                     ...find(pathList, (item, index) => val === index),
                     item,
                   ]);
@@ -111,7 +111,7 @@ export const PathQueryPanel: React.FC<Prop> = ({
         <div className={styles[`${PUBLIC_PERFIX_CLASS}-header-item`]}>
           <Button
             onClick={() => {
-              updateState((draft) => {
+              updateState(draft => {
                 draft.open = true;
               });
             }}
@@ -143,14 +143,14 @@ export const PathQueryPanel: React.FC<Prop> = ({
       <PathModal
         data={{ path: selectPath, nodes: nodes }}
         open={open}
-        onOK={(params) => {
-          updateState((draft) => {
+        onOK={params => {
+          updateState(draft => {
             draft.limit = params.limit;
             draft.conditions = params.conditions;
           });
         }}
         onCancel={() => {
-          updateState((draft) => {
+          updateState(draft => {
             draft.open = false;
           });
         }}

@@ -172,13 +172,9 @@ const ExecuteResult: React.FC<ResultProps> = ({
           }
           entries.forEach(entry => {
             const cr = entry.contentRect;
-            if (
-              graphCanvasContextValue?.graph &&
-              graphCanvasContextValue?.graph?.changeSize &&
-              graphCanvasContextValue?.graph?.fitCenter
-            ) {
-              graphCanvasContextValue?.graph?.changeSize(cr.width, cr.height);
-              graphCanvasContextValue?.graph?.fitCenter();
+            if (!graphCanvasContextValue?.graph?.destroyed) {
+              graphCanvasContextValue.graph.changeSize(cr.width, cr.height);
+              graphCanvasContextValue.graph.fitCenter();
             }
           });
         });
