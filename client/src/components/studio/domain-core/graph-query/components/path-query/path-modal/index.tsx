@@ -138,12 +138,12 @@ export const PathModal: React.FC<PathModalProp> = ({
       okText="确认"
       cancelButtonProps={{
         style: {
-          borderRadius: '6px',
+          borderRadius: 6,
         },
       }}
       okButtonProps={{
         style: {
-          borderRadius: '6px',
+          borderRadius: 6,
         },
       }}
       onOk={() => {

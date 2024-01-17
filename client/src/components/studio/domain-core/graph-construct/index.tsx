@@ -577,12 +577,12 @@ export const GraphConstruct = () => {
           okText="确认"
           okButtonProps={{
             style: {
-              borderRadius: '6px',
+              borderRadius: 6,
             },
           }}
           cancelButtonProps={{
             style: {
-              borderRadius: '6px',
+              borderRadius: 6,
             },
           }}
           confirmLoading={ImportGraphSchemaLoading}
@@ -611,7 +611,7 @@ export const GraphConstruct = () => {
                 type="ghost"
                 icon={<UploadOutlined />}
                 style={{
-                  borderRadius: '6px',
+                  borderRadius: 6,
                 }}
               >
                 上传文件

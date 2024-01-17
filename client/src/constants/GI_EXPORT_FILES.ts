@@ -1443,7 +1443,7 @@ export default {
     G6: {
       url: 'https://gw.alipayobjects.com/os/lib/antv/g6/4.8.24/dist/g6.min.js',
       name: '@antv/g6',
-      version: '4.8.14',
+      version: '4.8.24',
       global: 'G6',
     },
     Graphin: {
