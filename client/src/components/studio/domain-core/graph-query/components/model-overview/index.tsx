@@ -92,9 +92,9 @@ const ModelOverview: React.FC<ModelOverviewProps> = ({
       entries.forEach(entry => {
         const cr = entry.contentRect;
         if (cr && !graphCanvasContextValue?.graph?.destroyed) {
-          graphCanvasContextValue?.graph?.changeSize(cr.width, cr.height);
-          graphCanvasContextValue?.graph?.fitCenter();
-          graphCanvasContextValue?.graph?.fitView();
+          graphCanvasContextValue.graph.changeSize(cr.width, cr.height);
+          graphCanvasContextValue.graph.fitCenter();
+          graphCanvasContextValue.graph.fitView();
         }
       });
     });
