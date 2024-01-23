@@ -12,6 +12,7 @@ import particlesOptions from './particles-config';
 import DEFAULT_STYLE_CONFIG from '@/constants/DEFAULT_STYLE_CONFIG';
 
 import styles from './index.module.less';
+import { HOLD_TIME } from '../utils/request';
 
 const { Item, useForm } = Form;
 
@@ -32,7 +33,7 @@ export const Login = () => {
           if (res.errorCode == 200) {
             setLocalData('TUGRAPH_USER_NAME', values.userName);
             setLocalData('TUGRAPH_TOKEN', res.data.authorization);
-            message.success('登录成功！', 2.5);
+            message.success('登录成功！', HOLD_TIME);
             if (res?.data?.default_password) {
               window.open(window.location.origin + '/reset', '_self');
             } else {
@@ -52,7 +53,7 @@ export const Login = () => {
               window.open(window.location.origin + '/home', '_self');
             }
           } else {
-            message.error('登录失败！' + res.errorMessage, 2.5);
+            message.error('登录失败！' + res.errorMessage, HOLD_TIME);
           }
         });
       } catch (error: any) {
