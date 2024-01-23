@@ -32,26 +32,31 @@ export const Login = () => {
           if (res.errorCode == 200) {
             setLocalData('TUGRAPH_USER_NAME', values.userName);
             setLocalData('TUGRAPH_TOKEN', res.data.authorization);
-            message.success('登录成功！');
+            message.success('登录成功！', 2.5);
             if (res?.data?.default_password) {
               window.open(window.location.origin + '/reset', '_self');
             } else {
               // 登录成功以后，设置默认的样式到 localstorage 中
-              const customStyleConfig = JSON.parse(localStorage.getItem('CUSTOM_STYLE_CONFIG') as string || '{}')
+              const customStyleConfig = JSON.parse(
+                (localStorage.getItem('CUSTOM_STYLE_CONFIG') as string) || '{}',
+              );
               const styleConfig = {
                 ...DEFAULT_STYLE_CONFIG,
-                ...customStyleConfig
-              }
-              localStorage.setItem('CUSTOM_STYLE_CONFIG', JSON.stringify(styleConfig))
+                ...customStyleConfig,
+              };
+              localStorage.setItem(
+                'CUSTOM_STYLE_CONFIG',
+                JSON.stringify(styleConfig),
+              );
               // 登录成功后跳转到首页
               window.open(window.location.origin + '/home', '_self');
             }
           } else {
-            message.error('登录失败！' + res.errorMessage);
+            message.error('登录失败！' + res.errorMessage, 2.5);
           }
         });
-      } catch (error) {
-        message.error(error ?? '登录失败！');
+      } catch (error: any) {
+        message.error(error ? error : '登录失败！');
       }
     }
   };
