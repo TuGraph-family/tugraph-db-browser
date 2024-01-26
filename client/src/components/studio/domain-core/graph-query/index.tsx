@@ -32,6 +32,7 @@ import {
   PUBLIC_PERFIX_CLASS,
   STORED_PROCEDURE_DESC,
   STORED_PROCEDURE_RULE,
+  USER_HELP_LINK,
 } from '../../constant';
 import { useQuery } from '../../hooks/useQuery';
 import { useSchema } from '../../hooks/useSchema';
@@ -296,7 +297,7 @@ export const GraphQuery = () => {
           <QuestionCircleOutlined
             style={{ color: 'rgba(147,147,152,1)' }}
             onClick={() => {
-              window.open('https://tugraph.antgroup.com/doc');
+              window.open(USER_HELP_LINK);
             }}
           />
         </Tooltip>

@@ -229,3 +229,6 @@ export const STORED_PROCEDURE_RULE = [
     desc: '4. 删除和修改可以不指定版本，以名字为唯一标识；',
   },
 ];
+
+export const USER_HELP_LINK =
+  'https://tugraph-db.readthedocs.io/zh-cn/latest/4.user-guide/1.tugraph-browser.html';
