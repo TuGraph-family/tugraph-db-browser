@@ -7,6 +7,7 @@ import { useImmer } from 'use-immer';
 import { useAuth } from '@/components/studio/hooks/useAuth';
 import { getLocalData, setLocalData } from '../utils/localStorage';
 import EditPasswordModal from './edit-password';
+import { USER_HELP_LINK } from '../constant';
 
 type Prop = {};
 export const UserCenter: React.FC<Prop> = () => {
@@ -53,7 +54,7 @@ export const UserCenter: React.FC<Prop> = () => {
         <Tooltip title="用户帮助">
           <QuestionCircleOutlined
             onClick={() => {
-              window.open('https://tugraph.antgroup.com/doc');
+              window.open(USER_HELP_LINK);
             }}
           />
         </Tooltip>
