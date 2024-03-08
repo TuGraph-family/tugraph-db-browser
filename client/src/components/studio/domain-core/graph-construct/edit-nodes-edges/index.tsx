@@ -658,7 +658,38 @@ export const EditNodesEdges: React.FC<Prop> = ({
           <Button
             style={{ marginRight: 12 }}
             onClick={() => {
-              onClose();
+              const isAllSave = [...state.attrList].every(
+                item => item.disabled,
+              );
+              if (isAllSave) {
+                onClose();
+              } else {
+                const readyAttr = [...state.attrList].filter(
+                  item => Object.keys(item).length > 1,
+                );
+                onEditLabelPropertySchema({
+                  graphName: currentGraphName,
+                  labelName,
+                  labelType: type,
+                  properties: readyAttr.map(item => ({
+                    name: item.name,
+                    type: item.type,
+                    optional: item.optional,
+                  })),
+                })
+                  .finally(() => {
+                    onClose();
+                    updateState(preState => {
+                      preState.attrList = preState.attrList.map(item => ({
+                        ...item,
+                        disabled: true,
+                      }));
+                    });
+                  })
+                  .catch(err => {
+                    message.error(err);
+                  });
+              }
             }}
           >
             关闭
