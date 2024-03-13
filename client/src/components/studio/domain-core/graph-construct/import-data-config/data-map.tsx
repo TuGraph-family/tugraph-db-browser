@@ -293,7 +293,7 @@ const DataMap = ({
       const dataSource: any[] = data?.data?.dataSource || [];
       const dataColumns = dataSource[1];
       const dataColumnsTitle = ['起点', '终点'];
-      const isNode = state?.nodeType[0] === 'node';
+      const isNode = ['node', ''].includes(state?.nodeType[0]);
       const curColumns = Object.entries(dataColumns).map(
         ([key, value], index) => {
           return {
