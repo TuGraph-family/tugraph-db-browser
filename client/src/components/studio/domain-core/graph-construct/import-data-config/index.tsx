@@ -47,6 +47,7 @@ export const fileListDataMap = ({
                     : styles[`${PUBLIC_PERFIX_CLASS}-collapse-name`]
                 }
               >
+                文件名：
                 <Tooltip title={isFullView ? '' : data?.fileName}>
                   {data?.fileName}
                 </Tooltip>
