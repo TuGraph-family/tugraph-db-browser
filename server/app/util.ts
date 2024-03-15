@@ -34,22 +34,22 @@ export const responseFormatter = (result: RestFulResponse) => {
 };
 
 export const getNodeIdsByResponseBak = (
-  params: ICypherResponse
+  params: ICypherResponse,
 ): { nodeIds: Array<number>; edgeIds: Array<string> } => {
   const nodeIds: Array<number> = [];
   const edgeIds: Array<string> = [];
 
   const { result } = params;
 
-  result.forEach((item) => {
+  result.forEach(item => {
     if (Array.isArray(item)) {
-      item.forEach((item_c) => {
+      item.forEach(item_c => {
         if (typeof item_c === 'string' && item_c.startsWith('E[')) {
           const eid: any = item_c.replace(
             /(E\[)([0-9]*_[0-9]*_[0-9]*_[0-9]*)(])/g,
             (_$1: string, _$2: string, $3: string) => {
               return $3;
-            }
+            },
           );
           if (eid) {
             edgeIds.push(eid);
@@ -59,13 +59,13 @@ export const getNodeIdsByResponseBak = (
         } else if (typeof item_c === 'string' && item_c.startsWith('[V')) {
           if (item_c.includes('E[')) {
             const Ids = item_c.split(',');
-            Ids.forEach((itemId) => {
+            Ids.forEach(itemId => {
               if (itemId.startsWith('E[')) {
                 const eid: any = itemId.replace(
                   /(E\[)([0-9]*_[0-9]*_[0-9]*_[0-9]*)(])/g,
                   (_$1: string, _$2: string, $3: string) => {
                     return $3;
-                  }
+                  },
                 );
                 if (eid) {
                   edgeIds.push(eid);
@@ -79,7 +79,7 @@ export const getNodeIdsByResponseBak = (
               /(\[V\[)([0-9]*)(\]\])/g,
               (_$1: string, _$2: string, $3: string) => {
                 return $3;
-              }
+              },
             );
             nodeIds.push(parseInt(vid));
           }
@@ -88,7 +88,7 @@ export const getNodeIdsByResponseBak = (
             /(V\[)([0-9]*)(])/g,
             (_$1: string, _$2: string, $3: string) => {
               return $3;
-            }
+            },
           );
           nodeIds.push(parseInt(vid));
         }
@@ -103,7 +103,7 @@ export const getNodeIdsByResponseBak = (
 };
 
 export const getNodeIdsByResponse = (
-  params: any
+  params: any,
 ): { nodeIds: Array<number>; edgeIds: Array<string> } => {
   const nodeIds: Array<number> = [];
   const edgeIds: Array<string> = [];
@@ -118,8 +118,8 @@ export const getNodeIdsByResponse = (
       edgeIndexList.push(index);
     }
   });
-  result.forEach((item) => {
-    pathIndexList.forEach((c) => {
+  result.forEach(item => {
+    pathIndexList.forEach(c => {
       if (item && item[c]) {
         const data = JSON.parse(item[c]);
         data.forEach((el: any, index: number) => {
@@ -131,7 +131,7 @@ export const getNodeIdsByResponse = (
         });
       }
     });
-    edgeIndexList.forEach((c) => {
+    edgeIndexList.forEach(c => {
       if (item && item[c]) {
         const data = JSON.parse(item[c]);
         const eid = `${data.src}_${data.dst}_${data.label_id}_${data.temporal_id}_${data.identity}`;
@@ -149,7 +149,7 @@ export const getNodeIdsByResponse = (
 
 export const QueryResultFormatter = (
   result: RestFulResponse,
-  script: string
+  script: string,
 ) => {
   if (result.status !== 200 || result.data.errorCode != 200) {
     return {
@@ -168,9 +168,9 @@ export const QueryResultFormatter = (
       formatData:
         isEmpty(edges) && isEmpty(nodes)
           ? {
-            nodes: [],
-            edges: []
-          }
+              nodes: [],
+              edges: [],
+            }
           : {
               edges,
               nodes,
@@ -181,4 +181,19 @@ export const QueryResultFormatter = (
     success: true,
     errorCode: result.data.errorCode,
   };
+};
+
+export const GetEnvironmentVariables = (env: any): any => {
+  const queryReg = /[?\"](\-\-[a-zA-Z0-9_]+)=([a-zA-Z0-9\.\/\:]+)/g;
+  let match: any[] | null = null;
+  const result = {};
+  //   {
+  //     "tugraph_db_host": "http://47.105.42.70:9090", 图数据库服务地址
+  //     "server_port": "7001", Node服务端端口
+  //     "client_port": "8000" 前端Umi服务端口
+  // }
+  while ((match = queryReg.exec(env?.npm_lifecycle_script))) {
+    result[`${match[1]}`.replace('--', '')] = match[2];
+  }
+  return result;
 };
