@@ -1,11 +1,22 @@
 import routes from '@/config/routes';
 import { Col, Row } from 'antd';
 import React, { useEffect } from 'react';
-import { Outlet, useLocation } from 'umi';
+import { Outlet, useLocation, history } from 'umi';
 import styles from './index.less';
 import './global.less';
 
 export const Container = (props: React.ComponentProps<any>) => {
+  const location = history.location;
+  useEffect(() => {
+    if (
+      !localStorage.getItem('TUGRAPH_TOKEN') &&
+      ![window.location.pathname].includes('login')
+    ) {
+      // 已经登录过，则跳转到首页
+      history.push('/');
+      return;
+    }
+  }, []);
   return (
     <div
       className={styles?.umiContainer}

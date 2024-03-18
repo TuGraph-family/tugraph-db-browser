@@ -1,5 +1,6 @@
 import { defineConfig } from 'umi';
 import routes from './src/config/routes';
+import { GetEnvironmentVariables } from '../server/app/util';
 
 process.env.MFSU_AD = 'none';
 
@@ -11,7 +12,7 @@ export default defineConfig({
   // if the assets are built, will not proxy
   hash: false,
   history: {
-    type: 'browser'
+    type: 'browser',
   },
   styles: [
     `https://gw.alipayobjects.com/os/lib/antd/${ANTD_VERSION}/dist/antd.css`,
@@ -40,7 +41,15 @@ export default defineConfig({
     `https://gw.alipayobjects.com/os/lib/antv/gi-sdk-app/${GI_SDK_APP_VERSION}/dist/index.min.js`,
   ],
   publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
-  npmClient: "npm",
-  favicons: ['https://gw.alipayobjects.com/zos/bmw-prod/6290edfc-e134-4074-a550-079eeba9926d.svg'],
+  npmClient: 'npm',
+  favicons: [
+    'https://gw.alipayobjects.com/zos/bmw-prod/6290edfc-e134-4074-a550-079eeba9926d.svg',
+  ],
   esbuildMinifyIIFE: true,
+  define: {
+    'process.env': {
+      HOST: GetEnvironmentVariables(process.env),
+      ...process.env,
+    },
+  },
 });

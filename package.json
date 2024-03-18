@@ -17,7 +17,7 @@
     "client-dev": "cd client && yarn run dev",
     "server-dev": "cd server && yarn run dev",
     "server-start": "cd server && yarn run start",
-    "start": "yarn run server-start",
+    "start": "pnpm -r --stream run start",
     "client-build": "cd client && yarn run build",
     "server-build": "cd server && yarn run build",
     "sycnfile": "cd server && yarn run sycnfile",
