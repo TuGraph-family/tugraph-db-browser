@@ -503,7 +503,7 @@ export const GraphQuery = () => {
                 item => item.id === activeId,
               )?.script;
               if (!isEmpty(editor)) {
-                editor?.editorInstance?.setValue?.(value);
+                editorRef?.current?.codeEditor?.setValue(value);
               }
               updateState(draft => {
                 draft.editorKey = activeId;
