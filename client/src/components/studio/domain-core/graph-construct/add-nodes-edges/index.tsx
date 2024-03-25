@@ -30,6 +30,7 @@ interface EditColumnsType<T> extends ColumnsType<T> {
   };
   editable: boolean;
 }
+
 export const AddNodesEdges: React.FC<Prop> = ({
   type,
   data = [],
@@ -60,6 +61,9 @@ export const AddNodesEdges: React.FC<Prop> = ({
     configList: [],
   });
   const { startList, attrList, configList } = state;
+  const isAllow = (record: any): boolean => {
+    return (state?.isNode && record?.primaryField) || false;
+  };
   useEffect(() => {
     onSwitch?.(onShow, onClose);
   }, []);
@@ -197,7 +201,6 @@ export const AddNodesEdges: React.FC<Prop> = ({
       key: 'optional',
       editable: true,
       editorConfig: (record: AttrData) => {
-        const isAllow = state.isNode && record.primaryField;
         return {
           inputType: EditType.SELECT,
           prop: {
@@ -205,7 +208,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
             disabled: isAllow,
             options: [
               {
-                label: isAllow ? '否（主键）' : '否',
+                label: isAllow(record) ? '否（主键）' : '否',
                 value: false,
               },
               { label: '是', value: true },
@@ -219,8 +222,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
       dataIndex: 'operate',
       key: 'operate',
       render: (_, record: any) => {
-        const isAllow = state.isNode && record.primaryField;
-        return isAllow ? (
+        return isAllow(record) ? (
           <Button
             disabled
             type="text"
