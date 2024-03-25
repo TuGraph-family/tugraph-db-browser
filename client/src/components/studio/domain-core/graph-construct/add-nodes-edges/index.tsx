@@ -38,7 +38,6 @@ export const AddNodesEdges: React.FC<Prop> = ({
   onVisible,
 }) => {
   const [form] = Form.useForm();
-
   const { visible, onShow, onClose } = useVisible({ defaultVisible: true });
 
   const [state, updateState] = useImmer<{
