@@ -62,7 +62,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
   });
   const { startList, attrList, configList } = state;
   const isAllow = (record: any): boolean => {
-    return (state?.isNode && record?.primaryField) || false;
+    return state?.isNode && record?.primaryField;
   };
   useEffect(() => {
     onSwitch?.(onShow, onClose);
@@ -205,7 +205,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
           inputType: EditType.SELECT,
           prop: {
             defaultValue: false,
-            disabled: isAllow,
+            disabled: isAllow(record),
             options: [
               {
                 label: isAllow(record) ? '否（主键）' : '否',
