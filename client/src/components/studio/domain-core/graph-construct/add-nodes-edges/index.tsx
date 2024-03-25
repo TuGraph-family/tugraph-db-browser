@@ -38,14 +38,17 @@ export const AddNodesEdges: React.FC<Prop> = ({
   onVisible,
 }) => {
   const [form] = Form.useForm();
+
   const { visible, onShow, onClose } = useVisible({ defaultVisible: true });
-  const isNode = type === 'node';
+
   const [state, updateState] = useImmer<{
     startList: Array<StartData>;
     attrList: Array<AttrData>;
     configList: Array<IndexData>;
+    isNode: boolean;
   }>({
     startList: [],
+    isNode: true,
     attrList: [
       {
         id: 'primary-key',
@@ -64,7 +67,11 @@ export const AddNodesEdges: React.FC<Prop> = ({
   useEffect(() => {
     onVisible?.(visible);
   }, [visible]);
-
+  useEffect(() => {
+    updateState(draft => {
+      draft.isNode = type === 'node';
+    });
+  }, [type]);
   const propertyList = () => {
     const attrPropertyNames = map(
       filter(attrList, attr => !attr.optional && !attr.primaryField),
@@ -195,10 +202,11 @@ export const AddNodesEdges: React.FC<Prop> = ({
           inputType: EditType.SELECT,
           prop: {
             defaultValue: false,
-            disabled: record.primaryField,
+            disabled: state.isNode && record.primaryField,
             options: [
               {
-                label: record.primaryField ? '否（主键）' : '否',
+                label:
+                  state.isNode && record.primaryField ? '否（主键）' : '否',
                 value: false,
               },
               { label: '是', value: true },
@@ -212,7 +220,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
       dataIndex: 'operate',
       key: 'operate',
       render: (_, record: any) =>
-        record.primaryField ? (
+        state.isNode && record.primaryField ? (
           <Button
             disabled
             type="text"
@@ -423,7 +431,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
     >
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-container-content`]}>
         <div className={styles[`${PUBLIC_PERFIX_CLASS}-container-header`]}>
-          <span> 添加{`${isNode ? '点' : '边'}`}类型</span>
+          <span> 添加{`${state.isNode ? '点' : '边'}`}类型</span>
           <div>
             <span style={{ marginRight: 4 }}>命令行建模</span>
             <a href="https://tugraph.antgroup.com/doc" target="_blank">
@@ -434,7 +442,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
         <div>
           <Form layout="vertical" form={form}>
             <Form.Item
-              label={`${isNode ? '点' : '边'}类型名称`}
+              label={`${state.isNode ? '点' : '边'}类型名称`}
               name={'name'}
               rules={[
                 {
@@ -443,7 +451,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
                     var reg = new RegExp('^[a-zA-Z0-9_\u4e00-\u9fa5]+$');
                     if (!value) {
                       return Promise.reject(
-                        `请填写${isNode ? '点' : '边'}类型名称！`,
+                        `请填写${state.isNode ? '点' : '边'}类型名称！`,
                       );
                     }
                     if (!reg.test(value)) {
@@ -459,7 +467,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
             >
               <Input
                 autoComplete="off"
-                placeholder={`请输入${isNode ? '点' : '边'}类型名称`}
+                placeholder={`请输入${state.isNode ? '点' : '边'}类型名称`}
                 className={styles[`${PUBLIC_PERFIX_CLASS}-container-name`]}
               />
             </Form.Item>
@@ -484,7 +492,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
             />
             {addButton(addNodeAttr)}
           </div>
-          {!isNode && (
+          {!state.isNode && (
             <div>
               <p className={styles[`${PUBLIC_PERFIX_CLASS}-container-title`]}>
                 <Tooltip title="如果不选择，则表示起点和终点可以为任意点类型">
@@ -510,7 +518,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
               {addButton(addEdge, '添加起点和终点')}
             </div>
           )}
-          {isNode && (
+          {state.isNode && (
             <div>
               <p className={styles[`${PUBLIC_PERFIX_CLASS}-container-title`]}>
                 索引列表
