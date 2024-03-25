@@ -198,15 +198,15 @@ export const AddNodesEdges: React.FC<Prop> = ({
       key: 'optional',
       editable: true,
       editorConfig: (record: AttrData) => {
+        const isAllow = state.isNode && record.primaryField;
         return {
           inputType: EditType.SELECT,
           prop: {
             defaultValue: false,
-            disabled: state.isNode && record.primaryField,
+            disabled: isAllow,
             options: [
               {
-                label:
-                  state.isNode && record.primaryField ? '否（主键）' : '否',
+                label: isAllow ? '否（主键）' : '否',
                 value: false,
               },
               { label: '是', value: true },
@@ -219,8 +219,9 @@ export const AddNodesEdges: React.FC<Prop> = ({
       title: '操作',
       dataIndex: 'operate',
       key: 'operate',
-      render: (_, record: any) =>
-        state.isNode && record.primaryField ? (
+      render: (_, record: any) => {
+        const isAllow = state.isNode && record.primaryField;
+        return isAllow ? (
           <Button
             disabled
             type="text"
@@ -247,7 +248,8 @@ export const AddNodesEdges: React.FC<Prop> = ({
           >
             <a style={{ color: 'rgba(54,55,64,1)' }}>删除</a>
           </Popconfirm>
-        ),
+        );
+      },
     },
   ];
   const nodeConfigColumns: EditColumnsType<IndexData> = [

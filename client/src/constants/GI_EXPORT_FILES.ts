@@ -1454,7 +1454,7 @@ export default {
     },
     GISDK: {
       name: '@antv/gi-sdk',
-      version: '2.4.20',
+      version: '2.4.21',
       url: 'https://gw.alipayobjects.com/os/lib/antv/gi-sdk/2.4.20/dist/index.min.js',
       global: 'GISDK',
     },
