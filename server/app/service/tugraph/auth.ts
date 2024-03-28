@@ -30,6 +30,21 @@ class TuGraphAuthService extends Service {
     return responseFormatter(result);
   }
 
+  async curlPost(path: string, params: any) {
+    const result = await this.ctx.curl(`${path}/`, {
+      headers: {
+        'content-type': 'application/json',
+        Authorization: this.ctx.request.header.authorization,
+      },
+      method: 'POST',
+      data: {
+        ...params,
+      },
+      timeout: [30000, 50000],
+      dataType: 'json',
+    });
+    return responseFormatter(result);
+  }
   /**
    * 创建新用户
    */
@@ -38,7 +53,7 @@ class TuGraphAuthService extends Service {
 
     // 1.创建用户
     const createResult = await this.executeCypherQuery(
-      `CALL dbms.security.createUser('${username}', '${password}')`
+      `CALL dbms.security.createUser('${username}', '${password}')`,
     );
 
     if (!createResult.success) {
@@ -50,16 +65,16 @@ class TuGraphAuthService extends Service {
       `CALL dbms.security.setUserDesc('${username}', '${description}')`,
       // 3. 赋予用户角色
       `CALL dbms.security.addUserRoles('${username}', ${JSON.stringify(
-        roles
+        roles,
       )})`,
     ];
 
-    const cypherPromise = cypherScripts.map(async (cypher) => {
+    const cypherPromise = cypherScripts.map(async cypher => {
       return await this.executeCypherQuery(cypher);
     });
     const result = await Promise.all(cypherPromise);
 
-    const error = result?.find((d) => !d?.success);
+    const error = result?.find(d => !d?.success);
 
     if (error) {
       return error;
@@ -81,16 +96,16 @@ class TuGraphAuthService extends Service {
       `CALL dbms.security.setUserDesc('${username}', '${description}')`,
       // 3. 赋予用户角色
       `CALL dbms.security.rebuildUserRoles('${username}', ${JSON.stringify(
-        roles
+        roles,
       )})`,
     ];
 
-    const cypherPromise = cypherScripts.map(async (cypher) => {
+    const cypherPromise = cypherScripts.map(async cypher => {
       return await this.executeCypherQuery(cypher);
     });
     const result = await Promise.all(cypherPromise);
 
-    const error = result?.find((d) => !d?.success);
+    const error = result?.find(d => !d?.success);
 
     if (error) {
       return error;
@@ -153,7 +168,7 @@ class TuGraphAuthService extends Service {
    */
   async setUserDisabledStatus(
     username: string,
-    disabled: boolean
+    disabled: boolean,
   ): Promise<any> {
     const cypherQuery = `CALL dbms.security.disableUser('${username}', ${disabled})`;
     const result = await this.executeCypherQuery(cypherQuery);
@@ -175,7 +190,7 @@ class TuGraphAuthService extends Service {
     // 1.创建角色
 
     const createRoleresult = await this.executeCypherQuery(
-      `CALL dbms.security.createRole('${role}','${description}')`
+      `CALL dbms.security.createRole('${role}','${description}')`,
     );
 
     if (!createRoleresult.success) {
@@ -185,8 +200,8 @@ class TuGraphAuthService extends Service {
     // 2. 修改角色对图的访问权限
     return await this.executeCypherQuery(
       `CALL dbms.security.modRoleAccessLevel('${role}', ${convertPermissions(
-        permissions
-      )})`
+        permissions,
+      )})`,
     );
   }
 
@@ -207,16 +222,16 @@ class TuGraphAuthService extends Service {
       `CALL dbms.security.modRoleDesc('${role}','${description}')`,
       // 2. 修改角色对图的访问权限
       `CALL dbms.security.modRoleAccessLevel('${role}', ${convertPermissions(
-        permissions
+        permissions,
       )})`,
     ];
 
-    const cypherPromise = cypherScripts.map(async (cypher) => {
+    const cypherPromise = cypherScripts.map(async cypher => {
       return await this.executeCypherQuery(cypher);
     });
     const result = await Promise.all(cypherPromise);
 
-    const error = result?.find((d) => !d?.success);
+    const error = result?.find(d => !d?.success);
 
     if (error) {
       return error;
@@ -249,6 +264,27 @@ class TuGraphAuthService extends Service {
   async setRoleDisabledStatus(role: string, disabled: boolean): Promise<any> {
     const cypherQuery = `CALL dbms.security.disableRole('${role}', ${disabled})`;
     const result = await this.executeCypherQuery(cypherQuery);
+    return result;
+  }
+  /**
+   * 登录
+   */
+  async login(params: any): Promise<any> {
+    const result = await this.curlPost('/login', params);
+    return result;
+  }
+  /**
+   * 退出登录
+   */
+  async logout(): Promise<any> {
+    const result = await this.curlPost('/logout', {});
+    return result;
+  }
+  /**
+   * 刷新token
+   */
+  async refreshAuthToken(params: any): Promise<any> {
+    const result = await this.curlPost('/refresh', params);
     return result;
   }
 }

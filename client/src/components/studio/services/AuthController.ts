@@ -1,5 +1,5 @@
 import request from 'umi-request';
-import { PROXY_HOST, SERVER_HOST } from '../constant';
+import { SERVER_HOST } from '../constant';
 import { getLocalData } from '../utils';
 
 /* Login */
@@ -17,7 +17,7 @@ export async function login(params: { userName: string; password: string }) {
 
 /* Refresh Token */
 export async function refreshAuthToken(params: { Authorization: string }) {
-  return request(`${PROXY_HOST}/refresh`, {
+  return request(`${SERVER_HOST}/refresh`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
