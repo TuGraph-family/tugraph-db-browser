@@ -1,5 +1,5 @@
 import request from 'umi-request';
-import { PROXY_HOST, SERVER_HOST } from '../constant';
+import { SERVER_HOST } from '../constant';
 import { ImportDataParams, ImportSchemaParams } from '../interface/import';
 import { getLocalData } from '../utils/localStorage';
 
@@ -48,7 +48,7 @@ export async function importGraphSchema(params: {
   schema: any;
   override: boolean;
 }) {
-  return request(`${PROXY_HOST}/api/import/schema`, {
+  return request(`${SERVER_HOST}/api/import/schema`, {
     method: 'POST',
     headers: {
       Authorization: getLocalData('TUGRAPH_TOKEN'),
