@@ -29,7 +29,7 @@ env.json
 
 ##### 2.1.1. web 端
 
-````bash
+`````bash
 
 
 浏览器访问 http://localhost:8000
@@ -52,12 +52,13 @@ pnpm run dev
 # 生产环境
 pnpm run start
 
-````
+````bash
 
 浏览器访问 http://localhost:7001
 
 发布时打压缩包
 
-```
+```bash
 tar -czvf tugraph-db-browser.tgz ./
 ```
+`````
