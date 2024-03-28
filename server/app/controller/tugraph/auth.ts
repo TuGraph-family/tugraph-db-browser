@@ -8,7 +8,7 @@ class AuthController extends Controller {
   async getUserList() {
     const { ctx } = this;
     const result = await ctx.service.tugraph.auth.queryUsers(
-      ctx.request.query?.username
+      ctx.request.query?.username,
     );
     responseData(ctx, result);
   }
@@ -61,7 +61,7 @@ class AuthController extends Controller {
     const { username, disabled } = ctx.request.body;
     const result = await ctx.service.tugraph.auth.setUserDisabledStatus(
       username,
-      disabled
+      disabled,
     );
     responseData(ctx, result);
   }
@@ -113,7 +113,33 @@ class AuthController extends Controller {
     const { role, disabled } = ctx.request.body;
     const result = await ctx.service.tugraph.auth.setRoleDisabledStatus(
       role,
-      disabled
+      disabled,
+    );
+    responseData(ctx, result);
+  }
+  // /**
+  //  * 登录
+  //  */
+  async login() {
+    const { ctx } = this;
+    const result = await ctx.service.tugraph.auth.login(ctx.request.body);
+    responseData(ctx, result);
+  }
+  /**
+   * 退出登录
+   */
+  async logout() {
+    const { ctx } = this;
+    const result = await ctx.service.tugraph.auth.logout();
+    responseData(ctx, result);
+  }
+  /**
+   * 刷新token
+   */
+  async refreshAuthToken() {
+    const { ctx } = this;
+    const result = await ctx.service.tugraph.auth.refreshAuthToken(
+      ctx.request.body,
     );
     responseData(ctx, result);
   }

@@ -304,7 +304,7 @@ export const EditNodesEdges: React.FC<Prop> = ({
       editorConfig: (record: AttrData) => {
         return {
           inputType: EditType.SELECT,
-          prop: { options: DATA_TYPE, disabled: record.disabled },
+          prop: { options: DATA_TYPE, disabled: record.disabled !== undefined },
         };
       },
     },

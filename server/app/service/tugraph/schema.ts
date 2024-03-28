@@ -13,7 +13,7 @@ import {
   formatEdgeSchemaResponse,
   formatVertexSchemaResponse,
 } from '../../utils/schema';
-import { EngineServerURL } from './constant';
+import { DATA_TYPE, EngineServerURL } from './constant';
 import {
   ICreateSchemaParams,
   IDeleteSchemaParams,
@@ -55,10 +55,10 @@ class TuGraphSchemaService extends Service {
     } else if (labelType === 'edge') {
       cypher = condition
         ? `CALL db.createLabel('edge', '${labelName}', '${JSON.stringify(
-            edgeConstraints
+            edgeConstraints,
           )}', ${condition})`
         : `CALL db.createLabel('edge', '${labelName}', '${JSON.stringify(
-            edgeConstraints
+            edgeConstraints,
           )}')`;
     }
 
@@ -87,7 +87,7 @@ class TuGraphSchemaService extends Service {
     // 创建 Schema 后，如果有配置索引，还需要再创建索引
     if (indexs.length > 0) {
       // 配置了索引，则需要创建索引
-      const indexPromise = indexs.map(async (d) => {
+      const indexPromise = indexs.map(async d => {
         // 主键即为索引，无需再创建
         if (d.propertyName !== primaryField) {
           const currentEdgeSchema = await this.createIndex(graphName, d, true);
@@ -102,7 +102,7 @@ class TuGraphSchemaService extends Service {
         return responseFormatter(result);
       }
 
-      const indexError = indexsResult?.find((d) => !d?.success);
+      const indexError = indexsResult?.find(d => !d?.success);
 
       if (indexError) {
         // 说明有索引创建失败，则提示用户
@@ -124,14 +124,23 @@ class TuGraphSchemaService extends Service {
    */
   async addFieldToLabel(params: IUpdateSchemaParams) {
     const { graphName, labelType, labelName, properties } = params;
-
+    // const trimDot = /([\'])([0-9]+[\.\-\:\ ][0-9]+)+([\'])/g;
     let condition = '';
     properties.forEach((d, index) => {
       const { name, type, optional = false } = d;
+      const currentType = DATA_TYPE.find(item => item['value'] === type);
+      const isINT = `${type}`.includes('INT');
+
+      const isBOOL = `${type}`.includes('BOOL');
+      const isDOUBLE = `${type}`.includes('DOUBLE');
+      const defaultValue =
+        isINT || isBOOL || isDOUBLE
+          ? currentType?.default
+          : `'${currentType?.default}'`;
       if (index === properties.length - 1) {
-        condition += `['${name}', ${type}, '', ${optional}]`;
+        condition += `['${name}', ${type}, ${defaultValue}, ${optional}]`;
       } else {
-        condition += `['${name}', ${type}, '', ${optional}],`;
+        condition += `['${name}', ${type}, ${defaultValue}, ${optional}],`;
       }
     });
 
@@ -167,9 +176,9 @@ class TuGraphSchemaService extends Service {
     properties.forEach((d, index) => {
       const { name, type, optional = false } = d;
       if (index === properties.length - 1) {
-        condition += `['${name}', ${type}, ${optional}]`;
+        condition += `['${name}', ${type}, ${optional} ]`;
       } else {
-        condition += `['${name}', ${type}, ${optional}],`;
+        condition += `['${name}', ${type}, ${optional} ],`;
       }
     });
 
@@ -201,7 +210,7 @@ class TuGraphSchemaService extends Service {
     const { graphName, labelType, labelName, propertyNames } = params;
     const type = labelType === 'node' ? 'vertex' : 'edge';
     const cypher = `CALL db.alterLabelDelFields('${type}', '${labelName}', ${JSON.stringify(
-      propertyNames
+      propertyNames,
     )})`;
 
     const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
@@ -231,7 +240,7 @@ class TuGraphSchemaService extends Service {
   async querySchemaByLabel(
     graphName: string,
     labelType: 'node' | 'edge',
-    labelName: string
+    labelName: string,
   ) {
     let cypher = '';
     if (labelType === 'node') {
@@ -264,7 +273,7 @@ class TuGraphSchemaService extends Service {
 
     if (labelType === 'node') {
       const vertexResponseData = formatVertexSchemaResponse(
-        result.data.data.result[0].schema
+        result.data.data.result[0].schema,
       );
 
       return {
@@ -276,7 +285,7 @@ class TuGraphSchemaService extends Service {
       };
     } else if (labelType === 'edge') {
       const edgeResponseData = formatEdgeSchemaResponse(
-        result.data.data.result[0].schema
+        result.data.data.result[0].schema,
       );
 
       return {
@@ -315,17 +324,17 @@ class TuGraphSchemaService extends Service {
     }
 
     // step2: 根据获取到的边类型，再获取每个边类型的详细属性
-    const edgeSchemaPromise = typeResult.data.data.result.map(async (d) => {
+    const edgeSchemaPromise = typeResult.data.data.result.map(async d => {
       const currentEdgeSchema = await this.querySchemaByLabel(
         graphName,
         'edge',
-        d.label
+        d.label,
       );
       return currentEdgeSchema;
     });
     const edgeSchema = await Promise.all(edgeSchemaPromise);
 
-    return edgeSchema.map((d) => {
+    return edgeSchema.map(d => {
       return d.data;
     });
   }
@@ -350,17 +359,17 @@ class TuGraphSchemaService extends Service {
     }
 
     // step2: 根据获取到的点类型，再获取每个点类型的详细属性
-    const vertexSchemaPromise = typeResult.data.data.result.map(async (d) => {
+    const vertexSchemaPromise = typeResult.data.data.result.map(async d => {
       const currentVertexSchema = await this.querySchemaByLabel(
         graphName,
         'node',
-        d.label
+        d.label,
       );
       return currentVertexSchema;
     });
     const vertexSchema = await Promise.all(vertexSchemaPromise);
 
-    return vertexSchema.map((d) => {
+    return vertexSchema.map(d => {
       return d.data;
     });
   }
@@ -531,7 +540,7 @@ class TuGraphSchemaService extends Service {
   async createIndex(
     graphName: string,
     params: IIndexParams,
-    isIndependentRequest = false
+    isIndependentRequest = false,
   ) {
     const { labelName, propertyName, isUnique = true } = params;
     const cypher = `CALL db.addIndex('${labelName}', '${propertyName}', ${isUnique})`;
@@ -655,7 +664,7 @@ class TuGraphSchemaService extends Service {
           },
           timeout: [30000, 50000],
           dataType: 'json',
-        }
+        },
       );
 
       if (
