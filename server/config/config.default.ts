@@ -1,5 +1,5 @@
 import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
-import path from 'path'
+import path from 'path';
 
 export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig>;
@@ -9,7 +9,7 @@ export default (appInfo: EggAppInfo) => {
   config.keys = appInfo.name + '_graphinsight_375A';
 
   // add your egg config in here
-  config.middleware = ['errorHandler'];
+  // config.middleware = ['errorHandler'];
 
   config.errorHandler = {
     enable: true,
@@ -17,8 +17,8 @@ export default (appInfo: EggAppInfo) => {
 
   config.static = {
     prefix: '/',
-    dir: path.join(appInfo.baseDir, 'app/view')
-  }
+    dir: path.join(appInfo.baseDir, 'app/view'),
+  };
 
   config.multipart = {
     mode: 'file',
@@ -44,7 +44,7 @@ export default (appInfo: EggAppInfo) => {
   };
 
   config.cors = {
-    origin: (ctx) => ctx.get('origin'),
+    origin: ctx => ctx.get('origin'),
     credentials: true,
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
   };

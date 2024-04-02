@@ -64,35 +64,32 @@ export const ImportData: React.FC<Prop> = ({
       importProgressCancel();
       return;
     }
-    onImportProgress(taskId).then((res) => {
+    onImportProgress(taskId).then(res => {
       if (res.errorCode == 200) {
         if (res?.data?.state === '2') {
           importProgressCancel();
           const taskList = getLocalData('TUGRAPH_INFO');
-          const newTaskInfo = filter(
-            taskList,
-            (info) => info.taskId !== taskId
-          );
+          const newTaskInfo = filter(taskList, info => info.taskId !== taskId);
           setLocalData('TUGRAPH_INFO', newTaskInfo);
-          updateState((draft) => {
+          updateState(draft => {
             draft.resultStatus = 'success';
             draft.errorMessage = '';
           });
         } else if (res?.data?.state === '1') {
-          updateState((draft) => {
+          updateState(draft => {
             draft.resultStatus = 'loading';
             draft.errorMessage = '';
           });
         } else {
           importProgressCancel();
-          updateState((draft) => {
+          updateState(draft => {
             draft.resultStatus = 'error';
             draft.errorMessage = res?.data?.reason;
           });
         }
       } else {
         importProgressCancel();
-        updateState((draft) => {
+        updateState(draft => {
           draft.resultStatus = 'error';
           draft.errorMessage = res.errorMessage || res?.data?.reason;
         });
@@ -104,12 +101,9 @@ export const ImportData: React.FC<Prop> = ({
     onSwitch?.(onShow, onClose);
 
     const taskList = getLocalData('TUGRAPH_INFO') ?? [];
-    const taskId = find(
-      taskList,
-      (item) => item.graphName === graphName
-    )?.taskId;
+    const taskId = find(taskList, item => item.graphName === graphName)?.taskId;
     if (taskId) {
-      updateState((draft) => {
+      updateState(draft => {
         draft.taskId = taskId;
       });
       setShowResult(true);
@@ -120,7 +114,7 @@ export const ImportData: React.FC<Prop> = ({
     fileName: string,
     fileSize: number,
     file: any,
-    beginPos: number
+    beginPos: number,
   ) => {
     return await uploadFile(
       {
@@ -128,7 +122,7 @@ export const ImportData: React.FC<Prop> = ({
         Size: `${fileSize}`,
         'Begin-Pos': `${beginPos}`,
       },
-      file
+      file,
     );
   };
 
@@ -157,24 +151,30 @@ export const ImportData: React.FC<Prop> = ({
   };
 
   const onImport = () => {
-    form.validateFields().then(async (val) => {
+    fileDataList.forEach((item: any) => {
+      item.fileSchema.columns = [...item?.fileSchema?.columns].filter(
+        item => item,
+      );
+    });
+
+    form.validateFields().then(async val => {
       if (isEmpty(fileDataList)) {
         message.error('请先上传文件');
         return;
       }
       const startTime = Date.now(); // 记录开始时间
-      updateState((draft) => {
+      updateState(draft => {
         draft.uploadLoading = true;
       });
       // 1. 上传文件
-      const uploadPromise = map(fileDataList, async (fileData) => {
+      const uploadPromise = map(fileDataList, async fileData => {
         return await handleChuckUpload(fileData);
       });
 
       try {
         const results = await Promise.all(uploadPromise);
-        const hasError = results.some((result) => result.errorMessage);
-        updateState((draft) => {
+        const hasError = results.some(result => result.errorMessage);
+        updateState(draft => {
           draft.uploadLoading = false;
         });
         if (hasError) {
@@ -182,7 +182,7 @@ export const ImportData: React.FC<Prop> = ({
           return;
         }
       } catch (error) {
-        updateState((draft) => {
+        updateState(draft => {
           draft.uploadLoading = false;
         });
         message.error('请求返回错误:', error);
@@ -204,16 +204,16 @@ export const ImportData: React.FC<Prop> = ({
         },
       };
 
-      onImportData(params).then((res) => {
+      onImportData(params).then(res => {
         if (res.errorCode == 200) {
           const taskId = res?.data?.taskId;
           mergeTaskInfo(taskId, graphName);
-          updateState((draft) => {
+          updateState(draft => {
             draft.resultStatus = 'loading';
             draft.taskId = taskId;
           });
         } else {
-          updateState((draft) => {
+          updateState(draft => {
             draft.resultStatus = 'error';
             draft.errorMessage = res.errorMessage;
           });
@@ -224,7 +224,7 @@ export const ImportData: React.FC<Prop> = ({
   };
 
   const onFullView = useCallback(() => {
-    updateState((draft) => {
+    updateState(draft => {
       draft.isFullView = !isFullView;
     });
   }, [isFullView]);
@@ -283,7 +283,10 @@ export const ImportData: React.FC<Prop> = ({
             <span>数据导入</span>
             <div>
               命令行导入
-              <a href="https://tugraph-db.readthedocs.io/zh_CN/latest/5.developer-manual/3.server-tools/1.data-import.html" target="_blank">
+              <a
+                href="https://tugraph-db.readthedocs.io/zh_CN/latest/5.developer-manual/3.server-tools/1.data-import.html"
+                target="_blank"
+              >
                 参见文档
               </a>
             </div>
@@ -315,7 +318,7 @@ export const ImportData: React.FC<Prop> = ({
                       ? [styles[`${PUBLIC_PERFIX_CLASS}-container-header-full`]]
                       : []),
                   ],
-                  ' '
+                  ' ',
                 )}
               >
                 {isFullView && (

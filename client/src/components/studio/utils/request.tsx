@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import { extend } from 'umi-request';
-import { PROXY_HOST } from '../constant';
 import { getLocalData } from './localStorage';
+import { PROXY_HOST } from '@/constants';
 
 export const HOLD_TIME = 2.5;
 
