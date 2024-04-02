@@ -17,21 +17,30 @@ class TuGraphSchemaController extends Controller {
     const { ctx } = this;
     const { graphName } = ctx.query;
 
-    const result = await ctx.service.tugraph.schema.getVertexEdgeCount(
-      graphName
-    );
+    const result =
+      await ctx.service.tugraph.schema.getVertexEdgeCount(graphName);
     responseData(ctx, result);
   }
 
   async getVertexEdgeSchemaCount() {
     const { ctx } = this;
     const { graphName } = ctx.params;
-    const result = await ctx.service.tugraph.schema.statisticsSchemaCount(
-      graphName
-    );
+    const result =
+      await ctx.service.tugraph.schema.statisticsSchemaCount(graphName);
     responseData(ctx, result);
   }
-
+  async getCountDetail() {
+    const { ctx } = this;
+    const { graphName } = ctx.params;
+    const result = await ctx.service.tugraph.schema.getCountDetail(graphName);
+    responseData(ctx, result);
+  }
+  async getCount() {
+    const { ctx } = this;
+    const { graphName } = ctx.params;
+    const result = await ctx.service.tugraph.schema.getCount(graphName);
+    responseData(ctx, result);
+  }
   /**
    * 点边统计
    */
@@ -40,20 +49,20 @@ class TuGraphSchemaController extends Controller {
     const { graphName } = ctx.params;
 
     // step1: 查询点边类型的数量，即 schema 中点边类型
-    const schemaResult = await ctx.service.tugraph.schema.statisticsSchemaCount(
-      graphName
-    );
+    const schemaResult =
+      await ctx.service.tugraph.schema.statisticsSchemaCount(graphName);
 
     // step2: 查询数据库中点边的数量
-    const result = await ctx.service.tugraph.schema.getVertexEdgeCount(
-      graphName
-    );
+    const result = await ctx.service.tugraph.schema.getCount(graphName);
 
     const { data: labelData, success, code } = schemaResult;
     const { vertexLabels, edgeLabels } = labelData;
-
-    const { data: numData } = result;
-    const { vertexCount, edgeCount } = numData;
+    const { data } = result;
+    const vertexCount =
+      data?.result?.find((item: any) => item['type'] === 'vertex')['number'] ||
+      0;
+    const edgeCount =
+      data?.result?.find((item: any) => item['type'] === 'edge')['number'] || 0;
     const respData = {
       success,
       code,
@@ -132,7 +141,7 @@ class TuGraphSchemaController extends Controller {
     const result = await ctx.service.tugraph.schema.querySchemaByLabel(
       graphName,
       labelType as 'node' | 'edge',
-      labelName
+      labelName,
     );
     responseData(ctx, result);
   }
@@ -147,7 +156,7 @@ class TuGraphSchemaController extends Controller {
     const result = await ctx.service.tugraph.schema.createIndex(
       graphName,
       params,
-      true
+      true,
     );
     responseData(ctx, result);
   }

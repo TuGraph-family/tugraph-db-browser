@@ -15,7 +15,7 @@ export const responseData = (ctx, resp) => {
 };
 
 export const responseFormatter = (result: RestFulResponse) => {
-  if (result.status !== 200 || result.data.errorCode != 200) {
+  if (result?.status !== 200) {
     return {
       success: false,
       code: result.status,
@@ -24,12 +24,12 @@ export const responseFormatter = (result: RestFulResponse) => {
       errorMessage: result.data.errorMessage,
     };
   }
-  const resultData = result.data.data?.result;
+  const resultData = result?.data?.data?.result || result?.data?.data || {};
   return {
     success: true,
     code: 200,
     data: resultData,
-    errorCode: result.data.errorCode,
+    errorCode: result?.data?.errorCode,
   };
 };
 

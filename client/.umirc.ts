@@ -1,6 +1,6 @@
 import { defineConfig } from 'umi';
 import routes from './src/config/routes';
-import { GetEnvironmentVariables } from '../server/app/util';
+// import { GetEnvironmentVariables } from '../server/app/util';
 import env from '../env.json';
 
 process.env.MFSU_AD = 'none';
@@ -49,7 +49,7 @@ export default defineConfig({
   esbuildMinifyIIFE: true,
   define: {
     'process.env': {
-      HOST: GetEnvironmentVariables(process.env),
+      // HOST: GetEnvironmentVariables(process.env),
       ...process.env,
       ...env,
     },

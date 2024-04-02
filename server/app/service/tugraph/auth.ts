@@ -270,21 +270,21 @@ class TuGraphAuthService extends Service {
    * 登录
    */
   async login(params: any): Promise<any> {
-    const result = await this.curlPost('/login', params);
+    const result = await this.curlPost(`${EngineServerURL}/login`, params);
     return result;
   }
   /**
    * 退出登录
    */
   async logout(): Promise<any> {
-    const result = await this.curlPost('/logout', {});
+    const result = await this.curlPost(`${EngineServerURL}/logout`, {});
     return result;
   }
   /**
    * 刷新token
    */
   async refreshAuthToken(params: any): Promise<any> {
-    const result = await this.curlPost('/refresh', params);
+    const result = await this.curlPost(`${EngineServerURL}/refresh`, params);
     return result;
   }
 }

@@ -391,7 +391,67 @@ class TuGraphSchemaService extends Service {
       },
     };
   }
+  /**
+   * 查询指定子图中边的数量
+   * @param graphName 子图名称
+   * @param authorization 认证信息
+   */
+  async getCountDetail(graphName: string) {
+    const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
+      headers: {
+        'content-type': 'application/json',
+        Authorization: this.ctx.request.header.authorization,
+      },
+      method: 'POST',
+      data: {
+        graph: graphName,
+        script: 'CALL dbms.meta.countDetail()',
+      },
+      timeout: [30000, 50000],
+      dataType: 'json',
+    });
 
+    if (result?.data?.errorCode != 200) {
+      return {
+        success: false,
+        code: result?.data?.errorCode,
+        message: result?.data?.errorMessage,
+      };
+    }
+    return {
+      success: true,
+      code: 200,
+      ...result?.data,
+    };
+  }
+  async getCount(graphName: string) {
+    const result = await this.ctx.curl(`${EngineServerURL}/cypher`, {
+      headers: {
+        'content-type': 'application/json',
+        Authorization: this.ctx.request.header.authorization,
+      },
+      method: 'POST',
+      data: {
+        graph: graphName,
+        script: 'CALL dbms.meta.count()',
+      },
+      timeout: [30000, 50000],
+      dataType: 'json',
+    });
+
+    if (result?.data?.errorCode != 200) {
+      return {
+        success: false,
+        code: result?.data?.errorCode,
+        message: result?.data?.errorMessage,
+      };
+    }
+    return {
+      success: true,
+      code: 200,
+      ...result?.data,
+    };
+  }
   /**
    * 查询指定子图中节点和边的数量
    * @param graphName 子图名称

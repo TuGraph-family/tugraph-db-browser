@@ -63,7 +63,13 @@ export default (app: Application) => {
     '/api/statistics/:graphName/labels',
     controller.tugraph.schema.getVertexEdgeSchemaCount,
   );
-
+  // 点边数量详情
+  router.get(
+    '/api/countDetail/:graphName',
+    controller.tugraph.schema.getCountDetail,
+  );
+  // 点边数量大概
+  router.get('/api/count/:graphName', controller.tugraph.schema.getCount);
   // 点边数量
   router.get(
     '/api/statistics/:graphName/count',
