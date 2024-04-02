@@ -8,7 +8,7 @@ TuGraph DB BROWSER 是 TuGraph 图数据库的可视化工具。可以完成图�
 ### 1. 安装项目
 
 ```bash
-pnpm install
+pnpm run bootstrap
 ```
 
 ### 2. 启动项目
@@ -43,10 +43,10 @@ env.json
 ```bash
 
 # 安装依赖
-pnpm run install
+pnpm run bootstrap
 
 # 构建
-yarn run build
+pnpm run build
 # 本地环境
 pnpm run dev
 # 生产环境
