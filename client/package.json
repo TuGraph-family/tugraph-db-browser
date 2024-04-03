@@ -86,6 +86,8 @@
     "tsparticles-shape-star": "2.9.3",
     "tsparticles-shape-text": "2.9.3",
     "tsparticles-updater-life": "2.9.3",
-    "tsparticles-updater-stroke-color": "2.9.3"
+    "tsparticles-updater-stroke-color": "2.9.3",
+    "mime": "^4.0.1",
+    "@types/mime": "^4.0.0"
   }
 }
