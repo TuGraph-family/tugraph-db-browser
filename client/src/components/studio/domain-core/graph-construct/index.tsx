@@ -42,6 +42,7 @@ import NodesEdgesList from './nodes-edges-list';
 
 import { getQueryString } from '../../utils/routeParams';
 import styles from './index.module.less';
+import { addQueryParam } from '../../utils/url';
 
 export const GraphConstruct = () => {
   const location = history.location;
@@ -331,6 +332,7 @@ export const GraphConstruct = () => {
           onClick={() => {
             setState(draft => {
               if (item.value === 'node' || item.value === 'edge') {
+                addQueryParam('at', 'document_' + item?.value);
                 onAddShow();
                 draft.labelName = '';
               }
@@ -359,7 +361,9 @@ export const GraphConstruct = () => {
     </div>
   );
   useEffect(() => {
-    graphCanvasContextValue.graph?.on('click', val => {
+    graphCanvasContextValue.graph?.on('click', (val: any) => {
+      addQueryParam('at', 'canvas');
+
       onEditShow();
       if (val.shape) {
         setState(draft => {
