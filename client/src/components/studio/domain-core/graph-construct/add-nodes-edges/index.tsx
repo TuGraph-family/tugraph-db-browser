@@ -11,6 +11,7 @@ import { useVisible } from '../../../hooks/useVisible';
 import { AttrData, IndexData, StartData } from '../../../interface/schema';
 
 import styles from './index.module.less';
+import { getQueryParam } from '@/components/studio/utils/url';
 
 type Prop = {
   type: 'node' | 'edge';
@@ -46,19 +47,13 @@ export const AddNodesEdges: React.FC<Prop> = ({
     attrList: Array<AttrData>;
     configList: Array<IndexData>;
     isNode: boolean;
+    isDocumentEdge: boolean;
   }>({
     startList: [],
     isNode: true,
-    attrList: [
-      {
-        id: 'primary-key',
-        name: '',
-        type: '',
-        primaryField: true,
-        optional: false,
-      },
-    ],
+    attrList: [],
     configList: [],
+    isDocumentEdge: false,
   });
   const { startList, attrList, configList } = state;
   const isAllow = (record: any): boolean => {
@@ -71,10 +66,25 @@ export const AddNodesEdges: React.FC<Prop> = ({
     onVisible?.(visible);
   }, [visible]);
   useEffect(() => {
+    const at = getQueryParam('at');
+    const isDocumentEdge = `${at}`.includes('document_edge');
     updateState(draft => {
       draft.isNode = type === 'node';
+      draft.isDocumentEdge = isDocumentEdge;
+      draft.attrList = isDocumentEdge
+        ? []
+        : [
+            {
+              id: 'primary-key',
+              name: '',
+              type: '',
+              primaryField: true,
+              optional: false,
+            },
+          ];
     });
   }, [type]);
+
   const propertyList = () => {
     const attrPropertyNames = map(
       filter(attrList, attr => !attr.optional && !attr.primaryField),
@@ -154,7 +164,15 @@ export const AddNodesEdges: React.FC<Prop> = ({
           okText="确定"
           cancelText="取消"
         >
-          <a style={{ color: 'rgba(54,55,64,1)' }}>删除</a>
+          <a
+            style={{
+              color: 'rgba(54,55,64,1)',
+              minWidth: 60,
+              display: 'block',
+            }}
+          >
+            删除
+          </a>
         </Popconfirm>
       ),
     },
@@ -247,7 +265,15 @@ export const AddNodesEdges: React.FC<Prop> = ({
             okText="确定"
             cancelText="取消"
           >
-            <a style={{ color: 'rgba(54,55,64,1)' }}>删除</a>
+            <a
+              style={{
+                color: 'rgba(54,55,64,1)',
+                minWidth: 60,
+                display: 'block',
+              }}
+            >
+              删除
+            </a>
           </Popconfirm>
         );
       },
@@ -348,7 +374,15 @@ export const AddNodesEdges: React.FC<Prop> = ({
           okText="确定"
           cancelText="取消"
         >
-          <a style={{ color: 'rgba(54,55,64,1)' }}>删除</a>
+          <a
+            style={{
+              color: 'rgba(54,55,64,1)',
+              minWidth: 60,
+              display: 'block',
+            }}
+          >
+            删除
+          </a>
         </Popconfirm>
       ),
     },
@@ -356,16 +390,27 @@ export const AddNodesEdges: React.FC<Prop> = ({
   const addNodeAttr = () => {
     updateState(draft => {
       const list = [...attrList];
-      list.push({ id: attrList.length + 1 });
+      console.log(list, '0');
+      list.push({
+        id: attrList.length + 1,
+        name: '',
+        type: '',
+        optional: false,
+      });
       draft.attrList = [...list];
     });
   };
   const addNodeConfig = () => {
     updateState(draft => {
       const list = [...configList];
+      console.log(list, '1');
+
       list.push({
         id: configList.length + 1,
         index: `#${configList.length + 1}`,
+        isUnique: false,
+        primaryField: '',
+        propertyName: '',
       });
       draft.configList = [...list];
     });
@@ -373,7 +418,12 @@ export const AddNodesEdges: React.FC<Prop> = ({
   const addEdge = () => {
     updateState(draft => {
       const list = [...startList];
-      list.push({ id: `${startList.length + 1}` });
+      list.push({
+        id: `${startList.length + 1}`,
+        source: '',
+        target: '',
+      });
+      console.log(list, '2');
       draft.startList = [...list];
     });
   };
@@ -477,7 +527,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
           </Form>
           <div className={styles[`${PUBLIC_PERFIX_CLASS}-container-attr`]}>
             <p className={styles[`${PUBLIC_PERFIX_CLASS}-container-title`]}>
-              属性列表
+              属性列表1
             </p>
             <EditTable
               // className={styles[`${PUBLIC_PERFIX_CLASS}-container-attributes`]}
@@ -485,6 +535,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
               columns={defaultColumns}
               dataSource={attrList}
               rowKey="id"
+              isNode={state?.isNode}
               onChange={newData => {
                 updateState(draft => {
                   draft.attrList = [...(newData || [])];

@@ -4,9 +4,11 @@ import React, { useEffect } from 'react';
 import { Outlet, useLocation, history } from 'umi';
 import styles from './index.less';
 import './global.less';
+import { addQueryParam } from '@/components/studio/utils/url';
 
 export const Container = (props: React.ComponentProps<any>) => {
   const location = history.location;
+
   useEffect(() => {
     if (
       !localStorage.getItem('TUGRAPH_TOKEN') &&
@@ -17,6 +19,17 @@ export const Container = (props: React.ComponentProps<any>) => {
       return;
     }
   }, []);
+  useEffect(() => {
+    if (document) {
+      document.addEventListener('click', function (event) {
+        const target: any = event?.target;
+        addQueryParam('eventSource', target?.tagName);
+      });
+    }
+    return () => {
+      document.removeEventListener('click', () => {});
+    };
+  }, [location, document]);
   return (
     <div
       className={styles?.umiContainer}
@@ -53,6 +66,7 @@ export default function Layout() {
     );
     document.title = current?.title + '- Openpiece';
   }, [location]);
+
   return (
     <div className={styles.appLayout}>
       <Outlet />
