@@ -21,7 +21,7 @@
     "client-build": "cd client && yarn run build",
     "server-build": "cd server && yarn run build",
     "sycnfile": "cd server && yarn run sycnfile",
-    "build": "npm run client-build && npm run server-build && npm run sycnfile"
+    "build": "yarn run client-build && yarn run server-build && yarn run sycnfile"
   },
   "repository": "https://github.com/TuGraph-family/tugraph-db-browser.git"
 }
