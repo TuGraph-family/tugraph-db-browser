@@ -32,7 +32,7 @@ type Prop = {
   visible: boolean;
   onCancel: () => void;
   graphName: string;
-  refreshList: (type: 'cpp' | 'python' | 'all') => void;
+  refreshList: (type: 'cpp' | 'python' | 'all') => any;
 };
 type Options =
   | {
@@ -78,11 +78,11 @@ export const StoredForm: React.FC<Prop> = ({
       }
     },
     maxCount: 1,
-    beforeUpload: (file) => {
+    beforeUpload: file => {
       const reader = new FileReader();
       reader.readAsText(file);
-      reader.onload = (result) => {
-        updateState((draft) => {
+      reader.onload = result => {
+        updateState(draft => {
           draft.content = result.target?.result as string;
         });
       };
@@ -90,7 +90,7 @@ export const StoredForm: React.FC<Prop> = ({
   };
   // 取消新增储存过程
   const cancelUpdate = () => {
-    updateState((draft) => {
+    updateState(draft => {
       draft.content = '';
     });
     onCancel();
@@ -98,11 +98,11 @@ export const StoredForm: React.FC<Prop> = ({
   };
   // 处理OptGroup数据
   const options = (options: Options) => {
-    return map(options, (option) => {
+    return map(options, option => {
       if (option.options) {
         return {
           ...option,
-          options: map(option.options, (item) => ({
+          options: map(option.options, item => ({
             ...item,
             label: (
               <div
@@ -117,7 +117,7 @@ export const StoredForm: React.FC<Prop> = ({
                 {(item.value === 'cpp' || item.value === 'py') && (
                   <a
                     onClick={() => {
-                      updateState((draft) => {
+                      updateState(draft => {
                         draft.demoVisible = true;
                       });
                     }}
@@ -135,7 +135,7 @@ export const StoredForm: React.FC<Prop> = ({
   };
   // 新增存储过程
   const uploadProcedure = () => {
-    form.validateFields().then((val) => {
+    form.validateFields().then(val => {
       let procedureType: 'cpp' | 'python';
       if (includes(CPP_CODE_TYPE, val.codeType)) {
         procedureType = 'cpp';
@@ -147,10 +147,10 @@ export const StoredForm: React.FC<Prop> = ({
         graphName,
         procedureType,
         content: btoa(content),
-      }).then((res) => {
+      }).then(res => {
         if (res.errorCode === '200') {
           message.success('新增成功');
-          updateState((draft) => {
+          updateState(draft => {
             draft.content = '';
           });
           onCancel();
@@ -198,8 +198,8 @@ export const StoredForm: React.FC<Prop> = ({
             rules={[{ required: true, message: '请选择' }]}
           >
             <Select
-              onSelect={(val) => {
-                updateState((draft) => {
+              onSelect={val => {
+                updateState(draft => {
                   if (val === 'py') {
                     draft.isPy = true;
                     form.setFieldsValue({ version: 'v1' });
@@ -270,7 +270,7 @@ export const StoredForm: React.FC<Prop> = ({
       <StoredDownLoad
         demoVisible={demoVisible}
         onCancel={() => {
-          updateState((draft) => {
+          updateState(draft => {
             draft.demoVisible = false;
           });
         }}

@@ -24,7 +24,8 @@ export const responseFormatter = (result: RestFulResponse) => {
       errorMessage: result.data.errorMessage,
     };
   }
-  const resultData = result?.data?.data?.result || result?.data?.data || {};
+  const resultData =
+    result?.data?.data?.result || result?.data?.data || result?.data || {};
   return {
     success: true,
     code: 200,

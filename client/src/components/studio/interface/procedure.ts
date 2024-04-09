@@ -10,7 +10,7 @@ export type UploadProcedureParams = {
 };
 export type ProcedureParams = {
   graphName: string;
-  procedureType: 'cpp' | 'python' | 'all';
+  procedureType: 'cpp' | 'python' | 'any';
   version: string;
 };
 export type ProcedureItemParams = {
