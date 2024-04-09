@@ -131,4 +131,29 @@ export default (app: Application) => {
   router.delete('/api/data/edge', controller.tugraph.data.deleteEdge);
   router.put('/api/data/node', controller.tugraph.data.updateNode);
   router.put('/api/data/edge', controller.tugraph.data.updateEdge);
+  // 图存储
+  router.post(
+    '/api/upload_procedure',
+    controller.tugraph.query.queryUploadProcedure,
+  );
+  router.post(
+    '/api/list_procedures',
+    controller.tugraph.query.queryListProcedures,
+  );
+  router.post(
+    '/api/get_procedure',
+    controller.tugraph.query.queryGetProcedures,
+  );
+  router.post(
+    '/api/delete_procedure',
+    controller.tugraph.query.queryDeleteProcedure,
+  );
+  router.post(
+    '/api/call_procedure',
+    controller.tugraph.query.queryCallProcedures,
+  );
+  router.post(
+    '/api/get_procedure_demo',
+    controller.tugraph.query.queryGetProcedureDemo,
+  );
 };

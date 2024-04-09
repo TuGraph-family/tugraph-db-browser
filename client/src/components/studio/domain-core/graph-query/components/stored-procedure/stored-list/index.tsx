@@ -63,58 +63,59 @@ export const StoredList: React.FC<Prop> = ({
     getList([...list[0].items, ...list[1].items]);
   }, [searchList]);
   useEffect(() => {
-    updateState((draft) => {
+    updateState(draft => {
       draft.activeKey = activeValue;
     });
   }, [activeValue]);
-  const refreshList = (type: 'cpp' | 'python' | 'all') => {
+  const refreshList = (type: 'cpp' | 'python' | 'any') => {
     onGetProcedureList({
       graphName,
       procedureType: type,
-      version: 'all',
-    }).then((res) => {
-      updateState((draft) => {
-        const newItems = map(res.data, (item) => ({
+      version: 'any',
+    }).then(res => {
+      updateState(draft => {
+        const newItems = map(res.data, item => ({
           ...item.plugin_description,
         }));
-        if (type === 'all') {
+        if (type === 'any') {
           draft.list[0].items = filter(
             newItems,
-            (item) => item.type !== 'python'
+            item => item.type !== 'python',
           );
           draft.list[1].items = filter(
             newItems,
-            (item) => item.type === 'python'
+            item => item.type === 'python',
           );
           draft.searchList[0].items = filter(
             newItems,
-            (item) => item.type !== 'python'
+            item => item.type !== 'python',
           );
           draft.searchList[1].items = filter(
             newItems,
-            (item) => item.type === 'python'
+            item => item.type === 'python',
           );
         } else {
           draft.list[type === 'cpp' ? 0 : 1].items = newItems;
           draft.searchList[type === 'cpp' ? 0 : 1].items = newItems;
         }
       });
+      return res;
     });
   };
   useEffect(() => {
     getRefresh(refreshList);
-    refreshList('all');
+    refreshList('any');
   }, []);
   const getSearchList = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updateState((draft) => {
+    updateState(draft => {
       if (e.target.value) {
         draft.list[0].items = filter(
           searchList[0].items,
-          (item) => item.name?.indexOf(e.target.value) !== -1
+          item => item.name?.indexOf(e.target.value) !== -1,
         );
         draft.list[1].items = filter(
           searchList[1].items,
-          (item) => item.name?.indexOf(e.target.value) !== -1
+          item => item.name?.indexOf(e.target.value) !== -1,
         );
       } else {
         draft.list[0].items = searchList[0].items;
@@ -132,7 +133,7 @@ export const StoredList: React.FC<Prop> = ({
         <Button
           type="link"
           onClick={() => {
-            updateState((draft) => {
+            updateState(draft => {
               draft.visible = true;
             });
           }}
@@ -158,11 +159,11 @@ export const StoredList: React.FC<Prop> = ({
                       ? styles[`${PUBLIC_PERFIX_CLASS}-list-active`]
                       : '',
                   ],
-                  ' '
+                  ' ',
                 )}
                 onClick={() => {
                   getDetails({ ...item });
-                  updateState((draft) => {
+                  updateState(draft => {
                     draft.activeKey = item.name;
                   });
                 }}
@@ -180,7 +181,7 @@ export const StoredList: React.FC<Prop> = ({
         visible={visible}
         refreshList={refreshList}
         onCancel={() => {
-          updateState((draft) => {
+          updateState(draft => {
             draft.visible = false;
           });
         }}

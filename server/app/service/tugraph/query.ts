@@ -15,7 +15,7 @@ import {
   IPathQueryParams,
 } from './interface';
 
-import { QueryResultFormatter } from '../../util';
+import { QueryResultFormatter, responseFormatter } from '../../util';
 import {
   formatVertexResponse,
   generateCypherByConfig,
@@ -155,7 +155,7 @@ class TuGraphQueryService extends Service {
   /**
    * 根据配置查询数据
    * @param params IConfigQueryParams
-   * @returns 
+   * @returns
    */
   async queryByConfig(params: IConfigQueryParams) {
     const { graphName } = params;
@@ -175,6 +175,135 @@ class TuGraphQueryService extends Service {
     });
 
     return QueryResultFormatter(result, script);
+  }
+  /**
+   * 根据配置查询数据
+   * @param params 查询存储过程列表
+   * @returns
+   */
+  async queryListProcedures(params: any) {
+    const result = await this.ctx.curl(`${EngineServerURL}/list_procedures`, {
+      headers: {
+        'content-type': 'application/json',
+        Authorization: this.ctx.request.header.authorization,
+      },
+      method: 'POST',
+      data: {
+        ...params,
+      },
+      timeout: [30000, 50000],
+      dataType: 'json',
+    });
+
+    return responseFormatter(result);
+  }
+  /**
+   * 根据配置查询数据
+   * @param params 上传文件
+   * @returns
+   */
+  async queryUploadProcedure(params: any) {
+    const result = await this.ctx.curl(`${EngineServerURL}/upload_procedure`, {
+      headers: {
+        'content-type': 'application/json',
+        Authorization: this.ctx.request.header.authorization,
+      },
+      method: 'POST',
+      data: {
+        ...params,
+      },
+      timeout: [30000, 50000],
+      dataType: 'json',
+    });
+
+    return responseFormatter(result);
+  }
+  /**
+   * 根据配置查询数据
+   * @param params 查询存储过程列表
+   * @returns
+   */
+  async queryGetProcedures(params: any) {
+    const result = await this.ctx.curl(`${EngineServerURL}/get_procedure`, {
+      headers: {
+        'content-type': 'application/json',
+        Authorization: this.ctx.request.header.authorization,
+      },
+      method: 'POST',
+      data: {
+        ...params,
+      },
+      timeout: [30000, 50000],
+      dataType: 'json',
+    });
+
+    return responseFormatter(result);
+  }
+  /**
+   * 根据配置查询数据
+   * @param params 上传文件
+   * @returns
+   */
+  async queryDeleteProcedure(params: any) {
+    const result = await this.ctx.curl(`${EngineServerURL}/delete_procedure`, {
+      headers: {
+        'content-type': 'application/json',
+        Authorization: this.ctx.request.header.authorization,
+      },
+      method: 'POST',
+      data: {
+        ...params,
+      },
+      timeout: [30000, 50000],
+      dataType: 'json',
+    });
+
+    return responseFormatter(result);
+  }
+  /**
+   * 根据配置查询数据
+   * @param params 查询存储过程列表
+   * @returns
+   */
+  async queryCallProcedures(params: any) {
+    const result = await this.ctx.curl(`${EngineServerURL}/call_procedure`, {
+      headers: {
+        'content-type': 'application/json',
+        Authorization: this.ctx.request.header.authorization,
+      },
+      method: 'POST',
+      data: {
+        ...params,
+      },
+      timeout: [30000, 50000],
+      dataType: 'json',
+    });
+
+    return responseFormatter(result);
+  }
+  /**
+   * 根据配置查询数据
+   * @param params 上传文件
+   * @returns
+   */
+  async queryGetProcedureDemo(params: any) {
+    const result = await this.ctx.curl(
+      `${EngineServerURL}/get_procedure_demo`,
+      {
+        headers: {
+          'content-type': 'application/json',
+          Authorization: this.ctx.request.header.authorization,
+        },
+        method: 'POST',
+        data: {
+          ...params,
+        },
+        timeout: [30000, 50000],
+        dataType: 'json',
+      },
+    );
+
+    return responseFormatter(result);
   }
 }
 export default TuGraphQueryService;
