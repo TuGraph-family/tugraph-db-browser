@@ -59,69 +59,48 @@ export const StoredForm: React.FC<Prop> = ({
   refreshList,
 }) => {
   const { onUploadProcedure, UploadProcedureLoading } = useProcedure();
+  const fileReader = (info: any) => {
+    return new Promise((res, rej) => {
+      const reader = new FileReader();
+      reader.readAsText(info.file.originFileObj);
+      reader.onload = result => {
+        try {
+          res(btoa(`${result?.target?.result}`));
+        } catch (err: any) {
+          rej(err);
+          message.error(err);
+        }
+      };
+    });
+  };
   const props: UploadProps = {
     name: 'file',
     headers: {
       authorization: 'authorization-text',
     },
     onChange(info: UploadChangeParam<UploadFile<any>>) {
-      let newFileList = [...info.fileList];
-      newFileList = newFileList.map(file => {
-        if (file.response) {
-          file.url = file.response.url;
+      const uid = info.file.uid;
+      fileReader(info).then(data => {
+        const newFileList = info.fileList.map(item => {
+          if (uid === item?.uid) {
+            return { ...item, content: data };
+          } else {
+            return item;
+          }
+        });
+        updateState(draft => {
+          draft.fileLst = newFileList;
+        });
+        if (info.file.status === 'done') {
+          message.success('文件上传成功');
+        } else if (info.file.status === 'error') {
+          message.error('文件上传失败');
         }
-        return file;
-      });
-      updateState(draft => {
-        draft.fileLst = newFileList;
-      });
-      if (info.file.status === 'done') {
-        message.success('文件上传成功');
-      } else if (info.file.status === 'error') {
-        message.error('文件上传失败');
-      }
-    },
-    beforeUpload: async file => {
-      const reader = new FileReader();
-      const fileName = file.name;
-      const uid = file.uid;
-      await reader.readAsText(file);
-      reader.onload = result => {
-        try {
-          const content = btoa(`${result?.target?.result}`);
-          updateState(draft => {
-            const hasIndex = draft.content.findIndex(
-              item => item.uid === uid || item?.fileName === fileName,
-            );
-
-            const newItem = {
-              uid,
-              content,
-              fileName,
-            };
-            if (hasIndex === -1) {
-              draft.content = [...draft.content, newItem];
-            } else {
-              draft.content[hasIndex] = newItem;
-              draft.content = draft.content;
-            }
-          });
-        } catch (err: any) {
-          message.error(err);
-        }
-      };
-    },
-    onRemove: file => {
-      updateState(draft => {
-        draft.content = draft.content.filter(
-          item => item.uid !== file.uid || item?.fileName !== file.name,
-        );
       });
     },
   };
   const [state, updateState] = useImmer<{
     demoVisible: boolean;
-    content: ContentObject[];
     demoValue: string;
     isPy: boolean;
     isCpp: boolean;
@@ -130,18 +109,17 @@ export const StoredForm: React.FC<Prop> = ({
   }>({
     demoVisible: false,
     maxCount: 1,
-    content: [],
     demoValue: 'cpp_v1',
     isPy: false,
     isCpp: false,
     fileLst: [],
   });
-  const { demoVisible, content, demoValue, isPy, isCpp } = state;
+  const { demoVisible, fileLst, demoValue, isPy, isCpp } = state;
 
   // 取消新增储存过程
   const cancelUpdate = () => {
     updateState(draft => {
-      draft.content = [];
+      draft.fileLst = [];
     });
     onCancel();
     form.resetFields();
@@ -200,6 +178,7 @@ export const StoredForm: React.FC<Prop> = ({
       return option;
     });
   };
+
   // 新增存储过程
   const uploadProcedure = () => {
     form.validateFields().then(val => {
@@ -213,17 +192,13 @@ export const StoredForm: React.FC<Prop> = ({
         ...val,
         graphName,
         procedureType,
-        content: state.content.map(item => {
-          return item?.content;
-        }),
-        file_name: state.content.map(item => {
-          return item?.fileName;
-        }),
+        content: state.fileLst.map(item => item.content),
+        file_name: state.fileLst.map((item: any) => item?.name),
       }).then(res => {
         if (res.errorCode === '200') {
           message.success('新增成功');
           updateState(draft => {
-            draft.content = [];
+            draft.fileLst = [];
           });
           onCancel();
           form.resetFields();
