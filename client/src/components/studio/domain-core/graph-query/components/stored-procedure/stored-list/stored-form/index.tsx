@@ -14,8 +14,8 @@ import {
 } from 'antd';
 import { FormInstance } from 'antd/es/form';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload';
-import { includes, map } from 'lodash';
-import React from 'react';
+import { includes, map, cloneDeep } from 'lodash';
+import React, { useEffect, useRef } from 'react';
 import { useImmer } from 'use-immer';
 import {
   CPP_CODE_TYPE,
@@ -26,6 +26,12 @@ import { useProcedure } from '../../../../../../hooks/useProcedure';
 import { StoredDownLoad } from '../../stored-download';
 
 import styles from './index.module.less';
+
+type ContentObject = {
+  uid?: string;
+  fileName: string;
+  content: string;
+};
 
 type Prop = {
   form: FormInstance<any>;
@@ -53,18 +59,7 @@ export const StoredForm: React.FC<Prop> = ({
   refreshList,
 }) => {
   const { onUploadProcedure, UploadProcedureLoading } = useProcedure();
-  const [state, updateState] = useImmer<{
-    demoVisible: boolean;
-    content: string;
-    demoValue: string;
-    isPy: boolean;
-  }>({
-    demoVisible: false,
-    content: '',
-    demoValue: 'cpp_v1',
-    isPy: false,
-  });
-  const { demoVisible, content, demoValue, isPy } = state;
+  const uploadRef = useRef(null);
   const props: UploadProps = {
     name: 'file',
     headers: {
@@ -78,56 +73,119 @@ export const StoredForm: React.FC<Prop> = ({
       }
     },
     maxCount: 1,
-    beforeUpload: file => {
+    beforeUpload: async file => {
       const reader = new FileReader();
-      reader.readAsText(file);
+      const fileName = file.name;
+      const uid = file.uid;
+      await reader.readAsText(file);
+      const copyContent = cloneDeep(state.content);
       reader.onload = result => {
-        updateState(draft => {
-          draft.content = result.target?.result as string;
-        });
+        try {
+          const content = btoa(`${result?.target?.result}`);
+          updateState(draft => {
+            const hasIndex = draft.content.findIndex(
+              item => item.uid === uid || item?.fileName === fileName,
+            );
+
+            const newItem = {
+              uid,
+              content,
+              fileName,
+            };
+            if (hasIndex === -1) {
+              draft.content = [...draft.content, newItem];
+            } else {
+              copyContent[hasIndex] = newItem;
+              draft.content = copyContent;
+            }
+          });
+        } catch (err: any) {
+          message.error(err);
+        }
       };
     },
+    onRemove: file => {
+      updateState(draft => {
+        draft.content = draft.content.filter(
+          item => item.uid !== file.uid || item?.fileName !== file.name,
+        );
+      });
+    },
   };
+  const [state, updateState] = useImmer<{
+    demoVisible: boolean;
+    content: ContentObject[];
+    demoValue: string;
+    isPy: boolean;
+    isCpp: boolean;
+    uploadProps: UploadProps;
+  }>({
+    demoVisible: false,
+    content: [],
+    demoValue: 'cpp_v1',
+    isPy: false,
+    isCpp: false,
+    uploadProps: props,
+  });
+  const { demoVisible, content, demoValue, isPy, isCpp } = state;
+
   // 取消新增储存过程
   const cancelUpdate = () => {
     updateState(draft => {
-      draft.content = '';
+      draft.content = [];
     });
     onCancel();
     form.resetFields();
   };
   // 处理OptGroup数据
   const options = (options: Options) => {
-    return map(options, option => {
+    return map(options, (option: { options: any }) => {
       if (option.options) {
         return {
           ...option,
-          options: map(option.options, item => ({
-            ...item,
-            label: (
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  width: '100%',
-                }}
-              >
-                <div>{item.label}</div>
-                {(item.value === 'cpp' || item.value === 'py') && (
-                  <a
-                    onClick={() => {
-                      updateState(draft => {
-                        draft.demoVisible = true;
-                      });
-                    }}
+          options: map(
+            option.options,
+            (item: {
+              label:
+                | string
+                | number
+                | boolean
+                | React.ReactElement<
+                    any,
+                    string | React.JSXElementConstructor<any>
                   >
-                    demo下载
-                  </a>
-                )}
-              </div>
-            ),
-          })),
+                | Iterable<React.ReactNode>
+                | React.ReactPortal
+                | null
+                | undefined;
+              value: string;
+            }) => ({
+              ...item,
+              label: (
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                  }}
+                >
+                  <div>{item.label}</div>
+                  {(item.value === 'cpp' || item.value === 'py') && (
+                    <a
+                      onClick={() => {
+                        updateState(draft => {
+                          draft.demoVisible = true;
+                        });
+                      }}
+                    >
+                      demo下载
+                    </a>
+                  )}
+                </div>
+              ),
+            }),
+          ),
         };
       }
       return option;
@@ -146,12 +204,17 @@ export const StoredForm: React.FC<Prop> = ({
         ...val,
         graphName,
         procedureType,
-        content: btoa(content),
+        content: state.content.map(item => {
+          return item?.content;
+        }),
+        file_name: state.content.map(item => {
+          return item?.fileName;
+        }),
       }).then(res => {
         if (res.errorCode === '200') {
           message.success('新增成功');
           updateState(draft => {
-            draft.content = '';
+            draft.content = [];
           });
           onCancel();
           form.resetFields();
@@ -160,6 +223,7 @@ export const StoredForm: React.FC<Prop> = ({
       });
     });
   };
+
   return (
     <>
       <Modal
@@ -200,11 +264,20 @@ export const StoredForm: React.FC<Prop> = ({
             <Select
               onSelect={val => {
                 updateState(draft => {
-                  if (val === 'py') {
-                    draft.isPy = true;
-                    form.setFieldsValue({ version: 'v1' });
-                  } else {
-                    draft.isPy = false;
+                  switch (val) {
+                    case 'val':
+                      draft.isPy = true;
+                      form.setFieldsValue({ version: 'v1' });
+                      break;
+                    case 'cpp':
+                      draft.isCpp = true;
+                      draft.uploadProps.maxCount = 999;
+                      break;
+                    default:
+                      draft.isPy = false;
+                      draft.isCpp = false;
+                      draft.uploadProps.maxCount = 1;
+                      break;
                   }
                 });
               }}
@@ -262,7 +335,7 @@ export const StoredForm: React.FC<Prop> = ({
             </Group>
           </Item>
 
-          <Upload {...props}>
+          <Upload {...state.uploadProps} ref={uploadRef}>
             <Button icon={<UploadOutlined />}>上传文件</Button>
           </Upload>
         </Form>
