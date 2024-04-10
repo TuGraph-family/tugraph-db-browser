@@ -14,8 +14,8 @@ import {
 } from 'antd';
 import { FormInstance } from 'antd/es/form';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload';
-import { includes, map, cloneDeep } from 'lodash';
-import React, { useEffect, useRef } from 'react';
+import { includes, map } from 'lodash';
+import React from 'react';
 import { useImmer } from 'use-immer';
 import {
   CPP_CODE_TYPE,
@@ -59,26 +59,33 @@ export const StoredForm: React.FC<Prop> = ({
   refreshList,
 }) => {
   const { onUploadProcedure, UploadProcedureLoading } = useProcedure();
-  const uploadRef = useRef(null);
   const props: UploadProps = {
     name: 'file',
     headers: {
       authorization: 'authorization-text',
     },
     onChange(info: UploadChangeParam<UploadFile<any>>) {
+      let newFileList = [...info.fileList];
+      newFileList = newFileList.map(file => {
+        if (file.response) {
+          file.url = file.response.url;
+        }
+        return file;
+      });
+      updateState(draft => {
+        draft.fileLst = newFileList;
+      });
       if (info.file.status === 'done') {
         message.success('文件上传成功');
       } else if (info.file.status === 'error') {
         message.error('文件上传失败');
       }
     },
-    maxCount: 1,
     beforeUpload: async file => {
       const reader = new FileReader();
       const fileName = file.name;
       const uid = file.uid;
       await reader.readAsText(file);
-      const copyContent = cloneDeep(state.content);
       reader.onload = result => {
         try {
           const content = btoa(`${result?.target?.result}`);
@@ -95,8 +102,8 @@ export const StoredForm: React.FC<Prop> = ({
             if (hasIndex === -1) {
               draft.content = [...draft.content, newItem];
             } else {
-              copyContent[hasIndex] = newItem;
-              draft.content = copyContent;
+              draft.content[hasIndex] = newItem;
+              draft.content = draft.content;
             }
           });
         } catch (err: any) {
@@ -118,14 +125,16 @@ export const StoredForm: React.FC<Prop> = ({
     demoValue: string;
     isPy: boolean;
     isCpp: boolean;
-    uploadProps: UploadProps;
+    fileLst: any[];
+    maxCount: number;
   }>({
     demoVisible: false,
+    maxCount: 1,
     content: [],
     demoValue: 'cpp_v1',
     isPy: false,
     isCpp: false,
-    uploadProps: props,
+    fileLst: [],
   });
   const { demoVisible, content, demoValue, isPy, isCpp } = state;
 
@@ -271,12 +280,12 @@ export const StoredForm: React.FC<Prop> = ({
                       break;
                     case 'cpp':
                       draft.isCpp = true;
-                      draft.uploadProps.maxCount = 999;
+                      draft.maxCount = 999;
                       break;
                     default:
                       draft.isPy = false;
                       draft.isCpp = false;
-                      draft.uploadProps.maxCount = 1;
+                      draft.maxCount = 1;
                       break;
                   }
                 });
@@ -335,7 +344,7 @@ export const StoredForm: React.FC<Prop> = ({
             </Group>
           </Item>
 
-          <Upload {...state.uploadProps} ref={uploadRef}>
+          <Upload {...props} maxCount={state.maxCount} fileList={state.fileLst}>
             <Button icon={<UploadOutlined />}>上传文件</Button>
           </Upload>
         </Form>
