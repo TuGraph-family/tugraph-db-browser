@@ -678,13 +678,13 @@ export const EditNodesEdges: React.FC<Prop> = ({
                   })),
                 })
                   .finally(() => {
-                    onClose();
                     updateState(preState => {
-                      preState.attrList = preState.attrList.map(item => ({
+                      preState.attrList = readyAttr.map(item => ({
                         ...item,
                         disabled: true,
                       }));
                     });
+                    onClose();
                   })
                   .catch(err => {
                     message.error(err);

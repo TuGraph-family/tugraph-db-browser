@@ -598,10 +598,11 @@ export const GraphConstruct = () => {
               override,
             }).then(res => {
               if (res.success) {
-                message.success('导入成功');
-                window.location.reload();
-                setState(draft => {
-                  draft.isModelOpen = false;
+                message.success('导入成功').then(() => {
+                  setState(draft => {
+                    draft.isModelOpen = false;
+                    window.location.reload();
+                  });
                 });
               } else {
                 message.error('导入失败' + res.errorMessage);

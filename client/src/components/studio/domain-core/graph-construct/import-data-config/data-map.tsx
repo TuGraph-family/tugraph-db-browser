@@ -1,7 +1,14 @@
 import { graphDataToOptions } from '@/components/studio/utils/dataImportTransform';
 import { batchSecureDeletion } from '@/components/studio/utils/objectOper';
-import { Select, Cascader, InputNumber, Table } from 'antd';
+import { Select, Cascader, InputNumber, Tooltip, Typography } from 'antd';
 import { useEffect, useState } from 'react';
+const { Paragraph } = Typography;
+const isUrl =
+  /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+
+const getMaxLength = (list: any[]): number => {
+  return list.length * 120;
+};
 
 const DataMapConfigHeader = ({
   state,
@@ -16,7 +23,7 @@ const DataMapConfigHeader = ({
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: '12px',
+        padding: 12,
       }}
     >
       <div
@@ -134,6 +141,7 @@ const DataMapSelectNav = ({
 }: any) => {
   const [visibility, setVisibility] = useState<boolean>(true);
   const [defaultSelectValue, setDefaultSelectValue] = useState<string[]>(['']);
+
   const isEdges = [...state?.nodeType][0] === 'edge';
   useEffect(() => {
     setVisibility(!isEdges);
@@ -150,12 +158,11 @@ const DataMapSelectNav = ({
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        gap: '16px',
-        padding: '12px',
+        gap: 12,
+        padding: 12,
         paddingTop: 0,
-        overflowX: 'auto',
-        maxWidth: '100%',
-        width: '100%',
+        paddingBottom: 0,
+        width: getMaxLength([...state?.columns]),
       }}
     >
       {[...state?.columns].map((item, index) => (
@@ -164,7 +171,7 @@ const DataMapSelectNav = ({
           value={defaultSelectValue[index] || ''}
           options={[...state?.nodeType][0] ? state?.propertiesOptions : []}
           style={{
-            minWidth: 120,
+            width: 120,
           }}
           onChange={value => {
             const newFileDataList = [...fileDataList].map(cur => {
@@ -198,19 +205,18 @@ const DataMapSelectNav = ({
 
 const DataMapTableView = ({ state }: any) => {
   return (
-    <>
+    <div>
       <div
         style={{
           justifyContent: 'flex-start',
           alignItems: 'center',
-          gap: '12px',
-          marginTop: 0,
-          overflowX: 'auto',
-          maxWidth: '100%',
-          width: '100%',
+          gap: 12,
+          marginTop: 12,
+          width: getMaxLength([...state?.labelList]),
           paddingBottom: 0,
-          borderBottom: '1px solid #f0f0f0',
+          borderBottom: '1 solid #f0f0f0',
           display: 'flex',
+          background: '#fafafa',
         }}
       >
         {[...state?.labelList].map(item => {
@@ -220,8 +226,10 @@ const DataMapTableView = ({ state }: any) => {
                 color: 'rgba(0, 0, 0, 0.85)',
                 fontWeight: 500,
                 textAlign: 'left',
-                padding: '16px',
-                gap: '12px',
+                padding: 12,
+                gap: 12,
+                fontSize: 14,
+                width: 120,
               }}
               key={item?.key}
             >
@@ -230,12 +238,108 @@ const DataMapTableView = ({ state }: any) => {
           );
         })}
       </div>
-      <Table
-        columns={state.columns}
-        dataSource={state?.list}
-        pagination={false}
-      />
-    </>
+      <div
+        style={{
+          height: 55,
+          position: 'relative',
+          color: 'rgba(0, 0, 0, 0.85)',
+          fontWeight: 500,
+          textAlign: 'left',
+
+          borderBottom: '1 solid #f0f0f0',
+          display: 'flex',
+          justifyContent: 'start',
+          alignItems: 'center',
+          gap: 12,
+          width: getMaxLength([...state.columns]),
+        }}
+      >
+        {[...state.columns].map((item: any) => (
+          <Tooltip key={item?.title} title={item?.title}>
+            <div
+              style={{
+                width: 120,
+                padding: 16,
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {item?.title}
+            </div>
+          </Tooltip>
+        ))}
+      </div>
+      <div>
+        {[...state?.list].map((item: any, index: number, arr: any[]) => {
+          return (
+            <div
+              key={`row-${index}`}
+              style={{
+                width: getMaxLength([...state.columns]),
+                height: 55,
+                position: 'relative',
+                color: 'rgba(0, 0, 0, 0.85)',
+                fontWeight: 500,
+                textAlign: 'left',
+                background: '#fff',
+                borderBottom: '1 solid #fff',
+                display: 'flex',
+                justifyContent: 'start',
+                alignItems: 'center',
+                gap: 12,
+              }}
+            >
+              {[...state.columns].map((it: any, inx: number) => {
+                const isUrlTestPass = isUrl.test(arr[index][`col${inx}`]);
+                if (isUrlTestPass) {
+                  return (
+                    <Paragraph
+                      key={`col-${index}-${inx}`}
+                      copyable={{
+                        text: arr[index][`col${inx}`],
+                        tooltips: ['点击复制', '复制成功'],
+                      }}
+                      style={{
+                        display: 'flex',
+                        color: '#1650ff',
+                        width: 120,
+                      }}
+                    >
+                      <a
+                        onClick={() => {
+                          window.open(arr[index][`col${inx}`], '_blank');
+                        }}
+                      >
+                        链接
+                      </a>
+                    </Paragraph>
+                  );
+                }
+                return (
+                  <Tooltip
+                    key={`col-${index}-${inx}`}
+                    title={arr[index][`col${inx}`]}
+                  >
+                    <div
+                      style={{
+                        width: 120,
+                        padding: 16,
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
+                      {arr[index][`col${inx}`]}
+                    </div>
+                  </Tooltip>
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 };
 const DataMap = ({
@@ -329,15 +433,24 @@ const DataMap = ({
         setFileDataList={setFileDataList}
         fileDataList={fileDataList}
       />
-      <DataMapSelectNav
-        data={data}
-        state={state}
-        setState={setState}
-        graphData={graphData}
-        setFileDataList={setFileDataList}
-        fileDataList={fileDataList}
-      />
-      <DataMapTableView state={state} />
+      <div
+        style={{
+          padding: '0 12px',
+          maxWidth: '100%',
+          overflowX: 'auto',
+          scrollbarWidth: 'none',
+        }}
+      >
+        <DataMapSelectNav
+          data={data}
+          state={state}
+          setState={setState}
+          graphData={graphData}
+          setFileDataList={setFileDataList}
+          fileDataList={fileDataList}
+        />
+        <DataMapTableView state={state} />
+      </div>
     </div>
   );
 };

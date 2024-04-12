@@ -156,4 +156,9 @@ export default (app: Application) => {
     '/api/get_procedure_demo',
     controller.tugraph.query.queryGetProcedureDemo,
   );
+  router.post('/api/import_progress', controller.tugraph.info.importProgress);
+  router.post('/api/import_data', controller.tugraph.info.importData);
+  router.post('/api/import_schema', controller.tugraph.info.importSchema);
+  router.post('/api//upload_file', controller.tugraph.info.uploadFile);
+  router.post('/api/check_file', controller.tugraph.info.checkFile);
 };
