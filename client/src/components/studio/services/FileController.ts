@@ -1,11 +1,11 @@
 import request from 'umi-request';
-import { SERVER_HOST } from '../constant';
+import { PROXY_HOST } from '@/constants';
 import { getLocalData } from '../utils/localStorage';
 import { CheckFileParams, UploadFileParams } from '../interface/import';
 
 /* Upload File */
 export async function uploadFile(params: UploadFileParams, file: any) {
-  return request(`${SERVER_HOST}/upload_files`, {
+  return request(`${PROXY_HOST}/api/upload_files`, {
     method: 'POST',
     headers: {
       Authorization: getLocalData('TUGRAPH_TOKEN'),
@@ -18,7 +18,7 @@ export async function uploadFile(params: UploadFileParams, file: any) {
 
 /* Check File */
 export async function checkFile(params: CheckFileParams) {
-  return request(`${SERVER_HOST}/check_file`, {
+  return request(`${PROXY_HOST}/api/check_file`, {
     method: 'POST',
     headers: {
       Authorization: getLocalData('TUGRAPH_TOKEN'),

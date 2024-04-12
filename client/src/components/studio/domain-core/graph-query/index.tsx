@@ -347,7 +347,13 @@ export const GraphQuery = () => {
         >
           返回图构建
         </Button>
-        <Button disabled>前往图分析</Button>
+        <Button
+          onClick={() => {
+            history.push(`/analysis?graphName=${currentGraphName}`);
+          }}
+        >
+          前往图分析
+        </Button>
       </Space>
     </div>
   );

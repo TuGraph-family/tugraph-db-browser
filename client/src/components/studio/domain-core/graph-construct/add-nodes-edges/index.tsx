@@ -390,7 +390,6 @@ export const AddNodesEdges: React.FC<Prop> = ({
   const addNodeAttr = () => {
     updateState(draft => {
       const list = [...attrList];
-      console.log(list, '0');
       list.push({
         id: attrList.length + 1,
         name: '',
@@ -403,8 +402,6 @@ export const AddNodesEdges: React.FC<Prop> = ({
   const addNodeConfig = () => {
     updateState(draft => {
       const list = [...configList];
-      console.log(list, '1');
-
       list.push({
         id: configList.length + 1,
         index: `#${configList.length + 1}`,
@@ -423,7 +420,6 @@ export const AddNodesEdges: React.FC<Prop> = ({
         source: '',
         target: '',
       });
-      console.log(list, '2');
       draft.startList = [...list];
     });
   };
@@ -527,7 +523,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
           </Form>
           <div className={styles[`${PUBLIC_PERFIX_CLASS}-container-attr`]}>
             <p className={styles[`${PUBLIC_PERFIX_CLASS}-container-title`]}>
-              属性列表1
+              属性列表
             </p>
             <EditTable
               // className={styles[`${PUBLIC_PERFIX_CLASS}-container-attributes`]}
