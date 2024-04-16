@@ -2,6 +2,7 @@ import request from 'umi-request';
 import { PROXY_HOST } from '@/constants';
 import { getLocalData } from '../utils/localStorage';
 import { CheckFileParams, UploadFileParams } from '../interface/import';
+import { EngineServerURL } from '../../../../../server/app/service/tugraph/constant';
 
 /* Upload File */
 export async function uploadFile(params: UploadFileParams, file: any) {
@@ -9,7 +10,6 @@ export async function uploadFile(params: UploadFileParams, file: any) {
     method: 'POST',
     headers: {
       Authorization: getLocalData('TUGRAPH_TOKEN'),
-      'Content-Type': 'application/json',
       ...params,
     },
     body: file,
