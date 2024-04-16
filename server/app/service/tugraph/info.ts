@@ -52,7 +52,20 @@ class TuGraphInfoService extends Service {
     return this.curlPost(`${EngineServerURL}/check_file`, params);
   }
   async uploadFile(params: any) {
-    return this.curlPost(`${EngineServerURL}/upload_files`, params);
+    const result = await this.ctx.curl(`${EngineServerURL}/upload_files`, {
+      headers: {
+        'content-type': 'application/json',
+        Authorization: this.ctx.request.header.authorization,
+        'File-Name': this.ctx.request.header['file-name'],
+        Size: `${this.ctx.request.header['size']}`,
+        'Begin-Pos': `${this.ctx.request.header['begin-pos']}`,
+      },
+      method: 'POST',
+      data: params,
+      timeout: [30000, 50000],
+      dataType: 'json',
+    });
+    return responseFormatter(result);
   }
   async queryDatabaseInfo() {
     const cypher = 'CALL dbms.config.list()';

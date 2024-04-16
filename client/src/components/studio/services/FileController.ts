@@ -5,7 +5,7 @@ import { CheckFileParams, UploadFileParams } from '../interface/import';
 
 /* Upload File */
 export async function uploadFile(params: UploadFileParams, file: any) {
-  return request(`${PROXY_HOST}/api/upload_files`, {
+  return request(`${EngineServerURL}/upload_files`, {
     method: 'POST',
     headers: {
       Authorization: getLocalData('TUGRAPH_TOKEN'),
