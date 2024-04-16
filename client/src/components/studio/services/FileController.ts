@@ -6,11 +6,10 @@ import { EngineServerURL } from '../../../../../server/app/service/tugraph/const
 
 /* Upload File */
 export async function uploadFile(params: UploadFileParams, file: any) {
-  return request(`${EngineServerURL}/upload_files`, {
+  return request(`${PROXY_HOST}/api/upload_files`, {
     method: 'POST',
     headers: {
       Authorization: getLocalData('TUGRAPH_TOKEN'),
-      'Content-Type': 'application/json',
       ...params,
     },
     body: file,
