@@ -3,6 +3,7 @@
  */
 
 import { Service } from 'egg';
+import fs from 'fs';
 import { responseFormatter } from '../../util';
 import { EngineServerURL } from './constant';
 
@@ -51,8 +52,19 @@ class TuGraphInfoService extends Service {
   async checkFile(params: any) {
     return this.curlPost(`${EngineServerURL}/check_file`, params);
   }
-  async uploadFile(params: any) {
-    return this.curlPost(`${EngineServerURL}/upload_files`, params);
+  async uploadFile(headers) {
+    const file = this.ctx.request.files[0];
+    const buffer = fs.readFileSync(file.filepath);
+    const result = await this.ctx.curl(`${EngineServerURL}/upload_files`, {
+      headers: {
+        ...headers,
+        Authorization: this.ctx.request.header.authorization,
+      },
+      method: 'POST',
+      timeout: [30000, 50000],
+      data: buffer,
+    });
+    return responseFormatter(result);
   }
   async queryDatabaseInfo() {
     const cypher = 'CALL dbms.config.list()';
