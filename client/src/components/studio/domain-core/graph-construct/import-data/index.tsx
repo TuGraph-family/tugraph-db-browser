@@ -34,12 +34,46 @@ export const ImportData: React.FC<Prop> = ({
   onSwitch,
 }) => {
   const [form] = Form.useForm();
+  const onImportProgressSuccess = (res: any) => {
+    if (res.errorCode == '200') {
+      if (res?.data?.state === '2') {
+        importProgressCancel();
+        const taskList = getLocalData('TUGRAPH_INFO');
+        const newTaskInfo = filter(
+          taskList,
+          (info: any) => info.taskId !== taskId,
+        );
+        setLocalData('TUGRAPH_INFO', newTaskInfo);
+        updateState(draft => {
+          draft.resultStatus = 'success';
+          draft.errorMessage = '';
+        });
+      } else if (res?.data?.state === '1') {
+        updateState(draft => {
+          draft.resultStatus = 'loading';
+          draft.errorMessage = '';
+        });
+      } else {
+        importProgressCancel();
+        updateState(draft => {
+          draft.resultStatus = 'error';
+          draft.errorMessage = res?.data?.reason;
+        });
+      }
+    } else {
+      importProgressCancel();
+      updateState(draft => {
+        draft.resultStatus = 'error';
+        draft.errorMessage = res.errorMessage || res?.data?.reason;
+      });
+    }
+  };
   const {
     onImportData,
     importDataLoading,
     onImportProgress,
     importProgressCancel,
-  } = useImport();
+  } = useImport({ onImportProgressSuccess });
   const { visible, onShow, onClose } = useVisible({ defaultVisible: true });
   const [fileDataList, setFileDataList] = useState<FileData[]>([]);
   const [showResult, setShowResult] = useState<boolean>(false);
@@ -64,37 +98,7 @@ export const ImportData: React.FC<Prop> = ({
       importProgressCancel();
       return;
     }
-    onImportProgress(taskId).then(res => {
-      if (res.errorCode == 200) {
-        if (res?.data?.state === '2') {
-          importProgressCancel();
-          const taskList = getLocalData('TUGRAPH_INFO');
-          const newTaskInfo = filter(taskList, info => info.taskId !== taskId);
-          setLocalData('TUGRAPH_INFO', newTaskInfo);
-          updateState(draft => {
-            draft.resultStatus = 'success';
-            draft.errorMessage = '';
-          });
-        } else if (res?.data?.state === '1') {
-          updateState(draft => {
-            draft.resultStatus = 'loading';
-            draft.errorMessage = '';
-          });
-        } else {
-          importProgressCancel();
-          updateState(draft => {
-            draft.resultStatus = 'error';
-            draft.errorMessage = res?.data?.reason;
-          });
-        }
-      } else {
-        importProgressCancel();
-        updateState(draft => {
-          draft.resultStatus = 'error';
-          draft.errorMessage = res.errorMessage || res?.data?.reason;
-        });
-      }
-    });
+    onImportProgress(taskId);
   }, [taskId]);
 
   useEffect(() => {
