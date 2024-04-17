@@ -39,7 +39,9 @@ class TuGraphInfoController extends Controller {
   }
   async uploadFile() {
     const { ctx } = this;
-    const result = await ctx.service.tugraph.info.uploadFile(ctx.request.body);
+    const result = await ctx.service.tugraph.info.uploadFile(
+      ctx.request.files[0],
+    );
     responseData(ctx, result);
   }
 }

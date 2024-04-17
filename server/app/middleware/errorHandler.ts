@@ -1,3 +1,5 @@
+import { log } from 'console';
+
 module.exports = () => {
   return async function errorHandler(ctx, next) {
     // 检查是否登录
@@ -6,6 +8,7 @@ module.exports = () => {
     //   ctx.body = { success: false, errorMessage: '未登录', data: null };
     //   return;
     // }
+    log(ctx.request.body, 'ctx');
     try {
       await next();
     } catch (err: any) {

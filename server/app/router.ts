@@ -1,7 +1,7 @@
 import { Application } from 'egg';
 
 export default (app: Application) => {
-  const { controller, router } = app;
+  const { controller, router, middleware } = app;
 
   // 静态资源路由
   router.get('/', controller.home.index);
@@ -159,6 +159,10 @@ export default (app: Application) => {
   router.post('/api/import_progress', controller.tugraph.info.importProgress);
   router.post('/api/import_data', controller.tugraph.info.importData);
   router.post('/api/import_schema', controller.tugraph.info.importSchema);
-  router.post('/api//upload_file', controller.tugraph.info.uploadFile);
+  router.post(
+    '/api/upload_files',
+    middleware.multipart({ mode: 'file', size: 99 }),
+    controller.tugraph.info.uploadFile,
+  );
   router.post('/api/check_file', controller.tugraph.info.checkFile);
 };

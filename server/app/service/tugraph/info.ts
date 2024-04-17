@@ -54,7 +54,7 @@ class TuGraphInfoService extends Service {
   async uploadFile(params: any) {
     const result = await this.ctx.curl(`${EngineServerURL}/upload_files`, {
       headers: {
-        'content-type': 'application/json',
+        // 'content-type': 'application/json',
         Authorization: this.ctx.request.header.authorization,
         'File-Name': this.ctx.request.header['file-name'],
         Size: `${this.ctx.request.header['size']}`,

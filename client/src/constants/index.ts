@@ -24,4 +24,4 @@ export const CONSOLE_LINKS = [
     path: '/database',
   },
 ];
-export const PROXY_HOST = `http://${window.location.hostname}:7001`;
+export const PROXY_HOST = `http://${window.location.hostname}:7002`;

@@ -9,10 +9,16 @@ export default (appInfo: EggAppInfo) => {
   config.keys = appInfo.name + '_graphinsight_375A';
 
   // add your egg config in here
-  // config.middleware = ['errorHandler'];
+  config.middleware = ['errorHandler'];
 
   config.errorHandler = {
     enable: true,
+  };
+  // 添加 multipart 配置
+  config.multipart = {
+    mode: 'file',
+    fileSize: '999999999mb', // 限制文件大小
+    fileExtensions: ['.jpg', '.jpeg', '.png', '.gif', '.csv'], // 允许上传的文件扩展名
   };
 
   config.static = {
