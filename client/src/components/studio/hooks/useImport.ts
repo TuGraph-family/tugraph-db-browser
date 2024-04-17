@@ -1,7 +1,15 @@
 import { useRequest } from 'ahooks';
-import { importData, importGraphSchema, importProgress, importSchema } from '../services/ImportController';
+import {
+  importData,
+  importGraphSchema,
+  importProgress,
+  importSchema,
+} from '../services/ImportController';
 
-export const useImport = () => {
+export const useImport = (params?: {
+  onImportProgressSuccess?: (data: any, success: any) => void;
+}) => {
+  const { onImportProgressSuccess } = params || {};
   const {
     runAsync: onImportData,
     loading: importDataLoading,
@@ -19,7 +27,11 @@ export const useImport = () => {
     loading: importProgressLoading,
     error: importProgressError,
     cancel: importProgressCancel,
-  } = useRequest(importProgress, { manual: true, pollingInterval: 5000 });
+  } = useRequest(importProgress, {
+    manual: true,
+    pollingInterval: 3000,
+    onSuccess: onImportProgressSuccess,
+  });
 
   const {
     runAsync: onImportGraphSchema,
