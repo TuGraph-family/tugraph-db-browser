@@ -58,28 +58,30 @@ const DataMapConfigHeader = ({
             const curNodeColumns = new Array(data?.data?.columns?.length).fill(
               '',
             );
-            const newFileDataList = [...fileDataList].map((cur: any) => {
-              if (data?.fileName === cur?.fileName) {
-                const curLabel = [...value][1] || '';
-                const preFileSchema = data?.fileSchema;
-                return {
-                  ...cur,
-                  fileSchema: {
-                    ...preFileSchema,
-                    label: curLabel,
-                    columns: isEdges ? curEdgeColumns : curNodeColumns,
-                    ...(isEdges
-                      ? { SRC_ID: '', DST_ID: '' }
-                      : {
-                          format: preFileSchema?.format,
-                          header: preFileSchema?.header,
-                          path: preFileSchema?.path,
-                        }),
-                  },
-                };
-              }
-              return cur;
-            });
+            const newFileDataList =
+              checkFullArray(fileDataList) &&
+              [...fileDataList].map((cur: any) => {
+                if (data?.fileName === cur?.fileName) {
+                  const curLabel = [...value][1] || '';
+                  const preFileSchema = data?.fileSchema;
+                  return {
+                    ...cur,
+                    fileSchema: {
+                      ...preFileSchema,
+                      label: curLabel,
+                      columns: isEdges ? curEdgeColumns : curNodeColumns,
+                      ...(isEdges
+                        ? { SRC_ID: '', DST_ID: '' }
+                        : {
+                            format: preFileSchema?.format,
+                            header: preFileSchema?.header,
+                            path: preFileSchema?.path,
+                          }),
+                    },
+                  };
+                }
+                return cur;
+              });
             setFileDataList(newFileDataList);
             setState((pre: any) => {
               return { ...pre, nodeType: value };
@@ -108,19 +110,21 @@ const DataMapConfigHeader = ({
           defaultValue={0}
           size="small"
           onChange={value => {
-            const newFileDataList = [...fileDataList].map((cur: any) => {
-              const { header, ...other } = cur?.fileSchema;
-              if (data?.fileName === cur?.fileName) {
-                return {
-                  ...data,
-                  fileSchema: {
-                    ...other,
-                    header: Number(value) || 0,
-                  },
-                };
-              }
-              return cur;
-            });
+            const newFileDataList =
+              checkFullArray(fileDataList) &&
+              [...fileDataList].map((cur: any) => {
+                const { header, ...other } = cur?.fileSchema;
+                if (data?.fileName === cur?.fileName) {
+                  return {
+                    ...data,
+                    fileSchema: {
+                      ...other,
+                      header: Number(value) || 0,
+                    },
+                  };
+                }
+                return cur;
+              });
             setFileDataList(newFileDataList);
           }}
         />
@@ -168,11 +172,12 @@ const DataMapSelectNav = ({
         paddingBottom: 0,
         width: getMaxLength([...state?.columns]),
       }}
+      key={'DataMapSelectNav'}
     >
       {checkFullArray(state?.columns)
         ? [...state?.columns].map((item, index) => (
             <Select
-              key={item?.key}
+              key={index}
               value={defaultSelectValue[index] || ''}
               options={[...state?.nodeType][0] ? state?.propertiesOptions : []}
               style={{
@@ -224,12 +229,11 @@ const DataMapTableView = ({ state }: any) => {
           paddingBottom: 0,
           borderBottom: '1 solid #f0f0f0',
           display: 'flex',
-          background: '#fafafa',
         }}
       >
         {checkFullArray(state?.labelList)
           ? [...state?.labelList].map((item, index) => {
-              return (
+              return item?.title ? (
                 <div
                   style={{
                     color: 'rgba(0, 0, 0, 0.85)',
@@ -242,9 +246,9 @@ const DataMapTableView = ({ state }: any) => {
                   }}
                   key={index}
                 >
-                  {item?.title}
+                  {item?.title || ''}
                 </div>
-              );
+              ) : null;
             })
           : null}
       </div>
@@ -255,18 +259,18 @@ const DataMapTableView = ({ state }: any) => {
           color: 'rgba(0, 0, 0, 0.85)',
           fontWeight: 500,
           textAlign: 'left',
-
+          background: '#fafafa',
           borderBottom: '1 solid #f0f0f0',
           display: 'flex',
           justifyContent: 'start',
           alignItems: 'center',
           gap: 12,
-          width: getMaxLength([...state.columns]),
+          width: getMaxLength([...state?.columns]),
         }}
       >
         {checkFullArray(state.columns)
           ? [...state.columns].map((item: any, index: number) => (
-              <Tooltip key={item?.title} title={item?.title}>
+              <Tooltip key={index} title={item?.title || ''}>
                 <div
                   style={{
                     width: 120,
@@ -277,7 +281,7 @@ const DataMapTableView = ({ state }: any) => {
                   }}
                   key={index}
                 >
-                  {item?.title}
+                  {item?.title || ''}
                 </div>
               </Tooltip>
             ))
@@ -378,12 +382,20 @@ const DataMap = ({
   });
 
   useEffect(() => {
+    const hasLabel = `${JSON.stringify(data)}`.includes('LABEL');
+    let labelHeader, dataColumns, dataList;
     const dataSource: any[] = data?.data?.dataSource || [];
     const curLabelOptions: any[] = data?.labelOptions || [];
-    const labelHeader = dataSource[0];
-    const dataColumns = dataSource[1];
-    const dataList = dataSource.slice(2);
-    if (dataSource.length) {
+    if (hasLabel) {
+      labelHeader = dataSource[0];
+      dataColumns = dataSource[1];
+      dataList = dataSource.slice(2);
+    } else {
+      labelHeader = [];
+      dataColumns = dataSource[0];
+      dataList = dataSource.slice(1);
+    }
+    if (dataSource?.length) {
       const curColumns = Object.entries(dataColumns).map(([key, value]) => {
         return {
           key,
@@ -408,9 +420,14 @@ const DataMap = ({
     }
   }, [data]);
   useEffect(() => {
-    if (data && data?.data?.dataSource?.length) {
+    const hasLabel = `${JSON.stringify(data)}`.includes('LABEL');
+    if (
+      data &&
+      data?.data?.dataSource?.length &&
+      checkFullArray(state?.nodeType)
+    ) {
       const dataSource: any[] = data?.data?.dataSource || [];
-      const dataColumns = dataSource[1];
+      const dataColumns = dataSource[hasLabel ? 1 : 0];
       const dataColumnsTitle = ['起点', '终点'];
       const isNode = ['node', ''].includes(state?.nodeType[0]);
       const curColumns = Object.entries(dataColumns).map(
@@ -434,12 +451,13 @@ const DataMap = ({
         };
       });
     }
-  }, [data, state?.nodeType[0], state?.nodeType[1]]);
+  }, [data, state?.nodeType]);
   return (
     <div
       style={{
         background: '#fff',
       }}
+      key={'data-map'}
     >
       <DataMapConfigHeader
         data={data}
@@ -455,6 +473,7 @@ const DataMap = ({
           overflowX: 'auto',
           scrollbarWidth: 'none',
         }}
+        key={'dataMap-select-nav'}
       >
         <DataMapSelectNav
           data={data}
