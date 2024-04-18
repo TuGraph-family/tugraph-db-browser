@@ -10,6 +10,10 @@ const getMaxLength = (list: any[]): number => {
   return list.length * 120;
 };
 
+const checkFullArray = (data: any) => {
+  return Array.isArray(data) && data?.length > 0;
+};
+
 const DataMapConfigHeader = ({
   state,
   setState,
@@ -165,47 +169,51 @@ const DataMapSelectNav = ({
         width: getMaxLength([...state?.columns]),
       }}
     >
-      {[...state?.columns].map((item, index) => (
-        <Select
-          key={item?.key}
-          value={defaultSelectValue[index] || ''}
-          options={[...state?.nodeType][0] ? state?.propertiesOptions : []}
-          style={{
-            width: 120,
-          }}
-          onChange={value => {
-            const newFileDataList = [...fileDataList].map(cur => {
-              const curColumns = Array.isArray(cur?.fileSchema?.columns)
-                ? cur?.fileSchema?.columns
-                : [];
-              curColumns[index] = value || '';
-              if (data?.fileName === cur?.fileName) {
-                return {
-                  ...cur,
-                  fileSchema: {
-                    ...cur?.fileSchema,
-                    columns: isEdges ? cur?.fileSchema?.columns : curColumns,
-                  },
-                };
-              }
-              return cur;
-            });
-            setFileDataList(newFileDataList);
-            setDefaultSelectValue(pre => {
-              const slicePre = pre.slice(0);
-              slicePre[index] = value;
-              return slicePre;
-            });
-          }}
-        />
-      ))}
+      {checkFullArray(state?.columns)
+        ? [...state?.columns].map((item, index) => (
+            <Select
+              key={item?.key}
+              value={defaultSelectValue[index] || ''}
+              options={[...state?.nodeType][0] ? state?.propertiesOptions : []}
+              style={{
+                width: 120,
+              }}
+              onChange={value => {
+                const newFileDataList = [...fileDataList].map(cur => {
+                  const curColumns = Array.isArray(cur?.fileSchema?.columns)
+                    ? cur?.fileSchema?.columns
+                    : [];
+                  curColumns[index] = value || '';
+                  if (data?.fileName === cur?.fileName) {
+                    return {
+                      ...cur,
+                      fileSchema: {
+                        ...cur?.fileSchema,
+                        columns: isEdges
+                          ? cur?.fileSchema?.columns
+                          : curColumns,
+                      },
+                    };
+                  }
+                  return cur;
+                });
+                setFileDataList(newFileDataList);
+                setDefaultSelectValue(pre => {
+                  const slicePre = pre.slice(0);
+                  slicePre[index] = value;
+                  return slicePre;
+                });
+              }}
+            />
+          ))
+        : null}
     </div>
   ) : null;
 };
 
 const DataMapTableView = ({ state }: any) => {
   return (
-    <div>
+    <>
       <div
         style={{
           justifyContent: 'flex-start',
@@ -219,24 +227,26 @@ const DataMapTableView = ({ state }: any) => {
           background: '#fafafa',
         }}
       >
-        {[...state?.labelList].map(item => {
-          return (
-            <div
-              style={{
-                color: 'rgba(0, 0, 0, 0.85)',
-                fontWeight: 500,
-                textAlign: 'left',
-                padding: 12,
-                gap: 12,
-                fontSize: 14,
-                width: 120,
-              }}
-              key={item?.key}
-            >
-              {item?.title}
-            </div>
-          );
-        })}
+        {checkFullArray(state?.labelList)
+          ? [...state?.labelList].map((item, index) => {
+              return (
+                <div
+                  style={{
+                    color: 'rgba(0, 0, 0, 0.85)',
+                    fontWeight: 500,
+                    textAlign: 'left',
+                    padding: 12,
+                    gap: 12,
+                    fontSize: 14,
+                    width: 120,
+                  }}
+                  key={index}
+                >
+                  {item?.title}
+                </div>
+              );
+            })
+          : null}
       </div>
       <div
         style={{
@@ -254,92 +264,97 @@ const DataMapTableView = ({ state }: any) => {
           width: getMaxLength([...state.columns]),
         }}
       >
-        {[...state.columns].map((item: any) => (
-          <Tooltip key={item?.title} title={item?.title}>
-            <div
-              style={{
-                width: 120,
-                padding: 16,
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {item?.title}
-            </div>
-          </Tooltip>
-        ))}
+        {checkFullArray(state.columns)
+          ? [...state.columns].map((item: any, index: number) => (
+              <Tooltip key={item?.title} title={item?.title}>
+                <div
+                  style={{
+                    width: 120,
+                    padding: 16,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                  key={index}
+                >
+                  {item?.title}
+                </div>
+              </Tooltip>
+            ))
+          : null}
       </div>
       <div>
-        {[...state?.list].map((item: any, index: number, arr: any[]) => {
-          return (
-            <div
-              key={`row-${index}`}
-              style={{
-                width: getMaxLength([...state.columns]),
-                height: 55,
-                position: 'relative',
-                color: 'rgba(0, 0, 0, 0.85)',
-                fontWeight: 500,
-                textAlign: 'left',
-                background: '#fff',
-                borderBottom: '1 solid #fff',
-                display: 'flex',
-                justifyContent: 'start',
-                alignItems: 'center',
-                gap: 12,
-              }}
-            >
-              {[...state.columns].map((it: any, inx: number) => {
-                const isUrlTestPass = isUrl.test(arr[index][`col${inx}`]);
-                if (isUrlTestPass) {
-                  return (
-                    <Paragraph
-                      key={`col-${index}-${inx}`}
-                      copyable={{
-                        text: arr[index][`col${inx}`],
-                        tooltips: ['点击复制', '复制成功'],
-                      }}
-                      style={{
-                        display: 'flex',
-                        color: '#1650ff',
-                        width: 120,
-                      }}
-                    >
-                      <a
-                        onClick={() => {
-                          window.open(arr[index][`col${inx}`], '_blank');
-                        }}
+        {checkFullArray(state?.list)
+          ? [...state?.list].map((item: any, index: number, arr: any[]) => {
+              return (
+                <div
+                  key={`row-${index}`}
+                  style={{
+                    width: getMaxLength([...state.columns]),
+                    height: 55,
+                    position: 'relative',
+                    color: 'rgba(0, 0, 0, 0.85)',
+                    fontWeight: 500,
+                    textAlign: 'left',
+                    background: '#fff',
+                    borderBottom: '1 solid #fff',
+                    display: 'flex',
+                    justifyContent: 'start',
+                    alignItems: 'center',
+                    gap: 12,
+                  }}
+                >
+                  {[...state.columns].map((it: any, inx: number) => {
+                    const isUrlTestPass = isUrl.test(arr[index][`col${inx}`]);
+                    if (isUrlTestPass) {
+                      return (
+                        <Paragraph
+                          key={`col-${index}-${inx}`}
+                          copyable={{
+                            text: arr[index][`col${inx}`],
+                            tooltips: ['点击复制', '复制成功'],
+                          }}
+                          style={{
+                            display: 'flex',
+                            color: '#1650ff',
+                            width: 120,
+                          }}
+                        >
+                          <a
+                            onClick={() => {
+                              window.open(arr[index][`col${inx}`], '_blank');
+                            }}
+                          >
+                            链接
+                          </a>
+                        </Paragraph>
+                      );
+                    }
+                    return (
+                      <Tooltip
+                        key={`col-${index}-${inx}`}
+                        title={arr[index][`col${inx}`]}
                       >
-                        链接
-                      </a>
-                    </Paragraph>
-                  );
-                }
-                return (
-                  <Tooltip
-                    key={`col-${index}-${inx}`}
-                    title={arr[index][`col${inx}`]}
-                  >
-                    <div
-                      style={{
-                        width: 120,
-                        padding: 16,
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                      }}
-                    >
-                      {arr[index][`col${inx}`]}
-                    </div>
-                  </Tooltip>
-                );
-              })}
-            </div>
-          );
-        })}
+                        <div
+                          style={{
+                            width: 120,
+                            padding: 16,
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {arr[index][`col${inx}`]}
+                        </div>
+                      </Tooltip>
+                    );
+                  })}
+                </div>
+              );
+            })
+          : null}
       </div>
-    </div>
+    </>
   );
 };
 const DataMap = ({
