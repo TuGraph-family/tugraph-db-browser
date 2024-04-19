@@ -155,6 +155,17 @@ export const ImportData: React.FC<Prop> = ({
   };
 
   const onImport = () => {
+    const isLengthNotMatch = fileDataList.every((fileData: any) => {
+      const fileSchemaColumnsLength =
+        fileData?.fileSchema?.columns?.filter((item: any) => item).length || 0;
+      return (
+        fileSchemaColumnsLength &&
+        fileData?.fileSchema?.columns.every((item: any) => item)
+      );
+    });
+    if (!isLengthNotMatch) {
+      return message.error(`请完成所有列的映射`);
+    }
     fileDataList.forEach((item: any) => {
       item.fileSchema.columns = [...item?.fileSchema?.columns].filter(
         item => item,
@@ -171,13 +182,15 @@ export const ImportData: React.FC<Prop> = ({
         draft.uploadLoading = true;
       });
       // 1. 上传文件
-      const uploadPromise = map(fileDataList, async fileData => {
+      const uploadPromise = map(fileDataList, async (fileData: FileData) => {
         return await handleChuckUpload(fileData);
       });
 
       try {
         const results = await Promise.all(uploadPromise);
-        const hasError = results.some(result => result.errorMessage);
+        const hasError = results.some(
+          (result: { errorMessage: any }) => result.errorMessage,
+        );
         updateState(draft => {
           draft.uploadLoading = false;
         });
@@ -189,7 +202,7 @@ export const ImportData: React.FC<Prop> = ({
         updateState(draft => {
           draft.uploadLoading = false;
         });
-        message.error('请求返回错误:', error);
+        message.error(`请求返回错误:${error}`);
         return;
       }
       const endTime = Date.now(); // 记录全部请求结束的时间
@@ -288,7 +301,7 @@ export const ImportData: React.FC<Prop> = ({
             <div>
               命令行导入
               <a
-                href="https://tugraph-db.readthedocs.io/zh_CN/latest/5.developer-manual/3.server-tools/1.data-import.html"
+                href="https://tugraph-db.readthedocs.io/zh-cn/latest/6.utility-tools/1.data-import.html"
                 target="_blank"
               >
                 参见文档
