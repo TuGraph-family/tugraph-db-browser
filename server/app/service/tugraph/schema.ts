@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * Schema 相关，主要包括以下几部分内容：
  * 1. 创建 Schema
