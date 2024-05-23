@@ -52,7 +52,7 @@
     "egg-view-assets": "^1.9.0"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": "v16.20.0"
   },
   "ci": {
     "version": "14, 16, 18"
