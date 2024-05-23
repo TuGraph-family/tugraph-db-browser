@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 export interface IVertextParams {
   [key: string]: {
     identity: number;

@@ -1,6 +1,5 @@
-// This file is created by egg-ts-helper@1.35.1
+// This file is created by egg-ts-helper@1.25.8
 // Do not modify this file!!!!!!!!!
-/* eslint-disable */
 
 import 'egg';
 import ExportErrorHandler from '../../../app/middleware/errorHandler';

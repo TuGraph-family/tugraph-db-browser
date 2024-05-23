@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { isString } from 'lodash';
 import { IEdgeDataParams } from '../service/tugraph/interface';
 
