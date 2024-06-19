@@ -3,7 +3,7 @@ export const getLocalData = (key: string) => {
     return;
   }
   try {
-    const data = JSON.parse(localStorage.getItem(key) || '{}');
+    const data = JSON.parse(localStorage.getItem(key) || '');
     return data;
   } catch (e) {
     console.error(`tugraph ${key} %d ${e}`);

@@ -26,8 +26,9 @@
     "copy-to-clipboard": "^3.3.3",
     "immer": "^9.0.19",
     "json-bigint": "^1.0.0",
-    "lodash": "4.17.21",
+    "lodash": "^4.17.21",
     "moment": "^2.29.4",
+    "neo4j-driver": "^5.21.0",
     "papaparse": "^5.4.1",
     "query-string": "^8.1.0",
     "react-json-view": "^1.21.3",
@@ -43,6 +44,7 @@
   "devDependencies": {
     "@types/react": "^18.2.28",
     "@types/react-dom": "^18.2.13",
+    "@umijs/plugins": "^4.2.11",
     "typescript": "^4.1.2"
   },
   "resolutions": {
@@ -92,5 +94,6 @@
   },
   "engines": {
     "node": "v16.20.0"
-  }
+  },
+  "repository": "https://github.com/Seventysevendays/tugraph-db-browser.git"
 }

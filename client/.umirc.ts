@@ -54,4 +54,7 @@ export default defineConfig({
       ...env,
     },
   },
+  plugins: ['@umijs/plugins/dist/initial-state', '@umijs/plugins/dist/model'],
+  initialState: {},
+  model: {},
 });

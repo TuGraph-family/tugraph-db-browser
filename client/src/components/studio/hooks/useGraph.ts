@@ -1,19 +1,28 @@
+import { InitialState } from '@/app';
+import { getGraphList } from '@/queries/graph';
 import { useRequest } from 'ahooks';
+import { useModel } from 'umi';
 import {
   createDemoGraph,
   createGraph,
   deleteGraph,
   editGraph,
-  getGraphList,
   getNodeEdgeStatistics,
 } from '../services/GraphController';
 
 export const useGraph = () => {
+  const { initialState } = useModel('@@initialState');
+  const { session, userInfo } = initialState as InitialState;
   const {
     runAsync: onGetGraphList,
     loading: getGraphListLoading,
     error: getGraphListError,
-  } = useRequest(getGraphList, { manual: true });
+  } = useRequest(
+    () => session.run(getGraphList({ userName: userInfo.userName })),
+    {
+      manual: true,
+    },
+  );
 
   const {
     runAsync: onCreateGraph,

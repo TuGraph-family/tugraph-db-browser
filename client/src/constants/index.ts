@@ -25,3 +25,8 @@ export const CONSOLE_LINKS = [
   },
 ];
 export const PROXY_HOST = `http://${window.location.hostname}:7001`;
+
+export const TUGRAPH_USER_NAME = 'TUGRAPH_USER_NAME';
+export const TUGRAPH_PASSWORD = 'TUGRAPH_PASSWORD';
+export const TUGRAPH_URI = 'TUGRAPH_URI';
+export const TUGRPAH_USER_LOGIN_TIME = 'TUGRPAH_USER_LOGIN_TIME';

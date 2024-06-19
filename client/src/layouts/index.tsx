@@ -1,24 +1,13 @@
+import { addQueryParam } from '@/components/studio/utils/url';
 import routes from '@/config/routes';
 import { Col, Row } from 'antd';
 import React, { useEffect } from 'react';
-import { Outlet, useLocation, history } from 'umi';
-import styles from './index.less';
+import { Outlet, history, useLocation } from 'umi';
 import './global.less';
-import { addQueryParam } from '@/components/studio/utils/url';
+import styles from './index.less';
 
 export const Container = (props: React.ComponentProps<any>) => {
   const location = history.location;
-
-  useEffect(() => {
-    if (
-      !localStorage.getItem('TUGRAPH_TOKEN') &&
-      ![window.location.pathname].includes('login')
-    ) {
-      // 已经登录过，则跳转到首页
-      history.push('/');
-      return;
-    }
-  }, []);
   useEffect(() => {
     if (document) {
       document.addEventListener('click', function (event) {
