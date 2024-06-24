@@ -106,9 +106,7 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                 }).then(res => {
                   if (res.success) {
                     message.success('新建成功');
-                    onGetGraphList({
-                      userName: getLocalData('TUGRAPH_USER_NAME'),
-                    });
+                    onGetGraphList();
                     form.resetFields();
                     onClose();
                   } else {

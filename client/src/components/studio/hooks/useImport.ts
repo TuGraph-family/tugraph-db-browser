@@ -1,10 +1,10 @@
 import { useRequest } from 'ahooks';
 import {
   importData,
-  importGraphSchema,
   importProgress,
   importSchema,
 } from '../services/ImportController';
+import { importSchemaMod } from '@/services/schema';
 
 export const useImport = (params?: {
   onImportProgressSuccess?: (data: any, success: any) => void;
@@ -37,7 +37,7 @@ export const useImport = (params?: {
     runAsync: onImportGraphSchema,
     loading: ImportGraphSchemaLoading,
     error: ImportGraphSchemaError,
-  } = useRequest(importGraphSchema, { manual: true });
+  } = useRequest(importSchemaMod, { manual: true });
 
   return {
     useImport,

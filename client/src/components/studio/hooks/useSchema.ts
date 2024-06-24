@@ -1,12 +1,14 @@
 import {
-  getGraphSchema,
-  createLabelSchema,
-  deleteLabelSchema,
-  deleteLabelPropertySchema,
-  editLabelPropertySchema,
-  createLabelPropertySchema,
+  addFieldToLabel,
+  deleteLabelField,
+  deleteSchema,
+  getSchema,
+  updateFieldToLabel,
   createIndexSchema,
   deleteIndexSchema,
+} from '@/services/schema';
+import {
+  createLabelSchema,
 } from '../services/SchemaController';
 import { useRequest } from 'ahooks';
 
@@ -15,7 +17,7 @@ export const useSchema = () => {
     runAsync: onGetGraphSchema,
     loading: GetGraphSchemaLoading,
     error: GetGraphSchemaError,
-  } = useRequest(getGraphSchema, { manual: true });
+  } = useRequest(getSchema, { manual: true });
   const {
     runAsync: onCreateLabelSchema,
     loading: CreateLabelSchemaLoading,
@@ -25,22 +27,22 @@ export const useSchema = () => {
     runAsync: onDeleteLabelSchema,
     loading: DeleteLabelSchemaLoading,
     error: DeleteLabelSchemaError,
-  } = useRequest(deleteLabelSchema, { manual: true });
+  } = useRequest(deleteSchema, { manual: true });
   const {
     runAsync: onDeleteLabelPropertySchema,
     loading: DeleteLabelPropertySchemaLoading,
     error: DeleteLabelPropertySchemaError,
-  } = useRequest(deleteLabelPropertySchema, { manual: true });
+  } = useRequest(deleteLabelField, { manual: true });
   const {
     runAsync: onEditLabelPropertySchema,
     loading: EditLabelPropertySchemaLoading,
     error: EditLabelPropertySchemaError,
-  } = useRequest(editLabelPropertySchema, { manual: true });
+  } = useRequest(updateFieldToLabel, { manual: true });
   const {
     runAsync: onCreateLabelPropertySchema,
     loading: CreateLabelPropertySchemaLoading,
     error: CreateLabelPropertySchemaError,
-  } = useRequest(createLabelPropertySchema, { manual: true });
+  } = useRequest(addFieldToLabel, { manual: true });
 
   const {
     runAsync: onCreateIndexSchema,

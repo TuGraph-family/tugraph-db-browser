@@ -1,14 +1,15 @@
 import { InitialState } from '@/app';
-import { getGraphList } from '@/queries/graph';
+import {
+  createGraph,
+  getGraphList,
+  editGraph,
+  deleteGraph,
+} from '@/queries/graph';
 import { useRequest } from 'ahooks';
 import { useModel } from 'umi';
-import {
-  createDemoGraph,
-  createGraph,
-  deleteGraph,
-  editGraph,
-  getNodeEdgeStatistics,
-} from '../services/GraphController';
+import { createSubGraphFromTemplate } from '@/components/console/utils/query';
+import { getNodeEdgeStatistics } from '@/services/schema';
+
 
 export const useGraph = () => {
   const { initialState } = useModel('@@initialState');
@@ -28,17 +29,17 @@ export const useGraph = () => {
     runAsync: onCreateGraph,
     loading: createGraphLoading,
     error: createGraphError,
-  } = useRequest(createGraph, { manual: true });
+  } = useRequest(params => session.run(createGraph(params)), { manual: true });
   const {
     runAsync: onDeleteGraph,
     loading: deleteGraphLoading,
     error: deleteGraphError,
-  } = useRequest(deleteGraph, { manual: true });
+  } = useRequest(params => session.run(deleteGraph(params)), { manual: true });
   const {
     runAsync: onEditGraph,
     loading: editGraphLoading,
     error: editGraphError,
-  } = useRequest(editGraph, { manual: true });
+  } = useRequest(params => session.run(editGraph(params)), { manual: true });
   const {
     runAsync: onGetNodeEdgeStatistics,
     loading: getNodeEdgeStatisticsLoading,
@@ -49,7 +50,7 @@ export const useGraph = () => {
     runAsync: onCreateDemoGraph,
     loading: CreateDemoGraphLoading,
     error: CreateDemoGraphError,
-  } = useRequest(createDemoGraph, { manual: true });
+  } = useRequest(createSubGraphFromTemplate, { manual: true });
   return {
     onGetGraphList,
     getGraphListLoading,

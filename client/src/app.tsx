@@ -1,4 +1,4 @@
-import neo4j, { Session } from 'neo4j-driver';
+import neo4j, { Session, Driver } from 'neo4j-driver';
 import { history } from 'umi';
 import {
   TUGRAPH_PASSWORD,
@@ -11,6 +11,7 @@ import { getLocalData, setLocalData } from './utils';
 
 export interface InitialState {
   session: Session;
+  driver: Driver;
   userInfo: {
     userName: string;
     password: string;
@@ -24,6 +25,7 @@ export async function getInitialState() {
     const userName = getLocalData(TUGRAPH_USER_NAME);
     const uri = getLocalData(TUGRAPH_URI);
     const password = getLocalData(TUGRAPH_PASSWORD);
+    console.log(uri,'lkm')
     const driver = neo4j.driver(uri, neo4j.auth.basic(userName, password));
     const session = driver.session({
       defaultAccessMode: 'READ',
@@ -65,6 +67,7 @@ export async function getInitialState() {
     }
     return {
       session,
+      driver,
       userInfo: {
         userName,
         password,

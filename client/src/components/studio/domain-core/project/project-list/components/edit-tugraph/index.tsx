@@ -38,6 +38,7 @@ const EditTuGraphMoadl: React.FC<Prop> = ({
           const { graphName, description, maxSizeGB } = values;
           onEditGraph({ graphName, config: { description, maxSizeGB } }).then(
             (res) => {
+              console.log(res,'lkm')
               if (res.success) {
                 message.success('修改成功');
                 onRefreshProjectList?.();

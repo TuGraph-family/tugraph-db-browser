@@ -88,7 +88,7 @@ const EditAuthModal: React.FC<Prop> = ({
 
   useEffect(() => {
     onGetRoleList().then((res) => {
-      if (res.success) {
+      if (res?.success) {
         setState((draft) => {
           draft.roleList = map(res.data, (item) => item.role_name);
           draft.rawRoleData = map(res.data, (item) => item.role_name);
@@ -96,7 +96,7 @@ const EditAuthModal: React.FC<Prop> = ({
       } else {
         message.error('获取角色列表失败' + res.errorMessage);
       }
-    });
+    }).catch(e=>console.log(e));
   }, []);
   return (
     <Modal

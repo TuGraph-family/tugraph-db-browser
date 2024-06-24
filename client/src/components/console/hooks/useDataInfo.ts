@@ -1,21 +1,23 @@
-import {
-    getDatabaseInfo,
-    getSystemInfo,
-  } from "../services/DataInfoController";
+import { useModel } from "umi";
+
   import { useRequest } from "ahooks";
+import { InitialState } from "@/app";
+import { getDatabaseInfo, getSystemInfo } from "@/queries/info";
   
   export const useDataInfo = () => {
+    const { initialState } = useModel('@@initialState');
+    const { session } = initialState as InitialState;
     const {
         runAsync: onGetDatabaseInfo,
         loading: getDatabaseInfoLoading,
         error: getDatabaseInfoError,
-      } = useRequest(getDatabaseInfo, { manual: true });
+      } = useRequest(()=>session.run(getDatabaseInfo()), { manual: true });
 
       const {
         runAsync: onGetSystemInfo,
         loading: getSystemInfoLoading,
         error: getSystemInfoError,
-      } = useRequest(getSystemInfo, { manual: true });
+      } = useRequest(()=>session.run(getSystemInfo()), { manual: true });
 
       return {
         onGetDatabaseInfo,

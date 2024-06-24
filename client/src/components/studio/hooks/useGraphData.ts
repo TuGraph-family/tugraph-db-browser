@@ -1,5 +1,5 @@
 import { useRequest } from 'ahooks';
-import { createEdge, createNode, deleteEdge, deleteNode, editEdge, editNode } from '../services/GraphDataController';
+import { createEdge, createNode, deleteEdge, deleteNode, updateEdge, updateNode } from '@/services/data';
 
 export const useGraphData = () => {
   const {
@@ -26,12 +26,12 @@ export const useGraphData = () => {
     runAsync: onEditEdge,
     loading: EditEdgeLoading,
     error: EditEdgeError,
-  } = useRequest(editEdge, { manual: true });
+  } = useRequest(updateEdge, { manual: true });
   const {
     runAsync: onEditNode,
     loading: EditNodeLoading,
     error: EditNodeeError,
-  } = useRequest(editNode, { manual: true });
+  } = useRequest(updateNode, { manual: true });
 
   return {
     onCreateEdge,

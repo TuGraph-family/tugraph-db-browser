@@ -1,48 +1,56 @@
 import {
-  getAuthList,
-  createUser,
-  editUser,
-  disabledUser,
   deleteUser,
-  changePassword,
-} from '../services/UserController';
+  updatePassword,
+  disabledUser,
+} from '@/queries/security';
 import { useRequest } from 'ahooks';
+import { useModel } from 'umi';
+import { InitialState } from '@/app';
+import { queryCreateUser, queryUsers, updateUser } from '../utils/query';
+
 export const useUser = () => {
+  const { initialState } = useModel('@@initialState');
+  const { session } = initialState as InitialState;
+
   const {
     runAsync: onGetAuthList,
     loading: GetAuthListLoading,
     error: GetAuthListError,
-  } = useRequest(getAuthList, { manual: true });
+  } = useRequest(queryUsers, { manual: true });
 
   const {
     runAsync: onCreateUser,
     loading: CreateUserLoading,
     error: CreateUserError,
-  } = useRequest(createUser, { manual: true });
+  } = useRequest(queryCreateUser, { manual: true });
 
   const {
     runAsync: onEditUser,
     loading: EditUserLoading,
     error: EditUserError,
-  } = useRequest(editUser, { manual: true });
+  } = useRequest(updateUser, { manual: true });
 
   const {
     runAsync: onDisabledUser,
     loading: DisabledUserLoading,
     error: DisabledUserError,
-  } = useRequest(disabledUser, { manual: true });
+  } = useRequest(params => session.run(disabledUser(params)), { manual: true });
 
   const {
     runAsync: onDeleteUser,
     loading: DeleteUserLoading,
     error: DeleteUserError,
-  } = useRequest(deleteUser, { manual: true });
+  } = useRequest(params => session.run(deleteUser(params.username)), {
+    manual: true,
+  });
 
   const {
     runAsync: onChangePassword,
     loading: ChangePasswordLoading,
     error: ChangePasswordError,
-  } = useRequest(changePassword, { manual: true });
+  } = useRequest(params => session.run(updatePassword(params)), {
+    manual: true,
+  });
 
   return {
     onGetAuthList,
