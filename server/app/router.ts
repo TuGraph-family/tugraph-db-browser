@@ -123,8 +123,10 @@ export default (app: Application) => {
   // ); 
   // router.post('/api/query/path', controller.tugraph.query.queryByPath);
   // router.post('/api/query/node', controller.tugraph.query.queryByNode);
-  router.post('/api/query/config', controller.tugraph.query.queryByConfig);
-  router.post('/api/query/neighbors', controller.tugraph.query.queryNeighbors);
+  //TODO 没调用
+  // router.post('/api/query/config', controller.tugraph.query.queryByConfig);
+    //TODO 没调用
+  // router.post('/api/query/neighbors', controller.tugraph.query.queryNeighbors);
 
   // 数据相关
   // router.post('/api/data/node', controller.tugraph.data.createNode);
