@@ -3,21 +3,22 @@ import { useModel } from "umi";
   import { useRequest } from "ahooks";
 import { InitialState } from "@/app";
 import { getDatabaseInfo, getSystemInfo } from "@/queries/info";
+import { request } from "@/services/request";
   
   export const useDataInfo = () => {
     const { initialState } = useModel('@@initialState');
-    const { session } = initialState as InitialState;
+    const { driver } = initialState as InitialState;
     const {
         runAsync: onGetDatabaseInfo,
         loading: getDatabaseInfoLoading,
         error: getDatabaseInfoError,
-      } = useRequest(()=>session.run(getDatabaseInfo()), { manual: true });
+      } = useRequest(()=>request(driver,getDatabaseInfo()), { manual: true });
 
       const {
         runAsync: onGetSystemInfo,
         loading: getSystemInfoLoading,
         error: getSystemInfoError,
-      } = useRequest(()=>session.run(getSystemInfo()), { manual: true });
+      } = useRequest(()=>request(driver,getSystemInfo()), { manual: true });
 
       return {
         onGetDatabaseInfo,

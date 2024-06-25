@@ -44,8 +44,9 @@ export const AccountManager: React.FC<Prop> = ({ getRefreshList }) => {
           }));
         });
       }
-    }).catch(e=>console.log(e));
+    })
   };
+
   const operate = (_, record: UserProps) => (
     <>
       <a

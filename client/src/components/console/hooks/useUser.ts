@@ -1,46 +1,42 @@
-import {
-  deleteUser,
-  updatePassword,
-  disabledUser,
-} from '@/queries/security';
+import { deleteUser, updatePassword, disabledUser } from '@/queries/security';
 import { useRequest } from 'ahooks';
 import { useModel } from 'umi';
 import { InitialState } from '@/app';
-import { queryCreateUser, queryUsers, updateUser } from '../utils/query';
+import { queryCreateUser,  queryUsers,  updateUser } from '../utils/query';
+import { request } from '@/services/request';
 
 export const useUser = () => {
   const { initialState } = useModel('@@initialState');
-  const { session } = initialState as InitialState;
-
+  const { driver } = initialState as InitialState;
   const {
     runAsync: onGetAuthList,
     loading: GetAuthListLoading,
     error: GetAuthListError,
-  } = useRequest(queryUsers, { manual: true });
+  } = useRequest(params => queryUsers(driver,params), { manual: true });
 
   const {
     runAsync: onCreateUser,
     loading: CreateUserLoading,
     error: CreateUserError,
-  } = useRequest(queryCreateUser, { manual: true });
+  } = useRequest(params => queryCreateUser(driver,params), { manual: true });
 
   const {
     runAsync: onEditUser,
     loading: EditUserLoading,
     error: EditUserError,
-  } = useRequest(updateUser, { manual: true });
+  } = useRequest(params => updateUser(driver,params), { manual: true });
 
   const {
     runAsync: onDisabledUser,
     loading: DisabledUserLoading,
     error: DisabledUserError,
-  } = useRequest(params => session.run(disabledUser(params)), { manual: true });
+  } = useRequest(params => request(driver,disabledUser(params)), { manual: true });
 
   const {
     runAsync: onDeleteUser,
     loading: DeleteUserLoading,
     error: DeleteUserError,
-  } = useRequest(params => session.run(deleteUser(params.username)), {
+  } = useRequest(params => request(driver,deleteUser(params.username)), {
     manual: true,
   });
 
@@ -48,7 +44,7 @@ export const useUser = () => {
     runAsync: onChangePassword,
     loading: ChangePasswordLoading,
     error: ChangePasswordError,
-  } = useRequest(params => session.run(updatePassword(params)), {
+  } = useRequest(params => request(driver,updatePassword(params)), {
     manual: true,
   });
 

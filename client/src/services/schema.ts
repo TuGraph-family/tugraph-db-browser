@@ -22,7 +22,7 @@ import {
   formatVertexSchemaResponse,
   responseFormatter,
 } from '@/utils/schema';
-import { Session } from 'neo4j-driver';
+import { Driver } from 'neo4j-driver';
 import { useModel } from 'umi';
 import {
   ICreateSchemaParams,
@@ -33,26 +33,18 @@ import {
 } from './interface';
 import { DATA_TYPE } from './constant';
 import { importGraphSchema } from '@/components/studio/services/ImportController';
+import { request } from './request';
 
-/* 创建会话 */
-const getSession = (graphName = 'default') => {
-  const { initialState } = useModel('@@initialState');
-  const { driver } = initialState as InitialState;
-  return driver.session({
-    database: graphName,
-  });
-};
 
 /**
  * 统计点类型和边类型的数量
  * @returns
  */
-const statisticsSchemaCount = async (graphName: string) => {
-  const session = getSession(graphName);
+const statisticsSchemaCount = async (driver: Driver, graphName: string) => {
   const vertexCypher = getVertexLabels();
   const edgeCypher = getEdgeLabels();
 
-  const vertexResult = await session.run(vertexCypher);
+  const vertexResult = await request(driver,vertexCypher,graphName);
 
   if (vertexResult.status !== 200 || vertexResult.data.errorCode != 200) {
     return {
@@ -66,7 +58,7 @@ const statisticsSchemaCount = async (graphName: string) => {
     };
   }
 
-  const edgeResult = await session.run(edgeCypher);
+  const edgeResult = await request(driver,edgeCypher,graphName);
 
   if (vertexResult.status !== 200 || vertexResult.data.errorCode != 200) {
     return {
@@ -92,13 +84,15 @@ const statisticsSchemaCount = async (graphName: string) => {
 };
 
 /* 统计点边 */
-export const getNodeEdgeStatistics = async (graphName: string) => {
-  const session = getSession(graphName);
+export const getNodeEdgeStatistics = async (
+  driver: Driver,
+  graphName: string,
+) => {
   // step1: 查询点边类型的数量，即 schema 中点边类型
-  const schemaResult = await statisticsSchemaCount(graphName);
+  const schemaResult = await statisticsSchemaCount(driver, graphName);
 
   // step2: 查询数据库中点边的数量
-  const result = await session.run(getCount()).finally(() => session.close());
+  const result = await request(driver,getCount(),graphName)
 
   const { data: labelData, success, code } = schemaResult;
   const { vertexLabels, edgeLabels } = labelData;
@@ -118,13 +112,13 @@ export const getNodeEdgeStatistics = async (graphName: string) => {
 
 /**
  * 根据类型和名称获取指定的 Schema 定义
- * @param session 会话
  * @param labelType 类型
  * @param labelName 名称
  * @returns
  */
 const querySchemaByLabel = async (
-  session: Session,
+  driver: Driver,
+  graphName: string,
   labelType: 'node' | 'edge',
   labelName: string,
 ) => {
@@ -135,7 +129,7 @@ const querySchemaByLabel = async (
     cypher = getEdgeSchema(labelName);
   }
 
-  const result = await session.run(cypher);
+  const result = await request(driver,cypher,graphName);
 
   if (result.status !== 200) {
     return {
@@ -173,16 +167,17 @@ const querySchemaByLabel = async (
 };
 
 /* 获取所有边点类型 Schema 的信息 */
-const queryVertexSchema = async (session: Session) => {
+const queryVertexSchema = async (driver: Driver, graphName: string) => {
   // step1: 先获取所有边点类型
-  const typeResult = await session.run(queryVertexLabels());
+  const typeResult = await request(driver, queryVertexLabels(), graphName);
   if (!typeResult?.data?.data?.result) {
     return [];
   }
   // step2: 根据获取到的点类型，再获取每个点类型的详细属性
   const vertexSchemaPromise = typeResult.data.data.result.map(async d => {
     const currentVertexSchema = await querySchemaByLabel(
-      session,
+      driver,
+      graphName,
       'node',
       d.label,
     );
@@ -199,9 +194,9 @@ const queryVertexSchema = async (session: Session) => {
  * 获取所有边类型 Schema 的信息
  *
  */
-const queryEdgeSchema = async (session: Session) => {
+const queryEdgeSchema = async (driver: Driver, graphName: string) => {
   // step1: 先获取所有边类型
-  const typeResult = await session.run(edgeLabels());
+  const typeResult = await request(driver, edgeLabels(), graphName);
 
   if (!typeResult?.data?.data?.result) {
     return [];
@@ -210,7 +205,8 @@ const queryEdgeSchema = async (session: Session) => {
   // step2: 根据获取到的边类型，再获取每个边类型的详细属性
   const edgeSchemaPromise = typeResult.data.data.result.map(async d => {
     const currentEdgeSchema = await querySchemaByLabel(
-      session,
+      driver,
+      graphName,
       'edge',
       d.label,
     );
@@ -224,15 +220,15 @@ const queryEdgeSchema = async (session: Session) => {
 };
 
 /* 获取Schema */
-export const getSchema = async (params: { graphName: string }) => {
+export const getSchema = async (
+  driver: Driver,
+  params: { graphName: string },
+) => {
   const { graphName } = params;
-  const session = getSession(graphName);
 
-  const vertexSchema = await queryVertexSchema(session);
-  const edgeSchema = await queryEdgeSchema(session);
+  const vertexSchema = await queryVertexSchema(driver, graphName);
+  const edgeSchema = await queryEdgeSchema(driver, graphName);
 
-  //   销毁会话
-  session.close();
   return {
     code: 200,
     success: true,
@@ -251,15 +247,15 @@ export const getSchema = async (params: { graphName: string }) => {
  * @returns
  */
 const createIndex = async (
+  driver: Driver,
   graphName: string,
   params: IIndexParams,
   isIndependentRequest = false,
 ) => {
-  const session = getSession(graphName);
-
   const { labelName, propertyName, isUnique = true } = params;
   const cypher = addIndex(labelName, propertyName, isUnique);
-  const result = await session.run(cypher).finally(() => session.close());
+
+  const result = await request(driver, cypher, graphName);
 
   if (isIndependentRequest) {
     return responseFormatter(result);
@@ -272,7 +268,10 @@ const createIndex = async (
  * @param params
  * @returns
  */
-export const createSchema = async (params: ICreateSchemaParams) => {
+export const createSchema = async (
+  driver: Driver,
+  params: ICreateSchemaParams,
+) => {
   const {
     graphName,
     labelType,
@@ -282,7 +281,6 @@ export const createSchema = async (params: ICreateSchemaParams) => {
     edgeConstraints = [],
     indexs = [],
   } = params;
-  const session = getSession(graphName);
 
   let condition = '';
   properties.forEach((d, key) => {
@@ -301,10 +299,9 @@ export const createSchema = async (params: ICreateSchemaParams) => {
     cypher = createEdge(labelName, JSON.stringify(edgeConstraints), condition);
   }
 
-  const result = await session.run(cypher);
+  const result = await request(driver, cypher, graphName);
 
   if (result.data.errorCode != 200) {
-    session.close();
     return {
       code: 200,
       errorCode: result.data.errorCode,
@@ -319,8 +316,7 @@ export const createSchema = async (params: ICreateSchemaParams) => {
     const indexPromise = indexs.map(async d => {
       // 主键即为索引，无需再创建
       if (d.propertyName !== primaryField) {
-        const currentEdgeSchema = await createIndex(graphName, d, true);
-        session.close();
+        const currentEdgeSchema = await createIndex(driver, graphName, d, true);
         return currentEdgeSchema;
       }
     });
@@ -329,14 +325,12 @@ export const createSchema = async (params: ICreateSchemaParams) => {
 
     // 无返回说明不需要额外创建索引
     if (!indexsResult) {
-      session.close();
       return responseFormatter(result);
     }
 
     const indexError = indexsResult?.find(d => !d?.success);
 
     if (indexError) {
-      session.close();
       // 说明有索引创建失败，则提示用户
       return {
         success: false,
@@ -346,7 +340,6 @@ export const createSchema = async (params: ICreateSchemaParams) => {
       };
     }
   }
-  session.close();
   return responseFormatter(result);
 };
 
@@ -356,12 +349,14 @@ export const createSchema = async (params: ICreateSchemaParams) => {
  * @param labelName label 类型
  * @param labelName 类型名称
  */
-export const deleteSchema = async (params: IDeleteSchemaParams) => {
+export const deleteSchema = async (
+  driver: Driver,
+  params: IDeleteSchemaParams,
+) => {
   const { labelType, labelName, graphName } = params;
-  const session = getSession(graphName);
+
   const type = labelType === 'node' ? 'vertex' : 'edge';
-  const result = await session.run(deleteLabel(type, labelName));
-  session.close();
+  const result = await request(driver, deleteLabel(type, labelName), graphName);
   return responseFormatter(result);
 };
 
@@ -370,10 +365,11 @@ export const deleteSchema = async (params: IDeleteSchemaParams) => {
  * @param params
  * @returns
  */
-export const addFieldToLabel = async (params: IUpdateSchemaParams) => {
+export const addFieldToLabel = async (
+  driver: Driver,
+  params: IUpdateSchemaParams,
+) => {
   const { graphName, labelType, labelName, properties } = params;
-
-  const session = getSession(graphName);
 
   let condition = '';
   properties.forEach((d, index) => {
@@ -398,8 +394,7 @@ export const addFieldToLabel = async (params: IUpdateSchemaParams) => {
 
   const cypher = alterLabelAddFields(type, labelName, condition);
 
-  const result = await session.run(cypher);
-  session.close();
+  const result = await request(driver, cypher, graphName);
   return responseFormatter(result);
 };
 
@@ -408,10 +403,11 @@ export const addFieldToLabel = async (params: IUpdateSchemaParams) => {
  * @param params
  * @returns
  */
-export const updateFieldToLabel = async (params: IUpdateSchemaParams) => {
+export const updateFieldToLabel = async (
+  driver: Driver,
+  params: IUpdateSchemaParams,
+) => {
   const { graphName, labelType, labelName, properties } = params;
-
-  const session = getSession(graphName);
 
   let condition = '';
   properties.forEach((d, index) => {
@@ -426,8 +422,7 @@ export const updateFieldToLabel = async (params: IUpdateSchemaParams) => {
   const type = labelType === 'node' ? 'vertex' : 'edge';
 
   let cypher = alterLabelModFields(type, labelName, condition);
-  const result = await session.run(cypher);
-  session.close();
+  const result = await request(driver, cypher, graphName);
   return responseFormatter(result);
 };
 
@@ -436,12 +431,13 @@ export const updateFieldToLabel = async (params: IUpdateSchemaParams) => {
  * @param params
  * @returns
  */
-export const deleteLabelField = async (params: IDeleteSchemaParams) => {
+export const deleteLabelField = async (
+  driver: Driver,
+  params: IDeleteSchemaParams,
+) => {
   const { graphName, labelType, labelName, propertyNames } = params;
 
   try {
-    const session = getSession(graphName);
-
     const type = labelType === 'node' ? 'vertex' : 'edge';
     const cypher = alterLabelDelFields(
       type,
@@ -449,8 +445,7 @@ export const deleteLabelField = async (params: IDeleteSchemaParams) => {
       JSON.stringify(propertyNames),
     );
 
-    const result = await session.run(cypher);
-    session.close();
+    const result = await request(driver, cypher, graphName);
     return responseFormatter(result);
   } catch (error) {
     console.log(error);
@@ -462,19 +457,20 @@ export const deleteLabelField = async (params: IDeleteSchemaParams) => {
  * @param params
  * @return
  */
-export const importSchemaMod = async (params: ISchemaParams) => {
+export const importSchemaMod = async (
+  driver: Driver,
+  params: ISchemaParams,
+) => {
   const { graph, schema, override = false } = params;
 
   // 如果是覆盖，则需要先删除原有的 schema
   if (override) {
-    const session = getSession(graph);
-    const deleteSchemaResult = await session.run(dropDB());
+    const deleteSchemaResult = await request(driver, dropDB(), graph);
 
     if (
       deleteSchemaResult?.data?.errorCode != 200 ||
       deleteSchemaResult?.status !== 200
     ) {
-      session.close();
       return {
         success: false,
         code: deleteSchemaResult.status,
@@ -491,34 +487,38 @@ export const importSchemaMod = async (params: ISchemaParams) => {
 };
 
 /* 创建索引 */
-export const createIndexSchema = async (params: {
-  propertyName: string;
-  labelName: string;
-  graphName: string;
-  isUnique: boolean;
-}) => {
-  const { graphName, ...last } = params;
-  const result = await createIndex(graphName, last, true);
-  return result;
-};
-
- /**
-   * 删除索引
-   * @param graphName 子图名称
-   * @param params
-   * @returns
-   */
-  export const deleteIndexSchema= async (params: {
+export const createIndexSchema = async (
+  driver: Driver,
+  params: {
     propertyName: string;
     labelName: string;
     graphName: string;
-  })=> {
-    const { labelName, propertyName,graphName } = params;
-    const session = getSession(graphName);
+    isUnique: boolean;
+  },
+) => {
+  const { graphName, ...last } = params;
+  const result = await createIndex(driver, graphName, last, true);
+  return result;
+};
 
-    const cypher = deleteIndex(labelName,propertyName);
-    const result = await session.run(cypher)
-    session.close()
+/**
+ * 删除索引
+ * @param graphName 子图名称
+ * @param params
+ * @returns
+ */
+export const deleteIndexSchema = async (
+  driver: Driver,
+  params: {
+    propertyName: string;
+    labelName: string;
+    graphName: string;
+  },
+) => {
+  const { labelName, propertyName, graphName } = params;
 
-    return responseFormatter(result);
-  }
+  const cypher = deleteIndex(labelName, propertyName);
+  const result = await request(driver, cypher, graphName);
+
+  return responseFormatter(result);
+};

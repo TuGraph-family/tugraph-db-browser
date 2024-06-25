@@ -14,23 +14,18 @@ import {
   generateCypherByPath,
 } from '@/utils/query';
 import { queryNeighborsCypher } from '@/queries/query';
+import { request } from './request';
+import { Driver } from 'neo4j-driver';
 
-/* 创建会话 */
-const getSession = (graphName = 'default') => {
-  const { initialState } = useModel('@@initialState');
-  const { driver } = initialState as InitialState;
-  return driver.session({
-    database: graphName,
-  });
-};
 
 /* 使用 Cypher 语句查询，按标准的 Cypher 返回结果转换，不做过多处理，即如果只查询点，不会去查询子图 */
-export const queryByGraphLanguage = async (params: ILanguageQueryParams) => {
+export const queryByGraphLanguage = async (
+  driver: Driver,
+  params: ILanguageQueryParams,
+) => {
   const { graphName, script } = params;
-  const session = getSession(graphName);
 
-  const result = await session.run(script);
-  session.close();
+  const result = await request(driver, script, graphName);
 
   return QueryResultFormatter(result, script);
 };
@@ -39,12 +34,11 @@ export const queryByGraphLanguage = async (params: ILanguageQueryParams) => {
  * 路径查询
  * @param params
  */
-export const queryByPath = async (params: IPathQueryParams) => {
+export const queryByPath = async (driver: Driver, params: IPathQueryParams) => {
   const { graphName } = params;
-  const session = getSession(graphName);
   const script = generateCypherByPath(params);
-  const result = await session.run(script);
-  session.close();
+  const result = await request(driver, script, graphName);
+ 
 
   return QueryResultFormatter(result, script);
 };
@@ -53,12 +47,11 @@ export const queryByPath = async (params: IPathQueryParams) => {
  * 节点查询
  * @param params
  */
-export const queryByNode = async (params: INodeQueryParams) => {
+export const queryByNode = async (driver: Driver, params: INodeQueryParams) => {
   const { graphName } = params;
 
-  const session = getSession(graphName);
   const script = generateCypherByNode(params);
-  const result = await session.run(script).finally(() => session.close());
+  const result = await request(driver, script, graphName);
 
   return QueryResultFormatter(result, script);
 };
@@ -68,11 +61,13 @@ export const queryByNode = async (params: INodeQueryParams) => {
  * @param params IConfigQueryParams
  * @returns
  */
-export const queryByConfig = async (params: IConfigQueryParams) => {
+export const queryByConfig = async (
+  driver: Driver,
+  params: IConfigQueryParams,
+) => {
   const { graphName } = params;
-  const session = getSession(graphName);
   const script = generateCypherByConfig(params);
-  const result = await session.run(script).finally(() => session.close());
+  const result = await request(driver, script, graphName);
   return QueryResultFormatter(result, script);
 };
 
@@ -80,13 +75,15 @@ export const queryByConfig = async (params: IConfigQueryParams) => {
  * 邻居查询
  * @param params
  */
-export const queryNeighbors = async (params: INeighborsParams) => {
+export const queryNeighbors = async (
+  driver: Driver,
+  params: INeighborsParams,
+) => {
   const { graphName } = params;
-  const session = getSession(graphName);
 
   const cypher = queryNeighborsCypher(params);
 
-  const result = await session.run(cypher);
-  session.close()
+  const result = await request(driver, cypher, graphName);
+ 
   return QueryResultFormatter(result, cypher);
 };

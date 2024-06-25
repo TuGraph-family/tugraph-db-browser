@@ -1,25 +1,16 @@
 import { InitialState } from '@/app';
-import { Session, session } from 'neo4j-driver';
 import { useModel } from 'umi';
 import { map, join, isString } from 'lodash';
 import {
   createEdgeCypher,
   createNodeCypher,
-  deleteEdgeCypher,
   deleteNodeCypher,
   updateNodeCypher,
 } from '@/queries/data';
 import { responseFormatter } from '@/utils/schema';
 import { IEdgeDataParams, INodeDataParams } from './interface';
-
-/* 创建会话 */
-const getSession = (graphName = 'default') => {
-  const { initialState } = useModel('@@initialState');
-  const { driver } = initialState as InitialState;
-  return driver.session({
-    database: graphName,
-  });
-};
+import { request } from './request';
+import { Driver } from 'neo4j-driver';
 
 const cypherValueFormatter = (value: any) => {
   return isString(value) ? `'${value}'` : value;
@@ -43,24 +34,26 @@ const edgeMatchConditionFormatter = (params: IEdgeDataParams) => {
 
 /* 创建节点 */
 export const createNode = async (
-  graphName: string,
-  labelName: string,
-  properties: Record<string, unknown>,
+  driver: Driver,
+  params: {
+    graphName: string;
+    labelName: string;
+    properties: Record<string, unknown>;
+  },
 ) => {
-  const session = getSession(graphName);
+  const { graphName, labelName, properties } = params;
   const keys = map(
     properties,
     (value: unknown, key: string) =>
       `${key}: ${!isString(value) ? value : "'" + value + "'"}`,
   );
   const cypher = createNodeCypher(labelName, join(keys, ', '));
-  const result = await session.run(cypher);
-  session.close;
+  const result = await request(driver, cypher, graphName);
   return responseFormatter(result);
 };
 
 /* 创建边 */
-export const createEdge = async (params: IEdgeDataParams) => {
+export const createEdge = async (driver: Driver, params: IEdgeDataParams) => {
   const {
     graphName,
     sourceLabel,
@@ -72,7 +65,6 @@ export const createEdge = async (params: IEdgeDataParams) => {
     labelName,
     properties,
   } = params;
-  const session = getSession(graphName);
 
   const sourceValueString = cypherValueFormatter(sourceValue);
   const targetValueString = cypherValueFormatter(targetValue);
@@ -95,41 +87,35 @@ export const createEdge = async (params: IEdgeDataParams) => {
     propertyString,
   );
 
-  const result = await session.run(cypher);
-  session.close();
+  const result = await request(driver, cypher, graphName);
   return responseFormatter(result);
 };
 
 /* 删除节点 */
-export const deleteNode = async (params: INodeDataParams) => {
+export const deleteNode = async (driver: Driver, params: INodeDataParams) => {
   const { graphName, primaryKey, primaryValue, labelName } = params;
-  const session = getSession(graphName);
   const cypher = deleteNodeCypher(
     labelName,
     primaryKey,
     cypherValueFormatter(primaryValue),
   );
-  const result = await session.run(cypher);
-  session.close();
+  const result = await request(driver, cypher, graphName);
   return responseFormatter(result);
 };
 
 /* 删除边 */
-export const deleteEdge = async (params: IEdgeDataParams) => {
+export const deleteEdge = async (driver: Driver, params: IEdgeDataParams) => {
   const { graphName } = params;
-  const session = getSession(graphName);
 
   const cypher = `${edgeMatchConditionFormatter(params)} DELETE r`;
-  const result = await session.run(cypher);
-  session.close();
+  const result = await request(driver, cypher, graphName);
 
   return responseFormatter(result);
 };
 
 /* 编辑节点 */
-export const updateNode = async (params: INodeDataParams) => {
+export const updateNode = async (driver: Driver, params: INodeDataParams) => {
   const { graphName, primaryKey, primaryValue, properties, labelName } = params;
-  const session = getSession(graphName);
   const propertiesString = map(
     properties,
     (value: unknown, key: string) =>
@@ -141,15 +127,13 @@ export const updateNode = async (params: INodeDataParams) => {
     cypherValueFormatter(primaryValue),
     propertiesString,
   );
-  const result = await session.run(cypher);
-  session.close();
+  const result = await request(driver, cypher, graphName);
   return responseFormatter(result);
 };
 
 /* 编辑边 */
-export const updateEdge = async (params: IEdgeDataParams) => {
+export const updateEdge = async (driver: Driver, params: IEdgeDataParams) => {
   const { graphName, properties } = params;
-  const session = getSession(graphName);
   const propertiesString = map(
     properties,
     (value: unknown, key: string) =>
@@ -159,7 +143,6 @@ export const updateEdge = async (params: IEdgeDataParams) => {
     params,
   )} SET ${propertiesString}`;
 
-  const result = await session.run(cypher);
-  session.close();
+  const result = await request(driver, cypher, graphName);
   return responseFormatter(result);
 };

@@ -11,49 +11,53 @@ import {
   createLabelSchema,
 } from '../services/SchemaController';
 import { useRequest } from 'ahooks';
+import { useModel } from 'umi';
+import { InitialState } from '@/app';
 
 export const useSchema = () => {
+  const { initialState } = useModel('@@initialState');
+  const { driver } = initialState as InitialState;
   const {
     runAsync: onGetGraphSchema,
     loading: GetGraphSchemaLoading,
     error: GetGraphSchemaError,
-  } = useRequest(getSchema, { manual: true });
+  } = useRequest(params=>getSchema(driver,params), { manual: true });
   const {
     runAsync: onCreateLabelSchema,
     loading: CreateLabelSchemaLoading,
     error: CreateLabelSchemaError,
-  } = useRequest(createLabelSchema, { manual: true });
+  } = useRequest(params=>createLabelSchema(driver,params), { manual: true });
   const {
     runAsync: onDeleteLabelSchema,
     loading: DeleteLabelSchemaLoading,
     error: DeleteLabelSchemaError,
-  } = useRequest(deleteSchema, { manual: true });
+  } = useRequest(params=>deleteSchema(driver,params), { manual: true });
   const {
     runAsync: onDeleteLabelPropertySchema,
     loading: DeleteLabelPropertySchemaLoading,
     error: DeleteLabelPropertySchemaError,
-  } = useRequest(deleteLabelField, { manual: true });
+  } = useRequest(params=>deleteLabelField(driver,params), { manual: true });
   const {
     runAsync: onEditLabelPropertySchema,
     loading: EditLabelPropertySchemaLoading,
     error: EditLabelPropertySchemaError,
-  } = useRequest(updateFieldToLabel, { manual: true });
+  } = useRequest(params=>updateFieldToLabel(driver,params), { manual: true });
   const {
     runAsync: onCreateLabelPropertySchema,
     loading: CreateLabelPropertySchemaLoading,
     error: CreateLabelPropertySchemaError,
-  } = useRequest(addFieldToLabel, { manual: true });
+  } = useRequest(params=>addFieldToLabel(driver,params), { manual: true });
 
   const {
     runAsync: onCreateIndexSchema,
     loading: CreateIndexSchemaLoading,
     error: CreateIndexSchemaError,
-  } = useRequest(createIndexSchema, { manual: true });
+  } = useRequest(params=>createIndexSchema(driver,params), { manual: true });
   const {
     runAsync: onDeleteIndexSchema,
     loading: DeleteIndexSchemaLoading,
     error: DeleteIndexSchemaError,
-  } = useRequest(deleteIndexSchema, { manual: true });
+  } = useRequest(params=>deleteIndexSchema(driver,params), { manual: true });
 
   return {
     onGetGraphSchema,

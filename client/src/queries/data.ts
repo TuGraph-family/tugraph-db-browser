@@ -27,18 +27,7 @@ export const deleteNodeCypher = (
   return `MATCH (n:${labelName}) WHERE n.${primaryKey} = ${primaryValue} DELETE n`;
 };
 
-/* 删除边 */
-export const deleteEdgeCypher = (
-  sourceLabel: string,
-  sourcePrimaryKey: string,
-  sourceValueString: any,
-  labelName: string,
-  targetLabel: string,
-  targetPrimaryKey: string,
-  targetValueString: any,
-) => {
-  return `MATCH (n:${sourceLabel} {${sourcePrimaryKey}: ${sourceValueString}})-[r:${labelName}]-(m:${targetLabel} {${targetPrimaryKey}: ${targetValueString}}) DELETE r`;
-};
+
 
 /* 编辑节点 */
 export const updateNodeCypher = (

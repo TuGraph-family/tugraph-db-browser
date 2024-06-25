@@ -57,10 +57,9 @@ import {
   };
 
   export const responseFormatter = (result: RestFulResponse) => {
-    if (result?.status !== 200) {
+    if (result.success) {
       return {
         success: false,
-        code: result.status,
         data: null,
         errorCode: result.data.errorCode,
         errorMessage: result.data.errorMessage,

@@ -187,7 +187,7 @@ const ProjectCard = ({
                         title={`你确定将子图「${graphName}」永久删除吗？`}
                         onConfirm={() => {
                           onDeleteGraph({ graphName }).then(res => {
-                            if (res.success) {
+                            if (res?.success) {
                               onRefreshProjectList();
                               message.success('删除成功');
                             }

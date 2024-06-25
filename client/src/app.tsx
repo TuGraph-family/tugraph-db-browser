@@ -25,7 +25,6 @@ export async function getInitialState() {
     const userName = getLocalData(TUGRAPH_USER_NAME);
     const uri = getLocalData(TUGRAPH_URI);
     const password = getLocalData(TUGRAPH_PASSWORD);
-    console.log(uri,'lkm')
     const driver = neo4j.driver(uri, neo4j.auth.basic(userName, password));
     const session = driver.session({
       defaultAccessMode: 'READ',

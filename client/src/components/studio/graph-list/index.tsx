@@ -54,10 +54,7 @@ export const GraphList = () => {
     });
   }, [isShowStep]);
   const fetchGraphList = () => {
-    onGetGraphList().then(result => {
-
-      const res = dbRecordsTranslator(result);
-      console.log(res,'lkm',result)
+    onGetGraphList().then(res => {
       setLocalData('TUGRAPH_SUBGRAPH_LIST', res.data);
       updateState(draft => {
         const defaultList = getDefaultDemoList(

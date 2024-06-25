@@ -3,40 +3,45 @@ import { useModel } from 'umi';
 import { InitialState } from '@/app';
 import { deleteRole, disabledRole, listRoles } from '@/queries/security';
 import { queryCreateRole, updateRole } from '../utils/query';
+import { request } from '@/services/request';
 
 export const useRole = () => {
   const { initialState } = useModel('@@initialState');
-  const { session } = initialState as InitialState;
+  const { driver } = initialState as InitialState;
 
   const {
     runAsync: onGetRoleList,
     loading: GetRoleListLoading,
     error: GetRoleListError,
-  } = useRequest(() => session.run(listRoles()), { manual: true });
+  } = useRequest(() => request(driver, listRoles()), { manual: true });
 
   const {
     runAsync: onDeleteRole,
     loading: DeleteRoleLoading,
     error: DeleteRoleError,
-  } = useRequest(params => session.run(deleteRole(params)), { manual: true });
+  } = useRequest(params => request(driver, deleteRole(params)), {
+    manual: true,
+  });
 
   const {
     runAsync: onDisabledRole,
     loading: DisabledRoleLoading,
     error: DisabledRoleError,
-  } = useRequest(params => session.run(disabledRole(params)), { manual: true });
+  } = useRequest(params => request(driver, disabledRole(params)), {
+    manual: true,
+  });
 
   const {
     runAsync: onCreateRole,
     loading: CreateRoleLoading,
     error: CreateRoleError,
-  } = useRequest(queryCreateRole, { manual: true });
+  } = useRequest(params => queryCreateRole(driver, params), { manual: true });
 
   const {
     runAsync: onEditRole,
     loading: EditRoleLoading,
     error: EditRoleError,
-  } = useRequest(updateRole, { manual: true });
+  } = useRequest(params => updateRole(driver, params), { manual: true });
 
   return {
     onGetRoleList,
