@@ -156,7 +156,7 @@ export const GraphQuery = () => {
   ];
   useEffect(() => {
     updateState(draft => {
-      if (isEmpty(getLocalData('TUGRAPH_STATEMENT_LISTS')[currentGraphName])) {
+      if (isEmpty(getLocalData('TUGRAPH_STATEMENT_LISTS')?.[currentGraphName])) {
         draft.queryList = [
           {
             id: `${new Date().getTime()}`,

@@ -31,12 +31,13 @@ export const Login = () => {
     if (values) {
       try {
         const { uri, userName, password } = values;
-        const { session, dbConfig } = await loginDB({
+        const { session, dbConfig,driver } = await loginDB({
           uri,
           userName,
           password,
         });
         setInitialState({
+          driver,
           session,
           userInfo: {
             userName,
@@ -46,7 +47,7 @@ export const Login = () => {
         } as any);
         setTimeout(() => {
           history.push('/home');
-        });
+        },100);
       } catch (error: any) {
         message.error(error ? error : '登录失败！');
       }

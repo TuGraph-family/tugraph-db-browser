@@ -131,6 +131,7 @@ export const GraphConstruct = () => {
     visible,
   } = state;
 
+
   const { onGetGraphSchema, onCreateLabelSchema, onDeleteLabelSchema } =
     useSchema();
   const getGraphCanvasContextValue = useCallback((contextValue: any) => {
@@ -391,6 +392,7 @@ export const GraphConstruct = () => {
       const reader = new FileReader();
       reader.readAsText(file);
       reader.onload = result => {
+        console.log(result,'lkmcc')
         setState(draft => {
           try {
             draft.schema = JSON.parse(result.target?.result);

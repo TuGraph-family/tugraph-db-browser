@@ -126,6 +126,7 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                     });
 
                     onImportProgress(res.data.taskId).then(res => {
+                 
                       if (res.errorCode == 200) {
                         if (res.data.state === '2') {
                           message.success('模版创建成功');

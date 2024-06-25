@@ -70,6 +70,7 @@ export const loginDB = async (params: {
   }
 
   return {
+    driver,
     session,
     dbConfig,
   };

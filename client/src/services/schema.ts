@@ -103,10 +103,13 @@ export const getNodeEdgeStatistics = async (
     data?.result?.find((item: any) => item['type'] === 'edge')['number'] || 0;
 
   return {
-    vertexLabels,
-    edgeLabels,
-    vertexCount,
-    edgeCount,
+    success:true,
+    data:{
+      vertexLabels,
+      edgeLabels,
+      vertexCount,
+      edgeCount,
+    }
   };
 };
 
@@ -461,7 +464,7 @@ export const importSchemaMod = async (
   driver: Driver,
   params: ISchemaParams,
 ) => {
-  const { graph, schema, override = false } = params;
+  const { graph, override = false } = params;
 
   // 如果是覆盖，则需要先删除原有的 schema
   if (override) {

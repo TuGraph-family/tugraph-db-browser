@@ -5,10 +5,15 @@ import {
   importSchema,
 } from '../services/ImportController';
 import { importSchemaMod } from '@/services/schema';
+import { useModel } from 'umi';
+import { InitialState } from '@/app';
 
 export const useImport = (params?: {
   onImportProgressSuccess?: (data: any, success: any) => void;
 }) => {
+  const { initialState } = useModel('@@initialState');
+  const { driver } = initialState as InitialState;
+
   const { onImportProgressSuccess } = params || {};
   const {
     runAsync: onImportData,
@@ -37,7 +42,7 @@ export const useImport = (params?: {
     runAsync: onImportGraphSchema,
     loading: ImportGraphSchemaLoading,
     error: ImportGraphSchemaError,
-  } = useRequest(importSchemaMod, { manual: true });
+  } = useRequest(params=>importSchemaMod(driver,params), { manual: true });
 
   return {
     useImport,
