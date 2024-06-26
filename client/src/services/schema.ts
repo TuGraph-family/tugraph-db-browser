@@ -13,6 +13,7 @@ import {
   getCount,
   getEdgeLabels,
   getEdgeSchema,
+  getGraphSchema,
   getVertexLabels,
   getVertexSchema,
   queryVertexLabels,
@@ -35,50 +36,40 @@ import { DATA_TYPE } from './constant';
 import { importGraphSchema } from '@/components/studio/services/ImportController';
 import { request } from './request';
 
-
 /**
  * 统计点类型和边类型的数量
  * @returns
  */
 const statisticsSchemaCount = async (driver: Driver, graphName: string) => {
-  const vertexCypher = getVertexLabels();
-  const edgeCypher = getEdgeLabels();
+  const cypher = getGraphSchema();
+  const result = await request(driver, cypher, graphName);
 
-  const vertexResult = await request(driver,vertexCypher,graphName);
-
-  if (vertexResult.status !== 200 || vertexResult.data.errorCode != 200) {
+  if (!result?.success) {
     return {
       success: false,
-      errorMessage: vertexResult.data,
-      errorCode: vertexResult.data.errorCode,
+      errorMessage: vertexResult?.errorMessage,
       data: {
         vertexLabels: 0,
         edgeLabels: 0,
       },
     };
   }
-
-  const edgeResult = await request(driver,edgeCypher,graphName);
-
-  if (vertexResult.status !== 200 || vertexResult.data.errorCode != 200) {
-    return {
-      success: false,
-      errorMessage: edgeResult.data,
-      errorCode: vertexResult.data.errorCode,
-      data: {
-        vertexLabels: vertexResult.data.data?.result?.[0].vertexNumLabels,
-        edgeLabels: 0,
-      },
-    };
-  }
+  let vertexLabels = 0;
+  let edgeLabels = 0;
+  result?.data?.[0]?.schema?.schema?.forEach(item => {
+    if (item?.type === 'VERTEX') {
+      vertexLabels++;
+    } else if (item?.type === 'EDGE') {
+      edgeLabels++;
+    }
+  });
 
   return {
     success: true,
     code: 200,
-    errorCode: vertexResult.data.errorCode,
     data: {
-      vertexLabels: vertexResult.data.data?.result?.[0]?.vertexNumLabels,
-      edgeLabels: edgeResult.data.data?.result?.[0]?.edgeNumLabels,
+      vertexLabels,
+      edgeLabels,
     },
   };
 };
@@ -92,8 +83,8 @@ export const getNodeEdgeStatistics = async (
   const schemaResult = await statisticsSchemaCount(driver, graphName);
 
   // step2: 查询数据库中点边的数量
-  const result = await request(driver,getCount(),graphName)
-
+  const result = await request(driver, getCount(), graphName);
+  console.log(result, 'lkmall');
   const { data: labelData, success, code } = schemaResult;
   const { vertexLabels, edgeLabels } = labelData;
   const { data } = result;
@@ -103,13 +94,13 @@ export const getNodeEdgeStatistics = async (
     data?.result?.find((item: any) => item['type'] === 'edge')['number'] || 0;
 
   return {
-    success:true,
-    data:{
+    success: true,
+    data: {
       vertexLabels,
       edgeLabels,
       vertexCount,
       edgeCount,
-    }
+    },
   };
 };
 
@@ -132,36 +123,32 @@ const querySchemaByLabel = async (
     cypher = getEdgeSchema(labelName);
   }
 
-  const result = await request(driver,cypher,graphName);
+  const result = await request(driver, cypher, graphName);
 
-  if (result.status !== 200) {
+  if (!result.success) {
     return {
       success: false,
       code: result.status,
-      data: result.data,
+      data: result?.data,
     };
   }
 
   if (labelType === 'node') {
     const vertexResponseData = formatVertexSchemaResponse(
-      result.data.data.result[0].schema,
+      result?.data[0]?.schema,
     );
 
     return {
       success: true,
-      code: result.status,
       data: {
         ...vertexResponseData,
       },
     };
   } else if (labelType === 'edge') {
-    const edgeResponseData = formatEdgeSchemaResponse(
-      result.data.data.result[0].schema,
-    );
+    const edgeResponseData = formatEdgeSchemaResponse(result?.data[0]?.schema);
 
     return {
       success: true,
-      code: result.status,
       data: {
         ...edgeResponseData,
       },
@@ -173,11 +160,11 @@ const querySchemaByLabel = async (
 const queryVertexSchema = async (driver: Driver, graphName: string) => {
   // step1: 先获取所有边点类型
   const typeResult = await request(driver, queryVertexLabels(), graphName);
-  if (!typeResult?.data?.data?.result) {
+  if (!typeResult?.success) {
     return [];
   }
   // step2: 根据获取到的点类型，再获取每个点类型的详细属性
-  const vertexSchemaPromise = typeResult.data.data.result.map(async d => {
+  const vertexSchemaPromise = typeResult?.data?.map(async d => {
     const currentVertexSchema = await querySchemaByLabel(
       driver,
       graphName,
@@ -201,12 +188,12 @@ const queryEdgeSchema = async (driver: Driver, graphName: string) => {
   // step1: 先获取所有边类型
   const typeResult = await request(driver, edgeLabels(), graphName);
 
-  if (!typeResult?.data?.data?.result) {
+  if (!typeResult.success) {
     return [];
   }
 
   // step2: 根据获取到的边类型，再获取每个边类型的详细属性
-  const edgeSchemaPromise = typeResult.data.data.result.map(async d => {
+  const edgeSchemaPromise = typeResult?.data?.map(async d => {
     const currentEdgeSchema = await querySchemaByLabel(
       driver,
       graphName,
@@ -303,12 +290,11 @@ export const createSchema = async (
   }
 
   const result = await request(driver, cypher, graphName);
-
-  if (result.data.errorCode != 200) {
+  console.log(result, 'lkm');
+  if (!result.success) {
     return {
       code: 200,
-      errorCode: result.data.errorCode,
-      errorMessage: result.data.errorMessage,
+      errorMessage: result?.errorMessage,
       success: false,
     };
   }
@@ -337,9 +323,7 @@ export const createSchema = async (
       // 说明有索引创建失败，则提示用户
       return {
         success: false,
-        code: 200,
-        errorCode: indexError.errorCode,
-        errorMessage: `Schema 创建成功，但有部分索引创建失败，具体失败原因为：${indexError.errorMessage}`,
+        errorMessage: `Schema 创建成功，但有部分索引创建失败，具体失败原因为：${indexError?.errorMessage}`,
       };
     }
   }
@@ -470,16 +454,11 @@ export const importSchemaMod = async (
   if (override) {
     const deleteSchemaResult = await request(driver, dropDB(), graph);
 
-    if (
-      deleteSchemaResult?.data?.errorCode != 200 ||
-      deleteSchemaResult?.status !== 200
-    ) {
+    if (!deleteSchemaResult.success) {
       return {
         success: false,
-        code: deleteSchemaResult.status,
         data: null,
-        errorCode: deleteSchemaResult.data.errorCode,
-        errorMessage: deleteSchemaResult.data.errorMessage,
+        errorMessage: deleteSchemaResult?.errorMessage,
       };
     }
   }

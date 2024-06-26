@@ -5,8 +5,13 @@ export const getVertexLabels = () => {
 
 /* 查询指定子图中边的数量 */
 export const getEdgeLabels = () => {
-  return `CALL db.edgeLabels() YIELD edgeLabels RETURN count(edgeLabels) AS edgeNumLabels`;
+  return `CALL db.edgeLabels() YIELD label RETURN count(label) AS edgeNumLabels`;
 };
+
+/* 查图schema */
+export const getGraphSchema = ()=>{
+  return 'CALL dbms.graph.getGraphSchema()'
+}
 
 /* 查询数据库中点边数量 */
 export const getCount = () => {

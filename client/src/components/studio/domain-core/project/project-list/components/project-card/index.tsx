@@ -66,6 +66,7 @@ const ProjectCard = ({
       draft.isNodeEdgeObj = true;
     });
     onGetNodeEdgeStatistics(graphName).then(res => {
+
       if (res.success) {
         updateState(draft => {
           draft.nodeEdgeObjList = [

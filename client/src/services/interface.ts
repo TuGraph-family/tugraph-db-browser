@@ -114,13 +114,9 @@ export interface INodeDataParams {
 }
 
 export interface RestFulResponse {
-  data: {
-    data: any;
+    data?: any;
     success: number;
-    errorCode?: number;
     errorMessage?: string;
-  };
-  status: number;
 }
 
 export interface IUserParams {

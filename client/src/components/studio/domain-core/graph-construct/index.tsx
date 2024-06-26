@@ -392,7 +392,6 @@ export const GraphConstruct = () => {
       const reader = new FileReader();
       reader.readAsText(file);
       reader.onload = result => {
-        console.log(result,'lkmcc')
         setState(draft => {
           try {
             draft.schema = JSON.parse(result.target?.result);
