@@ -15,6 +15,7 @@ export default defineConfig({
   history: {
     type: 'browser',
   },
+  outputPath:'./dist/resource',
   styles: [
     `https://gw.alipayobjects.com/os/lib/antd/${ANTD_VERSION}/dist/antd.css`,
     `https://gw.alipayobjects.com/os/lib/antv/gi-sdk-app/${GI_SDK_APP_VERSION}/dist/index.css`,
