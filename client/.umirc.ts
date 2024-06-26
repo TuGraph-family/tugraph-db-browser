@@ -16,6 +16,7 @@ export default defineConfig({
     type: 'browser',
   },
   outputPath:'./dist/resource',
+  publicPath:'/resource/',
   styles: [
     `https://gw.alipayobjects.com/os/lib/antd/${ANTD_VERSION}/dist/antd.css`,
     `https://gw.alipayobjects.com/os/lib/antv/gi-sdk-app/${GI_SDK_APP_VERSION}/dist/index.css`,
@@ -42,7 +43,6 @@ export default defineConfig({
     `https://gw.alipayobjects.com/os/lib/antd/${ANTD_VERSION}/dist/antd.min.js`,
     `https://gw.alipayobjects.com/os/lib/antv/gi-sdk-app/${GI_SDK_APP_VERSION}/dist/index.min.js`,
   ],
-  publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
   npmClient: 'npm',
   favicons: [
     'https://gw.alipayobjects.com/zos/bmw-prod/6290edfc-e134-4074-a550-079eeba9926d.svg',
