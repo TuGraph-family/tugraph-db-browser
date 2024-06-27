@@ -301,7 +301,8 @@ export const GraphQuery = () => {
             }}
           />
         </Tooltip>
-        <Popover
+        {/* TODO 暂时隐藏功能 */}
+        {/* <Popover
           title="存储过程"
           placement="bottomRight"
           className="popoverTitle"
@@ -339,7 +340,7 @@ export const GraphQuery = () => {
               });
             }}
           />
-        </Popover>
+        </Popover> */}
         <Button
           onClick={() => {
             history.push(`/construct?graphName=${currentGraphName}`);

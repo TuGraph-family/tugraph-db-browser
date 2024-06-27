@@ -7,7 +7,7 @@ import {
 } from './interface';
 import { useModel } from 'umi';
 import { InitialState } from '@/app';
-import { QueryResultFormatter } from '@/utils/schema';
+import { QueryResultFormatter, responseFormatter } from '@/utils/schema';
 import {
   generateCypherByConfig,
   generateCypherByNode,
@@ -17,7 +17,6 @@ import { queryNeighborsCypher } from '@/queries/query';
 import { request } from './request';
 import { Driver } from 'neo4j-driver';
 
-
 /* 使用 Cypher 语句查询，按标准的 Cypher 返回结果转换，不做过多处理，即如果只查询点，不会去查询子图 */
 export const queryByGraphLanguage = async (
   driver: Driver,
@@ -26,7 +25,7 @@ export const queryByGraphLanguage = async (
   const { graphName, script } = params;
 
   const result = await request(driver, script, graphName);
-  console.log(result,'lkm')
+  console.log(result, 'lkm');
 
   return QueryResultFormatter(result, script);
 };
@@ -39,7 +38,6 @@ export const queryByPath = async (driver: Driver, params: IPathQueryParams) => {
   const { graphName } = params;
   const script = generateCypherByPath(params);
   const result = await request(driver, script, graphName);
- 
 
   return QueryResultFormatter(result, script);
 };
@@ -85,6 +83,53 @@ export const queryNeighbors = async (
   const cypher = queryNeighborsCypher(params);
 
   const result = await request(driver, cypher, graphName);
- 
+
   return QueryResultFormatter(result, cypher);
+};
+
+export const queryGetProcedureDemo = async (driver: Driver, params: any) => {
+  const cypher = '';
+  const result = await request(driver, cypher);
+
+  return responseFormatter(result);
+};
+
+export const queryCallProcedures = async (driver: Driver, params: any) => {
+  const cypher = '';
+  const result = await request(driver, cypher);
+
+  return responseFormatter(result);
+};
+
+
+export const queryDeleteProcedure = async (driver: Driver, params: any) => {
+  const cypher = '';
+  const result = await request(driver, cypher);
+
+  return responseFormatter(result);
+};
+
+
+export const queryGetProcedures = async (driver: Driver, params: any) => {
+  const cypher = '';
+  const result = await request(driver, cypher);
+
+  return responseFormatter(result);
+};
+
+
+
+export const queryGetvProcedures = async (driver: Driver, params: any) => {
+  const cypher = '';
+  const result = await request(driver, cypher);
+
+  return responseFormatter(result);
+};
+
+
+export const queryUploadProcedure = async (driver: Driver, params: any) => {
+  const cypher = '';
+  const result = await request(driver, cypher);
+
+  return responseFormatter(result);
 };

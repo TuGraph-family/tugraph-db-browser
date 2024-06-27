@@ -11,10 +11,8 @@ import {
   dropDB,
   edgeLabels,
   getCount,
-  getEdgeLabels,
   getEdgeSchema,
   getGraphSchema,
-  getVertexLabels,
   getVertexSchema,
   queryVertexLabels,
 } from '@/queries/schema';
@@ -24,7 +22,6 @@ import {
   responseFormatter,
 } from '@/utils/schema';
 import { Driver } from 'neo4j-driver';
-import { useModel } from 'umi';
 import {
   ICreateSchemaParams,
   IDeleteSchemaParams,
@@ -502,5 +499,13 @@ export const deleteIndexSchema = async (
   const cypher = deleteIndex(labelName, propertyName);
   const result = await request(driver, cypher, graphName);
 
+  return responseFormatter(result);
+};
+
+/* 导入schema */
+export const importSchema = async (driver: Driver, params: ISchemaParams) => {
+  const { graph, schema, override = false } = params;
+  const cypher = '';
+  const result = await request(driver, cypher);
   return responseFormatter(result);
 };

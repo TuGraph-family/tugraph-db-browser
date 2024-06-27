@@ -38,16 +38,17 @@ export const GRAPH_OPERATE = [
     icon: 'icon-tianjiabian',
     value: 'edge',
   },
-  {
-    lable: '导入模型',
-    icon: 'icon-daorumoxingwenjian',
-    value: 'import',
-  },
-  {
-    lable: '导出模型',
-    icon: 'icon-daochumoxing',
-    value: 'export',
-  },
+  //功能暂时隐藏
+  // {
+  //   lable: '导入模型',
+  //   icon: 'icon-daorumoxingwenjian',
+  //   value: 'import',
+  // },
+  // {
+  //   lable: '导出模型',
+  //   icon: 'icon-daochumoxing',
+  //   value: 'export',
+  // },
 ];
 export enum EditType {
   SWITCH = 'SWITCH',

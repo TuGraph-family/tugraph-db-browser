@@ -66,7 +66,8 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
       imgUrl:
         'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*iLrCTZt0lAcAAAAAAAAAAAAADgOBAQ/original',
     },
-    ...TUGRAPH_DEOM,
+    //TODO暂时功能隐藏
+    // ...TUGRAPH_DEOM,
   ];
   const footer =
     current === 0 ? (
