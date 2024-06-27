@@ -1,5 +1,4 @@
 import neo4j, { Session, Driver } from 'neo4j-driver';
-import { history } from 'umi';
 import {
   TUGRAPH_PASSWORD,
   TUGRAPH_URI,
@@ -36,7 +35,7 @@ export async function getInitialState() {
       setLocalData(TUGRAPH_PASSWORD, null);
       setLocalData(TUGRAPH_URI, null);
       session.close();
-      history.push('/login');
+      window.location.hash = '/login'
     };
     let dbConfig: Record<string, any> = {};
     const config = await session
@@ -75,6 +74,6 @@ export async function getInitialState() {
     };
   } catch (e) {
     console.error(e);
-    history.push('/login');
+    window.location.hash = '/login'
   }
 }

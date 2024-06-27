@@ -47,7 +47,8 @@ const ProjectCard = ({
       <span
         onClick={() => {
           if (status) {
-            window.open(`${window?.location?.origin}${href || ''}`);
+            window.location.hash = href || ''
+           
           }
         }}
         className={

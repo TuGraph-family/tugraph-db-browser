@@ -11,9 +11,9 @@ export const GI_SDK_APP_VERSION = '1.2.0';
 export default defineConfig({
   // only proxy when using `umi dev`
   // if the assets are built, will not proxy
-  hash: false,
+  hash: true,
   history: {
-    type: 'browser',
+    type: 'hash',
   },
   outputPath:'./dist/resource',
   publicPath:'/resource/',

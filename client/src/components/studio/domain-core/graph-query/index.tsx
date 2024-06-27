@@ -265,7 +265,7 @@ export const GraphQuery = () => {
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerLeft`]}>
         <ArrowLeftOutlined
           onClick={() => {
-            history.push('/home');
+            window.location.hash = '/home'
           }}
         />
         <Select

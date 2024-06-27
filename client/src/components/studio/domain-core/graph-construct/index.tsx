@@ -254,7 +254,7 @@ export const GraphConstruct = () => {
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerLeft`]}>
         <ArrowLeftOutlined
           onClick={() => {
-            history.push('/home');
+            window.location.hash = '/home'
           }}
         />
         <Select
@@ -280,7 +280,8 @@ export const GraphConstruct = () => {
         <Button
           style={{ marginRight: '8px' }}
           onClick={() => {
-            history.push(`/query?graphName=${currentGraphName}`);
+            window.location.hash = `/query?graphName=${currentGraphName}`
+      
           }}
         >
           前往图查询
