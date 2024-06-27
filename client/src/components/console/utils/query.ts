@@ -21,45 +21,43 @@ import { FileSchema, Schema } from '@/components/studio/interface/import';
 import { Driver } from 'neo4j-driver';
 import { request } from '@/services/request';
 
-
-
-
 /* 获取用户列表 */
-export const queryUsers = async (driver:Driver,params: { username?: string }) => {
-  
+export const queryUsers = async (
+  driver: Driver,
+  params: { username?: string },
+) => {
   const { username } = params;
   // 1、列出所有用户
-    const cypherQuery = username ? getUserInfo(username) : listUsers();
-    const userResult = await request(driver,cypherQuery);
-    if (!userResult?.success) {
-      return userResult;
-    }
-    // 2、列出所有角色
-    const roleResult = await request(driver,listRoles());
+  const cypherQuery = username ? getUserInfo(username) : listUsers();
+  const userResult = await request(driver, cypherQuery);
+  if (!userResult?.success) {
+    return userResult;
+  }
+  // 2、列出所有角色
+  const roleResult = await request(driver, listRoles());
 
-    if (!roleResult?.success) {
-      return roleResult;
-    }
+  if (!roleResult?.success) {
+    return roleResult;
+  }
 
-    const result = userInfoTranslator(userResult?.data, roleResult?.data);
+  const result = userInfoTranslator(userResult?.data, roleResult?.data);
 
-    return {
-      success: true,
-      code: 200,
-      data: result,
-    };
-  
+  return {
+    success: true,
+    code: 200,
+    data: result,
+  };
 };
 
 /* 创建用户 */
-export const queryCreateUser = async (driver:Driver,params: IUserParams): Promise<any> => {
+export const queryCreateUser = async (
+  driver: Driver,
+  params: IUserParams,
+): Promise<any> => {
   try {
-  
     const { username, password, description = '', roles = [] } = params;
-
     // 1.创建用户
-    const createResult = await request(driver,createUser(username, password));
-
+    const createResult = await request(driver, createUser(username, password));
     if (!createResult?.success) {
       return createResult;
     }
@@ -71,10 +69,9 @@ export const queryCreateUser = async (driver:Driver,params: IUserParams): Promis
     );
 
     const cypherPromise = cypherScripts.map(async cypher => {
-      return await request(driver,cypher);
+      return await request(driver, cypher);
     });
     const result = await Promise.all(cypherPromise);
-
     const error = result?.find(d => !d?.success);
 
     if (error) {
@@ -88,9 +85,11 @@ export const queryCreateUser = async (driver:Driver,params: IUserParams): Promis
 };
 
 /* 编辑用户 */
-export const updateUser = async (driver:Driver,params: IUserParams): Promise<any> => {
+export const updateUser = async (
+  driver: Driver,
+  params: IUserParams,
+): Promise<any> => {
   try {
-  
     const { username, password, description = '', roles = [] } = params;
     let cypherScripts = queryCyphers({
       username,
@@ -100,7 +99,7 @@ export const updateUser = async (driver:Driver,params: IUserParams): Promise<any
     });
 
     const cypherPromise = cypherScripts.map(async cypher => {
-      return await request(driver,cypher);
+      return await request(driver, cypher);
     });
     const result = await Promise.all(cypherPromise);
 
@@ -117,17 +116,19 @@ export const updateUser = async (driver:Driver,params: IUserParams): Promise<any
 };
 
 /* 创建角色 */
-export const queryCreateRole = async (driver:Driver,params: IRoleParams): Promise<any> => {
-
+export const queryCreateRole = async (
+  driver: Driver,
+  params: IRoleParams,
+): Promise<any> => {
   const { role, description = '', permissions = null } = params;
   const cypherQuery = createRole(role, description);
   if (!permissions) {
-    const result = await request(driver,cypherQuery);
+    const result = await request(driver, cypherQuery);
     return result;
   }
 
   // 1.创建角色
-  const createRoleresult = await request(driver,cypherQuery);
+  const createRoleresult = await request(driver, cypherQuery);
 
   if (!createRoleresult.success) {
     return createRoleresult;
@@ -141,12 +142,14 @@ export const queryCreateRole = async (driver:Driver,params: IRoleParams): Promis
 };
 
 /* 编辑角色 */
-export const updateRole = async (driver:Driver,params: IRoleParams): Promise<any> => {
-
+export const updateRole = async (
+  driver: Driver,
+  params: IRoleParams,
+): Promise<any> => {
   const { role, description = '', permissions = null } = params;
   const cypherQuery = modRoleDesc(role, description);
   if (!permissions) {
-    const result = await request(driver,cypherQuery);
+    const result = await request(driver, cypherQuery);
     return result;
   }
 
@@ -158,7 +161,7 @@ export const updateRole = async (driver:Driver,params: IRoleParams): Promise<any
   ];
 
   const cypherPromise = cypherScripts.map(async cypher => {
-    return await request(driver,cypher);
+    return await request(driver, cypher);
   });
   const result = await Promise.all(cypherPromise);
 
@@ -176,11 +179,14 @@ export const updateRole = async (driver:Driver,params: IRoleParams): Promise<any
  * @param graphName
  * @returns
  */
-export const createSubGraphFromTemplate = async (driver:Driver,params: {
-  graphName: string;
-  config: { maxSizeGB: number; description: string };
-  description: { schema: Schema[]; files: FileSchema[] };
-}) => {
+export const createSubGraphFromTemplate = async (
+  driver: Driver,
+  params: {
+    graphName: string;
+    config: { maxSizeGB: number; description: string };
+    description: { schema: Schema[]; files: FileSchema[] };
+  },
+) => {
   const { graphName, config, description } = params;
   const { schema, files } = description;
   // 1. 创建子图

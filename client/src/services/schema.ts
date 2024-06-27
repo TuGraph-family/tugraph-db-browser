@@ -81,7 +81,6 @@ export const getNodeEdgeStatistics = async (
 
   // step2: 查询数据库中点边的数量
   const result = await request(driver, getCount(), graphName);
-  console.log(result, 'lkmall');
   const { data: labelData, success, code } = schemaResult;
   const { vertexLabels, edgeLabels } = labelData;
   const { data } = result;
@@ -287,7 +286,6 @@ export const createSchema = async (
   }
 
   const result = await request(driver, cypher, graphName);
-  console.log(result, 'lkm');
   if (!result.success) {
     return {
       code: 200,

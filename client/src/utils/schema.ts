@@ -124,7 +124,7 @@ export const formatEdgeResponse = (params: IEdgeParams[]) => {
         });
 
         // 如果只是边，则还需要将起点和终点添加到 nodes 中
-        const hasSourceNode = nodes.find((d) => d.id === `${src}`);
+        const hasSourceNode = nodes.find(d => d.id === `${src}`);
         if (!hasSourceNode) {
           nodes.push({
             id: `${src}`,
@@ -132,7 +132,7 @@ export const formatEdgeResponse = (params: IEdgeParams[]) => {
             properties: null,
           });
         }
-        const hasTargetNode = nodes.find((d) => d.id === `${dst}`);
+        const hasTargetNode = nodes.find(d => d.id === `${dst}`);
 
         if (!hasTargetNode) {
           nodes.push({
@@ -159,7 +159,7 @@ export const formatEdgeResponse = (params: IEdgeParams[]) => {
 export const formatPathResponse = (
   params: {
     [key: string]: IPathParams[];
-  }[]
+  }[],
 ) => {
   const pnodes: IVertextParams[] = [];
   const pedges: IEdgeParams[] = [];
@@ -193,19 +193,19 @@ export const formatPathResponse = (
   }
 
   const nodes = formatVertexResponse(
-    pnodes.map((d) => {
+    pnodes.map(d => {
       return {
         n: d,
       };
-    }) as unknown as IVertextParams[]
+    }) as unknown as IVertextParams[],
   );
 
   const { edges } = formatEdgeResponse(
-    pedges.map((d) => {
+    pedges.map(d => {
       return {
         e: d,
       };
-    }) as unknown as IEdgeParams[]
+    }) as unknown as IEdgeParams[],
   );
 
   return {
@@ -321,11 +321,10 @@ export const QueryResultFormatter = (
       success: false,
     };
   }
-  console.log(result, 'lkms');
   const resultData = result.data;
   const responseData = formatMultipleResponse(resultData);
   const { edges, nodes } = responseData;
-  console.log(responseData, 'lkms');
+
   return {
     data: {
       originalData: resultData,

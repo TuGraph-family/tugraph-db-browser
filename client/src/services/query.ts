@@ -25,7 +25,6 @@ export const queryByGraphLanguage = async (
   const { graphName, script } = params;
 
   const result = await request(driver, script, graphName);
-  console.log(result, 'lkm');
 
   return QueryResultFormatter(result, script);
 };

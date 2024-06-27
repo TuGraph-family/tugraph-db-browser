@@ -62,7 +62,7 @@ export const queryCreateCyphers = (
 ) => {
   return [
     `CALL dbms.security.setUserDesc('${username}', '${description}')`,
-    `CALL dbms.security.addUserRoles('${username}', ${JSON.stringify(roles)})`,
+    `CALL dbms.security.addUserRoles('${username}', ${roles})`,
   ];
 };
 
