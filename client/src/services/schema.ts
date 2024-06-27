@@ -85,9 +85,9 @@ export const getNodeEdgeStatistics = async (
   const { vertexLabels, edgeLabels } = labelData;
   const { data } = result;
   const vertexCount =
-    data?.result?.find((item: any) => item['type'] === 'vertex')['number'] || 0;
+    data?.find((item: any) => item['type'] === 'vertex')['number'] || 0;
   const edgeCount =
-    data?.result?.find((item: any) => item['type'] === 'edge')['number'] || 0;
+    data?.find((item: any) => item['type'] === 'edge')['number'] || 0;
 
   return {
     success: true,
