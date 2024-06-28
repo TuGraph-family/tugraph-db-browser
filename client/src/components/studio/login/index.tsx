@@ -46,7 +46,7 @@ export const Login = () => {
           dbConfig,
         } as any);
         setTimeout(() => {
-          history.push('/home');
+          window.location.hash = '/home'
         },100);
       } catch (error: any) {
         message.error(error ? error : '登录失败！');
@@ -56,7 +56,7 @@ export const Login = () => {
 
   if (localStorage.getItem('TUGRAPH_TOKEN')) {
     // 已经登录过，则跳转到首页
-    history.push('/home');
+    window.location.hash = '/home'
     return;
   }
   return (

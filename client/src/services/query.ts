@@ -5,8 +5,6 @@ import {
   INodeQueryParams,
   IPathQueryParams,
 } from './interface';
-import { useModel } from 'umi';
-import { InitialState } from '@/app';
 import { QueryResultFormatter, responseFormatter } from '@/utils/schema';
 import {
   generateCypherByConfig,

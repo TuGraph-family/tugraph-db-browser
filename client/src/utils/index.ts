@@ -60,7 +60,7 @@ export const loginDB = async (params: {
       // 一直在这个界面，过期跳转到登录页
       setTimeout(() => {
         session.close();
-        history.push('/login');
+        window.location.hash = '/login';
       }, credential_timeout * 1000);
     } else {
       setLocalData(TUGRAPH_USER_NAME, null);
