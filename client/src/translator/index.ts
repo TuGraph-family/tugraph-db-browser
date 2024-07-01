@@ -18,6 +18,7 @@ export const dbConfigRecordsTranslator = (
 // 处理cypher语句查询结果存在int类型数据
 export const convertIntToNumber = (data: any) => {
   if (isInt(data)) {
+    
     return data.toNumber();
   } else if (data && typeof data === 'object') {
     if (Array.isArray(data)) {

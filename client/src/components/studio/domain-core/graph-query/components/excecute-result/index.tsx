@@ -661,12 +661,27 @@ const ExecuteResult: React.FC<ResultProps> = ({
         key: item,
         title: item,
         dataIndex: item,
+        width: 300,
         render: (value: any) => {
-          return <ReactJSONView src={value || {}} displayDataTypes={false} />;
+          return (
+            <pre
+              style={{
+                whiteSpace: 'break-spaces',
+                wordWrap: 'break-word',
+                wordBreak: 'break-word',
+              }}
+            >
+              {typeof value === 'object'
+                ? JSONBig.stringify(value, null, 2)
+                : value}
+            </pre>
+          );
         },
       };
     });
-    return <Table columns={columns} dataSource={convertIntToNumber(originalData)} />;
+    return (
+      <Table columns={columns} dataSource={convertIntToNumber(originalData)} />
+    );
   };
 
   return (
@@ -685,7 +700,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
             });
           }}
         >
-          <TabPane
+          {/* <TabPane
             key="JSON"
             tab={<IconItem icon="icon-read" name="JSON视图" />}
           >
@@ -698,10 +713,16 @@ const ExecuteResult: React.FC<ResultProps> = ({
               }
               displayDataTypes={false}
             />
-          </TabPane>
+          </TabPane> */}
           <TabPane
             key="JSONText"
-            tab={<IconItem icon="icon-JSONwenben" name="表格文本" style={{ marginLeft: -5 }} />}
+            tab={
+              <IconItem
+                icon="icon-JSONwenben"
+                name="表格文本"
+                style={{ marginLeft: -5 }}
+              />
+            }
           >
             {copyScript}
             {renderJSONTable()}
