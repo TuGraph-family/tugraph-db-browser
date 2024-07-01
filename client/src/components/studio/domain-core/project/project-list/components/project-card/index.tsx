@@ -47,7 +47,8 @@ const ProjectCard = ({
       <span
         onClick={() => {
           if (status) {
-            window.open(`${window?.location?.origin}${href || ''}`);
+            window.location.hash = href || ''
+           
           }
         }}
         className={
@@ -66,6 +67,7 @@ const ProjectCard = ({
       draft.isNodeEdgeObj = true;
     });
     onGetNodeEdgeStatistics(graphName).then(res => {
+
       if (res.success) {
         updateState(draft => {
           draft.nodeEdgeObjList = [
@@ -187,7 +189,7 @@ const ProjectCard = ({
                         title={`你确定将子图「${graphName}」永久删除吗？`}
                         onConfirm={() => {
                           onDeleteGraph({ graphName }).then(res => {
-                            if (res.success) {
+                            if (res?.success) {
                               onRefreshProjectList();
                               message.success('删除成功');
                             }

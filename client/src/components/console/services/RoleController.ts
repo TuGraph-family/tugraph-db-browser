@@ -7,26 +7,26 @@ export async function getRoleList() {
   });
 }
 /* DELETE role */
-export async function deleteRole(params: { role: string }) {
-  return request(`/api/auth/role`, {
-    method: 'DELETE',
-    data: { ...params },
-  });
-}
+// export async function deleteRole(params: { role: string }) {
+//   return request(`/api/auth/role`, {
+//     method: 'DELETE',
+//     data: { ...params },
+//   });
+// }
 
 /* PUT role disabled */
-export async function disabledRole(params: {
-  role: string;
-  disabled: boolean;
-}) {
-  return request(`/api/auth/role/disable`, {
-    method: 'PUT',
+// export async function disabledRole(params: {
+//   role: string;
+//   disabled: boolean;
+// }) {
+//   return request(`/api/auth/role/disable`, {
+//     method: 'PUT',
 
-    data: {
-      ...params,
-    },
-  });
-}
+//     data: {
+//       ...params,
+//     },
+//   });
+// }
 
 /*POST add role */
 export async function createRole(params: RoleProps) {

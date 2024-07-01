@@ -2,15 +2,15 @@ import request from '../utils/request';
 import { UserProps } from '../interface/user';
 
 /* GET auth list */
-export async function getAuthList(params: { username?: string }) {
-  return request(
-    `/api/auth/user${params?.username ? '/' + params?.username : ''}`,
-    {
-      method: 'GET',
-      data: {},
-    }
-  );
-}
+// export async function getAuthList(params: { username?: string }) {
+//   return request(
+//     `/api/auth/user${params?.username ? '/' + params?.username : ''}`,
+//     {
+//       method: 'GET',
+//       data: {},
+//     }
+//   );
+// }
 
 /*POST add user */
 export async function createUser(params: UserProps) {
@@ -33,37 +33,37 @@ export async function editUser(params: UserProps) {
 }
 
 /* PUT user disabled */
-export async function disabledUser(params: {
-  username: string;
-  disabled: boolean;
-}) {
-  return request(`/api/auth/user/disable`, {
-    method: 'PUT',
-    data: {
-      ...params,
-    },
-  });
-}
+// export async function disabledUser(params: {
+//   username: string;
+//   disabled: boolean;
+// }) {
+//   return request(`/api/auth/user/disable`, {
+//     method: 'PUT',
+//     data: {
+//       ...params,
+//     },
+//   });
+// }
 
 /* DELETE user */
-export async function deleteUser(params: { username: string }) {
-  return request(`/api/auth/user`, {
-    method: 'DELETE',
-    data: {
-      ...params,
-    },
-  });
-}
+// export async function deleteUser(params: { username: string }) {
+//   return request(`/api/auth/user`, {
+//     method: 'DELETE',
+//     data: {
+//       ...params,
+//     },
+//   });
+// }
 
 /* PUT user password */
-export async function changePassword(params: {
-  curPassword: string;
-  password: string;
-}) {
-  return request(`/api/auth/password`, {
-    method: 'PUT',
-    data: {
-      ...params,
-    },
-  });
-}
+// export async function changePassword(params: {
+//   curPassword: string;
+//   password: string;
+// }) {
+//   return request(`/api/auth/password`, {
+//     method: 'PUT',
+//     data: {
+//       ...params,
+//     },
+//   });
+// }

@@ -35,7 +35,7 @@ export const ImportDataResult: React.FC<Prop> = ({
         key="0"
         onClick={() => {
           importProgressCancel();
-          history.push(`/query?graphName=${graphName}`);
+          window.location.hash = `/query?graphName=${graphName}`
         }}
       >
         前往图查询

@@ -12,7 +12,7 @@ export const Container = (props: React.ComponentProps<any>) => {
     if (document) {
       document.addEventListener('click', function (event) {
         const target: any = event?.target;
-        addQueryParam('eventSource', target?.tagName);
+        // addQueryParam('eventSource', target?.tagName);
       });
     }
     return () => {

@@ -33,9 +33,9 @@ export const AccountManager: React.FC<Prop> = ({ getRefreshList }) => {
     useUser();
   const getAuthList = (username?: string) => {
     onGetAuthList({ username }).then((res) => {
-      if (res.success) {
+      if (res?.success) {
         setState((draft) => {
-          draft.dataSource = map(res.data, (item) => ({
+          draft.dataSource = map(res?.data, (item) => ({
             username: item.user_name,
             description: item.user_info.description,
             disabled: item.user_info.disabled,
@@ -44,8 +44,9 @@ export const AccountManager: React.FC<Prop> = ({ getRefreshList }) => {
           }));
         });
       }
-    });
+    })
   };
+
   const operate = (_, record: UserProps) => (
     <>
       <a

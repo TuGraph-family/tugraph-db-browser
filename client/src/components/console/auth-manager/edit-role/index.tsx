@@ -108,7 +108,7 @@ const EditRoleModal: React.FC<Prop> = ({
     });
   }, [data, onRefreshRoleList]);
   useEffect(() => {
-    onGetGraphList({ userName: getLocalData('TUGRAPH_USER_NAME') }).then(
+    onGetGraphList().then(
       (res) => {
         if (res.success) {
           setState((draft) => {
@@ -120,7 +120,7 @@ const EditRoleModal: React.FC<Prop> = ({
           message.error('获取图权限列表失败' + res.errorMessage);
         }
       }
-    );
+    ).catch(e=>console.log(e));;
   }, []);
   return (
     <Modal

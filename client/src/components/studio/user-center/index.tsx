@@ -20,7 +20,7 @@ export const UserCenter: React.FC<Prop> = () => {
     onLogout().then(res => {
       if (res.errorCode == 200) {
         setLocalData('TUGRAPH_TOKEN', '');
-        history.push('/login');
+       window.location.hash = '/login'
       } else {
         message.error('登出失败' + res.errorMessage);
       }
@@ -35,7 +35,7 @@ export const UserCenter: React.FC<Prop> = () => {
             // updateState(draft => {
             //   draft.isEditPassword = true;
             // });
-            history.push('/reset');
+           window.location.hash = '/reset'
           }}
         >
           修改密码

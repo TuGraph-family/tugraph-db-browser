@@ -1,5 +1,4 @@
-import neo4j, { Session } from 'neo4j-driver';
-import { history } from 'umi';
+import neo4j, { Session, Driver } from 'neo4j-driver';
 import {
   TUGRAPH_PASSWORD,
   TUGRAPH_URI,
@@ -11,6 +10,7 @@ import { getLocalData, setLocalData } from './utils';
 
 export interface InitialState {
   session: Session;
+  driver: Driver;
   userInfo: {
     userName: string;
     password: string;
@@ -35,7 +35,7 @@ export async function getInitialState() {
       setLocalData(TUGRAPH_PASSWORD, null);
       setLocalData(TUGRAPH_URI, null);
       session.close();
-      history.push('/login');
+      window.location.hash = '/login'
     };
     let dbConfig: Record<string, any> = {};
     const config = await session
@@ -65,6 +65,7 @@ export async function getInitialState() {
     }
     return {
       session,
+      driver,
       userInfo: {
         userName,
         password,
@@ -73,6 +74,6 @@ export async function getInitialState() {
     };
   } catch (e) {
     console.error(e);
-    history.push('/login');
+    window.location.hash = '/login'
   }
 }

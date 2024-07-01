@@ -11,7 +11,6 @@ import ProjectCard from '../domain-core/project/project-list/components/project-
 import { getZhPeriod } from '../utils/getZhPeriod';
 import { getLocalData, setLocalData } from '../utils/localStorage';
 
-import { getGraphList } from '@/queries/graph';
 import { dbRecordsTranslator } from '@/translator';
 import { useGraph } from '../hooks/useGraph';
 import { SubGraph } from '../interface/graph';
@@ -55,8 +54,7 @@ export const GraphList = () => {
     });
   }, [isShowStep]);
   const fetchGraphList = () => {
-    onGetGraphList().then(result => {
-      const res = dbRecordsTranslator(result);
+    onGetGraphList().then(res => {
       setLocalData('TUGRAPH_SUBGRAPH_LIST', res.data);
       updateState(draft => {
         const defaultList = getDefaultDemoList(
@@ -167,7 +165,7 @@ export const GraphList = () => {
         onClose={() => {
           updateState(draft => {
             draft.isAdd = false;
-            getGraphList();
+            fetchGraphList()
           });
         }}
       />

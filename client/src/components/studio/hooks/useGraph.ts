@@ -1,24 +1,25 @@
 import { InitialState } from '@/app';
-import { getGraphList } from '@/queries/graph';
+import {
+  createGraph,
+  getGraphList,
+  editGraph,
+  deleteGraph,
+} from '@/queries/graph';
 import { useRequest } from 'ahooks';
 import { useModel } from 'umi';
-import {
-  createDemoGraph,
-  createGraph,
-  deleteGraph,
-  editGraph,
-  getNodeEdgeStatistics,
-} from '../services/GraphController';
+import { createSubGraphFromTemplate } from '@/components/console/utils/query';
+import { getNodeEdgeStatistics } from '@/services/schema';
+import { request } from '@/services/request';
 
 export const useGraph = () => {
   const { initialState } = useModel('@@initialState');
-  const { session, userInfo } = initialState as InitialState;
+  const { driver, userInfo } = initialState as InitialState;
   const {
     runAsync: onGetGraphList,
     loading: getGraphListLoading,
     error: getGraphListError,
   } = useRequest(
-    () => session.run(getGraphList({ userName: userInfo.userName })),
+    () => request(driver, getGraphList({ userName: userInfo.userName })),
     {
       manual: true,
     },
@@ -28,28 +29,39 @@ export const useGraph = () => {
     runAsync: onCreateGraph,
     loading: createGraphLoading,
     error: createGraphError,
-  } = useRequest(createGraph, { manual: true });
+  } = useRequest(params => request(driver, createGraph(params)), {
+    manual: true,
+  });
   const {
     runAsync: onDeleteGraph,
     loading: deleteGraphLoading,
     error: deleteGraphError,
-  } = useRequest(deleteGraph, { manual: true });
+  } = useRequest(params => request(driver, deleteGraph(params)), {
+    manual: true,
+  });
   const {
     runAsync: onEditGraph,
     loading: editGraphLoading,
     error: editGraphError,
-  } = useRequest(editGraph, { manual: true });
+  } = useRequest(params => request(driver, editGraph(params)), {
+    manual: true,
+  });
   const {
     runAsync: onGetNodeEdgeStatistics,
     loading: getNodeEdgeStatisticsLoading,
     error: getNodeEdgeStatisticsError,
-  } = useRequest(getNodeEdgeStatistics, { manual: true });
+  } = useRequest(params => getNodeEdgeStatistics(driver, params), {
+    manual: true,
+  });
 
   const {
     runAsync: onCreateDemoGraph,
     loading: CreateDemoGraphLoading,
     error: CreateDemoGraphError,
-  } = useRequest(createDemoGraph, { manual: true });
+  } = useRequest(params => createSubGraphFromTemplate(driver, params), {
+    manual: true,
+  });
+
   return {
     onGetGraphList,
     getGraphListLoading,

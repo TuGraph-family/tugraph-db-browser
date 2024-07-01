@@ -156,7 +156,9 @@ export const GraphQuery = () => {
   ];
   useEffect(() => {
     updateState(draft => {
-      if (isEmpty(getLocalData('TUGRAPH_STATEMENT_LISTS')[currentGraphName])) {
+      if (
+        isEmpty(getLocalData('TUGRAPH_STATEMENT_LISTS')?.[currentGraphName])
+      ) {
         draft.queryList = [
           {
             id: `${new Date().getTime()}`,
@@ -265,7 +267,7 @@ export const GraphQuery = () => {
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerLeft`]}>
         <ArrowLeftOutlined
           onClick={() => {
-            history.push('/home');
+            window.location.hash = '/home';
           }}
         />
         <Select
@@ -301,7 +303,8 @@ export const GraphQuery = () => {
             }}
           />
         </Tooltip>
-        <Popover
+        {/* TODO 暂时隐藏功能 */}
+        {/* <Popover
           title="存储过程"
           placement="bottomRight"
           className="popoverTitle"
@@ -339,17 +342,17 @@ export const GraphQuery = () => {
               });
             }}
           />
-        </Popover>
+        </Popover> */}
         <Button
           onClick={() => {
-            history.push(`/construct?graphName=${currentGraphName}`);
+            window.location.hash = `/construct?graphName=${currentGraphName}`;
           }}
         >
           返回图构建
         </Button>
         <Button
           onClick={() => {
-            history.push(`/analysis?graphName=${currentGraphName}`);
+            window.location.hash = `/analysis?graphName=${currentGraphName}`;
           }}
         >
           前往图分析

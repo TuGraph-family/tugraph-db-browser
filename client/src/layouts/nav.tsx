@@ -28,7 +28,7 @@ const Nav = ({ linkView = true }) => {
                   className={path === curPath ? styles?.linked : styles?.link}
                   key={key}
                   onClick={() => {
-                    history.push(path);
+                    window.location.hash  = path;
                   }}
                 >
                   {title}

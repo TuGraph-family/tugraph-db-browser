@@ -1,5 +1,6 @@
-// This file is created by egg-ts-helper@1.25.8
+// This file is created by egg-ts-helper@1.35.1
 // Do not modify this file!!!!!!!!!
+/* eslint-disable */
 
 import 'egg';
 type AnyClass = new (...args: any[]) => any;

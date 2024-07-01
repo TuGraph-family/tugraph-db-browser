@@ -20,6 +20,7 @@ import { getLocalData } from '../../../../../utils';
 import EditForm from '../edit-form';
 
 import styles from './index.module.less';
+import { dbRecordsTranslator } from '@/translator';
 
 type Props = { open: boolean; onClose: () => void };
 const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
@@ -65,7 +66,8 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
       imgUrl:
         'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*iLrCTZt0lAcAAAAAAAAAAAAADgOBAQ/original',
     },
-    ...TUGRAPH_DEOM,
+    //TODO暂时功能隐藏
+    // ...TUGRAPH_DEOM,
   ];
   const footer =
     current === 0 ? (
@@ -103,29 +105,29 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                 onCreateGraph({
                   graphName,
                   config: { description, maxSizeGB },
-                }).then(res => {
-                  if (res.success) {
+                })
+                  .then(() => {
                     message.success('新建成功');
-                    onGetGraphList({
-                      userName: getLocalData('TUGRAPH_USER_NAME'),
-                    });
+                    onGetGraphList();
                     form.resetFields();
                     onClose();
-                  } else {
-                    message.error('创建失败' + res.errorMessage);
-                  }
-                });
+                  })
+                  .catch(e => {
+                    message.error('创建失败' + e);
+                  });
               } else {
                 onCreateDemoGraph({
                   graphName,
                   config: { description, maxSizeGB },
                   description: cardList[active].data,
-                }).then(res => {
-                  setState(draft => {
-                    draft.loading = true;
-                  });
-                  if (res.success) {
+                })
+                  .then(res => {
+                    setState(draft => {
+                      draft.loading = true;
+                    });
+
                     onImportProgress(res.data.taskId).then(res => {
+                 
                       if (res.errorCode == 200) {
                         if (res.data.state === '2') {
                           message.success('模版创建成功');
@@ -133,9 +135,7 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                           setState(draft => {
                             draft.loading = false;
                           });
-                          onGetGraphList({
-                            userName: getLocalData('TUGRAPH_USER_NAME'),
-                          });
+                          onGetGraphList();
                           form.resetFields();
                           onClose();
                         } else if (res.data.state === '3') {
@@ -146,13 +146,13 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                         }
                       }
                     });
-                  } else {
-                    message.error('模版创建失败' + res.errorMessage);
+                  })
+                  .catch(e => {
+                    message.error('模版创建失败' + e);
                     setState(draft => {
                       draft.loading = false;
                     });
-                  }
-                });
+                  });
               }
             });
           }}
@@ -164,7 +164,7 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
   return (
     <Modal
       title="新建图"
-      visible={open}
+      open={open}
       onCancel={onClose}
       width={917}
       className={styles[`${PUBLIC_PERFIX_CLASS}-add-modal-container`]}
