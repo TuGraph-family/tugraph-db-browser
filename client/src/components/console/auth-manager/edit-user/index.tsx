@@ -8,6 +8,7 @@ import { useUser } from '../../hooks/useUser';
 import { UserProps } from '../../interface/user';
 
 import styles from './index.module.less';
+import { dbRecordsTranslator } from '@/translator';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -88,15 +89,16 @@ const EditAuthModal: React.FC<Prop> = ({
 
   useEffect(() => {
     onGetRoleList().then((res) => {
-      if (res.success) {
+      if(res?.success){
+
         setState((draft) => {
           draft.roleList = map(res.data, (item) => item.role_name);
           draft.rawRoleData = map(res.data, (item) => item.role_name);
         });
       } else {
-        message.error('获取角色列表失败' + res.errorMessage);
+        message.error('获取角色列表失败' + res?.errorMessage);
       }
-    });
+    })
   }, []);
   return (
     <Modal

@@ -1,5 +1,7 @@
 import { graphDataToOptions } from '@/components/studio/utils/dataImportTransform';
 import { batchSecureDeletion } from '@/components/studio/utils/objectOper';
+import { getProperties } from '@/utils';
+import { ProFormSlider } from '@ant-design/pro-components';
 import { Select, Cascader, InputNumber, Tooltip, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 const { Paragraph } = Typography;
@@ -20,125 +22,189 @@ const DataMapConfigHeader = ({
   data,
   setFileDataList,
   fileDataList,
+  graphData,
 }: any) => {
+
+  const getOption = () => {
+    return graphData.nodes?.map(item => {
+      return {
+        label: item?.labelName,
+        value: item?.labelName,
+      };
+    });
+  };
+
+  // 起点和终点类型选择
+  const onSelect = (val: string, key: string) => {
+    const newFileDataList =
+      checkFullArray(fileDataList) &&
+      [...fileDataList].map((cur: any) => {
+        if (data?.fileName === cur?.fileName) {
+          const fileSchema = cur?.fileSchema;
+          return {
+            ...cur,
+            fileSchema: {
+              ...fileSchema,
+              [key]: val,
+            },
+          };
+        }
+        return cur;
+      });
+    setFileDataList(newFileDataList);
+  };
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: 12,
-      }}
-    >
+    <>
       <div
         style={{
           display: 'flex',
-          justifyContent: 'flex-start',
+          justifyContent: 'space-between',
           alignItems: 'center',
-          width: '60%',
+          padding: 12,
         }}
       >
-        <span
+        <div
           style={{
-            width: 'max-content',
-            display: 'inline-block',
-            whiteSpace: 'nowrap',
+            display: 'flex',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            width: '60%',
           }}
         >
-          标签：
-        </span>
-        <Cascader
-          size="small"
-          key="dataMap"
-          placeholder="请选择"
-          options={state?.labelOptions}
-          onChange={(value: any) => {
-            const isEdges = [...value][0] === 'edge';
-            const curEdgeColumns = ['SRC_ID', 'DST_ID'];
-            const curNodeColumns = new Array(data?.data?.columns?.length).fill(
-              '',
-            );
-            const newFileDataList =
-              checkFullArray(fileDataList) &&
-              [...fileDataList].map((cur: any) => {
-                if (data?.fileName === cur?.fileName) {
-                  const curLabel = [...value][1] || '';
-                  const preFileSchema = data?.fileSchema;
-                  return {
-                    ...cur,
-                    fileSchema: {
-                      ...preFileSchema,
-                      label: curLabel,
-                      columns: isEdges ? curEdgeColumns : curNodeColumns,
-                      ...(isEdges
-                        ? { SRC_ID: '', DST_ID: '' }
-                        : {
-                            format: preFileSchema?.format,
-                            header: preFileSchema?.header,
-                            path: preFileSchema?.path,
-                          }),
-                    },
-                  };
-                }
-                return cur;
+          <span
+            style={{
+              width: 'max-content',
+              display: 'inline-block',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            标签：
+          </span>
+          <Cascader
+            size="small"
+            key="dataMap"
+            placeholder="请选择"
+            allowClear={false}
+            defaultValue={data?.selectedValue || []}
+            options={state?.labelOptions}
+            onChange={(value: any, selectedOptions) => {
+              const curColumns = new Array(data?.data?.columns?.length).fill(
+                '',
+              );
+              const newFileDataList =
+                checkFullArray(fileDataList) &&
+                [...fileDataList].map((cur: any) => {
+                  if (data?.fileName === cur?.fileName) {
+                    const preFileSchema = data?.fileSchema;
+
+                    delete preFileSchema.SRC_ID;
+                    delete preFileSchema.DST_ID;
+                
+                    const properties = getProperties({
+                      type: value[0],
+                      name: value[1],
+                      graphData,
+                    });
+                    return {
+                      ...cur,
+                      fileSchema: {
+                        ...preFileSchema,
+                        columns: curColumns,
+                        ...selectedOptions?.[1],
+                        properties,
+                      },
+                      selectedValue: value || ['', ''],
+                    };
+                  }
+                  return cur;
+                });
+              setFileDataList(newFileDataList);
+              setState((pre: any) => {
+                return { ...pre, nodeType: value || ['', ''] };
               });
-            setFileDataList(newFileDataList);
-            setState((pre: any) => {
-              return { ...pre, nodeType: value };
-            });
-          }}
-        />
-      </div>
-      <div
-        style={{
-          width: '40%',
-          display: 'flex',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-        }}
-      >
-        <span
+            }}
+          />
+        </div>
+        <div
           style={{
-            width: 'max-content',
-            display: 'inline-block',
-            whiteSpace: 'nowrap',
+            width: '40%',
+            display: 'flex',
+            justifyContent: 'space-around',
+            alignItems: 'center',
           }}
         >
-          从第
-        </span>
-        <InputNumber
-          defaultValue={0}
-          size="small"
-          onChange={value => {
-            const newFileDataList =
-              checkFullArray(fileDataList) &&
-              [...fileDataList].map((cur: any) => {
-                const { header, ...other } = cur?.fileSchema;
-                if (data?.fileName === cur?.fileName) {
-                  return {
-                    ...data,
-                    fileSchema: {
-                      ...other,
-                      header: Number(value) || 0,
-                    },
-                  };
-                }
-                return cur;
-              });
-            setFileDataList(newFileDataList);
-          }}
-        />
-        <span
+          <span
+            style={{
+              width: 'max-content',
+              display: 'inline-block',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            从第
+          </span>
+          <InputNumber
+            defaultValue={data?.fileSchema?.header || 0}
+            size="small"
+            onChange={value => {
+              const newFileDataList =
+                checkFullArray(fileDataList) &&
+                [...fileDataList].map((cur: any) => {
+                  const { header, ...other } = cur?.fileSchema;
+                  if (data?.fileName === cur?.fileName) {
+                    return {
+                      ...data,
+                      fileSchema: {
+                        ...other,
+                        header: Number(value) || 0,
+                      },
+                    };
+                  }
+                  return cur;
+                });
+              setFileDataList(newFileDataList);
+            }}
+          />
+          <span
+            style={{
+              width: 'max-content',
+              display: 'inline-block',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            行开始
+          </span>
+        </div>
+      </div>
+      {state.nodeType[0] === 'edge' && (
+        <div
           style={{
-            width: 'max-content',
-            display: 'inline-block',
-            whiteSpace: 'nowrap',
+            display: 'flex',
+            justifyContent: 'space-between',
+            padding: 12
           }}
         >
-          行开始
-        </span>
-      </div>
-    </div>
+          <div>
+            <span style={{ marginRight: 10 }}>起点类型:</span>
+            <Select
+              value={data?.fileSchema?.SRC_ID}
+              style={{ width: 100 }}
+              options={getOption()}
+              onChange={val => onSelect(val, 'SRC_ID')}
+            />
+          </div>
+          <div>
+            <span style={{ marginRight: 10 }}>终点类型:</span>
+            <Select
+            value={data?.fileSchema?.DST_ID}
+              style={{ width: 100 }}
+              options={getOption()}
+              onChange={val => onSelect(val, 'DST_ID')}
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 const DataMapSelectNav = ({
@@ -147,20 +213,33 @@ const DataMapSelectNav = ({
   data,
   fileDataList,
 }: any) => {
-  const [visibility, setVisibility] = useState<boolean>(true);
   const [defaultSelectValue, setDefaultSelectValue] = useState<string[]>(['']);
 
   const isEdges = [...state?.nodeType][0] === 'edge';
   useEffect(() => {
-    setVisibility(!isEdges);
     if (!isEdges) {
       batchSecureDeletion(data, ['SRC_ID', 'DST_ID']);
     }
   }, [state?.nodeType[0]]);
   useEffect(() => {
-    setDefaultSelectValue(new Array(state?.columns?.length).fill(''));
+    const defaulColumns =
+      data?.fileSchema?.columns || new Array(state?.columns?.length).fill('');
+    setDefaultSelectValue(defaulColumns);
   }, [state?.nodeType[1]]);
-  return visibility ? (
+
+  /* 边默认有SRC_ID/DST_ID */
+  const options = isEdges
+    ? [
+        { value: 'SRC_ID', label: 'SRC_ID' },
+        {
+          value: 'DST_ID',
+          label: 'DST_ID',
+        },
+        ...state?.propertiesOptions,
+      ]
+    : state?.propertiesOptions;
+
+  return (
     <div
       style={{
         display: 'flex',
@@ -179,24 +258,22 @@ const DataMapSelectNav = ({
             <Select
               key={index}
               value={defaultSelectValue[index] || ''}
-              options={[...state?.nodeType][0] ? state?.propertiesOptions : []}
+              options={[...state?.nodeType][0] ? options : []}
               style={{
                 width: 120,
               }}
               onChange={value => {
                 const newFileDataList = [...fileDataList].map(cur => {
-                  const curColumns = Array.isArray(cur?.fileSchema?.columns)
-                    ? cur?.fileSchema?.columns
-                    : [];
-                  curColumns[index] = value || '';
                   if (data?.fileName === cur?.fileName) {
+                    const curColumns = Array.isArray(cur?.fileSchema?.columns)
+                      ? cur?.fileSchema?.columns
+                      : [];
+                    curColumns[index] = value || '';
                     return {
                       ...cur,
                       fileSchema: {
                         ...cur?.fileSchema,
-                        columns: isEdges
-                          ? cur?.fileSchema?.columns
-                          : curColumns,
+                        columns: curColumns,
                       },
                     };
                   }
@@ -213,7 +290,7 @@ const DataMapSelectNav = ({
           ))
         : null}
     </div>
-  ) : null;
+  );
 };
 
 const DataMapTableView = ({ state }: any) => {
@@ -428,17 +505,16 @@ const DataMap = ({
     ) {
       const dataSource: any[] = data?.data?.dataSource || [];
       const dataColumns = dataSource[hasLabel ? 1 : 0];
-      const dataColumnsTitle = ['起点', '终点'];
-      const isNode = ['node', ''].includes(state?.nodeType[0]);
       const curColumns = Object.entries(dataColumns).map(
         ([key, value], index) => {
           return {
             key,
-            title: isNode ? value : dataColumnsTitle[index],
+            title: value,
             dataIndex: key,
           };
         },
       );
+
       setState((pre: any) => {
         return {
           ...pre,
@@ -457,11 +533,12 @@ const DataMap = ({
       style={{
         background: '#fff',
       }}
-      key={'data-map'}
+      key={`data-map_${data?.fileName}`}
     >
       <DataMapConfigHeader
         data={data}
         state={state}
+        graphData={graphData}
         setState={setState}
         setFileDataList={setFileDataList}
         fileDataList={fileDataList}

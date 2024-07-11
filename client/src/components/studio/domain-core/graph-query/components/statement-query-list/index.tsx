@@ -43,18 +43,19 @@ export const StatementList: React.FC<Prop> = ({
   });
   useEffect(() => {
     if (garphName && list?.length) {
-      updateState((draft) => {
+      updateState(draft => {
         draft.queryList = [...list];
       });
       setLocalData(`TUGRAPH_STATEMENT_LISTS`, {
         ...getLocalData('TUGRAPH_STATEMENT_LISTS'),
         [garphName]: list,
       });
+
     }
   }, [list]);
   const { queryList, activeId } = state;
   const addStatement = () => {
-    updateState((draft) => {
+    updateState(draft => {
       const newList = [
         ...queryList,
         {
@@ -71,8 +72,8 @@ export const StatementList: React.FC<Prop> = ({
     });
   };
   const editStatement = (id: string) => {
-    updateState((draft) => {
-      const newList = map(queryList, (item) => {
+    updateState(draft => {
+      const newList = map(queryList, item => {
         if (item.id === id) {
           return { ...item, isEdit: true };
         }
@@ -86,8 +87,8 @@ export const StatementList: React.FC<Prop> = ({
     });
   };
   const deleteStatement = (id: string) => {
-    updateState((draft) => {
-      const newList = filter(queryList, (item) => item.id !== id);
+    updateState(draft => {
+      const newList = filter(queryList, item => item.id !== id);
       draft.queryList = newList;
       setLocalData(`TUGRAPH_STATEMENT_LISTS`, {
         ...getLocalData('TUGRAPH_STATEMENT_LISTS'),
@@ -96,10 +97,10 @@ export const StatementList: React.FC<Prop> = ({
     });
   };
   const searchStatement = (searchKeyword: string) => {
-    updateState((draft) => {
+    updateState(draft => {
       draft.queryList = filter(
         getLocalData('TUGRAPH_STATEMENT_LISTS')[garphName],
-        (item) => item.value.indexOf(searchKeyword) != -1
+        item => item.value.indexOf(searchKeyword) != -1,
       );
     });
   };
@@ -137,7 +138,7 @@ export const StatementList: React.FC<Prop> = ({
             <SearchInput
               placeholder="请输入搜索关键字"
               bordered={false}
-              onSearch={(keyword) => {
+              onSearch={keyword => {
                 searchStatement(keyword);
               }}
             />
@@ -146,7 +147,7 @@ export const StatementList: React.FC<Prop> = ({
                 styles[`${PUBLIC_PERFIX_CLASS}-statement-drawer-content-list`]
               }
             >
-              {map(queryList, (item) => (
+              {map(queryList, (item, index) => (
                 <div
                   key={item.id}
                   className={join(
@@ -160,10 +161,10 @@ export const StatementList: React.FC<Prop> = ({
                           ]
                         : '',
                     ],
-                    ' '
+                    ' ',
                   )}
                   onClick={() => {
-                    updateState((draft) => {
+                    updateState(draft => {
                       draft.activeId = item.id;
                       onSelect?.(item.id);
                     });
@@ -181,9 +182,9 @@ export const StatementList: React.FC<Prop> = ({
                       <Input
                         defaultValue={item.value}
                         autoFocus={true}
-                        onBlur={(e) => {
-                          updateState((draft) => {
-                            draft.queryList = map(queryList, (statement) => {
+                        onBlur={e => {
+                          updateState(draft => {
+                            draft.queryList = map(queryList, statement => {
                               if (statement.id === item.id) {
                                 return {
                                   ...statement,
@@ -195,14 +196,14 @@ export const StatementList: React.FC<Prop> = ({
                             });
                             setLocalData(`TUGRAPH_STATEMENT_LISTS`, {
                               ...getLocalData('TUGRAPH_STATEMENT_LISTS'),
-                              [garphName]: map(queryList, (statement) => {
+                              [garphName]: map(queryList, statement => {
                                 if (statement.id === item.id) {
                                   return omit(
                                     {
                                       ...statement,
                                       value: e.target.value,
                                     },
-                                    'isEdit'
+                                    'isEdit',
                                   );
                                 }
                                 return statement;
@@ -227,26 +228,28 @@ export const StatementList: React.FC<Prop> = ({
                   </div>
                   <div>
                     <EditOutlined
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation();
                         editStatement(item.id);
                       }}
                     />
-                    <Popconfirm
-                      title="确定要删除吗？"
-                      onConfirm={(e) => {
-                        e?.stopPropagation();
-                        deleteStatement(item.id);
-                      }}
-                      okText="确定"
-                      cancelText="取消"
-                    >
-                      <DeleteOutlined
-                        onClick={(e) => {
-                          e.stopPropagation();
+                    {queryList?.length > 1 ? (
+                      <Popconfirm
+                        title="确定要删除吗？"
+                        onConfirm={e => {
+                          e?.stopPropagation();
+                          deleteStatement(item.id);
                         }}
-                      />
-                    </Popconfirm>
+                        okText="确定"
+                        cancelText="取消"
+                      >
+                        <DeleteOutlined
+                          onClick={e => {
+                            e.stopPropagation();
+                          }}
+                        />
+                      </Popconfirm>
+                    ) : null}
                   </div>
                 </div>
               ))}

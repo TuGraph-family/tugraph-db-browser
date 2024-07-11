@@ -101,12 +101,12 @@ const EdgeNodeList: React.FC<EdgeNodeListProp> = ({
                     ]
                   }
                 >
-                  {map(edgeConstraints, (edgeList) => (
-                    <>
+                  {map(edgeConstraints, (edgeList,idx) => (
+                    <div key={idx}>
                       {edgeList[0] || '暂无数据'}
                       <IconFont type="icon-zhixiang" style={{ padding: 2 }} />
                       {edgeList[1] || '暂无数据'}
-                    </>
+                    </div>
                   ))}
                 </div>
               )}

@@ -15,11 +15,15 @@ import { useImmer } from 'use-immer';
 import DemoCard from '../../../../../components/demo-card';
 import { PUBLIC_PERFIX_CLASS, TUGRAPH_DEOM } from '../../../../../constant';
 import { useGraph } from '../../../../../hooks/useGraph';
-import { useImport } from '../../../../../hooks/useImport';
-import { getLocalData } from '../../../../../utils';
+
 import EditForm from '../edit-form';
 
+// utils
+import { generateNameWithHash } from '@/utils/common';
+
 import styles from './index.module.less';
+import { dbRecordsTranslator } from '@/translator';
+
 
 type Props = { open: boolean; onClose: () => void };
 const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
@@ -29,7 +33,7 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
     onGetGraphList,
     onCreateDemoGraph,
   } = useGraph();
-  const { onImportProgress, importProgressCancel } = useImport();
+  
   const [form] = Form.useForm();
   const [state, setState] = useImmer<{
     current?: number;
@@ -60,13 +64,15 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
   const { current, active, loading } = state;
   const cardList = [
     {
-      graph_name: '空模版',
+      graph_demo_name: '空模版',
+      graph_name: generateNameWithHash('空模版'),
       description: '自行定义点边模型和数据导入。',
       imgUrl:
         'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*iLrCTZt0lAcAAAAAAAAAAAAADgOBAQ/original',
     },
     ...TUGRAPH_DEOM,
   ];
+
   const footer =
     current === 0 ? (
       <>
@@ -76,6 +82,10 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
           onClick={() => {
             setState(draft => {
               draft.current = 1;
+            });
+            form.setFieldsValue({
+              graphName: cardList[active || 0].graph_name,
+              description: cardList[active || 0].description
             });
           }}
         >
@@ -103,56 +113,39 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                 onCreateGraph({
                   graphName,
                   config: { description, maxSizeGB },
-                }).then(res => {
-                  if (res.success) {
-                    message.success('新建成功');
-                    onGetGraphList({
-                      userName: getLocalData('TUGRAPH_USER_NAME'),
-                    });
-                    form.resetFields();
-                    onClose();
-                  } else {
-                    message.error('创建失败' + res.errorMessage);
-                  }
+                })
+                  .then((res) => {
+                    if(res?.success){
+                      message.success('新建成功');
+                      onGetGraphList();
+                      form.resetFields();
+                      onClose();
+                    } else {
+                      message.error('创建失败' + res?.errorMessage);
+                    }
                 });
               } else {
                 onCreateDemoGraph({
                   graphName,
                   config: { description, maxSizeGB },
-                  description: cardList[active].data,
-                }).then(res => {
-                  setState(draft => {
-                    draft.loading = true;
-                  });
-                  if (res.success) {
-                    onImportProgress(res.data.taskId).then(res => {
-                      if (res.errorCode == 200) {
-                        if (res.data.state === '2') {
-                          message.success('模版创建成功');
-                          importProgressCancel();
-                          setState(draft => {
-                            draft.loading = false;
-                          });
-                          onGetGraphList({
-                            userName: getLocalData('TUGRAPH_USER_NAME'),
-                          });
-                          form.resetFields();
-                          onClose();
-                        } else if (res.data.state === '3') {
-                          message.error('模版创建失败' + res.data.reason);
-                          setState(draft => {
-                            draft.loading = false;
-                          });
-                        }
-                      }
-                    });
-                  } else {
-                    message.error('模版创建失败' + res.errorMessage);
+                  path: cardList[active].path,
+                })
+                  .then(res => {
+                    if (res?.success) {
+                      message.success('模版创建成功');
+                      onGetGraphList();
+                      form.resetFields();
+                      onClose();
+                    } else {
+                      message.error('模版创建失败' + res?.errorMessage);
+                    }
+                  })
+                  .catch(e => {
+                    message.error('模版创建失败' + e);
                     setState(draft => {
                       draft.loading = false;
                     });
-                  }
-                });
+                  });
               }
             });
           }}
@@ -164,8 +157,9 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
   return (
     <Modal
       title="新建图"
-      visible={open}
+      open={open}
       onCancel={onClose}
+      style={{ top: 20 }}
       width={917}
       className={styles[`${PUBLIC_PERFIX_CLASS}-add-modal-container`]}
       footer={footer}
@@ -186,18 +180,14 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                 }
               >
                 {cardList.map((item, index) => (
-                  <Col key={`col-${item.graph_name}`}>
+                  <Col key={`col-${item.graph_demo_name}`}>
                     <DemoCard
-                      key={item.graph_name}
+                      key={item.graph_demo_name}
                       detail={item}
                       isActive={active === index}
                       onClick={() => {
                         setState(draft => {
                           draft.active = index;
-                        });
-                        form.setFieldsValue({
-                          graphName: item.graph_name,
-                          description: item.description,
                         });
                       }}
                     />

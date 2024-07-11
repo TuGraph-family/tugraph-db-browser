@@ -1,5 +1,5 @@
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
-import { List, Pagination, Spin, message } from 'antd';
+import { List, Pagination, Spin } from 'antd';
 import { join } from 'lodash';
 import { useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
@@ -8,18 +8,17 @@ import { PROJECT_TAB, PUBLIC_PERFIX_CLASS, STEP_LIST } from '../constant';
 import AddTuGraphModal from '../domain-core/project/project-list/components/add-tugraph';
 import EmptyProject from '../domain-core/project/project-list/components/empty-project';
 import ProjectCard from '../domain-core/project/project-list/components/project-card';
+import { getZhPeriod } from '../utils/getZhPeriod';
+import { getLocalData, setLocalData } from '../utils/localStorage';
+
 import { useGraph } from '../hooks/useGraph';
 import { SubGraph } from '../interface/graph';
 import { getDefaultDemoList } from '../utils/getDefaultDemoList';
-import { getZhPeriod } from '../utils/getZhPeriod';
 import { getGraphListTranslator } from '../utils/graphTranslator';
-import { getLocalData, setLocalData } from '../utils/localStorage';
-
 import styles from './index.module.less';
 
 export const GraphList = () => {
   const { onGetGraphList, getGraphListLoading } = useGraph();
-
   const [state, updateState] = useImmer<{
     activeTab: PROJECT_TAB;
     searchType: 'project' | 'member';
@@ -49,44 +48,39 @@ export const GraphList = () => {
 
   const onCollapse = useCallback(() => {
     setLocalData('TUGRAPH_LIST_SHOW_STEP', { isShowStep: !isShowStep });
-    updateState((draft) => {
+    updateState(draft => {
       draft.isShowStep = !isShowStep;
     });
   }, [isShowStep]);
-  const getGraphList = () => {
-    onGetGraphList({ userName: getLocalData('TUGRAPH_USER_NAME') }).then(
-      (res) => {
-        if (res.success) {
-          setLocalData('TUGRAPH_SUBGRAPH_LIST', res.data);
-          updateState((draft) => {
-            const defaultList = getDefaultDemoList(
-              getGraphListTranslator(res.data as SubGraph[])
-            );
-            draft.currentList = defaultList;
-            draft.list = [
-              ...defaultList.slice((pagination - 1) * 8, pagination * 8),
-            ];
-          });
+  const fetchGraphList = () => {
+    onGetGraphList().then(res => {
+      setLocalData('TUGRAPH_SUBGRAPH_LIST', res.data);
+      updateState(draft => {
+        const defaultList = getDefaultDemoList(
+          getGraphListTranslator(res.data as SubGraph[]),
+        );
+        draft.currentList = defaultList;
+        let page = pagination;
+        if (defaultList.length <= (pagination - 1) * 8) {
+          draft.pagination = pagination - 1;
+          page = page - 1;
         }
-      }
-    );
+        draft.list = [...defaultList.slice((page - 1) * 8, pagination * 8)];
+      });
+    });
   };
-  useEffect(() => {
-    try {
-      getGraphList();
-    } catch (error) {
-      console.error(error);
-    }
 
+  useEffect(() => {
+    fetchGraphList();
     const localShowStep = getLocalData('TUGRAPH_LIST_SHOW_STEP');
     if (localShowStep) {
-      updateState((draft) => {
+      updateState(draft => {
         draft.isShowStep = localShowStep.isShowStep;
       });
     }
   }, []);
   const onCreateProject = useCallback(() => {
-    updateState((draft) => {
+    updateState(draft => {
       draft.isAdd = true;
     });
   }, []);
@@ -133,7 +127,7 @@ export const GraphList = () => {
                         ? styles[`${PUBLIC_PERFIX_CLASS}-list-show-step`]
                         : '',
                     ],
-                    ' '
+                    ' ',
                   )}
                   dataSource={[{ id: '-1' } as any, ...(list || [])]}
                   renderItem={(item, index) => {
@@ -143,7 +137,7 @@ export const GraphList = () => {
                           key={item.graphName}
                           projectInfo={item}
                           index={index}
-                          onRefreshProjectList={getGraphList}
+                          onRefreshProjectList={fetchGraphList}
                         />
                       </List.Item>
                     );
@@ -155,8 +149,8 @@ export const GraphList = () => {
                 hideOnSinglePage
                 total={currentList.length}
                 pageSize={8}
-                onChange={(value) => {
-                  updateState((draft) => {
+                onChange={value => {
+                  updateState(draft => {
                     draft.pagination = value;
                     draft.list = [
                       ...currentList.slice((value - 1) * 8, value * 8),
@@ -171,9 +165,9 @@ export const GraphList = () => {
       <AddTuGraphModal
         open={isAdd}
         onClose={() => {
-          updateState((draft) => {
+          updateState(draft => {
             draft.isAdd = false;
-            getGraphList();
+            fetchGraphList();
           });
         }}
       />

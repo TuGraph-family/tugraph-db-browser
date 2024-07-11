@@ -1,0 +1,336 @@
+{
+  "files": [
+    {
+      "columns": [
+        "name",
+        "camp",
+        "hometown",
+        "family",
+        "father_position",
+        "position"
+      ],
+      "header": 1,
+      "format": "CSV",
+      "label": "主公",
+      "path": "/resource/demo_data/ThreeKingdoms/lord.csv"
+    },
+    {
+      "columns": [
+        "name",
+        "camp",
+        "hometown",
+        "family"
+      ],
+      "header": 1,
+      "format": "CSV",
+      "label": "文臣",
+      "path": "/resource/demo_data/ThreeKingdoms/civil-servant.csv"
+    },
+    {
+      "columns": [
+        "name",
+        "camp",
+        "hometown",
+        "family"
+      ],
+      "header": 1,
+      "format": "CSV",
+      "label": "武将",
+      "path": "/resource/demo_data/ThreeKingdoms/general.csv"
+    },
+    {
+      "columns": [
+        "state",
+        "caption"
+      ],
+      "header": 1,
+      "format": "CSV",
+      "label": "州",
+      "path": "/resource/demo_data/ThreeKingdoms/state.csv"
+    },
+    {
+      "columns": [
+        "name",
+        "start_time",
+        "end_time"
+      ],
+      "header": 1,
+      "format": "CSV",
+      "label": "战役",
+      "path": "/resource/demo_data/ThreeKingdoms/battle.csv"
+    },
+    {
+      "DST_ID": "主公",
+      "SRC_ID": "主公",
+      "columns": [
+        "SRC_ID",
+        "DST_ID"
+      ],
+      "header": 1,
+      "format": "CSV",
+      "label": "父亲",
+      "path": "/resource/demo_data/ThreeKingdoms/lord_father_lord.csv"
+    },
+    {
+      "DST_ID": "主公",
+      "SRC_ID": "武将",
+      "columns": [
+        "SRC_ID",
+        "DST_ID"
+      ],
+      "header": 1,
+      "format": "CSV",
+      "label": "父亲",
+      "path": "/resource/demo_data/ThreeKingdoms/general_father_lord.csv"
+    },
+    {
+      "DST_ID": "主公",
+      "SRC_ID": "主公",
+      "columns": [
+        "SRC_ID",
+        "DST_ID"
+      ],
+      "header": 1,
+      "format": "CSV",
+      "label": "兄长",
+      "path": "/resource/demo_data/ThreeKingdoms/lord_brother_lord.csv"
+    },
+    {
+      "DST_ID": "主公",
+      "SRC_ID": "文臣",
+      "columns": [
+        "SRC_ID",
+        "DST_ID"
+      ],
+      "header": 1,
+      "format": "CSV",
+      "label": "隶属",
+      "path": "/resource/demo_data/ThreeKingdoms/civilServant_to_lord.csv"
+    },
+    {
+      "DST_ID": "主公",
+      "SRC_ID": "武将",
+      "columns": [
+        "SRC_ID",
+        "DST_ID"
+      ],
+      "header": 1,
+      "format": "CSV",
+      "label": "隶属",
+      "path": "/resource/demo_data/ThreeKingdoms/general_to_lord.csv"
+    },
+    {
+      "DST_ID": "主公",
+      "SRC_ID": "主公",
+      "columns": [
+        "SRC_ID",
+        "DST_ID"
+      ],
+      "header": 1,
+      "format": "CSV",
+      "label": "隶属",
+      "path": "/resource/demo_data/ThreeKingdoms/lord_to_lord.csv"
+    },
+    {
+      "DST_ID": "州",
+      "SRC_ID": "主公",
+      "columns": [
+        "SRC_ID",
+        "DST_ID"
+      ],
+      "header": 1,
+      "format": "CSV",
+      "label": "籍贯",
+      "path": "/resource/demo_data/ThreeKingdoms/lord_to_state.csv"
+    },
+    {
+      "DST_ID": "州",
+      "SRC_ID": "文臣",
+      "columns": [
+        "SRC_ID",
+        "DST_ID"
+      ],
+      "header": 1,
+      "format": "CSV",
+      "label": "籍贯",
+      "path": "/resource/demo_data/ThreeKingdoms/civilServant_to_state.csv"
+    },
+    {
+      "DST_ID": "州",
+      "SRC_ID": "武将",
+      "columns": [
+        "SRC_ID",
+        "DST_ID"
+      ],
+      "header": 1,
+      "format": "CSV",
+      "label": "籍贯",
+      "path": "/resource/demo_data/ThreeKingdoms/general_to_state.csv"
+    },
+    {
+      "DST_ID": "战役",
+      "SRC_ID": "主公",
+      "columns": [
+        "SRC_ID",
+        "DST_ID"
+      ],
+      "header": 1,
+      "format": "CSV",
+      "label": "参战",
+      "path": "/resource/demo_data/ThreeKingdoms/lord_to_battle.csv"
+    },
+    {
+      "DST_ID": "战役",
+      "SRC_ID": "武将",
+      "columns": [
+        "SRC_ID",
+        "DST_ID"
+      ],
+      "header": 1,
+      "format": "CSV",
+      "label": "参战",
+      "path": "/resource/demo_data/ThreeKingdoms/general_to_battle.csv"
+    }
+  ],
+  "schema": [
+    {
+      "label": "主公",
+      "primary": "name",
+      "properties": [
+        {
+          "name": "name",
+          "type": "STRING"
+        },
+        {
+          "name": "camp",
+          "type": "STRING"
+        },
+        {
+          "name": "hometown",
+          "type": "STRING"
+        },
+        {
+          "name": "family",
+          "type": "STRING"
+        },
+        {
+          "name": "father_position",
+          "type": "STRING",
+          "optional": true
+        },
+        {
+          "name": "position",
+          "type": "STRING"
+        }
+      ],
+      "type": "VERTEX"
+    },
+    {
+      "label": "州",
+      "primary": "state",
+      "properties": [
+        {
+          "name": "state",
+          "type": "STRING"
+        },
+        {
+          "name": "caption",
+          "type": "STRING"
+        }
+      ],
+      "type": "VERTEX"
+    },
+    {
+      "label": "文臣",
+      "primary": "name",
+      "properties": [
+        {
+          "name": "name",
+          "type": "STRING"
+        },
+        {
+          "name": "camp",
+          "type": "STRING"
+        },
+        {
+          "name": "hometown",
+          "type": "STRING"
+        },
+        {
+          "name": "family",
+          "type": "STRING",
+          "optional": true
+        }
+      ],
+      "type": "VERTEX"
+    },
+    {
+      "label": "武将",
+      "primary": "name",
+      "properties": [
+        {
+          "name": "name",
+          "type": "STRING"
+        },
+        {
+          "name": "camp",
+          "type": "STRING"
+        },
+        {
+          "name": "hometown",
+          "type": "STRING"
+        },
+        {
+          "name": "family",
+          "type": "STRING",
+          "optional": true
+        }
+      ],
+      "type": "VERTEX"
+    },
+    {
+      "label": "战役",
+      "primary": "name",
+      "properties": [
+        {
+          "name": "name",
+          "type": "STRING"
+        },
+        {
+          "name": "start_time",
+          "type": "INT32"
+        },
+        {
+          "name": "end_time",
+          "type": "INT32"
+        }
+      ],
+      "type": "VERTEX"
+    },
+    {
+      "label": "父亲",
+      "type": "EDGE",
+      "constraints": [["主公", "主公"], ["武将", "主公"]]
+    },
+    {
+      "label": "兄长",
+      "type": "EDGE",
+      "constraints": [["主公", "主公"]]
+    },
+    {
+      "label": "隶属",
+      "type": "EDGE",
+      "constraints": [["文臣", "主公"], ["武将", "主公"], ["主公", "主公"]]
+    },
+    {
+      "label": "籍贯",
+      "type": "EDGE",
+      "constraints": [["文臣", "州"], ["武将", "州"], ["主公", "州"]]
+    },
+    {
+      "label": "参战",
+      "type": "EDGE",
+      "constraints": [["主公", "战役"], ["武将", "战役"]]
+    }
+  ]
+}

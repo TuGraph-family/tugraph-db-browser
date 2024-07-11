@@ -1,0 +1,252 @@
+{
+    "files": [
+        {
+            "columns": [
+                "birthYear",
+                "name",
+                "description"
+            ],
+            "format": "CSV",
+            "label": "角色",
+            "path": "/resource/demo_data/WanderingEarth/roles.csv"
+        },
+        {
+            "columns": [
+                "name",
+                "description"
+            ],
+            "format": "CSV",
+            "label": "组织",
+            "path": "/resource/demo_data/WanderingEarth/organizations.csv"
+        },
+        {
+            "columns": [
+                "name",
+                "description"
+            ],
+            "format": "CSV",
+            "label": "天体与设施",
+            "path": "/resource/demo_data/WanderingEarth/celestialFsacilities.csv"
+        },
+        {
+            "DST_ID": "角色",
+            "SRC_ID": "角色",
+            "columns": [
+                "SRC_ID",
+                "DST_ID",
+                "name"
+            ],
+            "format": "CSV",
+            "label": "关系",
+            "path": "/resource/demo_data/WanderingEarth/relationship_role_role.csv"
+        },
+        {
+            "DST_ID": "组织",
+            "SRC_ID": "角色",
+            "columns": [
+                "SRC_ID",
+                "DST_ID",
+                "name"
+            ],
+            "format": "CSV",
+            "label": "关系",
+            "path": "/resource/demo_data/WanderingEarth/relationship_role_organization.csv"
+        },
+        {
+            "DST_ID": "天体与设施",
+            "SRC_ID": "角色",
+            "columns": [
+                "SRC_ID",
+                "DST_ID",
+                "name"
+            ],
+            "format": "CSV",
+            "label": "关系",
+            "path": "/resource/demo_data/WanderingEarth/relationship_role_celestialFacility.csv"
+        },
+        {
+            "DST_ID": "角色",
+            "SRC_ID": "角色",
+            "columns": [
+                "SRC_ID",
+                "DST_ID",
+                "no",
+                "name",
+                "title",
+                "year"
+            ],
+            "format": "CSV",
+            "label": "事件关系",
+            "path": "/resource/demo_data/WanderingEarth/事件_角色_角色.csv"
+        },
+        {
+            "DST_ID": "组织",
+            "SRC_ID": "角色",
+            "columns": [
+                "SRC_ID",
+                "DST_ID",
+                "no",
+                "name",
+                "title",
+                "year"
+            ],
+            "format": "CSV",
+            "label": "事件关系",
+            "path": "/resource/demo_data/WanderingEarth/event_role_organization.csv"
+        },
+        {
+            "DST_ID": "天体与设施",
+            "SRC_ID": "角色",
+            "columns": [
+                "SRC_ID",
+                "DST_ID",
+                "no",
+                "name",
+                "title",
+                "year"
+            ],
+            "format": "CSV",
+            "label": "事件关系",
+            "path": "/resource/demo_data/WanderingEarth/event_role_celestialFacility.csv"
+        },
+        {
+            "DST_ID": "角色",
+            "SRC_ID": "组织",
+            "columns": [
+                "SRC_ID",
+                "DST_ID",
+                "no",
+                "name",
+                "title",
+                "year"
+            ],
+            "format": "CSV",
+            "label": "事件关系",
+            "path": "/resource/demo_data/WanderingEarth/event_organization_role.csv"
+        },
+        {
+            "DST_ID": "天体与设施",
+            "SRC_ID": "组织",
+            "columns": [
+                "SRC_ID",
+                "DST_ID",
+                "no",
+                "name",
+                "title",
+                "year"
+            ],
+            "format": "CSV",
+            "label": "事件关系",
+            "path": "/resource/demo_data/WanderingEarth/event_organization_celestialFacilities.csv"
+        },
+        {
+            "DST_ID": "天体与设施",
+            "SRC_ID": "天体与设施",
+            "columns": [
+                "SRC_ID",
+                "DST_ID",
+                "no",
+                "name",
+                "title",
+                "year"
+            ],
+            "format": "CSV",
+            "label": "事件关系",
+            "path": "/resource/demo_data/WanderingEarth/event_celestialFacilities.csv"
+        }
+    ],
+    "schema": [
+        {
+            "label": "天体与设施",
+            "primary": "name",
+            "properties": [
+                {
+                    "name": "name",
+                    "type": "STRING"
+                },
+                {
+                    "name": "description",
+                    "type": "STRING",
+                    "optional": true
+                }
+            ],
+            "type": "VERTEX"
+        },
+        {
+            "label": "组织",
+            "primary": "name",
+            "properties": [
+                {
+                    "name": "name",
+                    "type": "STRING"
+                },
+                {
+                    "name": "description",
+                    "type": "STRING",
+                    "optional": true
+                }
+            ],
+            "type": "VERTEX"
+        },
+        {
+            "label": "角色",
+            "primary": "name",
+            "properties": [
+                {
+                    "name": "birthYear",
+                    "optional": true,
+                    "type": "INT32"
+                },
+                {
+                    "name": "name",
+                    "type": "STRING"
+                },
+                {
+                    "name": "description",
+                    "optional": true,
+                    "type": "STRING"
+                }
+            ],
+            "type": "VERTEX"
+        },
+        {
+            "label": "关系",
+            "properties": [
+                {
+                    "name": "name",
+                    "optional": true,
+                    "type": "STRING"
+                }
+            ],
+            "constraints": [["角色", "角色"],["角色","组织"],["角色","天体与设施"]],
+            "type": "EDGE"
+        },
+        {
+            "label": "事件关系",
+            "constraints": [["角色", "角色"],["角色","组织"],["角色","天体与设施"],["组织","角色"],["组织","天体与设施"],["天体与设施","天体与设施"]],
+            "properties": [
+                {
+                    "name": "title",
+                    "optional": true,
+                    "type": "STRING"
+                },
+                {
+                    "name": "year",
+                    "optional": true,
+                    "type": "INT32"
+                },
+                {
+                    "name": "no",
+                    "optional": false,
+                    "type": "INT32"
+                },
+                {
+                    "name": "name",
+                    "optional": true,
+                    "type": "STRING"
+                }
+            ],
+            "type": "EDGE"
+        }
+    ]
+}

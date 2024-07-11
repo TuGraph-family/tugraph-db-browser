@@ -10,7 +10,7 @@ import { End } from './end';
 
 // @ts-ignore
 import styles from './index.module.less';
-import { setLocalData } from '../studio';
+
 
 const LocalStorageKey = '__guidance_key__';
 /**

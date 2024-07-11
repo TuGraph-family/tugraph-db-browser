@@ -1,12 +1,11 @@
 import { CollasibleStep } from '../components/collapsable-steps';
-import movie_data from './demo-json/movie.json';
-import three_body_data from './demo-json/three_body.json';
-import three_kingdoms_data from './demo-json/three_kingdoms.json';
-import wandering_earth_data from './demo-json/wandering_earth.json';
 export type PROJECT_TAB = 'MY_PROJECT' | 'ALL_PROJEXCT';
 export const PUBLIC_PERFIX_CLASS = 'ant-tugraph';
 
 export { EngineServerURL as SERVER_HOST } from '../../../../../server/app/service/tugraph/constant';
+
+// utils
+import { generateNameWithHash } from '@/utils/common';
 
 export const STEP_LIST: CollasibleStep[] = [
   {
@@ -38,6 +37,7 @@ export const GRAPH_OPERATE = [
     icon: 'icon-tianjiabian',
     value: 'edge',
   },
+  //功能暂时隐藏
   {
     lable: '导入模型',
     icon: 'icon-daorumoxingwenjian',
@@ -71,7 +71,7 @@ export const DATA_TYPE = [
   { label: 'STRING', value: 'STRING' },
   { label: 'DATE', value: 'DATE' },
   { label: 'DATETIME', value: 'DATETIME' },
-  { label: 'BLOB', value: 'BLOB' },
+  // { label: 'BLOB', value: 'BLOB' },
   { label: 'BOOL', value: 'BOOL' },
 ];
 export const TUGRAPH_DEOM_NAME = [
@@ -83,33 +83,33 @@ export const TUGRAPH_DEOM_NAME = [
 export const TUGRAPH_DEOM = [
   {
     graph_demo_name: 'Movie（电影）',
-    graph_name: 'Movie',
+    graph_name: generateNameWithHash('Movie'),
     description: '基于电影、演员、用户场景的简单示例。',
-    data: movie_data,
+    path: '/resource/demo_data/movie/import.json',
     imgUrl:
       'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*vLs3RIMgT4UAAAAAAAAAAAAADgOBAQ/original',
   },
   {
     graph_demo_name: 'Three Kingdoms（三国）',
-    graph_name: 'ThreeKingdoms',
+    graph_name: generateNameWithHash('ThreeKingdoms'),
     description: '基于三国时期的历史事件的示例。',
-    data: three_kingdoms_data,
+    path: '/resource/demo_data/ThreeKingdoms/import.json',
     imgUrl:
       'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*ebTkRIJx4SwAAAAAAAAAAAAADgOBAQ/original',
   },
   {
     graph_demo_name: 'The Three Body（三体）',
-    graph_name: 'TheThreeBody',
+    graph_name: generateNameWithHash('TheThreeBody'),
     description: '基于刘慈欣的小说《三体》的故事背景示例。',
-    data: three_body_data,
+    path: '/resource/demo_data/TheThreeBody/import.json',
     imgUrl:
       'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*UT-FQZ19zooAAAAAAAAAAAAADgOBAQ/original',
   },
   {
     graph_demo_name: 'Wandering Earth（流浪地球）',
-    graph_name: 'WanderingEarth',
+    graph_name: generateNameWithHash('WanderingEarth'),
     description: '基于电影《流浪地球1》、《流浪地球2》的剧情设计的示例。',
-    data: wandering_earth_data,
+    path: '/resource/demo_data/WanderingEarth/import.json',
     imgUrl:
       'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*Yn1mSLYzQsgAAAAAAAAAAAAADgOBAQ/original',
   },
@@ -119,7 +119,9 @@ export const IQUIRE_LIST = [
   { label: '路径查询', key: 'path' },
   { label: '点查询', key: 'node' },
 ];
-export const CONNECT_STR_TYPE = ['STRING', 'DATE', 'DATETIME', 'BLOB', 'BOOL'];
+
+// 'BLOB'
+export const CONNECT_STR_TYPE = ['STRING', 'DATE', 'DATETIME', 'BOOL'];
 export const CONNECT = {
   string: [
     { label: '等于', value: '=' },
@@ -144,23 +146,23 @@ export enum PROPERTY_TYPE {
   STRING = 'string',
   DATE = 'string',
   DATETIME = 'string',
-  BLOB = 'string',
+  // BLOB = 'string',
   BOOL = 'boolean',
 }
 export const STORED_OPTIONS = [
   {
     label: 'C++',
     options: [
+      // {
+      //   value: 'ZIP',
+      //   label: 'zip',
+      // },
+      // {
+      //   value: 'SO',
+      //   label: 'so',
+      // },
       {
-        value: 'zip',
-        label: 'zip',
-      },
-      {
-        value: 'so',
-        label: 'so',
-      },
-      {
-        value: 'cpp',
+        value: 'CPP',
         label: 'cpp',
       },
     ],
@@ -169,14 +171,15 @@ export const STORED_OPTIONS = [
     label: 'Python',
     options: [
       {
-        value: 'py',
+        value: 'PY',
         label: 'py',
       },
     ],
   },
 ];
-export const CPP_CODE_TYPE = ['zip', 'so', 'cpp'];
-export const PYTHON_CODE_TYPE = ['py'];
+// export const CPP_CODE_TYPE = ['ZIP', 'SO', 'CPP'];
+export const CPP_CODE_TYPE = ['CPP'];
+export const PYTHON_CODE_TYPE = ['PY'];
 export const STROED_TYPE = [
   { label: 'cpp_v1', value: 'cpp_v1' },
   { label: 'cpp_v2', value: 'cpp_v2' },

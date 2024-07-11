@@ -11,10 +11,12 @@ export const GI_SDK_APP_VERSION = '1.2.0';
 export default defineConfig({
   // only proxy when using `umi dev`
   // if the assets are built, will not proxy
-  hash: false,
+  hash: true,
   history: {
-    type: 'browser',
+    type: 'hash',
   },
+  outputPath:'./dist/resource',
+  publicPath:'/resource/',
   styles: [
     `https://gw.alipayobjects.com/os/lib/antd/${ANTD_VERSION}/dist/antd.css`,
     `https://gw.alipayobjects.com/os/lib/antv/gi-sdk-app/${GI_SDK_APP_VERSION}/dist/index.css`,
@@ -41,7 +43,6 @@ export default defineConfig({
     `https://gw.alipayobjects.com/os/lib/antd/${ANTD_VERSION}/dist/antd.min.js`,
     `https://gw.alipayobjects.com/os/lib/antv/gi-sdk-app/${GI_SDK_APP_VERSION}/dist/index.min.js`,
   ],
-  publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
   npmClient: 'npm',
   favicons: [
     'https://gw.alipayobjects.com/zos/bmw-prod/6290edfc-e134-4074-a550-079eeba9926d.svg',
@@ -54,4 +55,7 @@ export default defineConfig({
       ...env,
     },
   },
+  plugins: ['@umijs/plugins/dist/initial-state', '@umijs/plugins/dist/model'],
+  initialState: {},
+  model: {},
 });

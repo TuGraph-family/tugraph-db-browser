@@ -1,28 +1,35 @@
-import {
-    getDatabaseInfo,
-    getSystemInfo,
-  } from "../services/DataInfoController";
-  import { useRequest } from "ahooks";
-  
-  export const useDataInfo = () => {
-    const {
-        runAsync: onGetDatabaseInfo,
-        loading: getDatabaseInfoLoading,
-        error: getDatabaseInfoError,
-      } = useRequest(getDatabaseInfo, { manual: true });
+import { useModel } from 'umi';
 
-      const {
-        runAsync: onGetSystemInfo,
-        loading: getSystemInfoLoading,
-        error: getSystemInfoError,
-      } = useRequest(getSystemInfo, { manual: true });
+import { useRequest } from 'ahooks';
+import { InitialState } from '@/app';
+import { getDatabaseInfo, getSystemInfo } from '@/queries/info';
+import { request } from '@/services/request';
 
-      return {
-        onGetDatabaseInfo,
-        getDatabaseInfoLoading,
-        getDatabaseInfoError,
-        onGetSystemInfo,
-        getSystemInfoLoading,
-        getSystemInfoError
-      }
-    }
+export const useDataInfo = () => {
+  const { initialState } = useModel('@@initialState');
+  const { driver } = initialState as InitialState;
+  const {
+    runAsync: onGetDatabaseInfo,
+    loading: getDatabaseInfoLoading,
+    error: getDatabaseInfoError,
+  } = useRequest(() => request({ driver, cypher: getDatabaseInfo() }), {
+    manual: true,
+  });
+
+  const {
+    runAsync: onGetSystemInfo,
+    loading: getSystemInfoLoading,
+    error: getSystemInfoError,
+  } = useRequest(() => request({ driver, cypher: getSystemInfo() }), {
+    manual: true,
+  });
+
+  return {
+    onGetDatabaseInfo,
+    getDatabaseInfoLoading,
+    getDatabaseInfoError,
+    onGetSystemInfo,
+    getSystemInfoLoading,
+    getSystemInfoError,
+  };
+};

@@ -1,31 +1,38 @@
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { Divider, Dropdown, Menu, Space, Tooltip, message } from 'antd';
+import { Divider, Dropdown, Menu, Space, Tooltip,} from 'antd';
 import { isEmpty } from 'lodash';
-import { history } from 'umi';
 import React from 'react';
+import { useModel } from 'umi';
 import { useImmer } from 'use-immer';
-import { useAuth } from '@/components/studio/hooks/useAuth';
 import { getLocalData, setLocalData } from '../utils/localStorage';
 import EditPasswordModal from './edit-password';
-import { USER_HELP_LINK } from '../constant';
+import {
+  USER_HELP_LINK
+} from '../constant';
+import {
+  TUGRAPH_PASSWORD,
+  TUGRAPH_URI,
+  TUGRAPH_USER_NAME,
+} from '@/constants';
+import { InitialState } from '@/app';
 
 type Prop = {};
 export const UserCenter: React.FC<Prop> = () => {
-  const { onLogout } = useAuth();
+  const { initialState, setInitialState } = useModel('@@initialState');
   const [state, updateState] = useImmer<{ isEditPassword: boolean }>({
     isEditPassword: false,
   });
   const { isEditPassword } = state;
   const handleLogout = () => {
-    onLogout().then(res => {
-      if (res.errorCode == 200) {
-        setLocalData('TUGRAPH_TOKEN', '');
-        history.push('/login');
-      } else {
-        message.error('登出失败' + res.errorMessage);
-      }
-    });
-  };
+    setInitialState({...initialState, userInfo: {}} as InitialState)
+      .then(() => {
+        setLocalData(TUGRAPH_USER_NAME, null);
+        setLocalData(TUGRAPH_PASSWORD, null);
+        setLocalData(TUGRAPH_URI, null);
+        initialState?.session?.close();
+          window.location.hash = '/login';
+        })
+      .catch((err) => console.log('error:', err))};
   const items = [
     {
       key: '1',
@@ -35,7 +42,7 @@ export const UserCenter: React.FC<Prop> = () => {
             // updateState(draft => {
             //   draft.isEditPassword = true;
             // });
-            history.push('/reset');
+           window.location.hash = '/reset'
           }}
         >
           修改密码

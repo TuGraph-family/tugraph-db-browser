@@ -1,22 +1,29 @@
 import { useRequest } from 'ahooks';
-import { nodeQuery, pathQuery, statementQuery } from '../services/QueryController';
+import { queryByGraphLanguage, queryByNode, queryByPath } from '@/services/query';
+import { useModel } from 'umi';
+import { InitialState } from '@/app';
 
 export const useQuery = () => {
+  const { initialState } = useModel('@@initialState');
+  const { driver } = initialState as InitialState;
+  
   const {
     runAsync: onStatementQuery,
     loading: StatementQueryLoading,
     error: StatementQueryError,
-  } = useRequest(statementQuery, { manual: true });
+  } = useRequest(params=>queryByGraphLanguage(driver,params), { manual: true });
+
   const {
     runAsync: onNodeQuery,
     loading: NodeQueryLoading,
     error: NodeQueryError,
-  } = useRequest(nodeQuery, { manual: true });
+  } = useRequest(params=>queryByNode(driver,params), { manual: true });
+
   const {
     runAsync: onPathQuery,
     loading: PathQueryLoading,
     error: PathQueryError,
-  } = useRequest(pathQuery, { manual: true });
+  } = useRequest(params=>queryByPath(driver,params), { manual: true });
 
   return {
     onStatementQuery,

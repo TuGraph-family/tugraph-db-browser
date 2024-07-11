@@ -32,7 +32,7 @@ const EditPasswordModal: React.FC<Prop> = ({ open, onCancel }) => {
       cancelText="取消"
       width={560}
       className={styles[`${PUBLIC_PERFIX_CLASS}-edit-password-modal`]}
-      visible={open}
+      open={open}
       onCancel={onCancel}
       onOk={handleChangePassword}
       confirmLoading={ChangePasswordLoading}

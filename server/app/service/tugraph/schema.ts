@@ -710,39 +710,6 @@ class TuGraphSchemaService extends Service {
    */
   async importSchema(params: ISchemaParams) {
     const { graph, schema, override = false } = params;
-    // 如果是覆盖，则需要先删除原有的 schema
-    if (override) {
-      const deleteSchemaResult = await this.ctx.curl(
-        `${EngineServerURL}/cypher`,
-        {
-          headers: {
-            'content-type': 'application/json',
-            Authorization: this.ctx.request.header.authorization,
-          },
-          method: 'POST',
-          data: {
-            graph,
-            script: `CALL db.dropDB()`,
-          },
-          timeout: [30000, 50000],
-          dataType: 'json',
-        },
-      );
-
-      if (
-        deleteSchemaResult?.data?.errorCode != 200 ||
-        deleteSchemaResult?.status !== 200
-      ) {
-        return {
-          success: false,
-          code: deleteSchemaResult.status,
-          data: null,
-          errorCode: deleteSchemaResult.data.errorCode,
-          errorMessage: deleteSchemaResult.data.errorMessage,
-        };
-      }
-    }
-
     const result = await this.ctx.curl(`${EngineServerURL}/import_schema`, {
       headers: {
         'content-type': 'application/json',

@@ -90,17 +90,14 @@ class TuGraphAuthService extends Service {
    */
   async updateUser(params: IUserParams): Promise<any> {
     const { username, password, description = '', roles = [] } = params;
-
-    let cypherScripts = [
-      // 1.修改密码
-      `CALL dbms.security.changeUserPassword('${username}','${password}')`,
-      // 2. 修改用户描述
-      `CALL dbms.security.setUserDesc('${username}', '${description}')`,
-      // 3. 赋予用户角色
-      `CALL dbms.security.rebuildUserRoles('${username}', ${JSON.stringify(
+    let cypherScripts = queryCyphers({
+      username,
+      password,
+      description,
+      roles: JSON.stringify(
         roles,
-      )})`,
-    ];
+      )
+    }) 
 
     const cypherPromise = cypherScripts.map(async cypher => {
       return await this.executeCypherQuery(cypher);

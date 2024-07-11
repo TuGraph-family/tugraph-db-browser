@@ -9,7 +9,6 @@ import type { UploadProps } from 'antd';
 import { Button, Checkbox, message, Modal, Select, Steps, Upload } from 'antd';
 import { filter, isEmpty, join } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
-import { history } from 'umi';
 import { useImmer } from 'use-immer';
 import {
   GraphCanvas,
@@ -45,10 +44,10 @@ import styles from './index.module.less';
 import { addQueryParam } from '../../utils/url';
 
 export const GraphConstruct = () => {
-  const location = history.location;
+  const location = window.location;
   const [hoverType, setHoverType] = useState('');
   const graphList = getLocalData('TUGRAPH_SUBGRAPH_LIST') as SubGraph[];
-  const { onImportGraphSchema, ImportGraphSchemaLoading } = useImport();
+  const { onImportGraphSchema } = useImport();
   const [state, setState] = useImmer<{
     graphListOptions: { label: string; value: string }[];
     currentGraphName: string;
@@ -78,6 +77,7 @@ export const GraphConstruct = () => {
       type?: string;
       properties?: Array<SchemaProperties>;
     }>;
+    importSchemaLoading: boolean;
   }>({
     graphListOptions: graphList?.map((graph: SubGraph) => {
       return {
@@ -106,6 +106,7 @@ export const GraphConstruct = () => {
     isModelOpen: false,
     override: false,
     schema: [],
+    importSchemaLoading: false
   });
   const {
     currentGraphName,
@@ -129,7 +130,9 @@ export const GraphConstruct = () => {
     override,
     schema,
     visible,
+    importSchemaLoading,
   } = state;
+
 
   const { onGetGraphSchema, onCreateLabelSchema, onDeleteLabelSchema } =
     useSchema();
@@ -241,7 +244,7 @@ export const GraphConstruct = () => {
     onCreateLabelSchema(params).then(res => {
       if (res.success) {
         message.success('创建成功');
-        window.location.reload();
+        getGraphSchema(currentGraphName)
       } else {
         message.error('创建失败' + res.errorMessage);
       }
@@ -253,12 +256,13 @@ export const GraphConstruct = () => {
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerLeft`]}>
         <ArrowLeftOutlined
           onClick={() => {
-            history.push('/home');
+            location.hash = '/home';
           }}
         />
         <Select
           onChange={value => {
-            window.location.href = `${location.pathname}?graphName=${value}`;
+            location.hash = `/construct?graphName=${value}`;
+            location.reload();
           }}
           defaultValue={currentGraphName}
           options={graphListOptions}
@@ -278,7 +282,7 @@ export const GraphConstruct = () => {
         <Button
           style={{ marginRight: '8px' }}
           onClick={() => {
-            history.push(`/query?graphName=${currentGraphName}`);
+            window.location.hash = `/query?graphName=${currentGraphName}`;
           }}
         >
           前往图查询
@@ -363,7 +367,6 @@ export const GraphConstruct = () => {
   useEffect(() => {
     graphCanvasContextValue.graph?.on('click', (val: any) => {
       addQueryParam('at', 'canvas');
-
       onEditShow();
       if (val.shape) {
         setState(draft => {
@@ -380,6 +383,10 @@ export const GraphConstruct = () => {
   const uploadProps: UploadProps = {
     name: 'file',
     maxCount: 1,
+    customRequest(options) {
+      // @ts-ignore
+      options.onSuccess(options.filename);
+    },
     onChange(info) {
       if (info.file.status === 'done') {
         message.success(`${info.file.name} 文件上传成功`);
@@ -400,6 +407,33 @@ export const GraphConstruct = () => {
         });
       };
     },
+  };
+
+  // 导入模版确认按钮
+  const handleOk = () => {
+    setState(draft => {
+        draft.importSchemaLoading = true;
+    });
+    onImportGraphSchema({
+      graph: currentGraphName,
+      schema,
+      override,
+    }).then(res => {
+      if (res.success) {
+        message.success('导入成功')
+        getGraphSchema(currentGraphName)
+        setState(draft => {
+          draft.isModelOpen = false;
+          draft.importSchemaLoading = false;
+        });
+      } else {
+        message.error('导入失败' + res.errorMessage);
+      }
+    }).finally(()=>{
+      setState(draft => {
+        draft.importSchemaLoading = false;
+    });
+    });
   };
   return (
     <div
@@ -477,7 +511,7 @@ export const GraphConstruct = () => {
             }).then(res => {
               if (res.success) {
                 message.success('删除成功');
-                window.location.reload();
+                getGraphSchema(currentGraphName)
               } else {
                 message.error('删除失败' + res.errorMessage);
               }
@@ -571,14 +605,26 @@ export const GraphConstruct = () => {
         <Modal
           title="导入模型"
           width={480}
-          visible={isModelOpen}
+          open={isModelOpen}
           onCancel={() => {
             setState(draft => {
               draft.isModelOpen = false;
             });
           }}
-          cancelText="取消"
-          okText="确认"
+          footer={[
+            <Button
+              onClick={() => {
+                setState(draft => {
+                  draft.isModelOpen = false;
+                });
+              }}
+            >
+              取消
+            </Button>,
+            <Button type="primary" loading={importSchemaLoading} onClick={handleOk}>
+              确认
+            </Button>,
+          ]}
           okButtonProps={{
             style: {
               borderRadius: 6,
@@ -589,26 +635,8 @@ export const GraphConstruct = () => {
               borderRadius: 6,
             },
           }}
-          confirmLoading={ImportGraphSchemaLoading}
           className={styles[`${PUBLIC_PERFIX_CLASS}-model`]}
-          onOk={() => {
-            onImportGraphSchema({
-              graph: currentGraphName,
-              schema,
-              override,
-            }).then(res => {
-              if (res.success) {
-                message.success('导入成功').then(() => {
-                  setState(draft => {
-                    draft.isModelOpen = false;
-                    window.location.reload();
-                  });
-                });
-              } else {
-                message.error('导入失败' + res.errorMessage);
-              }
-            });
-          }}
+
         >
           <div className={styles[`${PUBLIC_PERFIX_CLASS}-upload`]}>
             <Upload {...uploadProps}>

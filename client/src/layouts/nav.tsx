@@ -3,7 +3,7 @@ import { APP_LINKS } from '@/constants';
 // @ts-nocheck
 import { Col, Row } from 'antd';
 import { useState } from 'react';
-import { history, useLocation } from 'umi';
+import { useLocation } from 'umi';
 import styles from './index.less';
 const Nav = ({ linkView = true }) => {
   const location = useLocation();
@@ -28,7 +28,7 @@ const Nav = ({ linkView = true }) => {
                   className={path === curPath ? styles?.linked : styles?.link}
                   key={key}
                   onClick={() => {
-                    history.push(path);
+                    window.location.hash = path;
                   }}
                 >
                   {title}

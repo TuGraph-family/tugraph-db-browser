@@ -7,8 +7,9 @@ import {
 } from '@ant-design/icons';
 import { Button, Empty, Modal, Popconfirm, message } from 'antd';
 import { filter, find, join, last, map, xorBy } from 'lodash';
-import React, { ReactChild, useCallback } from 'react';
+import React, { ReactChild, useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
+import { useModel } from 'umi';
 import { SplitPane } from '../../../../components/split-panle';
 import TextTabs from '../../../../components/text-tabs';
 import { PUBLIC_PERFIX_CLASS } from '../../../../constant';
@@ -20,6 +21,8 @@ import { StoredDownLoad } from './stored-download';
 import { StoredKhopPanle } from './stored-khop-panle';
 import { StoredList } from './stored-list';
 import { StoredResult } from './stored-result';
+
+import { InitialState } from '@/app';
 
 import IconFont from '../../../../components/icon-font';
 import styles from './index.module.less';
@@ -80,6 +83,20 @@ export const StoredProcedureModal: React.FC<Props> = ({
     refreshList,
     demoVisible,
   } = state;
+
+  const { initialState } = useModel('@@initialState');
+  const { driver } = initialState as InitialState;
+
+  /** 兼容数据库输入输出不一致，支持映射多种字符 */
+  const codeTypeMap = {
+    'cpp': 'CPP',
+    'py': 'PY',
+    'python': 'PY'
+  };
+
+  /** 统一计算procedure调用参数 */
+  const paramsValue = tabs.find((item) => item.key === selectItem)?.paramValue ?? `{"scan_edges": true,"times": 2}`;
+
   const onSplitPaneHeightChange = useCallback((size: number) => {
     updateState((draft) => {
       draft.height = size;
@@ -88,31 +105,58 @@ export const StoredProcedureModal: React.FC<Props> = ({
   const getList = (newList: ProcedureItemParams[]) => {
     updateState((draft) => {
       draft.list = newList;
-      if (list.length && newList.length > list.length) {
-        const newTab = xorBy(list, newList, 'name')[0];
-        draft.tabs = [...tabs, { text: newTab.name, key: newTab.name }];
-        draft.detail = newTab;
-        draft.selectItem = newTab.name;
+      if (newList.length > list.length) {
+        const diffElements = xorBy(newList, list, 'name');
+        const newTab = diffElements.find(element => newList.includes(element));
+        
+        if (newTab && newTab.name) {
+            draft.tabs = [...(draft.tabs || []), { text: newTab.name, key: newTab.name }];
+            draft.detail = newTab;
+            draft.selectItem = newTab.name;
+        } else {
+            console.log("No new element found or new element doesn't have a name property");
+        }
+      }
+      else {
+        console.log("newList is not longer than list");
       }
     });
   };
   const checkCode = () => {
-    updateState((draft) => {
-      draft.drawerVisible = true;
-    });
-  };
-  const downProcedure = () => {
-    downloadFile(code, `${detail.name}.${detail.type}`);
-  };
-  const deleteProcedure = () => {
-    onDeleteProcedure({
+    onGetProcedureCode(driver, {
       graphName,
-      procedureType: detail.type,
+      procedureType: codeTypeMap[detail?.type || detail?.code_type],
       procedureName: detail.name,
     }).then((res) => {
-      if (res.errorCode === '200') {
+      if (res.errorCode === '200' || res?.success) {
+        updateState((draft) => {
+          /** 需要用utf-8格式再次解码atob的内容 */
+          draft.code = new TextDecoder().decode(
+            new Uint8Array(atob(res.data[0]?.plugin_description?.code_base64
+          )
+            .split('')
+            .map(c => c.charCodeAt(0))));
+            draft.drawerVisible = true;
+        });
+      }
+    });
+    // updateState((draft) => {
+    //   draft.drawerVisible = true;
+    // });
+  };
+  const downProcedure = () => {
+    downloadFile(code, `${detail.name}.${codeTypeMap[detail?.type || detail?.code_type]}`);
+  };
+  const deleteProcedure = () => {
+    //TODO: By Allen
+    onDeleteProcedure(driver, {
+      graphName,
+      procedureType: codeTypeMap[detail?.type || detail?.code_type],
+      procedureName: detail.name,
+    }).then((res) => {
+      if (res.errorCode === '200' || res?.success) {
         message.success('卸载成功');
-        refreshList(detail.type);
+        refreshList(codeTypeMap[detail?.type || detail?.code_type]);
         updateState((draft) => {
           draft.tabs = filter(tabs, (tab) => tab.key !== detail.name);
           const activekey = last(
@@ -130,13 +174,14 @@ export const StoredProcedureModal: React.FC<Props> = ({
     });
   };
   const callProcedure = () => {
-    onCallProcedure({
+
+    onCallProcedure(driver, {
       graphName,
-      procedureType: detail.type,
+      procedureType: codeTypeMap[detail?.type || detail?.code_type],
       procedureName: detail.name,
       timeout,
       inProcess: true,
-      param: tabs.find((item) => item.key === selectItem)?.paramValue,
+      param: paramsValue,
       version: detail.version,
     }).then((res) => {
       updateState((draft) => {
@@ -223,17 +268,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
         ];
       }
     });
-    onGetProcedureCode({
-      graphName,
-      procedureType: detail.type,
-      procedureName: detail.name,
-    }).then((res) => {
-      if (res.errorCode === '200') {
-        updateState((draft) => {
-          draft.code = atob(res.data.content);
-        });
-      }
-    });
+    //TODO: By Allen
   };
   const getParamValue = (value: string) => {
     updateState((draft) => {
@@ -358,9 +393,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
                   >
                     <StoredKhopPanle
                       getParamValue={getParamValue}
-                      value={
-                        tabs.find((item) => item.key === selectItem)?.paramValue
-                      }
+                      value={paramsValue}
                       detail={detail}
                       selectItem={selectItem}
                       getTimeout={getTimeout}

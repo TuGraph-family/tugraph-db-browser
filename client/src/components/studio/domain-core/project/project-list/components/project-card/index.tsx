@@ -7,8 +7,8 @@ import { PUBLIC_PERFIX_CLASS, TUGRAPH_DEOM } from '../../../../../constant';
 import { useGraph } from '../../../../../hooks/useGraph';
 import AddTuGraphModal from '../add-tugraph';
 import EditTuGraphMoadl from '../edit-tugraph';
-
 import styles from './index.module.less';
+import { useEffect } from 'react';
 
 interface CardProps {
   projectInfo: any;
@@ -34,20 +34,22 @@ const ProjectCard = ({
     isAdd: boolean;
     nodeEdgeObjList?: Array<{ text: string; value?: number }>;
     isNodeEdgeObj: boolean;
+    isConstruct: boolean;
   }>({
     drawerVisiable: false,
     isEdit: false,
     isAdd: false,
     nodeEdgeObjList: [],
     isNodeEdgeObj: false,
+    isConstruct: false,
   });
-  const { nodeEdgeObjList, isNodeEdgeObj } = state;
+  const { nodeEdgeObjList, isNodeEdgeObj,isConstruct } = state;
   const getActions = (text: string, status: boolean, href: string) => (
-    <Tooltip title={!status && '敬请期待'}>
+    <Tooltip title={!status && '请先图构建'}>
       <span
         onClick={() => {
           if (status) {
-            window.open(`${window?.location?.origin}${href || ''}`);
+            window.location.hash = href || '';
           }
         }}
         className={
@@ -66,7 +68,9 @@ const ProjectCard = ({
       draft.isNodeEdgeObj = true;
     });
     onGetNodeEdgeStatistics(graphName).then(res => {
+
       if (res.success) {
+        const isConstruct = !!(res.data.vertexLabels || res.data.edgeLabels)
         updateState(draft => {
           draft.nodeEdgeObjList = [
             { text: '类点', value: res.data.vertexLabels },
@@ -74,12 +78,15 @@ const ProjectCard = ({
             { text: '类边', value: res.data.edgeLabels },
             { text: '边', value: res.data.edgeCount },
           ];
+          draft.isConstruct = isConstruct
         });
       }
     });
   };
-  const isOfficial =
-    TUGRAPH_DEOM.filter(item => item.graph_name === graphName).length > 0;
+  useEffect(()=>{
+    nodeEdgeStatistics(graphName)
+  },[])
+
   return (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-card-box`]}>
       {index === 0 ? (
@@ -109,8 +116,8 @@ const ProjectCard = ({
               true,
               `${'/construct'}?graphName=${graphName}`,
             ),
-            getActions('图查询', true, `${'/query'}?graphName=${graphName}`),
-            getActions('图分析', true, `${'/analysis'}?graphName=${graphName}`),
+            getActions('图查询', isConstruct, `${'/query'}?graphName=${graphName}`),
+            getActions('图分析', false, `${'/analysis'}?graphName=${graphName}`),
           ]}
           bordered={false}
           hoverable
@@ -127,28 +134,7 @@ const ProjectCard = ({
                       styles[`${PUBLIC_PERFIX_CLASS}-graph-display-name`]
                     }
                   >
-                    {isOfficial ? (
-                      <div
-                        className={
-                          styles[
-                            `${PUBLIC_PERFIX_CLASS}-graph-display-name-container`
-                          ]
-                        }
-                      >
-                        <div
-                          className={
-                            styles[
-                              `${PUBLIC_PERFIX_CLASS}-graph-display-name-icon`
-                            ]
-                          }
-                        >
-                          官
-                        </div>
-                        <Tooltip title={graphName}>{graphName}</Tooltip>
-                      </div>
-                    ) : (
                       <Tooltip title={graphName}>{graphName}</Tooltip>
-                    )}
                   </div>
                   <div
                     className={
@@ -181,13 +167,13 @@ const ProjectCard = ({
                         />
                       </Tooltip>
                     )}
-                    {!isOfficial && (
+                
                       <Popconfirm
                         placement="top"
                         title={`你确定将子图「${graphName}」永久删除吗？`}
                         onConfirm={() => {
                           onDeleteGraph({ graphName }).then(res => {
-                            if (res.success) {
+                            if (res?.success) {
                               onRefreshProjectList();
                               message.success('删除成功');
                             }
@@ -196,11 +182,13 @@ const ProjectCard = ({
                         okText="确定"
                         cancelText="取消"
                       >
-                        <DeleteOutlined
-                          style={{ color: `rgba(152, 152, 157, 1)` }}
-                        />
+                        <Tooltip title="删除">
+                          <DeleteOutlined
+                            style={{ color: `rgba(152, 152, 157, 1)` }}
+                          />
+                        </Tooltip>
                       </Popconfirm>
-                    )}
+                  
                     <Tooltip title="编辑">
                       <IconFont
                         type="icon-bianjimoxing"

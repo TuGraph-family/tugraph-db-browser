@@ -1,0 +1,173 @@
+{
+    "schema": [
+      {
+        "label" : "person",
+        "type" : "VERTEX",
+        "primary" : "name",
+        "properties" : [
+          {"name" : "name", "type":"STRING"},
+          {"name" : "introduce", "type":"STRING"}
+        ]
+      },
+      {
+        "label" : "organization",
+        "type" : "VERTEX",
+        "primary" : "name",
+        "properties" : [
+          {"name" : "name", "type":"STRING"},
+          {"name" : "introduce", "type":"STRING", "optional": true}
+        ]
+      },
+      {
+        "label" : "plan",
+        "type" : "VERTEX",
+        "primary" : "name",
+        "properties" : [
+          {"name" : "name", "type":"STRING"},
+          {"name" : "content", "type":"STRING"}
+        ]
+      },
+      {
+        "label" : "time",
+        "type" : "VERTEX",
+        "primary" : "name",
+        "properties" : [
+          {"name" : "name", "type":"STRING"},
+          {"name" : "time", "type":"STRING"},
+          {"name" : "important_events", "type":"STRING"}
+        ]
+      },
+      {
+        "label" : "person_person",
+        "type" : "EDGE",
+        "properties" : [
+          {"name" : "relation", "type" : "STRING", "optional": true}
+        ],
+        "constraints": [["person", "person"]]
+      },
+      {
+        "label" : "person_plan",
+        "type" : "EDGE",
+        "properties" : [
+          {"name" : "relation", "type" : "STRING", "optional": true}
+        ],
+        "constraints": [["person", "plan"]]
+      },
+      {
+        "label" : "person_organization",
+        "type" : "EDGE",
+        "properties" : [
+          {"name" : "relation", "type" : "STRING", "optional": true}
+        ],
+        "constraints": [["person", "organization"]]
+      },
+      {
+        "label" : "organization_plan",
+        "type" : "EDGE",
+        "properties" : [
+          {"name" : "relation", "type" : "STRING", "optional": true}
+        ],
+        "constraints": [["organization", "plan"]]
+      },
+      {
+        "label" : "organization_organization",
+        "type" : "EDGE",
+        "properties" : [
+          {"name" : "relation", "type" : "STRING", "optional": true}
+        ],
+        "constraints": [["organization", "organization"]]
+      },
+      {
+        "label" : "time_time",
+        "type" : "EDGE",
+        "properties" : [
+          {"name" : "relation", "type" : "STRING", "optional": true}
+        ],
+        "constraints": [["time", "time"]]
+      }
+    ],
+    "files" : [
+      {
+        "path" : "/resource/demo_data/TheThreeBody/persons.csv",
+        "format" : "CSV",
+        "label" : "person",
+        "header" : 0,
+        "columns" : ["name","introduce"]
+      },
+      {
+        "path" : "/resource/demo_data/TheThreeBody/organizes.csv",
+        "format" : "CSV",
+        "label" : "organization",
+        "header" : 0,
+        "columns" : ["name","introduce"]
+      },
+      {
+        "path" : "/resource/demo_data/TheThreeBody/plans.csv",
+        "format" : "CSV",
+        "label" : "plan",
+        "header" : 0,
+        "columns" : ["name","content"]
+      },
+      {
+        "path" : "/resource/demo_data/TheThreeBody/timeline.csv",
+        "format" : "CSV",
+        "label" : "time",
+        "header" : 0,
+        "columns" : ["name","time","important_events"]
+      },
+      {
+        "path" : "/resource/demo_data/TheThreeBody/person-person-relationship.csv",
+        "format" : "CSV",
+        "label" : "person_person",
+        "header" : 0,
+        "SRC_ID" : "person",
+        "DST_ID" : "person",
+        "columns" : ["SRC_ID","DST_ID", "relation"]
+      },
+      {
+        "path" : "/resource/demo_data/TheThreeBody/person-organization-relationship.csv",
+        "format" : "CSV",
+        "label" : "person_organization",
+        "header" : 0,
+        "SRC_ID" : "person",
+        "DST_ID" : "organization",
+        "columns" : ["SRC_ID","DST_ID", "relation"]
+      },
+      {
+        "path" : "/resource/demo_data/TheThreeBody/person-plan-relationship.csv",
+        "format" : "CSV",
+        "label" : "person_plan",
+        "header" : 0,
+        "SRC_ID" : "person",
+        "DST_ID" : "plan",
+        "columns" : ["SRC_ID","DST_ID", "relation"]
+      },
+      {
+        "path" : "/resource/demo_data/TheThreeBody/organization-organization-relationship.csv",
+        "format" : "CSV",
+        "label" : "organization_organization",
+        "header" : 0,
+        "SRC_ID" : "organization",
+        "DST_ID" : "organization",
+        "columns" : ["SRC_ID","DST_ID", "relation"]
+      },
+      {
+        "path" : "/resource/demo_data/TheThreeBody/organization-plan-relationship.csv",
+        "format" : "CSV",
+        "label" : "organization_plan",
+        "header" : 0,
+        "SRC_ID" : "organization",
+        "DST_ID" : "plan",
+        "columns" : ["SRC_ID","DST_ID", "relation"]
+      },
+      {
+        "path" : "/resource/demo_data/TheThreeBody/timeRelationship.csv",
+        "format" : "CSV",
+        "label" : "time_time",
+        "header" : 0,
+        "SRC_ID" : "time",
+        "DST_ID" : "time",
+        "columns" : ["SRC_ID","DST_ID"]
+      }
+    ]
+  }

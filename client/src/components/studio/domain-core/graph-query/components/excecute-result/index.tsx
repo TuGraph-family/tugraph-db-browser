@@ -48,6 +48,7 @@ import { useGraphData } from '../../../../hooks/useGraphData';
 import { GraphData, SchemaProperties } from '../../../../interface/schema';
 import { editEdgeParamsTransform } from '../../utils/editEdgeParamsTransform';
 import styles from './index.module.less';
+import { convertIntToNumber } from '@/translator';
 
 const { TabPane } = Tabs;
 const { Group } = Radio;
@@ -243,6 +244,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
     nodes: Array<FormatDataNodeProp>;
     edges: Array<FormatDataEdgeProp>;
   }) => {
+  
     const newNodes = map(formatData?.nodes, item => ({
       ...item,
       style: { label: { value: item.properties?.name || item.label } },
@@ -645,6 +647,40 @@ const ExecuteResult: React.FC<ResultProps> = ({
     );
   };
 
+  // 表格
+  const renderJSONTable = () => {
+    if (isEmpty(originalData)) {
+      return <Empty description="no records" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+    }
+    const keys = Object.keys(originalData?.[0]);
+    const columns = keys.map(item => {
+      return {
+        key: item,
+        title: item,
+        dataIndex: item,
+        width: 300,
+        render: (value: any) => {
+          return (
+            <pre
+              style={{
+                whiteSpace: 'break-spaces',
+                wordWrap: 'break-word',
+                wordBreak: 'break-word',
+              }}
+            >
+              {typeof value === 'object'
+                ? JSONBig.stringify(value, null, 2)
+                : value}
+            </pre>
+          );
+        },
+      };
+    });
+    return (
+      <Table columns={columns} dataSource={convertIntToNumber(originalData)} />
+    );
+  };
+
   return (
     <GraphCanvasContext.Provider value={{ ...graphCanvasContextValue }}>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-excecute-result`]}>
@@ -661,7 +697,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
             });
           }}
         >
-          <TabPane
+          {/* <TabPane
             key="JSON"
             tab={<IconItem icon="icon-read" name="JSON视图" />}
           >
@@ -670,27 +706,25 @@ const ExecuteResult: React.FC<ResultProps> = ({
               src={
                 isEmpty(originalData)
                   ? omit(excecuteResult, 'id')
-                  : originalData
+                  : convertIntToNumber(originalData)
               }
               displayDataTypes={false}
             />
-          </TabPane>
+          </TabPane> */}
           <TabPane
             key="JSONText"
-            tab={<IconItem icon="icon-JSONwenben" name="JSON文本" />}
+            tab={
+              <IconItem
+                icon="icon-JSONwenben"
+                name="表格文本"
+                style={{ marginLeft: -5 }}
+              />
+            }
           >
             {copyScript}
-            <pre style={{ whiteSpace: 'break-spaces' }}>
-              {JSONBig.stringify(
-                isEmpty(originalData)
-                  ? omit(excecuteResult, 'id')
-                  : originalData,
-                null,
-                2,
-              )}
-            </pre>
+            {renderJSONTable()}
           </TabPane>
-          <TabPane
+          {/* <TabPane
             key="table"
             tab={
               <IconItem
@@ -715,7 +749,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
               columns={EXCECUTE_RESULT_TABLE}
               dataSource={tableType === 'nodes' ? nodes : edges}
             />
-          </TabPane>
+          </TabPane> */}
           <TabPane
             key="canvas"
             tab={

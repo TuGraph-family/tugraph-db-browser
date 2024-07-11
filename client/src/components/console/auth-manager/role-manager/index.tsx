@@ -41,7 +41,7 @@ export const RoleManager: React.FC<Prop> = ({ getRefreshList }) => {
       } else {
         message.error(res.errorMessage);
       }
-    });
+    }).catch(e=>console.log(e));
   };
   const operate = (_, record: RoleProps) =>
     record.role === 'admin' ? (

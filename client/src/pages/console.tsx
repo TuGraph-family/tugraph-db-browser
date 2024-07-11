@@ -1,3 +1,8 @@
+/**
+ * file: 概览页
+ * author: Allen
+*/
+
 import Auth from '@/components/console/auth-manager';
 import Database from '@/components/console/database-info';
 import ConsoleMenu from '@/components/consoleMenu';
@@ -22,15 +27,15 @@ const ConsolePage = () => {
   return (
     <Container>
       <Nav />
-      <ConsoleContainer>
-        <ConsoleMenu
-          menuKey={menuKey}
-          onMenuChange={(value) => {
-            setMenuKey(value);
-          }}
-        />
-        <ConsoleContentContainer>{components[menuKey]}</ConsoleContentContainer>
-      </ConsoleContainer>
+      <ConsoleContainer
+        sidebar={
+          <ConsoleMenu
+            menuKey={menuKey}
+            onMenuChange={value => setMenuKey(value)}
+          />
+        }
+        content={<ConsoleContentContainer>{components[menuKey]}</ConsoleContentContainer>}
+      />
     </Container>
   );
 };

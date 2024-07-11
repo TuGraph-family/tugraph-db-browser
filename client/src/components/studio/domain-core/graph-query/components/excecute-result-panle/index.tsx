@@ -30,6 +30,8 @@ interface ExcecuteHistoryProps {
   onResultClose?: (resultIndex?: string) => void;
   graphName: string;
   graphData: GraphData;
+  lastResult: any,
+  activeTabKey: string,
 }
 
 const ExcecuteResultPanle: React.FC<ExcecuteHistoryProps> = ({
@@ -37,6 +39,8 @@ const ExcecuteResultPanle: React.FC<ExcecuteHistoryProps> = ({
   onResultClose,
   graphData,
   graphName,
+  lastResult,
+  activeTabKey,
 }) => {
   const [state, setState] = useImmer<{
     tabs: TextTabsTab<string>[];
@@ -44,6 +48,7 @@ const ExcecuteResultPanle: React.FC<ExcecuteHistoryProps> = ({
     isFullView: boolean;
     activeResult?: ExcecuteResultProp;
     modalOpen: boolean;
+    
   }>({
     tabs: [{ text: '执行结果', key: 'result' }],
     activeTab: '',
@@ -108,7 +113,12 @@ const ExcecuteResultPanle: React.FC<ExcecuteHistoryProps> = ({
   };
   useEffect(() => {
     if (queryResultList) {
-      const latestResult = queryResultList[queryResultList.length - 1];
+      const id = lastResult?.[activeTabKey] || ''
+      const activeTabIndex = queryResultList.findIndex(item=>item?.id === id)
+
+      const idx =  activeTabIndex >= 0 ? activeTabIndex : queryResultList.length - 1
+    
+      const latestResult = queryResultList[idx];
       const newTabs = [
         ...(queryResultList || []).map((result, index) => ({
           text: (
@@ -132,7 +142,7 @@ const ExcecuteResultPanle: React.FC<ExcecuteHistoryProps> = ({
           key: result.id,
         })),
       ];
-      const activeTab = newTabs[newTabs.length - 1].key;
+      const activeTab = newTabs[idx].key;
 
       setState((draft) => {
         draft.tabs = newTabs as Array<{ text: React.ReactNode; key: string }>;

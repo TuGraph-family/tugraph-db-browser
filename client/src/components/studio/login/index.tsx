@@ -1,78 +1,86 @@
-import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
+/**
+ * file: login page
+ * author: Allen
+*/
+
+import { useCallback, useState } from 'react';
 import { Button, Form, Input, message } from 'antd';
-import { history } from 'umi';
-import { useCallback, useEffect } from 'react';
+import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import type { Engine } from 'tsparticles-engine';
-import { PUBLIC_PERFIX_CLASS } from '../constant';
-import { useAuth } from '../hooks/useAuth';
-import { getLocalData, setLocalData } from '../utils/localStorage';
-import particlesOptions from './particles-config';
-import DEFAULT_STYLE_CONFIG from '@/constants/DEFAULT_STYLE_CONFIG';
+import { useModel } from 'umi';
 
+// constants
+import particlesOptions from './particles-config';
+import { PUBLIC_PERFIX_CLASS } from '../constant';
+import { TUGRAPH_PASSWORD, TUGRAPH_URI, TUGRAPH_USER_NAME } from '@/constants';
+
+// utils
+import { loginDB } from '@/utils';
+import { getLocalData } from '../utils/localStorage';
+
+// style
 import styles from './index.module.less';
-import { HOLD_TIME } from '../utils/request';
 
 const { Item, useForm } = Form;
 
 export const Login = () => {
-  const [form] = useForm();
-  const { onLogin, loginLoading } = useAuth();
 
+  // state
+  const {  setInitialState } = useModel('@@initialState');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // props
+  const [form] = useForm();
+  const userName = getLocalData(TUGRAPH_USER_NAME);
+  const password = getLocalData(TUGRAPH_PASSWORD);
+  const uri = getLocalData(TUGRAPH_URI);
+  
+  // function
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine);
   }, []);
 
   const login = async () => {
+    setIsLoading(true);
     const values = await form.validateFields();
-    setLocalData('TUGRAPH_PRE_USER', values?.userName);
+
     if (values) {
       try {
-        onLogin(values).then(res => {
-          if (res.errorCode == 200) {
-            setLocalData('TUGRAPH_USER_NAME', values.userName);
-            setLocalData('TUGRAPH_TOKEN', res.data.authorization);
-            message.success('登录成功！', HOLD_TIME);
-            if (res?.data?.default_password) {
-              window.open(window.location.origin + '/reset', '_self');
-            } else {
-              // 登录成功以后，设置默认的样式到 localstorage 中
-              const customStyleConfig = JSON.parse(
-                (localStorage.getItem('CUSTOM_STYLE_CONFIG') as string) || '{}',
-              );
-              const styleConfig = {
-                ...DEFAULT_STYLE_CONFIG,
-                ...customStyleConfig,
-              };
-              localStorage.setItem(
-                'CUSTOM_STYLE_CONFIG',
-                JSON.stringify(styleConfig),
-              );
-              // 登录成功后跳转到首页
-              window.open(window.location.origin + '/home', '_self');
-            }
-          } else {
-            message.error('登录失败！' + res.errorMessage, HOLD_TIME);
-          }
+        const { uri, userName, password } = values;
+        const { session, dbConfig, driver } = await loginDB({
+          uri,
+          userName,
+          password,
         });
+        setInitialState({
+          driver,
+          session,
+          userInfo: {
+            userName,
+            password,
+          },
+          dbConfig,
+        } as any);
+        setTimeout(() => {
+          window.location.hash = '/home';
+          setIsLoading(false);
+        }, 100);
+        
       } catch (error: any) {
+        setIsLoading(false);
         message.error(error ? error : '登录失败！');
       }
     }
   };
 
-  if (localStorage.getItem('TUGRAPH_TOKEN')) {
-    // 已经登录过，则跳转到首页
-    history.push('/home');
+  /** 判断是否已经登录，若登录则跳转至首页 */
+  if (userName) {
+    window.location.hash = '/home';
     return;
   }
-  useEffect(() => {
-    const preUser = getLocalData('TUGRAPH_PRE_USER') || '';
-    if (preUser && form && typeof preUser === 'string') {
-      form.setFieldValue('userName', preUser);
-    }
-  }, []);
+  
   return (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-login-container`]}>
       <img
@@ -107,7 +115,23 @@ export const Login = () => {
           <Form
             form={form}
             className={styles[`${PUBLIC_PERFIX_CLASS}-form-style`]}
+            initialValues={{
+              uri,
+              userName,
+              password,
+            }}
           >
+            <Item
+              name="uri"
+              rules={[
+                {
+                  required: true,
+                  message: '请输入数据库地址，示例：bolt://100.88.118.28:27001',
+                },
+              ]}
+            >
+              <Input placeholder="数据库地址，示例：bolt://100.88.118.28:27001" />
+            </Item>
             <Item
               name="userName"
               rules={[
@@ -137,8 +161,8 @@ export const Login = () => {
             </Item>
             <Button
               type="primary"
-              loading={loginLoading}
               onClick={() => login()}
+              loading={isLoading}
             >
               登录
             </Button>
