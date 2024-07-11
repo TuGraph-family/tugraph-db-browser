@@ -13,23 +13,23 @@ export const useGraph = () => {
     runAsync: onGetGraphList,
     loading: getGraphListLoading,
     error: getGraphListError,
-  } = useRequest(() => request(driver,getGraphList({ userName: userInfo.userName })), { manual: true });
+  } = useRequest(() => request({driver,cypher:getGraphList({ userName: userInfo.userName })}), { manual: true });
 
   const {
     runAsync: onCreateGraph,
     loading: createGraphLoading,
     error: createGraphError,
-  } = useRequest((params)=>request(driver,createGraph(params)), { manual: true });
+  } = useRequest((params)=>request({driver,cypher:createGraph(params)}), { manual: true });
   const {
     runAsync: onDeleteGraph,
     loading: deleteGraphLoading,
     error: deleteGraphError,
-  } = useRequest((params)=>request(driver,deleteGraph(params)), { manual: true });
+  } = useRequest((params)=>request({driver,cypher:deleteGraph(params)}), { manual: true });
   const {
     runAsync: onEditGraph,
     loading: editGraphLoading,
     error: editGraphError,
-  } = useRequest((params)=>request(driver,editGraph(params)), { manual: true });
+  } = useRequest((params)=>request({driver,cypher:editGraph(params)}), { manual: true });
   const {
     runAsync: onGetNodeEdgeStatistics,
     loading: getNodeEdgeStatisticsLoading,

@@ -48,7 +48,7 @@ const EditTuGraphMoadl: React.FC<Prop> = ({
         });
       }}
       width={560}
-      okText="创建"
+      okText="确认"
       cancelText="取消"
     >
       <EditForm form={form} type="edit" />

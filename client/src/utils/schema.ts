@@ -4,7 +4,7 @@ import {
   IVertextSchemaParams,
   IEdgeSchemaParams,
   RestFulResponse,
-} from '../services/interface';
+} from '@/types/services';
 
 import { has, isEmpty } from 'lodash';
 /**
@@ -227,7 +227,6 @@ export const formatMultipleResponse = (params: IMultipleParams[]) => {
   const paths: any = [];
   const properties: IPropertiesParams[] = [];
   for (const multi of params) {
-    
     for (const key in multi) {
       const current = multi[key];
       if (current?.__isNode__) {
@@ -238,17 +237,16 @@ export const formatMultipleResponse = (params: IMultipleParams[]) => {
         });
       } else if (current?.__isRelationship__) {
         edges.push({
-          id: current.elementId,
+          id: `edges_${current.startNodeElementId}_${current.endNodeElementId}_${current.elementId}`,
           source: current.startNodeElementId,
           target: current.endNodeElementId,
           label: current.type,
-          direction: 'OUT',
           properties: current.properties,
         });
-      }else if(current?.__isPath__){
-        const result = formatMultipleResponse(current.segments)
-        nodes.push(...result.nodes)
-        edges.push(...result.edges)
+      } else if (current?.__isPath__) {
+        const result = formatMultipleResponse(current.segments);
+        nodes.push(...result.nodes);
+        edges.push(...result.edges);
       }
 
       // Vertex 和 edge 为 object，path 为 array，其他为 string 或 number
@@ -344,10 +342,9 @@ export const QueryResultFormatter = (
     };
   }
   let resultData = result.data;
- 
- 
+
   const responseData = formatMultipleResponse(resultData);
- 
+
   const { edges, nodes } = responseData;
 
   return {

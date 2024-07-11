@@ -1,37 +1,55 @@
-import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
+/**
+ * file: login page
+ * author: Allen
+*/
+
+import { useCallback, useState } from 'react';
 import { Button, Form, Input, message } from 'antd';
-import { useCallback } from 'react';
+import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import type { Engine } from 'tsparticles-engine';
-import { history, useModel } from 'umi';
-import { PUBLIC_PERFIX_CLASS } from '../constant';
-import { getLocalData } from '../utils/localStorage';
-import particlesOptions from './particles-config';
+import { useModel } from 'umi';
 
+// constants
+import particlesOptions from './particles-config';
+import { PUBLIC_PERFIX_CLASS } from '../constant';
 import { TUGRAPH_PASSWORD, TUGRAPH_URI, TUGRAPH_USER_NAME } from '@/constants';
+
+// utils
 import { loginDB } from '@/utils';
+import { getLocalData } from '../utils/localStorage';
+
+// style
 import styles from './index.module.less';
 
 const { Item, useForm } = Form;
 
 export const Login = () => {
+
+  // state
+  const {  setInitialState } = useModel('@@initialState');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // props
   const [form] = useForm();
-  const { setInitialState } = useModel('@@initialState');
   const userName = getLocalData(TUGRAPH_USER_NAME);
   const password = getLocalData(TUGRAPH_PASSWORD);
   const uri = getLocalData(TUGRAPH_URI);
+  
+  // function
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine);
   }, []);
 
   const login = async () => {
+    setIsLoading(true);
     const values = await form.validateFields();
 
     if (values) {
       try {
         const { uri, userName, password } = values;
-        const { session, dbConfig,driver } = await loginDB({
+        const { session, dbConfig, driver } = await loginDB({
           uri,
           userName,
           password,
@@ -46,19 +64,23 @@ export const Login = () => {
           dbConfig,
         } as any);
         setTimeout(() => {
-          window.location.hash = '/home'
-        },100);
+          window.location.hash = '/home';
+          setIsLoading(false);
+        }, 100);
+        
       } catch (error: any) {
+        setIsLoading(false);
         message.error(error ? error : '登录失败！');
       }
     }
   };
 
-  if (localStorage.getItem('TUGRAPH_TOKEN')) {
-    // 已经登录过，则跳转到首页
-    window.location.hash = '/home'
+  /** 判断是否已经登录，若登录则跳转至首页 */
+  if (userName) {
+    window.location.hash = '/home';
     return;
   }
+  
   return (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-login-container`]}>
       <img
@@ -137,7 +159,11 @@ export const Login = () => {
                 }
               />
             </Item>
-            <Button type="primary" onClick={() => login()}>
+            <Button
+              type="primary"
+              onClick={() => login()}
+              loading={isLoading}
+            >
               登录
             </Button>
           </Form>

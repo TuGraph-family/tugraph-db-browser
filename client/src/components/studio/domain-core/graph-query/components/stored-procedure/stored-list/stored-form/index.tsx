@@ -1,3 +1,4 @@
+import React from 'react';
 import { QuestionCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import {
   Button,
@@ -12,18 +13,23 @@ import {
   UploadProps,
   message,
 } from 'antd';
+import { includes, map } from 'lodash';
+
+// hooks
+import { useImmer } from 'use-immer';
+import { useModel } from 'umi';
+import { useProcedure } from '@/components/studio/hooks/useProcedure';
+
+// type
 import { FormInstance } from 'antd/es/form';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload';
-import { includes, map } from 'lodash';
-import React from 'react';
-import { useImmer } from 'use-immer';
-import {
-  CPP_CODE_TYPE,
-  PUBLIC_PERFIX_CLASS,
-  STORED_OPTIONS,
-} from '../../../../../../constant';
-import { useProcedure } from '../../../../../../hooks/useProcedure';
+import { InitialState } from '@/app';
+
+// components
 import { StoredDownLoad } from '../../stored-download';
+
+// constants
+import { CPP_CODE_TYPE, PUBLIC_PERFIX_CLASS, STORED_OPTIONS } from '@/components/studio/constant/index';
 
 import styles from './index.module.less';
 
@@ -59,6 +65,8 @@ export const StoredForm: React.FC<Prop> = ({
   refreshList,
 }) => {
   const { onUploadProcedure, UploadProcedureLoading } = useProcedure();
+  const { initialState } = useModel('@@initialState');
+  const { driver } = initialState as InitialState;
   const fileReader = (info: any) => {
     return new Promise((res, rej) => {
       const reader = new FileReader();
@@ -83,7 +91,7 @@ export const StoredForm: React.FC<Prop> = ({
       fileReader(info).then(data => {
         const newFileList = info.fileList.map(item => {
           if (uid === item?.uid) {
-            return { ...item, content: data };
+            return { ...item, content: data, status: 'done' };
           } else {
             return item;
           }
@@ -97,7 +105,7 @@ export const StoredForm: React.FC<Prop> = ({
           message.error('文件上传失败');
         }
       });
-    },
+    }
   };
   const [state, updateState] = useImmer<{
     demoVisible: boolean;
@@ -181,21 +189,33 @@ export const StoredForm: React.FC<Prop> = ({
 
   // 新增存储过程
   const uploadProcedure = () => {
-    form.validateFields().then(val => {
-      let procedureType: 'cpp' | 'python';
-      if (includes(CPP_CODE_TYPE, val.codeType)) {
-        procedureType = 'cpp';
-      } else {
-        procedureType = 'python';
+
+    const formatFileContent = (fileList: any[]) => {
+      let formatMap: {[key: string]: string} = {};
+      for (let file of fileList) {
+        formatMap[file.name] = file.content;
       }
-      onUploadProcedure({
+      return  formatMap;
+    };
+
+    const result = formatFileContent(state.fileLst);
+
+    form.validateFields().then(val => {
+      let procedureType: 'CPP' | 'PY';
+      if (includes(CPP_CODE_TYPE, val.codeType)) {
+        procedureType = 'CPP';
+      } else {
+        procedureType = 'PY';
+      }
+      //TODO: By Allen
+      onUploadProcedure(driver, {
         ...val,
         graphName,
+        codeType: val.codeType,
         procedureType,
-        content: state.fileLst.map(item => item.content),
-        file_name: state.fileLst.map((item: any) => item?.name),
+        content: formatFileContent(state.fileLst)
       }).then(res => {
-        if (res.errorCode === '200') {
+        if (res.errorCode === '200' || res.success) {
           message.success('新增成功');
           updateState(draft => {
             draft.fileLst = [];

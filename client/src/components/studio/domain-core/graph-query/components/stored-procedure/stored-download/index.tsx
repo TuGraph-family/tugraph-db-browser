@@ -19,6 +19,7 @@ export const StoredDownLoad: React.FC<Prop> = ({ demoVisible, onCancel }) => {
   const { onGetProcedureDemo, GetProcedureDemoLoading } = useProcedure();
   const { demoValue } = state;
   const getDemo = (type: string) => {
+    //TODO: By Allen
     onGetProcedureDemo({ type }).then((res) => {
       if (res.errorCode === '200') {
         downloadFile(atob(res.data.content), res.data.filename);

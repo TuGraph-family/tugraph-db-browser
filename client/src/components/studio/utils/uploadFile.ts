@@ -3,10 +3,10 @@ import { map, find, compact, isEmpty } from 'lodash';
 import { GraphData } from '../interface/schema';
 
 export const mergeFileDataList = (fileList: FileData[], file: FileData) => {
-  if (!find(fileList, (fileItem) => fileItem.fileName === file.fileName)) {
+  if (!find(fileList, fileItem => fileItem.fileName === file.fileName)) {
     return [...fileList, file];
   }
-  const result = map(fileList, (fileItem) => {
+  const result = map(fileList, fileItem => {
     if (fileItem.fileName === file.fileName) {
       return file;
     } else {
@@ -16,8 +16,17 @@ export const mergeFileDataList = (fileList: FileData[], file: FileData) => {
   return result;
 };
 
-const mapToOption = (item: { labelName?: string }) =>
-  item.labelName ? { value: item.labelName, label: item.labelName } : null;
+const mapToOption = (item: { labelName?: string }) => {
+  if (item?.labelType == 'edge') {
+    return item.labelName
+      ? { value: item.labelName, label: item.labelName,  }
+      : null;
+  } else {
+    return item.labelName
+      ? { value: item.labelName, label: item.labelName }
+      : null;
+  }
+};
 
 export const cascaderOptionsTransform = (data: GraphData) => {
   const { nodes, edges } = data;

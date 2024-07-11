@@ -4,7 +4,7 @@ import {
   INeighborsParams,
   INodeQueryParams,
   IPathQueryParams,
-} from './interface';
+} from '@/types/services';
 import { QueryResultFormatter, responseFormatter } from '@/utils/schema';
 import {
   generateCypherByConfig,
@@ -22,7 +22,7 @@ export const queryByGraphLanguage = async (
 ) => {
   const { graphName, script } = params;
 
-  const result = await request(driver, script, graphName);
+  const result = await request({ driver, cypher: script, graphName });
 
   return QueryResultFormatter(result, script);
 };
@@ -34,7 +34,7 @@ export const queryByGraphLanguage = async (
 export const queryByPath = async (driver: Driver, params: IPathQueryParams) => {
   const { graphName } = params;
   const script = generateCypherByPath(params);
-  const result = await request(driver, script, graphName);
+  const result = await request({ driver, cypher: script, graphName });
 
   return QueryResultFormatter(result, script);
 };
@@ -47,7 +47,7 @@ export const queryByNode = async (driver: Driver, params: INodeQueryParams) => {
   const { graphName } = params;
 
   const script = generateCypherByNode(params);
-  const result = await request(driver, script, graphName);
+  const result = await request({ driver, cypher: script, graphName });
 
   return QueryResultFormatter(result, script);
 };
@@ -63,7 +63,7 @@ export const queryByConfig = async (
 ) => {
   const { graphName } = params;
   const script = generateCypherByConfig(params);
-  const result = await request(driver, script, graphName);
+  const result = await request({ driver, cypher: script, graphName });
   return QueryResultFormatter(result, script);
 };
 
@@ -79,54 +79,49 @@ export const queryNeighbors = async (
 
   const cypher = queryNeighborsCypher(params);
 
-  const result = await request(driver, cypher, graphName);
+  const result = await request({ driver, cypher, graphName });
 
   return QueryResultFormatter(result, cypher);
 };
 
 export const queryGetProcedureDemo = async (driver: Driver, params: any) => {
   const cypher = '';
-  const result = await request(driver, cypher);
+  const result = await request({ driver, cypher });
 
   return responseFormatter(result);
 };
 
 export const queryCallProcedures = async (driver: Driver, params: any) => {
   const cypher = '';
-  const result = await request(driver, cypher);
+  const result = await request({ driver, cypher });
 
   return responseFormatter(result);
 };
-
 
 export const queryDeleteProcedure = async (driver: Driver, params: any) => {
   const cypher = '';
-  const result = await request(driver, cypher);
+  const result = await request({ driver, cypher });
 
   return responseFormatter(result);
 };
-
 
 export const queryGetProcedures = async (driver: Driver, params: any) => {
   const cypher = '';
-  const result = await request(driver, cypher);
+  const result = await request({ driver, cypher });
 
   return responseFormatter(result);
 };
-
-
 
 export const queryGetvProcedures = async (driver: Driver, params: any) => {
   const cypher = '';
-  const result = await request(driver, cypher);
+  const result = await request({ driver, cypher });
 
   return responseFormatter(result);
 };
 
-
 export const queryUploadProcedure = async (driver: Driver, params: any) => {
   const cypher = '';
-  const result = await request(driver, cypher);
+  const result = await request({ driver, cypher });
 
   return responseFormatter(result);
 };

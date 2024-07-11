@@ -22,7 +22,6 @@ import {
 } from 'antd';
 import { filter, find, isEmpty, join, map, uniqueId } from 'lodash';
 import { useCallback, useEffect, useRef } from 'react';
-import { history } from 'umi';
 import { useImmer } from 'use-immer';
 import IconFont from '../../components/icon-font';
 import { SplitPane } from '../../components/split-panle';
@@ -54,7 +53,7 @@ import styles from './index.module.less';
 const { Option } = Select;
 
 export const GraphQuery = () => {
-  const location = history.location;
+  const location = window.location;
   const editorRef = useRef<any>(null);
   const graphList = getLocalData('TUGRAPH_SUBGRAPH_LIST') as SubGraph[];
   const {
@@ -100,6 +99,7 @@ export const GraphQuery = () => {
     };
     editor: any;
     storedVisible: boolean;
+    lastResult: any;
   }>({
     graphListOptions: map(graphList, (graph: SubGraph) => {
       return {
@@ -120,6 +120,7 @@ export const GraphQuery = () => {
     graphData: { nodes: [], edges: [] },
     editor: {},
     storedVisible: false,
+    lastResult: {},
   });
   const {
     activeTab,
@@ -136,6 +137,7 @@ export const GraphQuery = () => {
     graphData,
     editor,
     storedVisible,
+    lastResult,
   } = state;
   const columns = [
     {
@@ -189,13 +191,13 @@ export const GraphQuery = () => {
       });
     }
   }, [activeTab]);
-  useEffect(() => {
-    if (history.location.hash) {
-      updateState(draft => {
-        draft.storedVisible = true;
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (location.hash) {
+  //     updateState(draft => {
+  //       draft.storedVisible = true;
+  //     });
+  //   }
+  // }, []);
   const onSplitPaneWidthChange = useCallback((size: number) => {
     updateState(draft => {
       draft.editorWidth = size;
@@ -229,8 +231,10 @@ export const GraphQuery = () => {
         graphName: currentGraphName,
         script: editorRef?.current?.codeEditor?.getValue() || script,
       }).then(res => {
+        const id = uniqueId('id_');
         updateState(draft => {
-          draft.resultData = [...resultData, { ...res, id: uniqueId('id_') }];
+          draft.resultData = [...resultData, { ...res, id }];
+          draft.lastResult = { ...lastResult, [IQUIRE_LIST[0].key]: id };
         });
       });
     }
@@ -241,9 +245,10 @@ export const GraphQuery = () => {
         limit,
         conditions,
       }).then(res => {
+        const id = uniqueId('id_');
         updateState(draft => {
-          draft.resultData = [...resultData, { ...res, id: uniqueId('id_') }];
-          draft.script = res.script;
+          draft.resultData = [...resultData, { ...res, id }];
+          draft.lastResult = { ...lastResult, [IQUIRE_LIST[1].key]: id };
         });
       });
     }
@@ -254,9 +259,10 @@ export const GraphQuery = () => {
         conditions,
         nodes: queryParams,
       }).then(res => {
+        const id = uniqueId('id_');
         updateState(draft => {
-          draft.resultData = [...resultData, { ...res, id: uniqueId('id_') }];
-          draft.script = res.script;
+          draft.resultData = [...resultData, { ...res, id }];
+          draft.lastResult = { ...lastResult, [IQUIRE_LIST[2].key]: id };
         });
       });
     }
@@ -267,12 +273,13 @@ export const GraphQuery = () => {
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerLeft`]}>
         <ArrowLeftOutlined
           onClick={() => {
-            window.location.hash = '/home';
+            location.hash = '/home';
           }}
         />
         <Select
           onChange={value => {
-            window.location.href = `${location.pathname}?graphName=${value}`;
+            location.hash = `/query?graphName=${value}`;
+            location.reload();
           }}
           defaultValue={currentGraphName}
           options={graphListOptions}
@@ -303,8 +310,7 @@ export const GraphQuery = () => {
             }}
           />
         </Tooltip>
-        {/* TODO 暂时隐藏功能 */}
-        {/* <Popover
+        <Popover
           title="存储过程"
           placement="bottomRight"
           className="popoverTitle"
@@ -330,29 +336,29 @@ export const GraphQuery = () => {
             alt=""
             style={{ width: 24, height: 24 }}
             onClick={() => {
-              window.history.replaceState(
-                null,
-                null,
-                `${
-                  history.location.pathname + history.location.search
-                }#procedure`,
-              );
+              // window.history.replaceState(
+              //   null,
+              //   null,
+              //   `${
+              //     history.location.pathname + history.location.search
+              //   }#procedure`,
+              // );
               updateState(draft => {
                 draft.storedVisible = true;
               });
             }}
           />
-        </Popover> */}
+        </Popover>
         <Button
           onClick={() => {
-            window.location.hash = `/construct?graphName=${currentGraphName}`;
+            location.hash = `/construct?graphName=${currentGraphName}`;
           }}
         >
           返回图构建
         </Button>
         <Button
           onClick={() => {
-            window.location.hash = `/analysis?graphName=${currentGraphName}`;
+            location.hash = `/analysis?graphName=${currentGraphName}`;
           }}
         >
           前往图分析
@@ -378,6 +384,7 @@ export const GraphQuery = () => {
               type="primary"
               onClick={handleQuery}
               loading={StatementQueryLoading}
+              disabled={!script}
               icon={
                 <IconFont
                   type="icon-zhihang"
@@ -603,10 +610,12 @@ export const GraphQuery = () => {
                   >
                     {resultData.length ? (
                       <ExcecuteResultPanle
+                        activeTabKey={activeTab}
                         queryResultList={resultData}
                         onResultClose={onResultClose}
                         graphData={graphData}
                         graphName={currentGraphName}
+                        lastResult={lastResult}
                       />
                     ) : (
                       <div
@@ -643,10 +652,12 @@ export const GraphQuery = () => {
               <div className={styles[`${PUBLIC_PERFIX_CLASS}-path-result`]}>
                 {resultData.length ? (
                   <ExcecuteResultPanle
+                    activeTabKey={activeTab}
                     graphData={graphData}
                     graphName={currentGraphName}
                     queryResultList={resultData}
                     onResultClose={onResultClose}
+                    lastResult={lastResult}
                   />
                 ) : (
                   <div className={styles[`${PUBLIC_PERFIX_CLASS}-path-spin`]}>
@@ -666,10 +677,12 @@ export const GraphQuery = () => {
           <div className={styles[`${PUBLIC_PERFIX_CLASS}-node-result`]}>
             {resultData.length ? (
               <ExcecuteResultPanle
+                activeTabKey={activeTab}
                 graphData={graphData}
                 graphName={currentGraphName}
                 queryResultList={resultData}
                 onResultClose={onResultClose}
+                lastResult={lastResult}
               />
             ) : (
               <div className={styles[`${PUBLIC_PERFIX_CLASS}-node-spin`]}>
@@ -685,11 +698,11 @@ export const GraphQuery = () => {
         visible={storedVisible}
         graphName={currentGraphName}
         onCancel={() => {
-          window.history.replaceState(
-            null,
-            null,
-            `${history.location.pathname + history.location.search}`,
-          );
+          // window.history.replaceState(
+          //   null,
+          //   null,
+          //   `${location.pathname + location.search}`,
+          // );
           updateState(draft => {
             draft.storedVisible = false;
           });

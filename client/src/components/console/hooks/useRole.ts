@@ -13,13 +13,15 @@ export const useRole = () => {
     runAsync: onGetRoleList,
     loading: GetRoleListLoading,
     error: GetRoleListError,
-  } = useRequest(() => request(driver, listRoles()), { manual: true });
+  } = useRequest(() => request({ driver, cypher: listRoles() }), {
+    manual: true,
+  });
 
   const {
     runAsync: onDeleteRole,
     loading: DeleteRoleLoading,
     error: DeleteRoleError,
-  } = useRequest(params => request(driver, deleteRole(params)), {
+  } = useRequest(params => request({ driver, cypher: deleteRole(params) }), {
     manual: true,
   });
 
@@ -27,7 +29,7 @@ export const useRole = () => {
     runAsync: onDisabledRole,
     loading: DisabledRoleLoading,
     error: DisabledRoleError,
-  } = useRequest(params => request(driver, disabledRole(params)), {
+  } = useRequest(params => request({ driver, cypher: disabledRole(params) }), {
     manual: true,
   });
 

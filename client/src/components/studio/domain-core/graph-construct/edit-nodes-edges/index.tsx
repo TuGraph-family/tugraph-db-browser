@@ -75,10 +75,11 @@ export const EditNodesEdges: React.FC<Prop> = ({
       item => item.name,
     );
     const indexPropertyNames = map(configList, item => item.propertyName);
+   
     return map(
       filter(
         xor(attrPropertyNames, indexPropertyNames),
-        item => item !== undefined,
+        item => item,
       ),
       item => ({ label: item, value: item }),
     );

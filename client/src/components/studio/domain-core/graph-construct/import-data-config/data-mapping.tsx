@@ -194,8 +194,8 @@ export const DataMapping = (prop: DataMappingProps) => {
             key="dataMap"
             options={currentFileData?.labelOptions}
             placeholder="请选择"
-            onChange={(val: string[]) =>
-              handleLabelChange(val, currentFileData.fileName)
+            onChange={(val: string[]) =>{
+              handleLabelChange(val, currentFileData.fileName)}
             }
           />
         </Space>

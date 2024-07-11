@@ -1,6 +1,5 @@
 import { useRequest } from 'ahooks';
 import { queryByGraphLanguage, queryByNode, queryByPath } from '@/services/query';
-import { driver } from 'neo4j-driver';
 import { useModel } from 'umi';
 import { InitialState } from '@/app';
 

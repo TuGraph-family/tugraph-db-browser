@@ -1,15 +1,13 @@
+import queryString from 'query-string';
+
+// 改路由参数
 export function addQueryParam(key: string, value: string) {
-  const url = new URL(window.location.href);
-  const searchParams = new URLSearchParams(url.search);
+  const location = window.location;
+  const hashList = location.hash?.split('?');
+  const query = queryString.parse((hashList?.[1] || '')?.trim());
 
-  if (searchParams.has(key)) {
-    searchParams.set(key, value);
-  } else {
-    searchParams.append(key, value);
-  }
-
-  url.search = searchParams.toString();
-  window.history.replaceState({ path: url.href }, '', url.href);
+  query[key] = value;
+  location.hash = `${hashList[0]}?${queryString.stringify(query)}`;
 }
 
 export function getQueryParam(key: string) {

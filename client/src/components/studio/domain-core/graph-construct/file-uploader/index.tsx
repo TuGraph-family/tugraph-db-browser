@@ -66,7 +66,9 @@ export const FileUploader = (props: FileUploaderProps) => {
 
     if (status === 'done') {
       const fileData = (await parseCsv(originFileObj)) as string[][];
-      const { columns, dataSource } = tableDataTransform(fileData);
+      const { columns, dataSource } = tableDataTransform(
+        fileData?.splice(0, 5),
+      );
       const labelOptions = cascaderOptionsTransform(graphData);
       fileResult = {
         fileName: name,
@@ -102,10 +104,11 @@ export const FileUploader = (props: FileUploaderProps) => {
   const uploadProps: UploadProps = {
     name: 'file',
     multiple: true,
+    maxCount: 1,
     accept: '.csv',
     customRequest(options) {
       // @ts-ignore
-      options.onSuccess(options.filename)
+      options.onSuccess(options.filename);
     },
     onChange(info) {
       const { file } = info;

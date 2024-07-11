@@ -113,3 +113,28 @@ export const deleteIndex = (
 ) => {
   return `CALL db.deleteIndex('${labelName}', '${propertyName}')`;
 };
+
+
+/* 创建点类型 */
+export const createVertexLabelByJson=(
+  json_data: string
+)=>{
+  return `CALL db.createVertexLabelByJson('${json_data}')`
+}
+
+/* 创建边类型 */
+export const createEdgeLabelByJson=(
+  json_data: string
+)=>{
+  return `CALL db.createEdgeLabelByJson('${json_data}')`
+}
+
+/* 批量upsert点数据 */
+export const  upsertVertex = (node: string)=>{
+  return  `CALL db.upsertVertex('${node}', $data)`
+}
+
+/* 批量upsert点数据 */
+export const  upsertEdge = (edge: string)=>{
+  return  `CALL db.upsertEdge('${edge}',$SRC, $DST, $data)`
+}

@@ -1,20 +1,15 @@
 import { Button, Form, Input, Space, Tooltip, message } from 'antd';
-import { filter, find, isEmpty, join, map } from 'lodash';
-import React, { useCallback, useEffect, useState } from 'react';
+import { isEmpty, join } from 'lodash';
+import React, { useCallback, useState } from 'react';
 import { useImmer } from 'use-immer';
-import IconFont from '../../../components/icon-font';
-import SwitchDrawer from '../../../components/switch-drawer';
-import { PUBLIC_PERFIX_CLASS } from '../../../constant';
-import { useImport } from '../../../hooks/useImport';
-import { useVisible } from '../../../hooks/useVisible';
-import { FileData } from '../../../interface/import';
-import { GraphData } from '../../../interface/schema';
-import { uploadFile } from '../../../services/FileController';
-import { getLocalData, setLocalData } from '../../../utils';
-import {
-  fileSchemaTransform,
-  mergeTaskInfo,
-} from '../../../utils/dataImportTransform';
+import IconFont from '@/components/studio/components/icon-font';
+import SwitchDrawer from '@/components/studio/components/switch-drawer';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import { useImport } from '@/components/studio/hooks/useImport';
+import { useVisible } from '@/components/studio/hooks/useVisible';
+import { FileData } from '@/components/studio/interface/import';
+import { GraphData } from '@/components/studio/interface/schema';
+import { fileSchemaTransform } from '@/components/studio/utils/dataImportTransform';
 import { FileUploader } from '../file-uploader';
 import { ImportDataConfig } from '../import-data-config';
 import { ImportDataResult } from '../import-data-result';
@@ -34,51 +29,14 @@ export const ImportData: React.FC<Prop> = ({
   onSwitch,
 }) => {
   const [form] = Form.useForm();
-  const onImportProgressSuccess = (res: any) => {
-    if (res.errorCode == '200') {
-      if (res?.data?.state === '2') {
-        importProgressCancel();
-        const taskList = getLocalData('TUGRAPH_INFO');
-        const newTaskInfo = filter(
-          taskList,
-          (info: any) => info.taskId !== taskId,
-        );
-        setLocalData('TUGRAPH_INFO', newTaskInfo);
-        updateState(draft => {
-          draft.resultStatus = 'success';
-          draft.errorMessage = '';
-        });
-      } else if (res?.data?.state === '1') {
-        updateState(draft => {
-          draft.resultStatus = 'loading';
-          draft.errorMessage = '';
-        });
-      } else {
-        importProgressCancel();
-        updateState(draft => {
-          draft.resultStatus = 'error';
-          draft.errorMessage = res?.data?.reason;
-        });
-      }
-    } else {
-      importProgressCancel();
-      updateState(draft => {
-        draft.resultStatus = 'error';
-        draft.errorMessage = res.errorMessage || res?.data?.reason;
-      });
-    }
-  };
-  const {
-    onImportData,
-    importDataLoading,
-    onImportProgress,
-    importProgressCancel,
-  } = useImport({ onImportProgressSuccess });
+
+  const { onImportData, importDataLoading } = useImport();
   const { visible, onShow, onClose } = useVisible({ defaultVisible: true });
   const [fileDataList, setFileDataList] = useState<FileData[]>([]);
   const [showResult, setShowResult] = useState<boolean>(false);
   const [state, updateState] = useImmer<{
     resultStatus: string;
+    resultData: any;
     errorMessage: string;
     isFullView: boolean;
     uploadLoading: boolean;
@@ -89,87 +47,72 @@ export const ImportData: React.FC<Prop> = ({
     isFullView: false,
     uploadLoading: false,
     taskId: '',
+    resultData: {},
   });
-  const { resultStatus, errorMessage, isFullView, taskId, uploadLoading } =
-    state;
+  const {
+    resultStatus,
+    errorMessage,
+    isFullView,
+    taskId,
+    uploadLoading,
+    resultData,
+  } = state;
 
-  useEffect(() => {
-    if (!taskId || resultStatus === 'success' || resultStatus === 'error') {
-      importProgressCancel();
-      return;
-    }
-    onImportProgress(taskId);
-  }, [taskId]);
-
-  useEffect(() => {
-    onSwitch?.(onShow, onClose);
-
-    const taskList = getLocalData('TUGRAPH_INFO') ?? [];
-    const taskId = find(taskList, item => item.graphName === graphName)?.taskId;
-    if (taskId) {
-      updateState(draft => {
-        draft.taskId = taskId;
-      });
-      setShowResult(true);
-    }
-  }, []);
-
-  const uploadChunk = async (
-    fileName: string,
-    fileSize: number,
-    file: any,
-    beginPos: number,
-  ) => {
-    return await uploadFile(
-      {
-        'File-Name': fileName,
-        Size: `${fileSize}`,
-        'Begin-Pos': `${beginPos}`,
-      },
-      file,
+  // 获取点类型
+  const getType = (graph:GraphData, name: string) => {
+    const { primaryField, properties } = graph?.nodes?.find(
+      itemNode => itemNode?.labelName === name,
+    ) || {};
+    const type = properties?.find(
+      itemType => itemType?.name === primaryField,
     );
-  };
-
-  const handleChuckUpload = async (fileData: FileData) => {
-    const { fileName, file } = fileData;
-    // 上传文件的分片大小 (1MB)
-    const chunkSize = 1024 * 100;
-    let start = 0;
-    const size = Number(file?.size);
-    if (size <= chunkSize) {
-      return uploadChunk(fileName, size, file, 0);
-    } else {
-      const promise: Promise<any>[] = [];
-      while (start < size) {
-        // 计算该分片的结束位置
-        const end = start + chunkSize;
-        const chunk = file?.slice(start, end);
-        const chunSize = chunk?.size ?? 0;
-
-        // 上传该分片
-        promise.push(await uploadChunk(fileName, chunSize, chunk, start));
-        start = end;
-      }
-      return promise;
-    }
+    return type || {}
   };
 
   const onImport = () => {
-    const isLengthNotMatch = fileDataList.every((fileData: any) => {
+    const isLengthNotMatch = fileDataList.every((fileData: FileData) => {
+      const {
+        selectedValue,
+        fileSchema: { columns = [], DST_ID, SRC_ID },
+      } = fileData || {};
       const fileSchemaColumnsLength =
-        fileData?.fileSchema?.columns?.filter((item: any) => item).length || 0;
+        columns?.filter((item: any) => item).length || 0;
+      const AdditionalForm =
+        selectedValue?.[0] === 'edge' ? !!(DST_ID && SRC_ID) : true;
       return (
         fileSchemaColumnsLength &&
-        fileData?.fileSchema?.columns.every((item: any) => item)
+        columns.every((item: any) => item) &&
+        AdditionalForm
       );
     });
+
     if (!isLengthNotMatch) {
       return message.error(`请完成所有列的映射`);
     }
+   
     fileDataList.forEach((item: any) => {
       item.fileSchema.columns = [...item?.fileSchema?.columns].filter(
         item => item,
       );
+      if (item?.selectedValue?.[0] === 'edge') {
+        const newProperties = [];
+        const { DST_ID, SRC_ID,properties } = item?.fileSchema || {};
+        if (DST_ID === SRC_ID) {
+          // 相等只需要取一个类型
+          const type = getType(graphData,DST_ID)
+          newProperties.push(
+            { ...type, name: 'SRC_ID' },
+            { ...type, name: 'DST_ID' },
+          );
+        } else {
+          // 不相等取两个类型
+          newProperties.push(
+            { ...getType(graphData,SRC_ID), name: 'SRC_ID' },
+            { ...getType(graphData,DST_ID), name: 'DST_ID' },
+          );
+        }
+        item.fileSchema.properties = newProperties.concat(properties)
+      }
     });
 
     form.validateFields().then(async val => {
@@ -177,63 +120,30 @@ export const ImportData: React.FC<Prop> = ({
         message.error('请先上传文件');
         return;
       }
-      const startTime = Date.now(); // 记录开始时间
-      updateState(draft => {
-        draft.uploadLoading = true;
-      });
-      // 1. 上传文件
-      const uploadPromise = map(fileDataList, async (fileData: FileData) => {
-        return await handleChuckUpload(fileData);
-      });
+     
 
-      try {
-        const results = await Promise.all(uploadPromise);
-        const hasError = results.some(
-          (result: { errorMessage: any }) => result.errorMessage,
-        );
-        updateState(draft => {
-          draft.uploadLoading = false;
-        });
-        if (hasError) {
-          message.error('上传失败');
-          return;
-        }
-      } catch (error) {
-        updateState(draft => {
-          draft.uploadLoading = false;
-        });
-        message.error(`请求返回错误:${error}`);
-        return;
-      }
-      const endTime = Date.now(); // 记录全部请求结束的时间
-      const totalDuration = endTime - startTime; // 计算总耗时
-      console.log(`总共耗时: ${totalDuration}ms`);
+      // 1. 导入数据
 
-      // 2. 导入数据
       const params = {
-        graph: graphName, //导入的子图名称
-        delimiter: val.delimiter, //数据分隔符
-        continueOnError: false, //遇到错误时是否跳过错误数据并继续导入
-        skipPackages: '0', //跳过的包个数
-        flag: '1', // flag = 1时导入成功将删除数据文件
-        schema: {
-          files: fileSchemaTransform(fileDataList),
-        },
+        graphName, //导入的子图名称
+        files: fileSchemaTransform(fileDataList),
+        delimiter: val?.delimiter, //数据分隔符
       };
 
+    
+
       onImportData(params).then(res => {
-        if (res.errorCode == 200) {
-          const taskId = res?.data?.taskId;
-          mergeTaskInfo(taskId, graphName);
+        if (res?.success) {
           updateState(draft => {
-            draft.resultStatus = 'loading';
-            draft.taskId = taskId;
+            draft.resultStatus = 'success';
+            draft.resultData = res?.data || {};
           });
         } else {
           updateState(draft => {
             draft.resultStatus = 'error';
             draft.errorMessage = res.errorMessage;
           });
+          message.error('上传失败' + res.errorMessage);
         }
         setShowResult(true);
       });
@@ -258,11 +168,11 @@ export const ImportData: React.FC<Prop> = ({
       >
         <ImportDataResult
           status={resultStatus}
+          data={resultData}
           errorMessage={errorMessage}
           setShowResult={setShowResult}
           graphName={graphName}
-          taskId={taskId}
-          importProgressCancel={importProgressCancel}
+          setFileDataList={setFileDataList}
         />
       </SwitchDrawer>
     );
@@ -311,9 +221,8 @@ export const ImportData: React.FC<Prop> = ({
           <div>
             <Form layout="vertical" form={form}>
               <Form.Item
-                rules={[{ required: true, message: `请输入分隔符` }]}
+                // rules={[{ required: true, message: `请输入分隔符` }]}
                 label={`分割符`}
-                required
                 name={'delimiter'}
               >
                 <Input placeholder={`请输入分隔符`} />
@@ -347,12 +256,12 @@ export const ImportData: React.FC<Prop> = ({
                 {!isFullView && <span>数据对应表</span>}
                 {!isEmpty(fileDataList) && (
                   <Space size={16}>
-                    <FileUploader
+                    {/* <FileUploader
                       graphData={graphData}
                       type="text"
                       setFileDataList={setFileDataList}
                       fileDataList={fileDataList}
-                    />
+                    /> */}
                     {!isFullView && (
                       <Tooltip title={'全屏显示'}>
                         <IconFont

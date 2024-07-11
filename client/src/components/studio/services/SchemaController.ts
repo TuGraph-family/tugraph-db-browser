@@ -1,5 +1,4 @@
-import request from '../utils/request';
-import { LabelSchema, LabelType, SchemaProperties } from '../interface/schema';
+import { LabelSchema,  } from '../interface/schema';
 import { createSchema } from '@/services/schema';
 import { Driver } from 'neo4j-driver';
 

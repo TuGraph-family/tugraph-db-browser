@@ -18,6 +18,6 @@ export const DATA_TYPE = [
   { label: 'STRING', value: 'STRING', default: '' },
   { label: 'DATE', value: 'DATE', default: '0000-01-01' },
   { label: 'DATETIME', value: 'DATETIME', default: '0000-01-01 00:00:00' },
-  { label: 'BLOB', value: 'BLOB', default: '' },
+  // { label: 'BLOB', value: 'BLOB', default: '' },
   { label: 'BOOL', value: 'BOOL', default: false },
 ];

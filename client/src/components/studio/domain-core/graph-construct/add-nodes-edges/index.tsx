@@ -59,6 +59,16 @@ export const AddNodesEdges: React.FC<Prop> = ({
   const isAllow = (record: any): boolean => {
     return state?.isNode && record?.primaryField;
   };
+
+  const onReset=()=>{
+    updateState({
+      startList: [],
+      isNode: true,
+      attrList: [],
+      configList: [],
+      isDocumentEdge: false,
+    })
+  }
   useEffect(() => {
     onSwitch?.(onShow, onClose);
   }, []);
@@ -83,7 +93,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
             },
           ];
     });
-  }, [type]);
+  }, [type,visible]);
 
   const propertyList = () => {
     const attrPropertyNames = map(
@@ -94,7 +104,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
     return map(
       filter(
         xor(attrPropertyNames, indexPropertyNames),
-        item => item !== undefined,
+        item => item ,
       ),
       item => ({ label: item, value: item }),
     );
@@ -470,6 +480,8 @@ export const AddNodesEdges: React.FC<Prop> = ({
                     return [item.source, item.target];
                   }),
                 });
+                form.resetFields()
+                onReset()
               });
             }}
           >

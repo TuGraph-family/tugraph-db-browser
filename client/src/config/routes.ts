@@ -1,5 +1,5 @@
 export default [
-  { path: '/', component: 'login', title: '登录' },
+  { path: '/', component: 'studio', title: '图项目' },
   { path: '/login', component: 'login', title: '登录' },
   { path: '/home', component: 'studio', title: '图项目' },
   { path: '/console', component: 'console', title: '控制台' },

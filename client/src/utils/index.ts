@@ -6,9 +6,11 @@ import {
 } from '@/constants';
 import { dbConfigRecordsTranslator } from '@/translator';
 import neo4j from 'neo4j-driver';
-import { history } from 'umi';
 import { isEmpty, forEach, map, find, merge } from 'lodash';
-import { IRoleRespons, IUserRespons } from '../../../server/app/service/tugraph/interface';
+import {
+  IRoleRespons,
+  IUserRespons,
+} from '../../../server/app/service/tugraph/interface';
 
 export const getLocalData = (key: string) => {
   if (!key) {
@@ -39,7 +41,6 @@ export const loginDB = async (params: {
   const driver = neo4j.driver(uri, neo4j.auth.basic(userName, password));
   const session = driver.session({
     defaultAccessMode: 'READ',
-    database: 'default',
   });
   console.log('tugraph db login success');
   const config = await session.run('CALL dbms.config.list()').catch(e => {
@@ -76,10 +77,9 @@ export const loginDB = async (params: {
   };
 };
 
-
 export const userInfoTranslator = (
   userList: IUserRespons[],
-  roleList: IRoleRespons[]
+  roleList: IRoleRespons[],
 ) => {
   if (isEmpty(userList)) {
     return [];
@@ -93,10 +93,10 @@ export const userInfoTranslator = (
     }
     let permissions = {};
 
-    forEach(user.user_info.roles, (roleName) => {
+    forEach(user.user_info.roles, roleName => {
       const targetPermissions = find(
         roleList,
-        (role: IRoleRespons) => role.role_name === roleName
+        (role: IRoleRespons) => role.role_name === roleName,
       )?.role_info?.permissions;
       if (!isEmpty(targetPermissions)) {
         merge(permissions, targetPermissions);
@@ -126,5 +126,33 @@ export const convertPermissions = (permissions: Record<string, string>) => {
   return result;
 };
 
+/* 纯数字字符串转number类型 */
+export const convertToNumber = (input: string,type: string) => {
+  //int类型neo4j.int转下
+  if(['INT8','INT16','INT32','INT64'].includes(type)){
+    return neo4j.int(Number(input))
+  }
+  if(type === 'DOUBLE'){
+    return Number(input)
+  }
+  if(type === 'BOOL'){
+    return input === 'true'
+  }
+  return input
 
+};
 
+/* 处理选中点边映射值类型 */
+export const getProperties = (param: {
+  type: string;
+  name: string;
+  graphData: any;
+}) => {
+  const { type, name, graphData } = param;
+
+  if (type === 'node') {
+    return  graphData.nodes?.find(item=>item.labelName === name)?.properties
+  } else {
+    return  graphData.edges?.find(item=>item.labelName === name)?.properties
+  }
+};

@@ -1,4 +1,4 @@
-import { INeighborsParams } from '@/services/interface';
+import { INeighborsParams } from "@/types/services";
 
 /*  */
 export const queryNeighborsCypher = (params: INeighborsParams) => {

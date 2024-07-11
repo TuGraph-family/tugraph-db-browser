@@ -1,5 +1,3 @@
-import { InitialState } from '@/app';
-import { useModel } from 'umi';
 import { map, join, isString } from 'lodash';
 import {
   createEdgeCypher,
@@ -8,14 +6,16 @@ import {
   updateNodeCypher,
 } from '@/queries/data';
 import { responseFormatter } from '@/utils/schema';
-import { IEdgeDataParams, INodeDataParams } from './interface';
+import { IEdgeDataParams, INodeDataParams } from '@/types/services';
 import { request } from './request';
 import { Driver } from 'neo4j-driver';
 
+/* 加引号 */
 const cypherValueFormatter = (value: any) => {
   return isString(value) ? `'${value}'` : value;
 };
 
+/* 删除边的语句 */
 const edgeMatchConditionFormatter = (params: IEdgeDataParams) => {
   const {
     sourceLabel,
@@ -48,7 +48,7 @@ export const createNode = async (
       `${key}: ${!isString(value) ? value : "'" + value + "'"}`,
   );
   const cypher = createNodeCypher(labelName, join(keys, ', '));
-  const result = await request(driver, cypher, graphName);
+  const result = await request({driver, cypher, graphName});
   return responseFormatter(result);
 };
 
@@ -87,7 +87,7 @@ export const createEdge = async (driver: Driver, params: IEdgeDataParams) => {
     propertyString,
   );
 
-  const result = await request(driver, cypher, graphName);
+  const result = await request({driver, cypher, graphName});
   return responseFormatter(result);
 };
 
@@ -99,7 +99,7 @@ export const deleteNode = async (driver: Driver, params: INodeDataParams) => {
     primaryKey,
     cypherValueFormatter(primaryValue),
   );
-  const result = await request(driver, cypher, graphName);
+  const result = await request({driver, cypher, graphName});
   return responseFormatter(result);
 };
 
@@ -108,7 +108,7 @@ export const deleteEdge = async (driver: Driver, params: IEdgeDataParams) => {
   const { graphName } = params;
 
   const cypher = `${edgeMatchConditionFormatter(params)} DELETE r`;
-  const result = await request(driver, cypher, graphName);
+  const result = await request({driver, cypher, graphName});
 
   return responseFormatter(result);
 };
@@ -127,7 +127,7 @@ export const updateNode = async (driver: Driver, params: INodeDataParams) => {
     cypherValueFormatter(primaryValue),
     propertiesString,
   );
-  const result = await request(driver, cypher, graphName);
+  const result = await request({driver, cypher, graphName});
   return responseFormatter(result);
 };
 
@@ -143,6 +143,6 @@ export const updateEdge = async (driver: Driver, params: IEdgeDataParams) => {
     params,
   )} SET ${propertiesString}`;
 
-  const result = await request(driver, cypher, graphName);
+  const result = await request({driver, cypher, graphName});
   return responseFormatter(result);
 };

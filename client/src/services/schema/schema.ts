@@ -1,12 +1,8 @@
-import { InitialState } from '@/app';
 import {
-  addIndex,
-  alterLabelAddFields,
-  alterLabelDelFields,
-  alterLabelModFields,
   createEdge,
+  createEdgeLabelByJson,
   createVertex,
-  deleteIndex,
+  createVertexLabelByJson,
   deleteLabel,
   dropDB,
   edgeLabels,
@@ -25,13 +21,11 @@ import { Driver } from 'neo4j-driver';
 import {
   ICreateSchemaParams,
   IDeleteSchemaParams,
-  IIndexParams,
   ISchemaParams,
-  IUpdateSchemaParams,
-} from './interface';
-import { DATA_TYPE } from './constant';
-import { importGraphSchema } from '@/components/studio/services/ImportController';
-import { request } from './request';
+  Schema,
+} from '@/types/services';
+import { request } from '../request';
+import { createIndex } from './IndexSchema';
 
 /**
  * 统计点类型和边类型的数量
@@ -39,12 +33,12 @@ import { request } from './request';
  */
 const statisticsSchemaCount = async (driver: Driver, graphName: string) => {
   const cypher = getGraphSchema();
-  const result = await request(driver, cypher, graphName);
+  const result = await request({ driver, cypher, graphName });
 
   if (!result?.success) {
     return {
       success: false,
-      errorMessage: vertexResult?.errorMessage,
+      errorMessage: result?.errorMessage,
       data: {
         vertexLabels: 0,
         edgeLabels: 0,
@@ -80,7 +74,7 @@ export const getNodeEdgeStatistics = async (
   const schemaResult = await statisticsSchemaCount(driver, graphName);
 
   // step2: 查询数据库中点边的数量
-  const result = await request(driver, getCount(), graphName);
+  const result = await request({ driver, cypher: getCount(), graphName });
   const { data: labelData, success, code } = schemaResult;
   const { vertexLabels, edgeLabels } = labelData;
   const { data } = result;
@@ -119,7 +113,7 @@ const querySchemaByLabel = async (
     cypher = getEdgeSchema(labelName);
   }
 
-  const result = await request(driver, cypher, graphName);
+  const result = await request({ driver, cypher, graphName });
 
   if (!result.success) {
     return {
@@ -155,7 +149,11 @@ const querySchemaByLabel = async (
 /* 获取所有边点类型 Schema 的信息 */
 const queryVertexSchema = async (driver: Driver, graphName: string) => {
   // step1: 先获取所有边点类型
-  const typeResult = await request(driver, queryVertexLabels(), graphName);
+  const typeResult = await request({
+    driver,
+    cypher: queryVertexLabels(),
+    graphName,
+  });
   if (!typeResult?.success) {
     return [];
   }
@@ -182,7 +180,7 @@ const queryVertexSchema = async (driver: Driver, graphName: string) => {
  */
 const queryEdgeSchema = async (driver: Driver, graphName: string) => {
   // step1: 先获取所有边类型
-  const typeResult = await request(driver, edgeLabels(), graphName);
+  const typeResult = await request({ driver, cypher: edgeLabels(), graphName });
 
   if (!typeResult.success) {
     return [];
@@ -226,30 +224,6 @@ export const getSchema = async (
 };
 
 /**
- * 创建索引
- * @param graphName 图名称
- * @param params
- * @param isIndependentRequest 是否为独立请求
- * @returns
- */
-const createIndex = async (
-  driver: Driver,
-  graphName: string,
-  params: IIndexParams,
-  isIndependentRequest = false,
-) => {
-  const { labelName, propertyName, isUnique = true } = params;
-  const cypher = addIndex(labelName, propertyName, isUnique);
-
-  const result = await request(driver, cypher, graphName);
-
-  if (isIndependentRequest) {
-    return responseFormatter(result);
-  }
-  return result.data;
-};
-
-/**
  * 创建 Schema
  * @param params
  * @returns
@@ -285,7 +259,7 @@ export const createSchema = async (
     cypher = createEdge(labelName, JSON.stringify(edgeConstraints), condition);
   }
 
-  const result = await request(driver, cypher, graphName);
+  const result = await request({ driver, cypher, graphName });
   if (!result.success) {
     return {
       code: 200,
@@ -338,101 +312,14 @@ export const deleteSchema = async (
   const { labelType, labelName, graphName } = params;
 
   const type = labelType === 'node' ? 'vertex' : 'edge';
-  const result = await request(driver, deleteLabel(type, labelName), graphName);
-  return responseFormatter(result);
-};
-
-/**
- * 向指定的 label 中添加属性
- * @param params
- * @returns
- */
-export const addFieldToLabel = async (
-  driver: Driver,
-  params: IUpdateSchemaParams,
-) => {
-  const { graphName, labelType, labelName, properties } = params;
-
-  let condition = '';
-  properties.forEach((d, index) => {
-    const { name, type, optional = false } = d;
-    const currentType = DATA_TYPE.find(item => item['value'] === type);
-    const isINT = `${type}`.includes('INT');
-
-    const isBOOL = `${type}`.includes('BOOL');
-    const isDOUBLE = `${type}`.includes('DOUBLE');
-    const defaultValue =
-      isINT || isBOOL || isDOUBLE
-        ? currentType?.default
-        : `'${currentType?.default}'`;
-    if (index === properties.length - 1) {
-      condition += `['${name}', ${type}, ${defaultValue}, ${optional}]`;
-    } else {
-      condition += `['${name}', ${type}, ${defaultValue}, ${optional}],`;
-    }
+  const result = await request({
+    driver,
+    cypher: deleteLabel(type, labelName),
+    graphName,
   });
-
-  const type = labelType === 'node' ? 'vertex' : 'edge';
-
-  const cypher = alterLabelAddFields(type, labelName, condition);
-
-  const result = await request(driver, cypher, graphName);
   return responseFormatter(result);
 };
 
-/**
- * 修改 Label 中指定的属性字段
- * @param params
- * @returns
- */
-export const updateFieldToLabel = async (
-  driver: Driver,
-  params: IUpdateSchemaParams,
-) => {
-  const { graphName, labelType, labelName, properties } = params;
-
-  let condition = '';
-  properties.forEach((d, index) => {
-    const { name, type, optional = false } = d;
-    if (index === properties.length - 1) {
-      condition += `['${name}', ${type}, ${optional} ]`;
-    } else {
-      condition += `['${name}', ${type}, ${optional} ],`;
-    }
-  });
-
-  const type = labelType === 'node' ? 'vertex' : 'edge';
-
-  let cypher = alterLabelModFields(type, labelName, condition);
-  const result = await request(driver, cypher, graphName);
-  return responseFormatter(result);
-};
-
-/**
- * 删除 指定 Label 中的属性字段
- * @param params
- * @returns
- */
-export const deleteLabelField = async (
-  driver: Driver,
-  params: IDeleteSchemaParams,
-) => {
-  const { graphName, labelType, labelName, propertyNames } = params;
-
-  try {
-    const type = labelType === 'node' ? 'vertex' : 'edge';
-    const cypher = alterLabelDelFields(
-      type,
-      labelName,
-      JSON.stringify(propertyNames),
-    );
-
-    const result = await request(driver, cypher, graphName);
-    return responseFormatter(result);
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 /**
  * 导入 Schema 创建图模型
@@ -443,11 +330,15 @@ export const importSchemaMod = async (
   driver: Driver,
   params: ISchemaParams,
 ) => {
-  const { graph, override = false } = params;
+  const { graph: graphName, override = false,schema } = params;
 
   // 如果是覆盖，则需要先删除原有的 schema
   if (override) {
-    const deleteSchemaResult = await request(driver, dropDB(), graph);
+    const deleteSchemaResult = await request({
+      driver,
+      cypher: dropDB(),
+      graphName,
+    });
 
     if (!deleteSchemaResult.success) {
       return {
@@ -458,52 +349,51 @@ export const importSchemaMod = async (
     }
   }
 
-  const result = await importGraphSchema(params);
+  const result = await importSchema(driver,schema,graphName);
 
   return result;
 };
 
-/* 创建索引 */
-export const createIndexSchema = async (
+
+/* 导入Schema数据 */
+const mapCypher = async (
+  arr = [],
+  idx = 0,
   driver: Driver,
-  params: {
-    propertyName: string;
-    labelName: string;
-    graphName: string;
-    isUnique: boolean;
-  },
+  graphName: string,
 ) => {
-  const { graphName, ...last } = params;
-  const result = await createIndex(driver, graphName, last, true);
-  return result;
-};
-
-/**
- * 删除索引
- * @param graphName 子图名称
- * @param params
- * @returns
- */
-export const deleteIndexSchema = async (
-  driver: Driver,
-  params: {
-    propertyName: string;
-    labelName: string;
-    graphName: string;
-  },
-) => {
-  const { labelName, propertyName, graphName } = params;
-
-  const cypher = deleteIndex(labelName, propertyName);
-  const result = await request(driver, cypher, graphName);
-
-  return responseFormatter(result);
+  const res = await request({ driver, cypher: arr[idx], graphName });
+  if (res?.success && idx <= arr.length - 2) {
+    return await mapCypher(arr, idx + 1, driver, graphName);
+  } else {
+    return res;
+  }
 };
 
 /* 导入schema */
-export const importSchema = async (driver: Driver, params: ISchemaParams) => {
-  const { graph, schema, override = false } = params;
-  const cypher = '';
-  const result = await request(driver, cypher);
-  return responseFormatter(result);
+export const importSchema = async (
+  driver: Driver,
+  Schema: Schema[],
+  graphName: string,
+) => {
+  try {
+    const cypherEdgeList: any = [];
+    const cypherVertexList: any = [];
+    Schema?.forEach(item => {
+      if (item?.type === 'VERTEX') {
+        cypherVertexList.push(createVertexLabelByJson(JSON.stringify(item)));
+      } else if (item?.type === 'EDGE') {
+        cypherEdgeList.push(createEdgeLabelByJson(JSON.stringify(item)));
+      }
+    });
+    const result = await mapCypher(
+      [...cypherVertexList, ...cypherEdgeList],
+      0,
+      driver,
+      graphName,
+    );
+    return result;
+  } catch (error) {
+    return error;
+  }
 };

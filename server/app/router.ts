@@ -47,10 +47,10 @@ export default (app: Application) => {
   );
   // router.put('/api/subgraph', controller.tugraph.subgraph.updateSubGraph);
   // router.delete('/api/subgraph', controller.tugraph.subgraph.deleteSubGraph);
-  router.get(
-    '/api/subgraph/:graphName',
-    controller.tugraph.subgraph.subGraphDetailInfo,
-  ); //TODO 没看到调用了
+  // router.get(
+  //   '/api/subgraph/:graphName',
+  //   controller.tugraph.subgraph.subGraphDetailInfo,
+  // ); //TODO 没看到调用了
   // router.get('/api/subgraph', controller.tugraph.subgraph.getSubGraphList);
 
   // TuGraph Schema

@@ -19,14 +19,7 @@ const ConsoleMenu = ({
           }
           key={key}
           onClick={() => {
-            window.location.hash= '/console?menu=' + key
-            // history.pushState(
-            //   {
-            //     menu: key,
-            //   },
-            //   '',
-            //   window.location.origin + window.location.pathname + '?menu=' + key
-            // );
+            window.location.hash = '/console?menu=' + key;
             onMenuChange && onMenuChange(key);
           }}
         >

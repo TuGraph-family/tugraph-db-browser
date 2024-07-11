@@ -2,7 +2,7 @@ import { deleteUser, updatePassword, disabledUser } from '@/queries/security';
 import { useRequest } from 'ahooks';
 import { useModel } from 'umi';
 import { InitialState } from '@/app';
-import { queryCreateUser,  queryUsers,  updateUser } from '../utils/query';
+import { queryCreateUser, queryUsers, updateUser } from '../utils/query';
 import { request } from '@/services/request';
 
 export const useUser = () => {
@@ -12,41 +12,49 @@ export const useUser = () => {
     runAsync: onGetAuthList,
     loading: GetAuthListLoading,
     error: GetAuthListError,
-  } = useRequest(params => queryUsers(driver,params), { manual: true });
+  } = useRequest(params => queryUsers(driver, params), { manual: true });
 
   const {
     runAsync: onCreateUser,
     loading: CreateUserLoading,
     error: CreateUserError,
-  } = useRequest(params => queryCreateUser(driver,params), { manual: true });
+  } = useRequest(params => queryCreateUser(driver, params), { manual: true });
 
   const {
     runAsync: onEditUser,
     loading: EditUserLoading,
     error: EditUserError,
-  } = useRequest(params => updateUser(driver,params), { manual: true });
+  } = useRequest(params => updateUser(driver, params), { manual: true });
 
   const {
     runAsync: onDisabledUser,
     loading: DisabledUserLoading,
     error: DisabledUserError,
-  } = useRequest(params => request(driver,disabledUser(params)), { manual: true });
+  } = useRequest(params => request({ driver, cypher: disabledUser(params) }), {
+    manual: true,
+  });
 
   const {
     runAsync: onDeleteUser,
     loading: DeleteUserLoading,
     error: DeleteUserError,
-  } = useRequest(params => request(driver,deleteUser(params.username)), {
-    manual: true,
-  });
+  } = useRequest(
+    params => request({ driver, cypher: deleteUser(params.username) }),
+    {
+      manual: true,
+    },
+  );
 
   const {
     runAsync: onChangePassword,
     loading: ChangePasswordLoading,
     error: ChangePasswordError,
-  } = useRequest(params => request(driver,updatePassword(params)), {
-    manual: true,
-  });
+  } = useRequest(
+    params => request({ driver, cypher: updatePassword(params) }),
+    {
+      manual: true,
+    },
+  );
 
   return {
     onGetAuthList,

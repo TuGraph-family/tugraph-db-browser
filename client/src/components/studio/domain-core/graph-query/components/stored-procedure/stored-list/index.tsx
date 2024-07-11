@@ -10,6 +10,12 @@ import { useProcedure } from '../../../../../hooks/useProcedure';
 import { ProcedureItemParams } from '../../../../../interface/procedure';
 import { StoredForm } from './stored-form';
 
+// hooks
+import { useModel } from 'umi';
+
+// types
+import { InitialState } from '@/app';
+
 import styles from './index.module.less';
 
 type Prop = {
@@ -28,6 +34,10 @@ export const StoredList: React.FC<Prop> = ({
   activeValue,
 }) => {
   const { onGetProcedureList } = useProcedure();
+  const { initialState } = useModel('@@initialState');
+  const { driver } = initialState as InitialState;
+
+  /** state */
   const [state, updateState] = useImmer<{
     visible: boolean;
     list: { name: string; items: ProcedureItemParams[] }[];
@@ -67,44 +77,43 @@ export const StoredList: React.FC<Prop> = ({
       draft.activeKey = activeValue;
     });
   }, [activeValue]);
-  const refreshList = (type: 'cpp' | 'python' | 'any') => {
-    onGetProcedureList({
+  const refreshList = () => {
+
+    //TODO: by Allen
+    onGetProcedureList(driver, {
       graphName,
-      procedureType: type,
-      version: 'any',
-    }).then(res => {
+      procedureType: 'CPP'
+    }).then((res: any) => {
+
+      if (!res) return;
+
       updateState(draft => {
-        const newItems = map(res.data, item => ({
+        const newItems = map(res, item => ({
           ...item.plugin_description,
         }));
-        if (type === 'any') {
-          draft.list[0].items = filter(
-            newItems,
-            item => item.type !== 'python',
-          );
-          draft.list[1].items = filter(
-            newItems,
-            item => item.type === 'python',
-          );
-          draft.searchList[0].items = filter(
-            newItems,
-            item => item.type !== 'python',
-          );
-          draft.searchList[1].items = filter(
-            newItems,
-            item => item.type === 'python',
-          );
-        } else {
-          draft.list[type === 'cpp' ? 0 : 1].items = newItems;
-          draft.searchList[type === 'cpp' ? 0 : 1].items = newItems;
-        }
+        draft.list[0].items = filter(
+          newItems,
+          item => item.code_type !== 'python',
+        );
+        draft.list[1].items = filter(
+          newItems,
+          item => item.code_type === 'python',
+        );
+        draft.searchList[0].items = filter(
+          newItems,
+          item => item.code_type !== 'python',
+        );
+        draft.searchList[1].items = filter(
+          newItems,
+          item => item.code_type === 'python',
+        );
       });
       return res;
     });
   };
   useEffect(() => {
     getRefresh(refreshList);
-    refreshList('any');
+    refreshList();
   }, []);
   const getSearchList = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateState(draft => {

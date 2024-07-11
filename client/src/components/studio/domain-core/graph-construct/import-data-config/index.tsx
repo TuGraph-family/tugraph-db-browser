@@ -4,7 +4,6 @@ import { filter, map } from 'lodash';
 import { PUBLIC_PERFIX_CLASS } from '../../../constant';
 import { FileData } from '../../../interface/import';
 import { GraphData } from '../../../interface/schema';
-import { DataMapping } from './data-mapping';
 
 import styles from './index.module.less';
 import { useEffect, useState } from 'react';
@@ -98,9 +97,10 @@ export const fileListDataMap = ({
 
 export const ImportDataConfig = (prop: ImportDataConfigProps) => {
   const { fileDataList = [], setFileDataList, graphData, isFullView } = prop;
-  const [openKey, setOpenKey] = useState<string[]>([]);
+  const [openKey, setOpenKey] = useState<string[]>(['0']);
 
   const handleDelete = (fileName: string) => {
+   
     const newFileList = filter(
       fileDataList,
       (item: FileData) => item.fileName !== fileName,

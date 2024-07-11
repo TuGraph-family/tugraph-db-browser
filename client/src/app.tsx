@@ -27,23 +27,19 @@ export async function getInitialState() {
     const driver = neo4j.driver(uri, neo4j.auth.basic(userName, password));
     const session = driver.session({
       defaultAccessMode: 'READ',
-      database: 'default',
     });
     console.log('tugraph db auto login success');
     const handleSessionClose = () => {
       setLocalData(TUGRAPH_USER_NAME, null);
       setLocalData(TUGRAPH_PASSWORD, null);
       setLocalData(TUGRAPH_URI, null);
-      session.close();
-      window.location.hash = '/login'
+      driver.close();
+      window.location.hash = '/login';
     };
     let dbConfig: Record<string, any> = {};
-    const config = await session
-      .run('CALL dbms.config.list()')
-
-      .catch(e => {
-        console.log(e);
-      });
+    const config = await session.run('CALL dbms.config.list()').catch(e => {
+      console.log(e);
+    });
     if (config) {
       dbConfig = dbConfigRecordsTranslator(config.records);
       const retain_connection_credentials =
@@ -51,7 +47,7 @@ export async function getInitialState() {
       if (retain_connection_credentials === 'false') {
         handleSessionClose();
       } else {
-        setInterval(() => {
+        interval = setInterval(() => {
           const credential_timeout = dbConfig['browser.credential_timeout'];
           const latestLoginTime = getLocalData(TUGRPAH_USER_LOGIN_TIME);
           const isExpired =
@@ -74,6 +70,6 @@ export async function getInitialState() {
     };
   } catch (e) {
     console.error(e);
-    window.location.hash = '/login'
+    window.location.hash = '/login';
   }
 }

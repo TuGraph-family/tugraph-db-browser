@@ -1,20 +1,24 @@
 @perfix-cls: ant-tugraph;
+
 .@{perfix-cls}-login-container {
   width: 100%;
   height: 100vh;
   background-color: hsl(227, 100%, 96%);
   position: relative;
   display: flex;
+
   &-left {
     height: 100vh;
     width: 53%;
   }
+
   .@{perfix-cls}-logo-img {
     position: absolute;
     width: 122px;
     top: 1.8%;
     left: 4.2%;
   }
+
   .@{perfix-cls}-particles-container {
     width: 80%;
     height: 52%;
@@ -24,6 +28,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     position: relative;
+
     :global {
       #tsparticles {
         position: absolute;
@@ -34,6 +39,7 @@
         height: 100%;
       }
     }
+
     .@{perfix-cls}-text {
       position: absolute;
       transform: translate(-50%, -50%);
@@ -41,11 +47,13 @@
       top: 50%;
       text-align: center;
       font-size: 22px;
+
       img {
         width: 540px;
       }
     }
   }
+
   .@{perfix-cls}-login-form {
     width: 47%;
     position: absolute;
@@ -53,6 +61,7 @@
     top: 0;
     height: 100%;
     background-color: #ffffff;
+
     .@{perfix-cls}-logo {
       width: 52%;
       position: absolute;
@@ -67,6 +76,7 @@
         line-height: 36px;
         margin-bottom: 4px;
       }
+
       .@{perfix-cls}-login-desc {
         height: 22px;
         width: 126px;
@@ -77,14 +87,17 @@
         margin-bottom: 32px;
       }
     }
+
     .@{perfix-cls}-form-style {
       :global {
         .ant-input-affix-wrapper {
           padding: 0 11px;
         }
+
         .ant-input {
           height: 40px;
         }
+
         .ant-btn {
           width: 100%;
           background-color: rgba(22, 80, 255, 1);
@@ -93,9 +106,19 @@
           font-weight: 400;
           margin-top: 16px;
         }
+
         .ant-input-password-icon {
           font-size: 17px;
         }
+      }
+      
+      /* 处理input回填默认背景色 */
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover,
+      input:-webkit-autofill:focus,
+      input:-webkit-autofill:active {
+        -webkit-transition-delay: 111111s;
+        -webkit-transition: color 11111s ease-out, background-color 111111s ease-out;
       }
     }
   }

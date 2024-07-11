@@ -84,6 +84,7 @@ export interface FileData {
     dataSource: DataType[];
   } | null;
   labelOptions?: LabelOption[];
+  selectedValue?: string[]
 }
 
 export type DataType = Record<string, string | number>;
