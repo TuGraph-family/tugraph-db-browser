@@ -3,19 +3,14 @@ import Nav from '@/layouts/nav';
 import { CloseCircleFilled, CheckCircleFilled } from '@ant-design/icons';
 import styles from './resetPassword.less';
 
-import {
-  Form,
-  Popover,
-  Input,
-  Button,
-  Progress,
-  message,
-  ProgressProps,
-} from 'antd';
+import { Form, Popover, Input, Button, Progress, message } from 'antd';
 import { FormItemProps, FormInstance } from 'antd';
 import { useState } from 'react';
-import { useUser } from '@/components/studio/hooks/useUser';
-import React from 'react';
+import { useUser } from '@/components/console/hooks/useUser';
+import { setLocalData } from '@/utils';
+import { TUGRAPH_PASSWORD, TUGRAPH_URI, TUGRAPH_USER_NAME } from '@/constants';
+import { useModel } from 'umi';
+import { InitialState } from '@/app';
 
 const Item = Form.Item;
 const useForm = Form.useForm;
@@ -33,7 +28,7 @@ const rules = [
     pattern: new RegExp(LEVEL_MEDIUM),
   },
   {
-    message: '',
+    message: '您的密码必须至少为8个字符，其中包含数字，大小写字母，特殊字符',
     pattern: new RegExp(LEVEL_STRONG),
   },
 ];
@@ -141,8 +136,21 @@ const PopoverCheckInput = (props: PopoverCheckInputInterFace) => {
 };
 
 const ResetPassword = () => {
+  const { initialState } = useModel('@@initialState');
+  const { driver} = initialState as InitialState;
   const [form] = useForm();
   const { onChangePassword, ChangePasswordLoading } = useUser();
+
+
+/**
+ * 当关闭数据库链接,清空localStorage缓存
+ */
+const onClose=()=>{
+  setLocalData(TUGRAPH_USER_NAME, null);
+  setLocalData(TUGRAPH_PASSWORD, null);
+  setLocalData(TUGRAPH_URI, null);
+  driver.close();
+}
   const handleChangePassword = () => {
     form
       .validateFields()
@@ -154,9 +162,10 @@ const ResetPassword = () => {
             curPassword: oldPassword,
             password: newPassword,
           }).then(res => {
-            if (res.success) {
+            if (res?.success) {
+              onClose()
               message.success('密码修改成功');
-              window.open(window.location.origin + '/login', '_self');
+              window.open(window.location.origin + '#/login', '_self');
             }
           });
         } else {
@@ -181,7 +190,6 @@ const ResetPassword = () => {
           label="请输入原密码"
           name="oldPassword"
           required={true}
-          rules={rules}
           className={styles?.itemName}
         >
           <PopoverCheckInput />

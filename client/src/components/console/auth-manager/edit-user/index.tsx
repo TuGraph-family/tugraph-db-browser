@@ -8,7 +8,6 @@ import { useUser } from '../../hooks/useUser';
 import { UserProps } from '../../interface/user';
 
 import styles from './index.module.less';
-import { dbRecordsTranslator } from '@/translator';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -44,7 +43,6 @@ const EditAuthModal: React.FC<Prop> = ({
     onEditUser,
     CreateUserLoading,
     EditUserLoading,
-    onChangePassword,
   } = useUser();
   const { roleList, refreshList, isAdmin, rawRoleData } = state;
   const addUser = () => {
@@ -191,7 +189,7 @@ const EditAuthModal: React.FC<Prop> = ({
           </Item>
         ) : (
           <Item label="新密码" name="password">
-            <Input type="password" />
+            <Input type="password" autoComplete='new-password' />
           </Item>
         )}
 

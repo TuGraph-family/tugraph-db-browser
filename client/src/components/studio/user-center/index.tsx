@@ -1,11 +1,9 @@
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { Divider, Dropdown, Menu, Space, Tooltip,} from 'antd';
+import { Divider, Dropdown, Space, Tooltip,} from 'antd';
 import { isEmpty } from 'lodash';
 import React from 'react';
 import { useModel } from 'umi';
-import { useImmer } from 'use-immer';
 import { getLocalData, setLocalData } from '../utils/localStorage';
-import EditPasswordModal from './edit-password';
 import {
   USER_HELP_LINK
 } from '../constant';
@@ -23,10 +21,6 @@ import styles from './index.module.less';
 type Prop = {};
 export const UserCenter: React.FC<Prop> = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
-  const [state, updateState] = useImmer<{ isEditPassword: boolean }>({
-    isEditPassword: false,
-  });
-  const { isEditPassword } = state;
   const handleLogout = () => {
     setInitialState({...initialState, userInfo: {}} as InitialState)
       .then(() => {
@@ -43,9 +37,6 @@ export const UserCenter: React.FC<Prop> = () => {
       label: (
         <div
           onClick={() => {
-            // updateState(draft => {
-            //   draft.isEditPassword = true;
-            // });
            window.location.hash = '/reset'
           }}
         >
@@ -58,20 +49,17 @@ export const UserCenter: React.FC<Prop> = () => {
       label: <div onClick={handleLogout}>退出登录</div>,
     },
   ];
-  const menu = <Menu items={items} />;
   return (
     <div>
       <Space split={<Divider type="vertical" />}>
-        <div
-          onClick={() => window.open(USER_HELP_LINK)}
-          className={styles[`${PUBLIC_PERFIX_CLASS}-help`]}
-        >
-          <QuestionCircleOutlined />
-          <span className={styles[`${PUBLIC_PERFIX_CLASS}-help-tips`]}>
-            使用文档
-          </span>
-        </div>
-        <Dropdown overlay={menu} trigger={['click']}>
+        <Tooltip title="用户帮助">
+          <QuestionCircleOutlined
+            onClick={() => {
+              window.open(USER_HELP_LINK);
+            }}
+          />
+        </Tooltip>
+        <Dropdown menu={{items}} trigger={['click']}>
           <a style={{ color: 'black' }}>
             {isEmpty(getLocalData('TUGRAPH_USER_NAME'))
               ? ''
@@ -79,15 +67,6 @@ export const UserCenter: React.FC<Prop> = () => {
           </a>
         </Dropdown>
       </Space>
-
-      <EditPasswordModal
-        open={isEditPassword}
-        onCancel={() => {
-          updateState(draft => {
-            draft.isEditPassword = false;
-          });
-        }}
-      />
     </div>
   );
 };
