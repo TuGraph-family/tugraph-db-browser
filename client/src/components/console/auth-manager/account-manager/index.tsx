@@ -1,14 +1,26 @@
+import React, { useEffect } from 'react';
 import { Badge, Popconfirm, Table, message } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { isEmpty, join, map } from 'lodash';
-import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import { useUser } from '../..//hooks/useUser';
-import { PERSSION_COlOR, PUBLIC_PERFIX_CLASS } from '../../constant';
-import { UserProps } from '../../interface/user';
-import { getLocalData } from '../../utils/localStorage';
+import { motion } from "framer-motion";
+
+/** components */
 import EditAuthModal from '../edit-user';
 
+/** custom hooks */
+import { useUser } from '../..//hooks/useUser';
+
+/** constants */
+import { PERSSION_COlOR, PUBLIC_PERFIX_CLASS } from '../../constant';
+
+/** type */
+import { UserProps } from '../../interface/user';
+
+/** utils */
+import { getLocalData } from '../../utils/localStorage';
+
+/** styles */
 import styles from './index.module.less';
 
 type Prop = {
@@ -21,12 +33,14 @@ export const AccountManager: React.FC<Prop> = ({ getRefreshList }) => {
     username: string;
     type: 'add' | 'edit';
     editData: UserProps;
+    isFirstQuery?: boolean;
   }>({
     isOpen: false,
     dataSource: [],
     username: '',
     type: 'add',
     editData: {},
+    isFirstQuery: true
   });
   const { isOpen, dataSource, username, type, editData } = state;
   const { onGetAuthList, onDisabledUser, GetAuthListLoading, onDeleteUser } =
@@ -42,6 +56,7 @@ export const AccountManager: React.FC<Prop> = ({ getRefreshList }) => {
             roles: item.user_info.roles,
             permissions: item.user_info.permissions,
           }));
+          draft.isFirstQuery = false;
         });
       }
     })
@@ -139,12 +154,13 @@ export const AccountManager: React.FC<Prop> = ({ getRefreshList }) => {
       title: '账户',
       dataIndex: 'username',
       key: 'username',
+      width: '15%',
     },
     {
       title: '账户描述',
       dataIndex: 'description',
       key: 'description',
-      width: '30%',
+      width: '15%',
       render: (text: string) => text || '-',
     },
     {
@@ -158,10 +174,12 @@ export const AccountManager: React.FC<Prop> = ({ getRefreshList }) => {
       title: '相关角色',
       dataIndex: 'roles',
       key: 'roles',
+      width: '20%',
       render: (text: Array<string>) => join(text, '、') || '-',
     },
     {
       title: '操作',
+      // width: '20%',
       render: operate,
     },
   ];
@@ -171,14 +189,24 @@ export const AccountManager: React.FC<Prop> = ({ getRefreshList }) => {
   useEffect(() => {
     getRefreshList?.(getAuthList);
   }, []);
+
   return (
     <>
-      <Table
-        columns={columns}
-        bordered={false}
-        dataSource={dataSource}
-        loading={GetAuthListLoading}
-      />
+      <motion.div
+        initial={{height: '100px', opacity: 0}}
+        animate={{
+          height: state.isFirstQuery ? '100px' : 'auto',
+          opacity: state.isFirstQuery ? 0 : 1
+        }}
+        transition={{duration: 0.2}}
+      >
+        <Table
+          columns={columns}
+          bordered={false}
+          dataSource={dataSource}
+          loading={GetAuthListLoading}
+        />
+      </motion.div>
       <EditAuthModal
         open={isOpen}
         type={type}

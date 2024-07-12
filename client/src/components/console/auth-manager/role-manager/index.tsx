@@ -1,4 +1,5 @@
 import { Table, Popconfirm, message, Badge } from 'antd';
+import { motion } from "framer-motion";
 import React, { useEffect } from 'react';
 import { PUBLIC_PERFIX_CLASS, PERSSION_COlOR } from '../../constant';
 import { useImmer } from 'use-immer';
@@ -19,11 +20,13 @@ export const RoleManager: React.FC<Prop> = ({ getRefreshList }) => {
     dataSource: Array<RoleProps>;
     type: 'add' | 'edit';
     editData: RoleProps;
+    isFirstQuery?: boolean;
   }>({
     isOpen: false,
     dataSource: [],
     type: 'add',
     editData: {},
+    isFirstQuery: true
   });
   const { dataSource, editData, isOpen, type } = state;
   const { onGetRoleList, onDeleteRole, onDisabledRole } = useRole();
@@ -37,6 +40,7 @@ export const RoleManager: React.FC<Prop> = ({ getRefreshList }) => {
             permissions: item.role_info.permissions,
             disabled: item.role_info.disabled,
           }));
+          draft.isFirstQuery = false;
         });
       } else {
         message.error(res.errorMessage);
@@ -161,9 +165,20 @@ export const RoleManager: React.FC<Prop> = ({ getRefreshList }) => {
     getRoleList();
     getRefreshList(getRoleList);
   }, []);
+  
   return (
     <>
-      <Table columns={columns} bordered={false} dataSource={dataSource} />
+      <motion.div
+        initial={{height: '100px', opacity: 0}}
+        animate={{
+          height: state.isFirstQuery ? '100px' : '100%',
+          opacity: state.isFirstQuery ? 0 : 1
+        }}
+        transition={{duration: 0.2}}
+      >
+        <Table columns={columns} bordered={false} dataSource={dataSource} />
+      </motion.div>
+      
       <EditRoleModal
         open={isOpen}
         type={type}

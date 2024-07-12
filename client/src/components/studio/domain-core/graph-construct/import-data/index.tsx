@@ -29,7 +29,6 @@ export const ImportData: React.FC<Prop> = ({
   onSwitch,
 }) => {
   const [form] = Form.useForm();
-
   const { onImportData, importDataLoading } = useImport();
   const { visible, onShow, onClose } = useVisible({ defaultVisible: true });
   const [fileDataList, setFileDataList] = useState<FileData[]>([]);
@@ -123,7 +122,6 @@ export const ImportData: React.FC<Prop> = ({
      
 
       // 1. 导入数据
-
       const params = {
         graphName, //导入的子图名称
         files: fileSchemaTransform(fileDataList),

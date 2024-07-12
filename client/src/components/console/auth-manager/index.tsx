@@ -1,13 +1,24 @@
+/**
+ * file: Auth
+ * author: Allen
+*/
+
+import React from 'react';
 import { Button, Tabs } from 'antd';
 import { map } from 'lodash';
-import React from 'react';
 import { useImmer } from 'use-immer';
-import { PUBLIC_PERFIX_CLASS } from '../constant';
+
+/** components */
 import { AccountManager } from './account-manager';
 import EditRoleModal from './edit-role';
 import EditAuthModal from './edit-user';
-import styles from './index.module.less';
 import { RoleManager } from './role-manager';
+
+/** constants */
+import { PUBLIC_PERFIX_CLASS } from '../constant';
+
+/** styles */
+import styles from './index.module.less';
 
 export const AuthManager: React.FC = () => {
   const [state, setState] = useImmer<{

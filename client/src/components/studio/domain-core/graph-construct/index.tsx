@@ -1,15 +1,18 @@
-import {
-  ArrowLeftOutlined,
-  DownloadOutlined,
-  UploadOutlined,
-} from '@ant-design/icons';
+/**
+ * file: graph construct
+ * author: Allen
+*/
+
+import { useCallback, useEffect, useState } from 'react';
+import { Button, Checkbox, message, Modal, Select, Steps, Upload } from 'antd';
+import type { UploadProps } from 'antd';
+import { ArrowLeftOutlined, DownloadOutlined, UploadOutlined } from '@ant-design/icons';
 import { EdgeConfig, NodeConfig } from '@antv/g6-pc';
 import { GraphinContextType, Layout, Utils } from '@antv/graphin';
-import type { UploadProps } from 'antd';
-import { Button, Checkbox, message, Modal, Select, Steps, Upload } from 'antd';
 import { filter, isEmpty, join } from 'lodash';
-import { useCallback, useEffect, useState } from 'react';
 import { useImmer } from 'use-immer';
+
+/** components */
 import {
   GraphCanvas,
   GraphCanvasContext,
@@ -18,30 +21,34 @@ import {
 import { GraphCanvasLayout } from '../../components/graph-canvas-layout';
 import { CANVAS_LAYOUT } from '../../components/graph-canvas-layout/constant';
 import { GraphCanvasTools } from '../../components/graph-canvas-tools';
-import IconFont from '../../components/icon-font';
-import { GRAPH_OPERATE, PUBLIC_PERFIX_CLASS } from '../../constant';
-import demoData from '../../constant/demo-json/schema-demo.json';
-import { useImport } from '../../hooks/useImport';
-import { useSchema } from '../../hooks/useSchema';
-import { SubGraph } from '../../interface/graph';
-import {
-  GraphConfigData,
-  LabelSchema,
-  LabelType,
-  SchemaProperties,
-} from '../../interface/schema';
-import { downloadFile } from '../../utils/downloadFile';
-import { getLocalData } from '../../utils/localStorage';
-import { nodesEdgesListTranslator } from '../../utils/nodesEdgesListTranslator';
-import { schemaTransform } from '../../utils/schemaTransform';
 import { AddNodesEdges } from './add-nodes-edges';
 import { EditNodesEdges } from './edit-nodes-edges';
 import { ImportData } from './import-data';
 import NodesEdgesList from './nodes-edges-list';
 
+/** custom hooks */
+import { useImport } from '../../hooks/useImport';
+import { useSchema } from '../../hooks/useSchema';
+import { SubGraph } from '../../interface/graph';
+
+/** type */
+import { GraphConfigData, LabelSchema, LabelType, SchemaProperties } from '../../interface/schema';
+
+/** constants */
+import { GRAPH_OPERATE, PUBLIC_PERFIX_CLASS } from '../../constant';
+import demoData from '../../constant/demo-json/schema-demo.json';
+
+/** utils */
+import { downloadFile } from '../../utils/downloadFile';
+import { getLocalData } from '../../utils/localStorage';
+import { nodesEdgesListTranslator } from '../../utils/nodesEdgesListTranslator';
+import { schemaTransform } from '../../utils/schemaTransform';
 import { getQueryString } from '../../utils/routeParams';
-import styles from './index.module.less';
 import { addQueryParam } from '../../utils/url';
+
+/** styles */
+import IconFont from '../../components/icon-font';
+import styles from './index.module.less';
 
 export const GraphConstruct = () => {
   const location = window.location;

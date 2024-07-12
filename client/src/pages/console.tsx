@@ -1,20 +1,20 @@
 /**
- * file: 概览页
+ * file: console entry, include auth and database
  * author: Allen
 */
+import { useState } from 'react';
 
 import Auth from '@/components/console/auth-manager';
 import Database from '@/components/console/database-info';
 import ConsoleMenu from '@/components/consoleMenu';
-import { getQueryString } from '@/components/studio/utils/routeParams';
+import Nav from '@/layouts/nav';
 import {
   ConsoleContainer,
   ConsoleContentContainer,
   Container,
 } from '@/layouts';
 
-import Nav from '@/layouts/nav';
-import { useState } from 'react';
+import { getQueryString } from '@/components/studio/utils/routeParams';
 
 const components: any = {
   TU_GRAPH_AUTH: <Auth />,
