@@ -43,9 +43,7 @@ export const loginDB = async (params: {
     defaultAccessMode: 'READ',
   });
   console.log('tugraph db login success');
-  const config = await session.run('CALL dbms.config.list()').catch(e => {
-    console.log(e);
-  });
+  const config = await session.run('CALL dbms.config.list()');
   let dbConfig: Record<string, any> = {};
   if (config) {
     dbConfig = dbConfigRecordsTranslator(config.records);
@@ -69,7 +67,6 @@ export const loginDB = async (params: {
       setLocalData(TUGRAPH_URI, null);
     }
   }
-
   return {
     driver,
     session,
