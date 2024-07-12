@@ -44,34 +44,34 @@ export const loginDB = async (params: {
   });
   console.log('tugraph db login success');
   const config = await session.run('CALL dbms.config.list()');
-    let dbConfig: Record<string, any> = {};
-    if (config) {
-      dbConfig = dbConfigRecordsTranslator(config.records);
-      const retain_connection_credentials =
-        dbConfig['browser.retain_connection_credentials'];
-      const credential_timeout = dbConfig['browser.credential_timeout'];
-      if (retain_connection_credentials !== 'false') {
-        // 手动登录
-        setLocalData(TUGRAPH_USER_NAME, userName);
-        setLocalData(TUGRAPH_PASSWORD, password);
-        setLocalData(TUGRAPH_URI, uri);
-        setLocalData(TUGRPAH_USER_LOGIN_TIME, new Date().getTime());
-        // 一直在这个界面，过期跳转到登录页
-        setTimeout(() => {
-          session.close();
-          window.location.hash = '/login';
-        }, credential_timeout * 1000);
-      } else {
-        setLocalData(TUGRAPH_USER_NAME, null);
-        setLocalData(TUGRAPH_PASSWORD, null);
-        setLocalData(TUGRAPH_URI, null);
-      }
+  let dbConfig: Record<string, any> = {};
+  if (config) {
+    dbConfig = dbConfigRecordsTranslator(config.records);
+    const retain_connection_credentials =
+      dbConfig['browser.retain_connection_credentials'];
+    const credential_timeout = dbConfig['browser.credential_timeout'];
+    if (retain_connection_credentials !== 'false') {
+      // 手动登录
+      setLocalData(TUGRAPH_USER_NAME, userName);
+      setLocalData(TUGRAPH_PASSWORD, password);
+      setLocalData(TUGRAPH_URI, uri);
+      setLocalData(TUGRPAH_USER_LOGIN_TIME, new Date().getTime());
+      // 一直在这个界面，过期跳转到登录页
+      setTimeout(() => {
+        session.close();
+        window.location.hash = '/login';
+      }, credential_timeout * 1000);
+    } else {
+      setLocalData(TUGRAPH_USER_NAME, null);
+      setLocalData(TUGRAPH_PASSWORD, null);
+      setLocalData(TUGRAPH_URI, null);
     }
-    return {
-      driver,
-      session,
-      dbConfig,
-    };
+  }
+  return {
+    driver,
+    session,
+    dbConfig,
+  };
 };
 
 export const userInfoTranslator = (
