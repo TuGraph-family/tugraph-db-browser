@@ -70,7 +70,7 @@ export const Login = () => {
         
       } catch (error: any) {
         setIsLoading(false);
-        message.error(error ? error : '登录失败！');
+        message.error('登录失败，请检查数据库地址、用户名、密码是否正确');
       }
     }
   };
