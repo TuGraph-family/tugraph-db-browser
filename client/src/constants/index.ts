@@ -45,3 +45,6 @@ export const DATA_TYPE = [
   // { label: 'BLOB', value: 'BLOB', default: '' },
   { label: 'BOOL', value: 'BOOL', default: false },
 ];
+
+/** style prefix */
+export const PUBLIC_PERFIX_CLASS = 'ant-tugraph';

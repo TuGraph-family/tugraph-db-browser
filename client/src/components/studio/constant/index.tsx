@@ -2,8 +2,6 @@ import { CollasibleStep } from '../components/collapsable-steps';
 export type PROJECT_TAB = 'MY_PROJECT' | 'ALL_PROJEXCT';
 export const PUBLIC_PERFIX_CLASS = 'ant-tugraph';
 
-export { EngineServerURL as SERVER_HOST } from '../../../../../server/app/service/tugraph/constant';
-
 // utils
 import { generateNameWithHash } from '@/utils/common';
 

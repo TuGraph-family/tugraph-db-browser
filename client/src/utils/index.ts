@@ -10,7 +10,7 @@ import { isEmpty, forEach, map, find, merge } from 'lodash';
 import {
   IRoleRespons,
   IUserRespons,
-} from '../../../server/app/service/tugraph/interface';
+} from '@/types/services';
 
 export const getLocalData = (key: string) => {
   if (!key) {

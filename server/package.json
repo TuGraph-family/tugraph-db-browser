@@ -51,9 +51,6 @@
     "egg-view-nunjucks": "^2.3.0",
     "egg-view-assets": "^1.9.0"
   },
-  "engines": {
-    "node": "v16.20.0"
-  },
   "ci": {
     "version": "14, 16, 18"
   },

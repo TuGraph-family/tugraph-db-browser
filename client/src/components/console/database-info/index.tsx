@@ -64,9 +64,9 @@ export const DatabaseInfo: React.FC = () => {
   return (
     <motion.div
       className={styles[`${PUBLIC_PERFIX_CLASS}-base-info`]}
-      initial={{height: 0, opacity: 0}}
-      animate={{height: '100%', opacity: 1}}
-      transition={{duration: 0.5}}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
     >
       <Card title="基础信息">
         <Skeleton loading={getSystemInfoLoading}>

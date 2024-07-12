@@ -193,12 +193,9 @@ export const AccountManager: React.FC<Prop> = ({ getRefreshList }) => {
   return (
     <>
       <motion.div
-        initial={{height: '100px', opacity: 0}}
-        animate={{
-          height: state.isFirstQuery ? '100px' : 'auto',
-          opacity: state.isFirstQuery ? 0 : 1
-        }}
-        transition={{duration: 0.2}}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
       >
         <Table
           columns={columns}

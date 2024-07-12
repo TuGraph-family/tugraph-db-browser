@@ -10,18 +10,12 @@
     }
   ],
   "scripts": {
-    "dev": "pnpm -r --stream run dev",
+    "dev": "cd client && yarn run dev",
+    "start": "yarn run dev",
+    "bootstrap": "yarn run client-bootstrap",
     "client-bootstrap": "cd client && yarn install --ignore-engines",
     "server-bootstrap": "cd server && yarn install --ignore-engines",
-    "bootstrap": "yarn run client-bootstrap && yarn run server-bootstrap",
-    "client-dev": "cd client && yarn run dev",
-    "server-dev": "cd server && yarn run dev",
-    "server-start": "cd server && yarn run start",
-    "start": "pnpm -r --stream run start",
-    "client-build": "cd client && yarn run build",
-    "server-build": "cd server && yarn run build",
-    "sycnfile": "cd server && yarn run sycnfile",
-    "build": "yarn run client-build && yarn run server-build && yarn run sycnfile"
+    "build": "cd client && yarn run build"
   },
   "repository": "https://github.com/TuGraph-family/tugraph-db-browser.git"
 }
