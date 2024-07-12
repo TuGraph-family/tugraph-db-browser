@@ -1,20 +1,37 @@
-import { DownOutlined, UpOutlined } from '@ant-design/icons';
-import { List, Pagination, Spin } from 'antd';
-import { join } from 'lodash';
+/**
+ * file: graph list entry
+ * author: Allen
+*/
+
 import { useCallback, useEffect } from 'react';
+import { List, Pagination, Spin } from 'antd';
+import { DownOutlined, UpOutlined } from '@ant-design/icons';
+import { join } from 'lodash';
 import { useImmer } from 'use-immer';
-import CollasibleSteps from '../components/collapsable-steps';
-import { PROJECT_TAB, PUBLIC_PERFIX_CLASS, STEP_LIST } from '../constant';
+import { motion } from "framer-motion";
+
+/** components */
 import AddTuGraphModal from '../domain-core/project/project-list/components/add-tugraph';
 import EmptyProject from '../domain-core/project/project-list/components/empty-project';
 import ProjectCard from '../domain-core/project/project-list/components/project-card';
+import CollasibleSteps from '../components/collapsable-steps';
+
+/** hooks */
+import { useGraph } from '../hooks/useGraph';
+
+/** type */
+import { SubGraph } from '../interface/graph';
+
+/** constants */
+import { PROJECT_TAB, PUBLIC_PERFIX_CLASS, STEP_LIST } from '../constant';
+
+/** utils */
+import { getDefaultDemoList } from '../utils/getDefaultDemoList';
+import { getGraphListTranslator } from '../utils/graphTranslator';
 import { getZhPeriod } from '../utils/getZhPeriod';
 import { getLocalData, setLocalData } from '../utils/localStorage';
 
-import { useGraph } from '../hooks/useGraph';
-import { SubGraph } from '../interface/graph';
-import { getDefaultDemoList } from '../utils/getDefaultDemoList';
-import { getGraphListTranslator } from '../utils/graphTranslator';
+/** styles */
 import styles from './index.module.less';
 
 export const GraphList = () => {
@@ -31,6 +48,7 @@ export const GraphList = () => {
     isAdd: boolean;
     pagination: number;
     currentList: any[];
+    isFirstQuery?: boolean;
   }>({
     activeTab: 'MY_PROJECT',
     searchType: 'project',
@@ -43,6 +61,7 @@ export const GraphList = () => {
     isAdd: false,
     pagination: 1,
     currentList: [],
+    isFirstQuery: true
   });
   const { isShowStep, list, isAdd, pagination, currentList } = state;
 
@@ -66,6 +85,7 @@ export const GraphList = () => {
           page = page - 1;
         }
         draft.list = [...defaultList.slice((page - 1) * 8, pagination * 8)];
+        draft.isFirstQuery = false;
       });
     });
   };
@@ -115,34 +135,39 @@ export const GraphList = () => {
           </div>
           <div className={styles[`${PUBLIC_PERFIX_CLASS}-projects`]}>
             <Spin spinning={getGraphListLoading}>
-              {(currentList || []).length === 0 ? (
+              {(currentList || []).length === 0 && !state.isFirstQuery ? (
                 <EmptyProject onCreateProject={onCreateProject} />
               ) : (
-                <List
-                  grid={{ column: 3, gutter: 16 }}
-                  className={join(
-                    [
-                      styles[`${PUBLIC_PERFIX_CLASS}-list`],
-                      isShowStep
-                        ? styles[`${PUBLIC_PERFIX_CLASS}-list-show-step`]
-                        : '',
-                    ],
-                    ' ',
-                  )}
-                  dataSource={[{ id: '-1' } as any, ...(list || [])]}
-                  renderItem={(item, index) => {
-                    return (
-                      <List.Item>
-                        <ProjectCard
-                          key={item.graphName}
-                          projectInfo={item}
-                          index={index}
-                          onRefreshProjectList={fetchGraphList}
-                        />
-                      </List.Item>
-                    );
-                  }}
-                />
+                <motion.div
+                  initial={{opacity: 0}}
+                  animate={{opacity: state.isFirstQuery ? 0 : 1}}
+                >
+                  <List
+                    grid={{ column: 3, gutter: 16 }}
+                    className={join(
+                      [
+                        styles[`${PUBLIC_PERFIX_CLASS}-list`],
+                        isShowStep
+                          ? styles[`${PUBLIC_PERFIX_CLASS}-list-show-step`]
+                          : '',
+                      ],
+                      ' ',
+                    )}
+                    dataSource={[{ id: '-1' } as any, ...(list || [])]}
+                    renderItem={(item, index) => {
+                      return (
+                        <List.Item>
+                          <ProjectCard
+                            key={item.graphName}
+                            projectInfo={item}
+                            index={index}
+                            onRefreshProjectList={fetchGraphList}
+                          />
+                        </List.Item>
+                      );
+                    }}
+                  />
+                </motion.div>
               )}
               <Pagination
                 current={pagination}

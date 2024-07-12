@@ -32,20 +32,25 @@ const ProjectCard = ({
     drawerVisiable?: boolean;
     isEdit: boolean;
     isAdd: boolean;
-    nodeEdgeObjList?: Array<{ text: string; value?: number }>;
+    nodeEdgeObjList?: Array<{ text: string; value: number | string }>;
     isNodeEdgeObj: boolean;
     isConstruct: boolean;
   }>({
     drawerVisiable: false,
     isEdit: false,
     isAdd: false,
-    nodeEdgeObjList: [],
-    isNodeEdgeObj: false,
+    nodeEdgeObjList: [
+      { text: '类点', value: '--' },
+      { text: '点', value: '--' },
+      { text: '类边', value: '--' },
+      { text: '边', value: '--' },
+    ],
+    isNodeEdgeObj: true,
     isConstruct: false,
   });
   const { nodeEdgeObjList, isNodeEdgeObj,isConstruct } = state;
   const getActions = (text: string, status: boolean, href: string) => (
-    <Tooltip title={!status && '请先图构建'}>
+    <Tooltip title={!status && '功能暂未开放'}>
       <span
         onClick={() => {
           if (status) {
@@ -73,10 +78,10 @@ const ProjectCard = ({
         const isConstruct = !!(res.data.vertexLabels || res.data.edgeLabels)
         updateState(draft => {
           draft.nodeEdgeObjList = [
-            { text: '类点', value: res.data.vertexLabels },
-            { text: '点', value: res.data.vertexCount },
-            { text: '类边', value: res.data.edgeLabels },
-            { text: '边', value: res.data.edgeCount },
+            { text: '类点', value: res.data.vertexLabels ?? '--' },
+            { text: '点', value: res.data.vertexCount ?? '--' },
+            { text: '类边', value: res.data.edgeLabels ?? '--' },
+            { text: '边', value: res.data.edgeCount ?? '--' },
           ];
           draft.isConstruct = isConstruct
         });
@@ -86,7 +91,6 @@ const ProjectCard = ({
   useEffect(()=>{
     nodeEdgeStatistics(graphName)
   },[])
-
   return (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-card-box`]}>
       {index === 0 ? (
@@ -205,13 +209,14 @@ const ProjectCard = ({
                   </div>
                 </div>
                 {isNodeEdgeObj ? (
-                  getNodeEdgeStatisticsLoading ? (
-                    <Spin
-                      indicator={<IconFont type="icon-jiazai" />}
-                      tip={<span>正在统计中，请稍等片刻</span>}
-                      spinning
-                    />
-                  ) : (
+                  // getNodeEdgeStatisticsLoading ? (
+                  //   <Spin
+                  //     indicator={<IconFont type="icon-jiazai" />}
+                  //     tip={<span>正在统计中，请稍等片刻</span>}
+                  //     spinning
+                  //   />
+                  // ) : 
+                  (
                     <div
                       className={styles[`${PUBLIC_PERFIX_CLASS}-env-node-edge`]}
                     >
@@ -226,9 +231,7 @@ const ProjectCard = ({
                             <div
                               className={styles[`${PUBLIC_PERFIX_CLASS}-text`]}
                             >
-                              {((item.text === '点' || item.text === '边') &&
-                                !isNodeEdgeObj) ||
-                              !item.value
+                              {((item.text === '点' || item.text === '边') && !isNodeEdgeObj) || !item.value
                                 ? '--'
                                 : item.value}
                             </div>

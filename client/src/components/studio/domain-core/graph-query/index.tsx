@@ -356,13 +356,14 @@ export const GraphQuery = () => {
         >
           返回图构建
         </Button>
-        <Button
+        {/* 暂时功能隐藏 */}
+        {/* <Button
           onClick={() => {
             location.hash = `/analysis?graphName=${currentGraphName}`;
           }}
         >
           前往图分析
-        </Button>
+        </Button> */}
       </Space>
     </div>
   );

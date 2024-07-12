@@ -24,6 +24,7 @@
     "ahooks": "^3.7.2",
     "antd": "^4.24.8",
     "copy-to-clipboard": "^3.3.3",
+    "framer-motion": "^11.3.0",
     "immer": "^9.0.19",
     "json-bigint": "^1.0.0",
     "lodash": "^4.17.21",
@@ -91,9 +92,6 @@
     "tsparticles-updater-stroke-color": "2.9.3",
     "mime": "^4.0.1",
     "@types/mime": "^4.0.0"
-  },
-  "engines": {
-    "node": "v16.20.0"
   },
   "repository": "https://github.com/Seventysevendays/tugraph-db-browser.git"
 }
