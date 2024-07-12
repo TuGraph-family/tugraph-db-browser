@@ -13,8 +13,12 @@ import {
   TUGRAPH_PASSWORD,
   TUGRAPH_URI,
   TUGRAPH_USER_NAME,
+  PUBLIC_PERFIX_CLASS
 } from '@/constants';
 import { InitialState } from '@/app';
+
+/** styles */
+import styles from './index.module.less';
 
 type Prop = {};
 export const UserCenter: React.FC<Prop> = () => {
@@ -58,13 +62,15 @@ export const UserCenter: React.FC<Prop> = () => {
   return (
     <div>
       <Space split={<Divider type="vertical" />}>
-        <Tooltip title="用户帮助">
-          <QuestionCircleOutlined
-            onClick={() => {
-              window.open(USER_HELP_LINK);
-            }}
-          />
-        </Tooltip>
+        <div
+          onClick={() => window.open(USER_HELP_LINK)}
+          className={styles[`${PUBLIC_PERFIX_CLASS}-help`]}
+        >
+          <QuestionCircleOutlined />
+          <span className={styles[`${PUBLIC_PERFIX_CLASS}-help-tips`]}>
+            使用文档
+          </span>
+        </div>
         <Dropdown overlay={menu} trigger={['click']}>
           <a style={{ color: 'black' }}>
             {isEmpty(getLocalData('TUGRAPH_USER_NAME'))

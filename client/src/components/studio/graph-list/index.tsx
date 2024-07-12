@@ -139,8 +139,10 @@ export const GraphList = () => {
                 <EmptyProject onCreateProject={onCreateProject} />
               ) : (
                 <motion.div
-                  initial={{opacity: 0}}
-                  animate={{opacity: state.isFirstQuery ? 0 : 1}}
+                  key={ pagination }
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: state.isFirstQuery ? 0 : 1 }}
+                  transition={{ duration: 0.6 }}
                 >
                   <List
                     grid={{ column: 3, gutter: 16 }}
