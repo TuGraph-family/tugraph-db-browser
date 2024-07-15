@@ -6,12 +6,13 @@
     "build": "NODE_ENV=production && umi build",
     "postinstall": "umi setup",
     "setup": "umi setup",
-    "start": "npm run dev"
+    "start": "npm run dev",
+    "import": "bit import --skip-dependency-installation --dependencies --merge manual"
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
     "@ant-design/pro-components": "^2.3.37",
-    "@antv/g6": "^4.7.14",
+    "@antv/g6": "^5.0.7",
     "@antv/graphin": "^2.7.13",
     "@codemirror/lang-cpp": "^6.0.2",
     "@codemirror/lang-java": "^6.0.1",
@@ -19,6 +20,9 @@
     "@codemirror/lang-python": "^6.1.2",
     "@difizen/cofine-editor-core": "^0.0.1-alpha.6",
     "@difizen/cofine-language-cypher": "^0.0.1-alpha.6",
+    "@formily/antd": "^2.3.1",
+    "@formily/core": "^2.3.1",
+    "@formily/react": "^2.3.1",
     "@uiw/react-codemirror": "^4.20.2",
     "@umijs/plugin-request": "^2.9.0",
     "ahooks": "^3.7.2",
@@ -93,5 +97,6 @@
     "mime": "^4.0.1",
     "@types/mime": "^4.0.0"
   },
-  "repository": "https://github.com/Seventysevendays/tugraph-db-browser.git"
+  "repository": "https://github.com/Seventysevendays/tugraph-db-browser.git",
+  "__npminstall_done": false
 }

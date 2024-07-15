@@ -5,6 +5,7 @@ export default [
   { path: '/console', component: 'console', title: '控制台' },
   { path: '/construct', component: 'construct', title: '图构建' },
   { path: '/analysis', component: 'analysis', title: '图分析' },
+  { path: '/v2/analysis', component: 'graph-schema/index', title: '图分析' },
   { path: '/query', component: 'query', title: '图查询' },
   { path: '/reset', component: 'resetPassword', title: '重置密码' },
 ];
