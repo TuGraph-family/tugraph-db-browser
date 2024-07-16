@@ -2,12 +2,12 @@ import { Tag, Tooltip } from 'antd';
 import { find, join, omit } from 'lodash';
 import React, { useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import IconFont from '../../../../components/icon-font';
-import TextTabs, { TextTabsTab } from '../../../../components/text-tabs';
-import { PUBLIC_PERFIX_CLASS } from '../../../../constant';
-import { ExcecuteResultProp } from '../../../../interface/query';
-import { GraphData } from '../../../../interface/schema';
-import { downloadFile } from '../../../../utils/downloadFile';
+import IconFont from '@/components/studio/components/icon-font';
+import TextTabs, { TextTabsTab } from '@/components/studio/components/text-tabs';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import { ExcecuteResultProp } from '@/components/studio/interface/query';
+import { GraphData } from '@/components/studio/interface/schema';
+import { downloadFile } from '@/components/studio/utils/downloadFile';
 import ExecuteResult from '../excecute-result';
 
 import styles from './index.module.less';

@@ -4,7 +4,9 @@ import { IRequestParams, ISessionParams } from '@/types/services';
 export const request = async (params: IRequestParams) => {
   const { driver, cypher, graphName, parameters = {} } = params;
   if (!cypher) {
-    return {};
+    return {
+      success:false
+    };
   }
 
   const sessionParams: ISessionParams = {};

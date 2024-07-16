@@ -8,11 +8,11 @@ import { Input, Popconfirm, Select, Tooltip } from 'antd';
 import { filter, join, map, omit } from 'lodash';
 import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import SearchInput from '../../../../components/search-input';
-import SwitchDrawer from '../../../../components/switch-drawer';
-import { PUBLIC_PERFIX_CLASS } from '../../../../constant';
-import { useVisible } from '../../../../hooks/useVisible';
-import { getLocalData, setLocalData } from '../../../../utils';
+import SearchInput from '@/components/studio/components/search-input';
+import SwitchDrawer from '@/components/studio/components/switch-drawer';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import { useVisible } from '@/components/studio/hooks/useVisible';
+import { getLocalData, setLocalData } from '@/components/studio/utils';
 
 import styles from './index.module.less';
 

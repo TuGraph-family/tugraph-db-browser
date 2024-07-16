@@ -3,7 +3,7 @@ import { Col, Form, Input, InputNumber, Row } from 'antd';
 import { FormInstance } from 'antd/es/form/Form';
 import React from 'react';
 import { useImmer } from 'use-immer';
-import { PUBLIC_PERFIX_CLASS } from '../../../../../constant';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
 
 import styles from './index.module.less';
 

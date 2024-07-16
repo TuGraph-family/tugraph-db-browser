@@ -13,9 +13,9 @@ import {
 import { filter, find, flatMapDeep, map, toArray } from 'lodash';
 import React, { ReactNode, useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import { PUBLIC_PERFIX_CLASS } from '../../../../../constant';
-import { SchemaProperties } from '../../../../../interface/schema';
-import { getConnectOptions } from '../../../utils/getConnectOptions';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import { SchemaProperties } from '@/components/studio/interface/schema';
+import { getConnectOptions } from '@/components/studio/domain-core/graph-query/utils/getConnectOptions';
 
 import styles from './index.module.less';
 
