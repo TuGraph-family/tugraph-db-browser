@@ -7,7 +7,8 @@
     "postinstall": "umi setup",
     "setup": "umi setup",
     "start": "npm run dev",
-    "import": "bit import --skip-dependency-installation --dependencies --merge manual"
+    "import": "bit import --skip-dependency-installation --dependencies --merge manual",
+    "checkout": "bit checkout head --skip-npm-install --manual"
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
