@@ -121,7 +121,7 @@ const ProjectCard = ({
               `${'/construct'}?graphName=${graphName}`,
             ),
             getActions('图查询', isConstruct, `${'/query'}?graphName=${graphName}`),
-            getActions('图分析', false, `${'/analysis'}?graphName=${graphName}`),
+            getActions('图分析', true, `${'/analysis'}?graphName=${graphName}`),
           ]}
           bordered={false}
           hoverable
