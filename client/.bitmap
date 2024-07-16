@@ -27,6 +27,12 @@
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/array-tabs"
     },
+    "domains-core/graph-analysis/graph-schema/components/page-title": {
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/page-title"
+    },
     "domains-core/graph-analysis/graph-schema/components/schema-field": {
         "scope": "geamaker",
         "version": "0.0.1",
@@ -83,7 +89,7 @@
     },
     "pages/graph-schema": {
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/pages/graph-schema"
     },
