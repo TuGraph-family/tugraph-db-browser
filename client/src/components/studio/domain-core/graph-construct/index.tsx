@@ -160,9 +160,10 @@ export const GraphConstruct = () => {
     });
   };
 
+  /** 监听图项目GraphName是否发生变化，变化则需要都重新渲染 */
   useEffect(() => {
     getGraphSchema(currentGraphName);
-  }, []);
+  }, [currentGraphName]);
 
   useEffect(() => {
     if (currentStep === 1) {
@@ -269,7 +270,10 @@ export const GraphConstruct = () => {
         <Select
           onChange={value => {
             location.hash = `/construct?graphName=${value}`;
-            location.reload();
+            /** 替换location.reload， 避免页面重新加载 */
+            setState(draft => {
+              draft.currentGraphName = value;
+            });
           }}
           defaultValue={currentGraphName}
           options={graphListOptions}
@@ -281,9 +285,14 @@ export const GraphConstruct = () => {
         type="navigation"
         current={currentStep}
         className={styles[`${PUBLIC_PERFIX_CLASS}-step`]}
+        onChange={(value: number) => {
+          setState(draft => {
+            draft.currentStep = value;
+          });
+        }}
       >
         <Steps.Step title="模型定义" />
-        <Steps.Step title="数据导入" />
+        <Steps.Step title="数据导入" disabled={isEmpty(data.edges) && isEmpty(data.nodes)} />
       </Steps>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerRight`]}>
         <Button
@@ -326,6 +335,7 @@ export const GraphConstruct = () => {
         <div
           key={item.lable}
           onMouseOver={() => {
+            console.log('item?.value:', item?.value);
             setHoverType(item?.value);
           }}
           onMouseLeave={() => {
