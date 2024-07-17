@@ -463,6 +463,16 @@
     "@antv/util" "^2.0.13"
     tslib "^2.0.0"
 
+"@antv/component@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/component/download/@antv/component-2.0.1.tgz#795f22fafcc1ffb074a9b7dbee3622c7e2ef8c5e"
+  integrity sha512-VldsSv2O/JNjZYenFIzmtLeC+KD2RcpNARsCLKpi04Iz26joQ3uMtnwxM5W4bd/SCJYKp+eeQeMHMAbwaNR1pw==
+  dependencies:
+    "@antv/g" "^6.0.5"
+    "@antv/scale" "^0.4.3"
+    "@antv/util" "^3.3.5"
+    svg-path-parser "^1.1.0"
+
 "@antv/dom-util@^2.0.1", "@antv/dom-util@^2.0.2":
   version "2.0.4"
   resolved "https://registry.npmmirror.com/@antv/dom-util/-/dom-util-2.0.4.tgz#b09b56c56fec42896fc856edad56b595b47ab514"
@@ -470,9 +480,9 @@
   dependencies:
     tslib "^2.0.3"
 
-"@antv/event-emitter@^0.1.1", "@antv/event-emitter@~0.1.0":
+"@antv/event-emitter@^0.1.1", "@antv/event-emitter@^0.1.3", "@antv/event-emitter@~0.1.0":
   version "0.1.3"
-  resolved "https://registry.npmmirror.com/@antv/event-emitter/-/event-emitter-0.1.3.tgz#3e06323b9dcd55a3241ddc7c5458cfabd2095164"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/event-emitter/download/@antv/event-emitter-0.1.3.tgz#3e06323b9dcd55a3241ddc7c5458cfabd2095164"
   integrity sha512-4ddpsiHN9Pd4UIlWuKVK1C4IiZIdbwQvy9i7DUSI3xNJ89FPUFt8lxDYj8GzzfdllV0NkJTRxnG+FvLk0llidg==
 
 "@antv/g-base@^0.5.1", "@antv/g-base@^0.5.12":
@@ -492,6 +502,16 @@
     detect-browser "^5.1.0"
     tslib "^2.0.3"
 
+"@antv/g-camera-api@2.0.9":
+  version "2.0.9"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/g-camera-api/download/@antv/g-camera-api-2.0.9.tgz#7c1d935ca20f98ca6dfa692bab07e504b9db9202"
+  integrity sha512-ixeF5lypyNqZ6Btua6FC7w3YvGi+WnmtDIAalByaM8lGDlYroZNYQTsOeVE4JsS15kjQwEe+GYs+e0jWgdXpeg==
+  dependencies:
+    "@antv/g-lite" "2.0.6"
+    "@antv/util" "^3.3.5"
+    gl-matrix "^3.4.3"
+    tslib "^2.5.3"
+
 "@antv/g-canvas@^0.5.2":
   version "0.5.17"
   resolved "https://registry.npmmirror.com/@antv/g-canvas/-/g-canvas-0.5.17.tgz#2e0d263a355e167b9da5e606fbd1ad1500474fcf"
@@ -505,6 +525,50 @@
     gl-matrix "^3.0.0"
     tslib "^2.0.3"
 
+"@antv/g-canvas@^2.0.8":
+  version "2.0.8"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/g-canvas/download/@antv/g-canvas-2.0.8.tgz#b74fbab77c0d31fc7326f6601eac5ed2df0ff499"
+  integrity sha512-XyzFGq3xqIRxEnIIU310FyOyuNAuUKyh93plgkRkF2dOCpS3RAVQRRxD1vnG47NShwjfo3Pn0qiIKTSyxGXQZg==
+  dependencies:
+    "@antv/g-lite" "2.0.6"
+    "@antv/g-plugin-canvas-path-generator" "2.0.6"
+    "@antv/g-plugin-canvas-picker" "2.0.7"
+    "@antv/g-plugin-canvas-renderer" "2.0.7"
+    "@antv/g-plugin-dom-interaction" "2.0.6"
+    "@antv/g-plugin-html-renderer" "2.0.7"
+    "@antv/g-plugin-image-loader" "2.0.6"
+    "@antv/util" "^3.3.5"
+    tslib "^2.5.3"
+
+"@antv/g-dom-mutation-observer-api@2.0.6":
+  version "2.0.6"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/g-dom-mutation-observer-api/download/@antv/g-dom-mutation-observer-api-2.0.6.tgz#6fc9669c4e5576214200aaa5e795993b92cc2d43"
+  integrity sha512-VIdXYxaIa82oqxLu2si+zaMq+UCU4CZS1sdtE4oROEe9uhA4vlZsynfnoOD+nw5RcTwKWx9nu1IxI/xsjFXUvw==
+  dependencies:
+    "@antv/g-lite" "2.0.6"
+
+"@antv/g-lite@2.0.6":
+  version "2.0.6"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/g-lite/download/@antv/g-lite-2.0.6.tgz#8554751bb0cc293c84f79786ca0041d5451e0394"
+  integrity sha512-7lYAtxrNHqtQIsBYCub6HLrMNm0828dzBed9Kge1hZtLbTL0weCmZBq/te/0lpdNDVeP/XqwYmT6toIi3sc0Ew==
+  dependencies:
+    "@antv/g-math" "3.0.0"
+    "@antv/util" "^3.3.5"
+    d3-color "^3.1.0"
+    eventemitter3 "^5.0.1"
+    gl-matrix "^3.4.3"
+    rbush "^3.0.1"
+    tslib "^2.5.3"
+
+"@antv/g-math@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/g-math/download/@antv/g-math-3.0.0.tgz#834d993391546e39ae5a30452572fdc49a7c57ec"
+  integrity sha512-AkmiNIEL1vgqTPeGY2wtsMdBBqKFwF7SKSgs+D1iOS/rqYMsXdhp/HvtuQ5tx/HdawE/ZzTiicIYopc520ADZw==
+  dependencies:
+    "@antv/util" "^3.3.5"
+    gl-matrix "^3.4.3"
+    tslib "^2.5.3"
+
 "@antv/g-math@^0.1.1", "@antv/g-math@^0.1.9":
   version "0.1.9"
   resolved "https://registry.npmmirror.com/@antv/g-math/-/g-math-0.1.9.tgz#1f981b9aebf5c024f284389aa3e5cba8cefa1f28"
@@ -512,6 +576,79 @@
   dependencies:
     "@antv/util" "~2.0.0"
     gl-matrix "^3.0.0"
+
+"@antv/g-plugin-canvas-path-generator@2.0.6":
+  version "2.0.6"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/g-plugin-canvas-path-generator/download/@antv/g-plugin-canvas-path-generator-2.0.6.tgz#f2d4595de4c33d9e45581869e6c011f0a6cd23cd"
+  integrity sha512-wMRUPowlyp1t7u3aalBZM0gQXCrOVNqNpodOOwFPqe+M0qBpHmh9gUF1AtXyg3m84i4HCUFgmupJ9YZVCnZ2lg==
+  dependencies:
+    "@antv/g-lite" "2.0.6"
+    "@antv/g-math" "3.0.0"
+    "@antv/util" "^3.3.5"
+    tslib "^2.5.3"
+
+"@antv/g-plugin-canvas-picker@2.0.7":
+  version "2.0.7"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/g-plugin-canvas-picker/download/@antv/g-plugin-canvas-picker-2.0.7.tgz#153294e357638beb457d484ffeb60a4f0d01924a"
+  integrity sha512-c1igCBXG4ZBvzxrTQ9DNxhYdA1gkzNv6JbTmT2ZDIBMxkLi1sD9jjEF00vc1+d2OHS3bpqmfpLkIniZCtAN3kA==
+  dependencies:
+    "@antv/g-lite" "2.0.6"
+    "@antv/g-math" "3.0.0"
+    "@antv/g-plugin-canvas-path-generator" "2.0.6"
+    "@antv/g-plugin-canvas-renderer" "2.0.7"
+    "@antv/util" "^3.3.5"
+    gl-matrix "^3.4.3"
+    tslib "^2.5.3"
+
+"@antv/g-plugin-canvas-renderer@2.0.7":
+  version "2.0.7"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/g-plugin-canvas-renderer/download/@antv/g-plugin-canvas-renderer-2.0.7.tgz#cfd0eb4695663be11b36366a75f621609265ff34"
+  integrity sha512-GcfAyCXrsBCOUWPx8MnyMN3TJ/ocb9APg6gO1LeN5F8YN0fpkKqxuhfHTtc5D1dCG0+8VQWSyI3HdkbOOhA3vA==
+  dependencies:
+    "@antv/g-lite" "2.0.6"
+    "@antv/g-math" "3.0.0"
+    "@antv/g-plugin-canvas-path-generator" "2.0.6"
+    "@antv/g-plugin-image-loader" "2.0.6"
+    "@antv/util" "^3.3.5"
+    gl-matrix "^3.4.3"
+    tslib "^2.5.3"
+
+"@antv/g-plugin-dom-interaction@2.0.6":
+  version "2.0.6"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/g-plugin-dom-interaction/download/@antv/g-plugin-dom-interaction-2.0.6.tgz#568797e0396b13684c21d8b29403e9f5697ac7c6"
+  integrity sha512-tu9+PNPSc7JOO+rZ/Q7tTuPMbMXRsXg9AVVaB+PzwGuYYQmCfRuudtPa5+lVWzXaFc6wlThb4v9qeA2AerqeNw==
+  dependencies:
+    "@antv/g-lite" "2.0.6"
+    tslib "^2.5.3"
+
+"@antv/g-plugin-dragndrop@^2.0.6":
+  version "2.0.6"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/g-plugin-dragndrop/download/@antv/g-plugin-dragndrop-2.0.6.tgz#065989d708e8695cd4e83e78907db4556e0a066c"
+  integrity sha512-qMrDbrGEnM66Qg/vwI+zNdhFNoN+pjzyZtO3MD+CjNQnEGpQqy1W9PNLpWcFE43BU5Z/JkoUtu6Oy5C/WKHBbQ==
+  dependencies:
+    "@antv/g-lite" "2.0.6"
+    "@antv/util" "^3.3.5"
+    tslib "^2.5.3"
+
+"@antv/g-plugin-html-renderer@2.0.7":
+  version "2.0.7"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/g-plugin-html-renderer/download/@antv/g-plugin-html-renderer-2.0.7.tgz#c1c76719fbf4a7a7d2237403c512d5ce3d908401"
+  integrity sha512-j5zuVJ3cBm0VfJBTAtMa5GB159HSInBBXO3Nup4UVaKjl7JSL0Qkz5vZCvRX6rv6UD19+vH483v7JtQ+JXcgHA==
+  dependencies:
+    "@antv/g-lite" "2.0.6"
+    "@antv/util" "^3.3.5"
+    gl-matrix "^3.4.3"
+    tslib "^2.5.3"
+
+"@antv/g-plugin-image-loader@2.0.6":
+  version "2.0.6"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/g-plugin-image-loader/download/@antv/g-plugin-image-loader-2.0.6.tgz#dc110a44085f29b78aa1d4076913ab79b5deb26b"
+  integrity sha512-lyJ157fDqH0iFBYwFGUxZNUOxN0vRV5hF7e0iK9ElvSEc2ovqpLi0UVwjAbA67eJwpd5Y771Go1sRfx0XJo87Q==
+  dependencies:
+    "@antv/g-lite" "2.0.6"
+    "@antv/util" "^3.3.5"
+    gl-matrix "^3.4.3"
+    tslib "^2.5.3"
 
 "@antv/g-svg@^0.5.1", "@antv/g-svg@^0.5.2":
   version "0.5.7"
@@ -523,6 +660,15 @@
     "@antv/util" "~2.0.0"
     detect-browser "^5.0.0"
     tslib "^2.0.3"
+
+"@antv/g-web-animations-api@2.0.7":
+  version "2.0.7"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/g-web-animations-api/download/@antv/g-web-animations-api-2.0.7.tgz#0f52dcdaf7732d5a01746e943e511cef4fe1a4ce"
+  integrity sha512-BpP86sTRAgNAWHDNajOhoM0YC2eL95iUFGcRftulrZ/8sqnTXF/M/I319vcznylwKNS37tzVmEppn76vS35UmQ==
+  dependencies:
+    "@antv/g-lite" "2.0.6"
+    "@antv/util" "^3.3.5"
+    tslib "^2.5.3"
 
 "@antv/g-webgpu-core@^0.7.2":
   version "0.7.2"
@@ -626,12 +772,39 @@
     "@antv/util" "^2.0.9"
     insert-css "^2.0.0"
 
-"@antv/g6@^4.7.14", "@antv/g6@^4.8.19":
+"@antv/g6@^4.8.19":
   version "4.8.24"
   resolved "https://registry.npmmirror.com/@antv/g6/-/g6-4.8.24.tgz#803c7cbe3a345194d7fb0f8c68a5200d65f2c333"
   integrity sha512-bgj7sZ+z45JmOngIpYpwmSIg7SboMLZBoAlX0+RoAETZB3/xvZO0MXT3lCSyAhIgm5Sb68pekKi7OStuo04NyQ==
   dependencies:
     "@antv/g6-pc" "0.8.24"
+
+"@antv/g6@^5.0.7":
+  version "5.0.9"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/g6/download/@antv/g6-5.0.9.tgz#829e1b6f59eae24a92da565c11bbd14534ec02ca"
+  integrity sha512-sRLP9e1/g8khrNr+GCiQ09sP5MkvpByQVtVWF2Lt3xhxEj9Hrrfs9wWuWFqpdu16AHvMtaamsqQsEx48RistRQ==
+  dependencies:
+    "@antv/component" "^2.0.1"
+    "@antv/event-emitter" "^0.1.3"
+    "@antv/g" "^6.0.10"
+    "@antv/g-canvas" "^2.0.8"
+    "@antv/g-plugin-dragndrop" "^2.0.6"
+    "@antv/graphlib" "^2.0.3"
+    "@antv/hierarchy" "^0.6.12"
+    "@antv/layout" "^1.2.14-beta.5"
+    "@antv/util" "^3.3.7"
+    bubblesets-js "^2.3.3"
+    hull.js "^1.0.6"
+
+"@antv/g@^6.0.10", "@antv/g@^6.0.5":
+  version "6.0.10"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/g/download/@antv/g-6.0.10.tgz#34fd7f71b8709b1c25669e4411362de29bdfe5ec"
+  integrity sha512-VH45ddgHQhEzWZ4aDpHHcu6f77vIVKhfEMgHZzUL9bnMTmJ2P4qf0DtarhP6BKvxcHlFFpJcSyYSxTurNHvW5w==
+  dependencies:
+    "@antv/g-camera-api" "2.0.9"
+    "@antv/g-dom-mutation-observer-api" "2.0.6"
+    "@antv/g-lite" "2.0.6"
+    "@antv/g-web-animations-api" "2.0.7"
 
 "@antv/graphin@^2.7.13":
   version "2.7.27"
@@ -647,9 +820,16 @@
   resolved "https://registry.npmmirror.com/@antv/graphlib/-/graphlib-1.2.0.tgz#c88f97d4b3456d261480a1207ffc4fbc5d7dcf0d"
   integrity sha512-hhJOMThec51nU4Fe5p/viLlNIL71uDEgYFzKPajWjr2715SFG1HAgiP6AVylIeqBcAZ04u3Lw7usjl/TuI5RuQ==
 
-"@antv/hierarchy@^0.6.10":
+"@antv/graphlib@^2.0.0", "@antv/graphlib@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/graphlib/download/@antv/graphlib-2.0.3.tgz#493e05872851c897e2133b0968cf5c6f4f6c022e"
+  integrity sha512-EtQR+DIfsYy28tumTnH560v7yIzXZq0nSgFBZh76mMiV1oHEN1L4p6JKu7IMtILH14mDqzmYYYFetYoAODoQUw==
+  dependencies:
+    "@antv/event-emitter" "^0.1.3"
+
+"@antv/hierarchy@^0.6.10", "@antv/hierarchy@^0.6.12":
   version "0.6.12"
-  resolved "https://registry.npmmirror.com/@antv/hierarchy/-/hierarchy-0.6.12.tgz#f35e081acd41ed7bb870322e5ac9038e5f68459d"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/hierarchy/download/@antv/hierarchy-0.6.12.tgz#f35e081acd41ed7bb870322e5ac9038e5f68459d"
   integrity sha512-WvWT9WYtm2SvYunm1HtzrHazvOozeP4cPFDhJWsnLzmTGMX/tNhsoCD3O+DDB3aeDY8fyM+wfZDvLv7+/4lIeA==
 
 "@antv/layout@^0.3.0":
@@ -664,6 +844,24 @@
     d3-quadtree "^2.0.0"
     dagre-compound "^0.0.11"
     ml-matrix "6.5.0"
+
+"@antv/layout@^1.2.14-beta.5":
+  version "1.2.14-beta.5"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/layout/download/@antv/layout-1.2.14-beta.5.tgz#849addadfd3f7afb5ef041d41088dda47e6f7bf0"
+  integrity sha512-r/twRLE2kql+jawu/qp5+7rcUH3ul6RFlLg5MGi3B/83WktMNyqOOYYHbk6T89/KWUUSPDCdvrb56BVfvLFqRQ==
+  dependencies:
+    "@antv/event-emitter" "^0.1.3"
+    "@antv/graphlib" "^2.0.0"
+    "@antv/util" "^3.3.2"
+    "@naoak/workerize-transferable" "^0.1.0"
+    comlink "^4.4.1"
+    d3-force "^3.0.0"
+    d3-force-3d "^3.0.5"
+    d3-octree "^1.0.2"
+    d3-quadtree "^3.0.1"
+    dagre "^0.8.5"
+    ml-matrix "^6.10.4"
+    tslib "^2.5.0"
 
 "@antv/matrix-util@^3.0.4":
   version "3.0.4"
@@ -701,6 +899,15 @@
     fecha "~4.2.0"
     tslib "^2.0.0"
 
+"@antv/scale@^0.4.3":
+  version "0.4.16"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/scale/download/@antv/scale-0.4.16.tgz#60557470668ccfe5217e482a01f05c0cbb706b62"
+  integrity sha512-5wg/zB5kXHxpTV5OYwJD3ja6R8yTiqIOkjOhmpEJiowkzRlbEC/BOyMvNUq5fqFIHnMCE9woO7+c3zxEQCKPjw==
+  dependencies:
+    "@antv/util" "^3.3.7"
+    color-string "^1.5.5"
+    fecha "^4.2.1"
+
 "@antv/util@^2.0.13", "@antv/util@^2.0.9", "@antv/util@~2.0.0", "@antv/util@~2.0.13", "@antv/util@~2.0.3", "@antv/util@~2.0.5":
   version "2.0.17"
   resolved "https://registry.npmmirror.com/@antv/util/-/util-2.0.17.tgz#e8ef42aca7892815b229269f3dd10c6b3c7597a9"
@@ -709,9 +916,9 @@
     csstype "^3.0.8"
     tslib "^2.0.3"
 
-"@antv/util@^3.3.2":
+"@antv/util@^3.3.2", "@antv/util@^3.3.5", "@antv/util@^3.3.7":
   version "3.3.7"
-  resolved "https://registry.npmmirror.com/@antv/util/-/util-3.3.7.tgz#35a900f0e9b65defbb92ec0e92a20b8189a18815"
+  resolved "https://registry.npm.alibaba-inc.com/@antv/util/download/@antv/util-3.3.7.tgz#35a900f0e9b65defbb92ec0e92a20b8189a18815"
   integrity sha512-qqPg7rIPCsJyl7N56jAC25v/99mJ3ApVkgBsGijhiWrEeKvzXBPk1r5P77Pm9nCljpnn+hH8Z3t5AivbEoTJMg==
   dependencies:
     fast-deep-equal "^3.1.3"
@@ -1233,6 +1440,13 @@
   dependencies:
     regenerator-runtime "^0.14.0"
 
+"@babel/runtime@^7.1.5":
+  version "7.24.8"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/runtime/download/@babel/runtime-7.24.8.tgz#5d958c3827b13cc6d05e038c07fb2e5e3420d82e"
+  integrity sha512-5F7SDGs1T72ZczbRwbGO9lQi0NLjQxzl6i4lJxLxfW9U5UluCSyEJeniWvnhl3/euNiqQVbo8zruhsDfid0esA==
+  dependencies:
+    regenerator-runtime "^0.14.0"
+
 "@babel/runtime@^7.10.5", "@babel/runtime@^7.12.1", "@babel/runtime@^7.7.2", "@babel/runtime@^7.9.2":
   version "7.24.7"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.24.7.tgz#f4f0d5530e8dbdf59b3451b9b3e594b6ba082e12"
@@ -1663,7 +1877,7 @@
   dependencies:
     tslib "^2.0.0"
 
-"@dnd-kit/core@^6.0.8":
+"@dnd-kit/core@^6.0.0", "@dnd-kit/core@^6.0.8":
   version "6.1.0"
   resolved "https://registry.npmmirror.com/@dnd-kit/core/-/core-6.1.0.tgz#e81a3d10d9eca5d3b01cbf054171273a3fe01def"
   integrity sha512-J3cQBClB4TVxwGo3KEjssGEXNJqGVWx17aRTZ1ob0FliR5IjYgTxl5YJbKTzA6IzrtelotH19v6y7uoIRUZPSg==
@@ -1680,7 +1894,7 @@
     "@dnd-kit/utilities" "^3.2.1"
     tslib "^2.0.0"
 
-"@dnd-kit/sortable@^7.0.2":
+"@dnd-kit/sortable@^7.0.0", "@dnd-kit/sortable@^7.0.2":
   version "7.0.2"
   resolved "https://registry.npmmirror.com/@dnd-kit/sortable/-/sortable-7.0.2.tgz#791d550872457f3f3c843e00d159b640f982011c"
   integrity sha512-wDkBHHf9iCi1veM834Gbk1429bd4lHX4RpAwT0y2cHLf246GAvU2sVw/oxWNpPKQNQRQaeGXhAVgrOl1IT+iyA==
@@ -2156,6 +2370,100 @@
   resolved "https://registry.yarnpkg.com/@formatjs/intl-utils/-/intl-utils-2.3.0.tgz#2dc8c57044de0340eb53a7ba602e59abf80dc799"
   integrity sha512-KWk80UPIzPmUg+P0rKh6TqspRw0G6eux1PuJr+zz47ftMaZ9QDwbGzHZbtzWkl5hgayM/qrKRutllRC7D/vVXQ==
 
+"@formily/antd@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.npm.alibaba-inc.com/@formily/antd/download/@formily/antd-2.3.1.tgz#56a7e73c80bdc066f327937601526a10d35306e6"
+  integrity sha512-+304KIcJXrt4tH8tW4uqwuz95o9ftl79jxS8k9GqWlaaSudapOxIdKp1mwAvVp9GUVUa1BNlyZNRtaSvx3+GnA==
+  dependencies:
+    "@dnd-kit/core" "^6.0.0"
+    "@dnd-kit/sortable" "^7.0.0"
+    "@formily/core" "2.3.1"
+    "@formily/grid" "2.3.1"
+    "@formily/json-schema" "2.3.1"
+    "@formily/react" "2.3.1"
+    "@formily/reactive" "2.3.1"
+    "@formily/reactive-react" "2.3.1"
+    "@formily/shared" "2.3.1"
+    classnames "^2.2.6"
+    react-sticky-box "^0.9.3"
+
+"@formily/core@2.3.1", "@formily/core@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.npm.alibaba-inc.com/@formily/core/download/@formily/core-2.3.1.tgz#76c823d81a5dc8c9d40e7a197fe57c63e1f8b7cb"
+  integrity sha512-dCBPnmzDpQKdN4ddxi98VbdurpbH6SHb12S9y9SnzW/QTslZnkvrvBhTlucWB5XqXJfwcyCzpZIn/GdMAbPpZg==
+  dependencies:
+    "@formily/reactive" "2.3.1"
+    "@formily/shared" "2.3.1"
+    "@formily/validator" "2.3.1"
+
+"@formily/grid@2.3.1":
+  version "2.3.1"
+  resolved "https://registry.npm.alibaba-inc.com/@formily/grid/download/@formily/grid-2.3.1.tgz#154c6dba512a44b03fada142971e4361a8b79838"
+  integrity sha512-Je+sWa7b71qZgysbVQXiv+3bOqXnKZ3vU4RIhMXrTL4ac46+9dNSXGSVrC85C98lq9EJp/uUJhtLdUb6P3WStg==
+  dependencies:
+    "@formily/reactive" "2.3.1"
+    "@juggle/resize-observer" "^3.3.1"
+
+"@formily/json-schema@2.3.1":
+  version "2.3.1"
+  resolved "https://registry.npm.alibaba-inc.com/@formily/json-schema/download/@formily/json-schema-2.3.1.tgz#055a4a21bf32fd898ae471742be99eb9d6e66629"
+  integrity sha512-LcJmU1BOYGdoip+Q9YAxHdrpjdl781WFSg0fDTD9/0A7c3xUXWwxdCYZIN0cvoXi2qq8Khyzba0pizl3YSkf0A==
+  dependencies:
+    "@formily/core" "2.3.1"
+    "@formily/reactive" "2.3.1"
+    "@formily/shared" "2.3.1"
+
+"@formily/path@2.3.1":
+  version "2.3.1"
+  resolved "https://registry.npm.alibaba-inc.com/@formily/path/download/@formily/path-2.3.1.tgz#b7adb91f7d3bb0f2efc90672dda466a0590dcb1b"
+  integrity sha512-BVo89K5nAFntx02+EV696If1b1bVIm5I1tRPtVyCVIjBIfAgga5hK4k80GZ01Dlk3tpReHpiIbZVg2DNVfw7jA==
+
+"@formily/react@2.3.1", "@formily/react@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.npm.alibaba-inc.com/@formily/react/download/@formily/react-2.3.1.tgz#dee2897578aa8881de83a442219b071e3b88eca7"
+  integrity sha512-8KkFJe2OnbsgiXwY/txUcUaCQIfIkfowWQinOSni02U2ssgs2bpb1ifFHlZrFGfrrW/xhce4ANUHRgoVYt7W4Q==
+  dependencies:
+    "@formily/core" "2.3.1"
+    "@formily/json-schema" "2.3.1"
+    "@formily/reactive" "2.3.1"
+    "@formily/reactive-react" "2.3.1"
+    "@formily/shared" "2.3.1"
+    "@formily/validator" "2.3.1"
+    hoist-non-react-statics "^3.3.2"
+
+"@formily/reactive-react@2.3.1":
+  version "2.3.1"
+  resolved "https://registry.npm.alibaba-inc.com/@formily/reactive-react/download/@formily/reactive-react-2.3.1.tgz#943a2961e35649674c861479d350ade0cf71106b"
+  integrity sha512-r6d94JBWhwXGpsffNLnRzgksQJtmqudD1cq7ky2Oljtxg5Ynl8H0Ppcnsv0bd9NbNSAeDeFs2uwWz56exgDzjA==
+  dependencies:
+    "@formily/reactive" "2.3.1"
+    hoist-non-react-statics "^3.3.2"
+
+"@formily/reactive@2.3.1":
+  version "2.3.1"
+  resolved "https://registry.npm.alibaba-inc.com/@formily/reactive/download/@formily/reactive-2.3.1.tgz#8607d29643ba06c0d40c12bb0eca2233e42ac04f"
+  integrity sha512-IVHOZW7VBc+Gq9eB/gPldi7pEC3wDonDb99KvHlS8SmzsY6+a/iAdrw2mDagXXUficsC2gT4y4EcJ2f1ALMKtQ==
+
+"@formily/shared@2.3.1":
+  version "2.3.1"
+  resolved "https://registry.npm.alibaba-inc.com/@formily/shared/download/@formily/shared-2.3.1.tgz#831369db4d01219b9ef72ee9140979985d14a870"
+  integrity sha512-qnlh6jnnIbUjcK0rWF9bm6AxgyxuBgURrzU5vMSxTNAN86P7K9+mSc/28qPsdNP9flEA2/clSexP5WEJAGYVgw==
+  dependencies:
+    "@formily/path" "2.3.1"
+    camel-case "^4.1.1"
+    lower-case "^2.0.1"
+    no-case "^3.0.4"
+    param-case "^3.0.4"
+    pascal-case "^3.1.1"
+    upper-case "^2.0.1"
+
+"@formily/validator@2.3.1":
+  version "2.3.1"
+  resolved "https://registry.npm.alibaba-inc.com/@formily/validator/download/@formily/validator-2.3.1.tgz#94ac89bcff96c3e028dd0b81bf92fb7f50ecf292"
+  integrity sha512-hM/IDvU/bachpS3fOUe02C9f5EytlNu6OJzDy+AyhWBmZYIVd6QVvPtjV8nyLOXIBJM9N4sxnGSliYQNAPjR1w==
+  dependencies:
+    "@formily/shared" "2.3.1"
+
 "@iconify/types@^2.0.0":
   version "2.0.0"
   resolved "https://registry.npmmirror.com/@iconify/types/-/types-2.0.0.tgz#ab0e9ea681d6c8a1214f30cd741fe3a20cc57f57"
@@ -2301,6 +2609,11 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@juggle/resize-observer@^3.3.1":
+  version "3.4.0"
+  resolved "https://registry.npm.alibaba-inc.com/@juggle/resize-observer/download/@juggle/resize-observer-3.4.0.tgz#08d6c5e20cf7e4cc02fd181c4b0c225cd31dbb60"
+  integrity sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==
+
 "@lezer/common@^1.0.0", "@lezer/common@^1.1.0", "@lezer/common@^1.2.0", "@lezer/common@^1.2.1":
   version "1.2.1"
   resolved "https://registry.npmmirror.com/@lezer/common/-/common-1.2.1.tgz#198b278b7869668e1bebbe687586e12a42731049"
@@ -2364,6 +2677,11 @@
     "@babel/runtime" "^7.7.7"
     hoist-non-react-statics "^3.3.1"
     react-is "^16.12.0"
+
+"@naoak/workerize-transferable@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.npm.alibaba-inc.com/@naoak/workerize-transferable/download/@naoak/workerize-transferable-0.1.0.tgz#864cc8241b977bffd8661c0be1441da9b4bfb633"
+  integrity sha1-hkzIJBuXe//YZhwL4UQdqbS/tjM=
 
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   version "5.1.1-v1"
@@ -3998,6 +4316,11 @@ bser@2.1.1:
   dependencies:
     node-int64 "^0.4.0"
 
+bubblesets-js@^2.3.3:
+  version "2.3.3"
+  resolved "https://registry.npm.alibaba-inc.com/bubblesets-js/download/bubblesets-js-2.3.3.tgz#e94e05cdc10bf9508084876d71b9339d29c57ffb"
+  integrity sha512-7++8/mcahpmJyIGY+YSPG5o2FnTIeNgVx17eoFyEjzcTblpcMd8SSUtt67MlKYlj8mIh9/aYpY+1GvPoy6pViQ==
+
 buffer-from@^1.0.0:
   version "1.1.2"
   resolved "https://registry.npmmirror.com/buffer-from/-/buffer-from-1.1.2.tgz#2b146a6fd72e80b4f55d255f35ed59a3a9a41bd5"
@@ -4072,10 +4395,10 @@ callsites@^3.0.0:
   resolved "https://registry.npmmirror.com/callsites/-/callsites-3.1.0.tgz#b3630abd8943432f54b3f0519238e33cd7df2f73"
   integrity sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==
 
-camel-case@^4.1.2:
+camel-case@^4.1.1, camel-case@^4.1.2:
   version "4.1.2"
-  resolved "https://registry.npmmirror.com/camel-case/-/camel-case-4.1.2.tgz#9728072a954f805228225a6deea6b38461e1bd5a"
-  integrity sha512-gxGWBrTT1JuMx6R+o5PTXMmUnhnVzLQ9SNutD4YqKtI6ap897t3tKECYla6gCWEkplXnlNybEkZg9GEGxKFCgw==
+  resolved "https://registry.npm.alibaba-inc.com/camel-case/download/camel-case-4.1.2.tgz#9728072a954f805228225a6deea6b38461e1bd5a"
+  integrity sha1-lygHKpVPgFIoIlpt7qazhGHhvVo=
   dependencies:
     pascal-case "^3.1.2"
     tslib "^2.0.3"
@@ -4247,9 +4570,9 @@ color-name@^1.0.0, color-name@~1.1.4:
   resolved "https://registry.npmmirror.com/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
   integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
 
-color-string@^1.6.0:
+color-string@^1.5.5, color-string@^1.6.0:
   version "1.9.1"
-  resolved "https://registry.npmmirror.com/color-string/-/color-string-1.9.1.tgz#4467f9146f036f855b764dfb5bf8582bf342c7a4"
+  resolved "https://registry.npm.alibaba-inc.com/color-string/download/color-string-1.9.1.tgz#4467f9146f036f855b764dfb5bf8582bf342c7a4"
   integrity sha512-shrVawQFojnZv6xM40anx4CkoDP+fZsw/ZerEMsW/pyzsRbElpsL/DBVW7q3ExxwusdNXI3lXpuhEZkzs8p5Eg==
   dependencies:
     color-name "^1.0.0"
@@ -4269,6 +4592,11 @@ combined-stream@^1.0.8:
   integrity sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==
   dependencies:
     delayed-stream "~1.0.0"
+
+comlink@^4.4.1:
+  version "4.4.1"
+  resolved "https://registry.npm.alibaba-inc.com/comlink/download/comlink-4.4.1.tgz#e568b8e86410b809e8600eb2cf40c189371ef981"
+  integrity sha512-+1dlx0aY5Jo1vHy/tSsIGpSkN4tS9rZSW8FIhG0JH/crs9wwweswIo/POr451r7bZww3hFbPAKnTpimzL/mm4Q==
 
 comma-separated-tokens@^1.0.0:
   version "1.0.8"
@@ -4594,9 +4922,14 @@ current-script-polyfill@1.0.0:
   resolved "https://registry.npmmirror.com/current-script-polyfill/-/current-script-polyfill-1.0.0.tgz#f31cf7e4f3e218b0726e738ca92a02d3488ef615"
   integrity sha512-qv8s+G47V6Hq+g2kRE5th+ASzzrL7b6l+tap1DHKK25ZQJv3yIFhH96XaQ7NGL+zRW3t/RDbweJf/dJDe5Z5KA==
 
-"d3-color@1 - 3":
+d3-binarytree@1:
+  version "1.0.2"
+  resolved "https://registry.npm.alibaba-inc.com/d3-binarytree/download/d3-binarytree-1.0.2.tgz#ed43ebc13c70fbabfdd62df17480bc5a425753cc"
+  integrity sha512-cElUNH+sHu95L04m92pG73t2MEJXKu+GeKUN1TJkFsu93E5W8E9Sc3kHEGJKgenGvj19m6upSn2EunvMgMD2Yw==
+
+"d3-color@1 - 3", d3-color@^3.1.0:
   version "3.1.0"
-  resolved "https://registry.npmmirror.com/d3-color/-/d3-color-3.1.0.tgz#395b2833dfac71507f12ac2f7af23bf819de24e2"
+  resolved "https://registry.npm.alibaba-inc.com/d3-color/download/d3-color-3.1.0.tgz#395b2833dfac71507f12ac2f7af23bf819de24e2"
   integrity sha512-zg/chbXyeBtMQ1LbD/WSoW2DpC3I0mpmPdW+ynRTj/x2DAWYrIY7qeZIHidozwV24m4iavr15lNwIwLxRmOxhA==
 
 "d3-dispatch@1 - 2":
@@ -4604,10 +4937,26 @@ current-script-polyfill@1.0.0:
   resolved "https://registry.npmmirror.com/d3-dispatch/-/d3-dispatch-2.0.0.tgz#8a18e16f76dd3fcaef42163c97b926aa9b55e7cf"
   integrity sha512-S/m2VsXI7gAti2pBoLClFFTMOO1HTtT0j99AuXLoGFKO6deHDdnv6ZGTxSTTUTgO1zVcv82fCOtDjYK4EECmWA==
 
+"d3-dispatch@1 - 3":
+  version "3.0.1"
+  resolved "https://registry.npm.alibaba-inc.com/d3-dispatch/download/d3-dispatch-3.0.1.tgz#5fc75284e9c2375c36c839411a0cf550cbfc4d5e"
+  integrity sha1-X8dShOnCN1w2yDlBGgz1UMv8TV4=
+
 d3-ease@^1.0.5:
   version "1.0.7"
   resolved "https://registry.npmmirror.com/d3-ease/-/d3-ease-1.0.7.tgz#9a834890ef8b8ae8c558b2fe55bd57f5993b85e2"
   integrity sha512-lx14ZPYkhNx0s/2HX5sLFUI3mbasHjSSpwO/KaaNACweVwxUruKyWVcb293wMv1RqTPZyZ8kSZ2NogUZNcLOFQ==
+
+d3-force-3d@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.npm.alibaba-inc.com/d3-force-3d/download/d3-force-3d-3.0.5.tgz#9c8931b49acc3554f9110e128bc580cd3ab830f2"
+  integrity sha512-tdwhAhoTYZY/a6eo9nR7HP3xSW/C6XvJTbeRpR92nlPzH6OiE+4MliN9feuSFd0tPtEUo+191qOhCTWx3NYifg==
+  dependencies:
+    d3-binarytree "1"
+    d3-dispatch "1 - 3"
+    d3-octree "1"
+    d3-quadtree "1 - 3"
+    d3-timer "1 - 3"
 
 d3-force@^2.0.1, d3-force@^2.1.1:
   version "2.1.1"
@@ -4618,6 +4967,15 @@ d3-force@^2.0.1, d3-force@^2.1.1:
     d3-quadtree "1 - 2"
     d3-timer "1 - 2"
 
+d3-force@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npm.alibaba-inc.com/d3-force/download/d3-force-3.0.0.tgz#3e2ba1a61e70888fe3d9194e30d6d14eece155c4"
+  integrity sha1-Piuhph5wiI/j2RlOMNbRTuzhVcQ=
+  dependencies:
+    d3-dispatch "1 - 3"
+    d3-quadtree "1 - 3"
+    d3-timer "1 - 3"
+
 d3-interpolate@^3.0.1:
   version "3.0.1"
   resolved "https://registry.npmmirror.com/d3-interpolate/-/d3-interpolate-3.0.1.tgz#3c47aa5b32c5b3dfb56ef3fd4342078a632b400d"
@@ -4625,12 +4983,17 @@ d3-interpolate@^3.0.1:
   dependencies:
     d3-color "1 - 3"
 
+d3-octree@1, d3-octree@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npm.alibaba-inc.com/d3-octree/download/d3-octree-1.0.2.tgz#b39026b82701e45c7163e34ee056dc492035a017"
+  integrity sha512-Qxg4oirJrNXauiuC94uKMbgxwnhdda9xRLl9ihq45srlJ4Ga3CSgqGcAL8iW7N5CIv4Oz8x3E734ulxyvHPvwA==
+
 "d3-quadtree@1 - 2", d3-quadtree@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmmirror.com/d3-quadtree/-/d3-quadtree-2.0.0.tgz#edbad045cef88701f6fee3aee8e93fb332d30f9d"
   integrity sha512-b0Ed2t1UUalJpc3qXzKi+cPGxeXRr4KU9YSlocN74aTzp6R/Ud43t79yLLqxHRWZfsvWXmbDWPpoENK1K539xw==
 
-d3-quadtree@^3.0.1:
+"d3-quadtree@1 - 3", d3-quadtree@^3.0.1:
   version "3.0.1"
   resolved "https://registry.npmmirror.com/d3-quadtree/-/d3-quadtree-3.0.1.tgz#6dca3e8be2b393c9a9d514dabbd80a92deef1a4f"
   integrity sha512-04xDrxQTDTCFwP5H6hRhsRcb9xxv2RzkcsygFzmkSIOJy3PeRJP7sNk3VRIbKXcog561P9oU0/rVH6vDROAgUw==
@@ -4639,6 +5002,11 @@ d3-quadtree@^3.0.1:
   version "2.0.0"
   resolved "https://registry.npmmirror.com/d3-timer/-/d3-timer-2.0.0.tgz#055edb1d170cfe31ab2da8968deee940b56623e6"
   integrity sha512-TO4VLh0/420Y/9dO3+f9abDEFYeCUr2WZRlxJvbp4HPTQcSylXNiL6yZa9FIUvV1yRiFufl1bszTCLDqv9PWNA==
+
+"d3-timer@1 - 3":
+  version "3.0.1"
+  resolved "https://registry.npm.alibaba-inc.com/d3-timer/download/d3-timer-3.0.1.tgz#6284d2a2708285b1abb7e201eda4380af35e63b0"
+  integrity sha1-YoTSonCChbGrt+IB7aQ4CvNeY7A=
 
 d3-timer@^1.0.9:
   version "1.0.10"
@@ -5443,6 +5811,11 @@ eventemitter3@^4.0.0:
   resolved "https://registry.npmmirror.com/eventemitter3/-/eventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
   integrity sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==
 
+eventemitter3@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.npm.alibaba-inc.com/eventemitter3/download/eventemitter3-5.0.1.tgz#53f5ffd0a492ac800721bb42c66b841de96423c4"
+  integrity sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==
+
 events-okam@^3.0.0:
   version "3.3.0"
   resolved "https://registry.npmmirror.com/events-okam/-/events-okam-3.3.0.tgz#66819139831f3c8b2e1e07fc8d33225673d87acb"
@@ -5618,9 +5991,9 @@ fbjs@^3.0.0, fbjs@^3.0.1:
     setimmediate "^1.0.5"
     ua-parser-js "^1.0.35"
 
-fecha@~4.2.0:
+fecha@^4.2.1, fecha@~4.2.0:
   version "4.2.3"
-  resolved "https://registry.npmmirror.com/fecha/-/fecha-4.2.3.tgz#4d9ccdbc61e8629b259fdca67e65891448d569fd"
+  resolved "https://registry.npm.alibaba-inc.com/fecha/download/fecha-4.2.3.tgz#4d9ccdbc61e8629b259fdca67e65891448d569fd"
   integrity sha512-OP2IUU6HeYKJi3i0z4A19kHMQoLVs4Hc+DPqqxI2h/DPZHTm/vjsfC6P0b4jCMy14XizLBqvndQ+UilD7707Jw==
 
 fetch-blob@^3.1.2, fetch-blob@^3.1.4:
@@ -6196,6 +6569,11 @@ https-browserify@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmmirror.com/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
   integrity sha512-J+FkSdyD+0mA0N+81tMotaRMfSL9SGi+xpD3T6YApKsc3bGSXJlfXri3VyFOeYkfLRQisDk1W+jIFFKBeUBbBg==
+
+hull.js@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.npm.alibaba-inc.com/hull.js/download/hull.js-1.0.6.tgz#75f013e8171eb9a871b4a94887e89eb555461d0e"
+  integrity sha512-TC7e9sHYOaCVms0sn2hN7buxnaGfcl9h5EPVoVX9DTPoMpqQiS9bf3tmGDgiNaMVHBD91RAvWjCxrJ5Jx8BI5A==
 
 human-signals@^2.1.0:
   version "2.1.0"
@@ -7105,7 +7483,7 @@ loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.4.0:
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
-lower-case@^2.0.2:
+lower-case@^2.0.1, lower-case@^2.0.2:
   version "2.0.2"
   resolved "https://registry.npmmirror.com/lower-case/-/lower-case-2.0.2.tgz#6fa237c63dbdc4a82ca0fd882e4722dc5e634e28"
   integrity sha512-7fm3l3NAF9WfN6W3JOmf5drwpVqX78JtoGJ3A6W0a6ZnldM41w2fV5D490psKFTpMds8TJse/eHLFFsNHHjHgg==
@@ -7308,6 +7686,14 @@ ml-matrix@6.5.0:
   integrity sha512-sms732Dge+rs5dU4mnjE0oqLWm1WujvR2fr38LgUHRG2cjXjWlO3WJupLYaSz3++2iYr0UrGDK72OAivr3J8dg==
   dependencies:
     ml-array-rescale "^1.3.1"
+
+ml-matrix@^6.10.4:
+  version "6.11.1"
+  resolved "https://registry.npm.alibaba-inc.com/ml-matrix/download/ml-matrix-6.11.1.tgz#fff3e1e7c3ad93dc996fec5d53d9dbc8e0e43473"
+  integrity sha512-Fvp1xF1O07tt6Ux9NcnEQTei5UlqbRpvvaFZGs7l3Ij+nOaEDcmbSVtxwNa8V4IfdyFI1NLNUteroMJ1S6vcEg==
+  dependencies:
+    is-any-array "^2.0.1"
+    ml-array-rescale "^1.3.7"
 
 ml-matrix@^6.5.0:
   version "6.11.0"
@@ -7775,10 +8161,10 @@ parseurl@~1.3.3:
   resolved "https://registry.npmmirror.com/parseurl/-/parseurl-1.3.3.tgz#9da19e7bee8d12dff0513ed5b76957793bc2e8d4"
   integrity sha512-CiyeOxFT/JZyN5m0z9PfXw4SCBJ6Sygz1Dpl0wqjlhDEGGBP1GnsUVEL0p63hoG1fcj3fHynXi9NYO4nWOL+qQ==
 
-pascal-case@^3.1.2:
+pascal-case@^3.1.1, pascal-case@^3.1.2:
   version "3.1.2"
-  resolved "https://registry.npmmirror.com/pascal-case/-/pascal-case-3.1.2.tgz#b48e0ef2b98e205e7c1dae747d0b1508237660eb"
-  integrity sha512-uWlGT3YSnK9x3BQJaOdcZwrnV6hPpd8jFH1/ucpiLRPh/2zCVJKS19E4GvYHvaCcACn3foXZ0cLB9Wrx1KGe5g==
+  resolved "https://registry.npm.alibaba-inc.com/pascal-case/download/pascal-case-3.1.2.tgz#b48e0ef2b98e205e7c1dae747d0b1508237660eb"
+  integrity sha1-tI4O8rmOIF58Ha50fQsVCCN2YOs=
   dependencies:
     no-case "^3.0.4"
     tslib "^2.0.3"
@@ -8425,6 +8811,11 @@ quick-format-unescaped@^4.0.3:
   resolved "https://registry.npmmirror.com/quick-format-unescaped/-/quick-format-unescaped-4.0.4.tgz#93ef6dd8d3453cbc7970dd614fad4c5954d6b5a7"
   integrity sha512-tYC1Q1hgyRuHgloV/YXs2w15unPVh8qfu/qCTfhTYamaw7fyhumKa2yGpdSo87vY32rIclj+4fWYQXUMs9EHvg==
 
+quickselect@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npm.alibaba-inc.com/quickselect/download/quickselect-2.0.0.tgz#f19680a486a5eefb581303e023e98faaf25dd018"
+  integrity sha1-8ZaApIal7vtYEwPgI+mPqvJd0Bg=
+
 randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5:
   version "2.1.0"
   resolved "https://registry.npmmirror.com/randombytes/-/randombytes-2.1.0.tgz#df6f84372f0270dc65cdf6291349ab7a473d4f2a"
@@ -8454,6 +8845,13 @@ raw-body@2.5.2:
     http-errors "2.0.0"
     iconv-lite "0.4.24"
     unpipe "1.0.0"
+
+rbush@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.npm.alibaba-inc.com/rbush/download/rbush-3.0.1.tgz#5fafa8a79b3b9afdfe5008403a720cc1de882ecf"
+  integrity sha1-X6+op5s7mv3+UAhAOnIMwd6ILs8=
+  dependencies:
+    quickselect "^2.0.0"
 
 rc-align@^4.0.0:
   version "4.0.15"
@@ -8848,6 +9246,11 @@ rc-virtual-list@^3.2.0, rc-virtual-list@^3.5.1:
     rc-resize-observer "^1.0.0"
     rc-util "^5.36.0"
 
+re-resizable@^6.9.17:
+  version "6.9.17"
+  resolved "https://registry.npmmirror.com/re-resizable/-/re-resizable-6.9.17.tgz#78e4349934ff24a8fcb4b6b5a43ff9ed5f319d2a"
+  integrity sha512-OBqd1BwVXpEJJn/yYROG+CbeqIDBWIp6wathlpB0kzZWWZIY1gPTsgK2yJEui5hOvkCdC2mcexF2V3DZVfLq2g==
+
 react-base16-styling@^0.6.0:
   version "0.6.0"
   resolved "https://registry.npmmirror.com/react-base16-styling/-/react-base16-styling-0.6.0.tgz#ef2156d66cf4139695c8a167886cb69ea660792c"
@@ -8995,6 +9398,14 @@ react-split-pane@^0.1.92:
     prop-types "^15.7.2"
     react-lifecycles-compat "^3.0.4"
     react-style-proptype "^3.2.2"
+
+react-sticky-box@^0.9.3:
+  version "0.9.3"
+  resolved "https://registry.npm.alibaba-inc.com/react-sticky-box/download/react-sticky-box-0.9.3.tgz#8450d4cef8e4fdd7b0351520365bc98c97da11af"
+  integrity sha1-hFDUzvjk/dewNRUgNlvJjJfaEa8=
+  dependencies:
+    "@babel/runtime" "^7.1.5"
+    resize-observer-polyfill "^1.5.1"
 
 react-style-proptype@^3.2.2:
   version "3.2.2"
@@ -9882,6 +10293,11 @@ svg-parser@^2.0.4:
   resolved "https://registry.npmmirror.com/svg-parser/-/svg-parser-2.0.4.tgz#fdc2e29e13951736140b76cb122c8ee6630eb6b5"
   integrity sha512-e4hG1hRwoOdRb37cIMSgzNsxyzKfayW6VOflrwvR+/bzrkyxY/31WkbgnQpgtrNp1SdpJvpUAGTa/ZoiPNDuRQ==
 
+svg-path-parser@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npm.alibaba-inc.com/svg-path-parser/download/svg-path-parser-1.1.0.tgz#e16b4b39df0d2b0d39e8347db79fdda1453a6046"
+  integrity sha1-4WtLOd8NKw056DR9t5/doUU6YEY=
+
 svgo@^2.8.0:
   version "2.8.0"
   resolved "https://registry.npmmirror.com/svgo/-/svgo-2.8.0.tgz#4ff80cce6710dc2795f0c7c74101e6764cfccd24"
@@ -10016,9 +10432,9 @@ tslib@^1.8.1:
   resolved "https://registry.npmmirror.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
-tslib@^2, tslib@^2.1.0:
+tslib@^2, tslib@^2.1.0, tslib@^2.5.3:
   version "2.6.3"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.3.tgz#0438f810ad7a9edcde7a241c3d80db693c8cbfe0"
+  resolved "https://registry.npm.alibaba-inc.com/tslib/download/tslib-2.6.3.tgz#0438f810ad7a9edcde7a241c3d80db693c8cbfe0"
   integrity sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==
 
 tslib@^2.0.0, tslib@^2.0.3, tslib@^2.3.0, tslib@^2.3.1, tslib@^2.4.0, tslib@^2.4.1, tslib@^2.5.0, tslib@^2.6.0, tslib@^2.6.2:
@@ -10538,6 +10954,13 @@ update-browserslist-db@^1.0.13:
   dependencies:
     escalade "^3.1.2"
     picocolors "^1.0.1"
+
+upper-case@^2.0.1:
+  version "2.0.2"
+  resolved "https://registry.npm.alibaba-inc.com/upper-case/download/upper-case-2.0.2.tgz#d89810823faab1df1549b7d97a76f8662bae6f7a"
+  integrity sha1-2JgQgj+qsd8VSbfZenb4Ziuub3o=
+  dependencies:
+    tslib "^2.0.3"
 
 uri-js@^4.2.2:
   version "4.4.1"

@@ -55,9 +55,6 @@ export const GRAPH_SCHEMA: ISchema = {
               'x-component': 'PageTitle',
               default: '标题',
             },
-            EnvSelect: {
-              'x-component': 'EnvSelect',
-            },
           },
         },
         // 页面顶部右侧
@@ -68,10 +65,6 @@ export const GRAPH_SCHEMA: ISchema = {
             className: 'schema-header-right',
           },
           properties: {
-            JumpToOld: {
-              type: 'void',
-              'x-component': 'JumpToOld',
-            },
             ConfigCenter: {
               'x-component': 'ConfigCenter',
             },
