@@ -763,7 +763,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
             {copyScript}
             <div className={`canvas`} style={{ height: '100%' }}>
               <GraphCanvas
-                key={excecuteResult?.id}
+                containerId={excecuteResult?.id}
                 data={dealGraphData(dealFormatData(formatData)) || {}}
                 layout={currentLayout}
                 getGraphCanvasContextValue={getGraphCanvasContextValue}
