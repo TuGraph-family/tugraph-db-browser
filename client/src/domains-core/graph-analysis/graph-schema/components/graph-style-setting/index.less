@@ -1,0 +1,43 @@
+.graph-style-setting {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .node-edge-form {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .footer {
+    margin-top: 10px;
+  }
+
+  .collapse-header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  :global {
+    .ant-segmented {
+      width: 100%;
+
+      .ant-segmented-item {
+        flex: 1;
+      }
+    }
+
+    .ant-collapse-header {
+      display: flex;
+      align-items: center;
+
+      .ant-collapse-header-text {
+        flex: 1;
+
+        .anticon {
+          font-size: 20px;
+          z-index: 1;
+        }
+      }
+    }
+  }
+}

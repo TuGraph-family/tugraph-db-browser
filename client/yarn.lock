@@ -540,6 +540,17 @@
     "@antv/util" "^3.3.5"
     tslib "^2.5.3"
 
+"@antv/g-device-api@^1.6.10", "@antv/g-device-api@^1.6.4":
+  version "1.6.12"
+  resolved "https://registry.npmmirror.com/@antv/g-device-api/-/g-device-api-1.6.12.tgz#92ee537e9d33ff8d4c5f19fdf4a5eda25855fb25"
+  integrity sha512-bOLA3MqvPFbTNNhrNyEpyYzAC8gHPioJHqKtPfAfdXBec+to2nciQoihGhRrosDwjAQLBLtVF+nc7zG2DnHgcg==
+  dependencies:
+    "@antv/util" "^3.3.4"
+    "@webgpu/types" "^0.1.34"
+    eventemitter3 "^5.0.1"
+    gl-matrix "^3.4.3"
+    tslib "^2.5.3"
+
 "@antv/g-dom-mutation-observer-api@2.0.6":
   version "2.0.6"
   resolved "https://registry.npm.alibaba-inc.com/@antv/g-dom-mutation-observer-api/download/@antv/g-dom-mutation-observer-api-2.0.6.tgz#6fc9669c4e5576214200aaa5e795993b92cc2d43"
@@ -577,6 +588,18 @@
     "@antv/util" "~2.0.0"
     gl-matrix "^3.0.0"
 
+"@antv/g-plugin-3d@^2.0.6":
+  version "2.0.10"
+  resolved "https://registry.npmmirror.com/@antv/g-plugin-3d/-/g-plugin-3d-2.0.10.tgz#7a0f2c26385a7026ab6e454db56283835d3a1dff"
+  integrity sha512-KaNnQuawjv1CZn1cQXaM5jm5yeLNF5YSBZ0PQPcDwNyoLA4rgF8qecN37/aD9LabqbYOKlyJjdLIAtDiAhnTBw==
+  dependencies:
+    "@antv/g-device-api" "^1.6.10"
+    "@antv/g-lite" "2.0.6"
+    "@antv/g-plugin-device-renderer" "2.0.10"
+    "@antv/g-shader-components" "2.0.0"
+    gl-matrix "^3.4.3"
+    tslib "^2.5.3"
+
 "@antv/g-plugin-canvas-path-generator@2.0.6":
   version "2.0.6"
   resolved "https://registry.npm.alibaba-inc.com/@antv/g-plugin-canvas-path-generator/download/@antv/g-plugin-canvas-path-generator-2.0.6.tgz#f2d4595de4c33d9e45581869e6c011f0a6cd23cd"
@@ -613,6 +636,23 @@
     gl-matrix "^3.4.3"
     tslib "^2.5.3"
 
+"@antv/g-plugin-device-renderer@2.0.10", "@antv/g-plugin-device-renderer@^2.0.6":
+  version "2.0.10"
+  resolved "https://registry.npmmirror.com/@antv/g-plugin-device-renderer/-/g-plugin-device-renderer-2.0.10.tgz#d11adfcb4449188cc3090714c69eec75fa6d03d5"
+  integrity sha512-tQNmuQ6Y00ivp48dkHeWksOtEtU5Oar3CTYDo+YVB1Pg+rmE+5EXjoPsiPGiUDj9B+GiElPhR5zwdrTzNoCB4A==
+  dependencies:
+    "@antv/g-device-api" "^1.6.10"
+    "@antv/g-lite" "2.0.6"
+    "@antv/g-math" "3.0.0"
+    "@antv/g-plugin-image-loader" "2.0.6"
+    "@antv/g-shader-components" "2.0.0"
+    "@antv/util" "^3.3.5"
+    "@webgpu/types" "^0.1.6"
+    earcut "^2.2.3"
+    eventemitter3 "^5.0.1"
+    gl-matrix "^3.4.3"
+    tslib "^2.5.3"
+
 "@antv/g-plugin-dom-interaction@2.0.6":
   version "2.0.6"
   resolved "https://registry.npm.alibaba-inc.com/@antv/g-plugin-dom-interaction/download/@antv/g-plugin-dom-interaction-2.0.6.tgz#568797e0396b13684c21d8b29403e9f5697ac7c6"
@@ -621,7 +661,7 @@
     "@antv/g-lite" "2.0.6"
     tslib "^2.5.3"
 
-"@antv/g-plugin-dragndrop@^2.0.6":
+"@antv/g-plugin-dragndrop@^2.0.4", "@antv/g-plugin-dragndrop@^2.0.6":
   version "2.0.6"
   resolved "https://registry.npm.alibaba-inc.com/@antv/g-plugin-dragndrop/download/@antv/g-plugin-dragndrop-2.0.6.tgz#065989d708e8695cd4e83e78907db4556e0a066c"
   integrity sha512-qMrDbrGEnM66Qg/vwI+zNdhFNoN+pjzyZtO3MD+CjNQnEGpQqy1W9PNLpWcFE43BU5Z/JkoUtu6Oy5C/WKHBbQ==
@@ -650,6 +690,11 @@
     gl-matrix "^3.4.3"
     tslib "^2.5.3"
 
+"@antv/g-shader-components@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmmirror.com/@antv/g-shader-components/-/g-shader-components-2.0.0.tgz#c2d15fa3e83992058a6d7e1e574acdc6b647cf0b"
+  integrity sha512-qdUAz0ZZSrAFrBKxne7kUMWt2v+kncnpWwdDD7SGa7OCtcnWADl6lUUiL0r29gBMcoDtPXJijsjS/e/w9cVWuQ==
+
 "@antv/g-svg@^0.5.1", "@antv/g-svg@^0.5.2":
   version "0.5.7"
   resolved "https://registry.npmmirror.com/@antv/g-svg/-/g-svg-0.5.7.tgz#d63db5f8590a5f3ceab097c183ec80ed143f0a50"
@@ -668,6 +713,21 @@
   dependencies:
     "@antv/g-lite" "2.0.6"
     "@antv/util" "^3.3.5"
+    tslib "^2.5.3"
+
+"@antv/g-webgl@^2.0.6":
+  version "2.0.11"
+  resolved "https://registry.npmmirror.com/@antv/g-webgl/-/g-webgl-2.0.11.tgz#6670aa13658f44e0221e02d3838093e37045f3a0"
+  integrity sha512-5dbzIPmXT919uI0f3KSJgHwPYd9IQDI1qs2XQxSHz4vLV4BrMFBothZAg7cy3rwgQft64NQ6IC24tisgfwQtUg==
+  dependencies:
+    "@antv/g-device-api" "^1.6.10"
+    "@antv/g-lite" "2.0.6"
+    "@antv/g-plugin-device-renderer" "2.0.10"
+    "@antv/g-plugin-dom-interaction" "2.0.6"
+    "@antv/g-plugin-html-renderer" "2.0.7"
+    "@antv/g-plugin-image-loader" "2.0.6"
+    "@antv/util" "^3.3.5"
+    gl-matrix "^3.4.3"
     tslib "^2.5.3"
 
 "@antv/g-webgpu-core@^0.7.2":
@@ -726,6 +786,19 @@
     "@antv/g6-core" "0.8.24"
     "@antv/util" "~2.0.5"
     tslib "^2.6.2"
+
+"@antv/g6-extension-3d@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.npmmirror.com/@antv/g6-extension-3d/-/g6-extension-3d-0.1.2.tgz#b71e8f72cf8063a40b1e682734ee4a41a2391511"
+  integrity sha512-XpfLXvSZ1cMwDsbbGBXSzIW/IQqwHg0SK7Csg/vxZBsoS/g7DKIY5MpuGe4vJTz7VmEv72sPu30jz1G9PX46GQ==
+  dependencies:
+    "@antv/g-device-api" "^1.6.4"
+    "@antv/g-plugin-3d" "^2.0.6"
+    "@antv/g-plugin-device-renderer" "^2.0.6"
+    "@antv/g-plugin-dragndrop" "^2.0.4"
+    "@antv/g-webgl" "^2.0.6"
+    "@antv/layout" "^1.2.14-beta.3"
+    "@antv/util" "^3.3.7"
 
 "@antv/g6-pc@0.8.24":
   version "0.8.24"
@@ -845,7 +918,7 @@
     dagre-compound "^0.0.11"
     ml-matrix "6.5.0"
 
-"@antv/layout@^1.2.14-beta.5":
+"@antv/layout@^1.2.14-beta.3", "@antv/layout@^1.2.14-beta.5":
   version "1.2.14-beta.5"
   resolved "https://registry.npm.alibaba-inc.com/@antv/layout/download/@antv/layout-1.2.14-beta.5.tgz#849addadfd3f7afb5ef041d41088dda47e6f7bf0"
   integrity sha512-r/twRLE2kql+jawu/qp5+7rcUH3ul6RFlLg5MGi3B/83WktMNyqOOYYHbk6T89/KWUUSPDCdvrb56BVfvLFqRQ==
@@ -916,7 +989,7 @@
     csstype "^3.0.8"
     tslib "^2.0.3"
 
-"@antv/util@^3.3.2", "@antv/util@^3.3.5", "@antv/util@^3.3.7":
+"@antv/util@^3.3.2", "@antv/util@^3.3.4", "@antv/util@^3.3.5", "@antv/util@^3.3.7":
   version "3.3.7"
   resolved "https://registry.npm.alibaba-inc.com/@antv/util/download/@antv/util-3.3.7.tgz#35a900f0e9b65defbb92ec0e92a20b8189a18815"
   integrity sha512-qqPg7rIPCsJyl7N56jAC25v/99mJ3ApVkgBsGijhiWrEeKvzXBPk1r5P77Pm9nCljpnn+hH8Z3t5AivbEoTJMg==
@@ -2481,6 +2554,11 @@
     kolorist "^1.6.0"
     local-pkg "^0.4.2"
 
+"@icons/material@^0.2.4":
+  version "0.2.4"
+  resolved "https://registry.npmmirror.com/@icons/material/-/material-0.2.4.tgz#e90c9f71768b3736e76d7dd6783fc6c2afa88bc8"
+  integrity sha512-QPcGmICAPbGLGb6F/yNf/KzKqvFx8z5qx3D1yFqVAjoFmXK35EgyW+cJ57Te3CNsmzblwtzakLGFqHPqrfb4Tw==
+
 "@isaacs/cliui@^8.0.2":
   version "8.0.2"
   resolved "https://registry.npmmirror.com/@isaacs/cliui/-/cliui-8.0.2.tgz#b37667b7bc181c168782259bab42474fbf52b550"
@@ -3051,6 +3129,11 @@
   resolved "https://registry.npmmirror.com/@types/json-schema/-/json-schema-7.0.15.tgz#596a1747233694d50f6ad8a7869fcb6f56cf5841"
   integrity sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==
 
+"@types/lodash@^4.17.7":
+  version "4.17.7"
+  resolved "https://registry.npmmirror.com/@types/lodash/-/lodash-4.17.7.tgz#2f776bcb53adc9e13b2c0dfd493dfcbd7de43612"
+  integrity sha512-8wTvZawATi/lsmNu10/j2hk1KEP0IvjubqPE3cu1Xz7xfXXt5oCq3SNUz4fMIP4XGF9Ky+Ue2tBA3hcS7LSBlA==
+
 "@types/mime@^4.0.0":
   version "4.0.0"
   resolved "https://registry.npmmirror.com/@types/mime/-/mime-4.0.0.tgz#b5f8a75697ac775ecf1daaea9bfb91cde065b397"
@@ -3075,6 +3158,14 @@
   resolved "https://registry.npmmirror.com/@types/prop-types/-/prop-types-15.7.12.tgz#12bb1e2be27293c1406acb6af1c3f3a1481d98c6"
   integrity sha512-5zvhXYtRNRluoE/jAp4GVsSduVUzNWKkOZrCDBWYtE7biZywwdC2AcEzg+cSMLFRfVgeAFqpfNabiPjxFddV1Q==
 
+"@types/react-color@^3.0.12":
+  version "3.0.12"
+  resolved "https://registry.npmmirror.com/@types/react-color/-/react-color-3.0.12.tgz#231e75f11dd6805bdf1c954774588fefc8172f30"
+  integrity sha512-pr3uKE3lSvf7GFo1Rn2K3QktiZQFFrSgSGJ/3iMvSOYWt2pPAJ97rVdVfhWxYJZ8prAEXzoP2XX//3qGSQgu7Q==
+  dependencies:
+    "@types/react" "*"
+    "@types/reactcss" "*"
+
 "@types/react-dom@^18.2.13":
   version "18.3.0"
   resolved "https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.3.0.tgz#0cbc818755d87066ab6ca74fbedb2547d74a82b0"
@@ -3089,6 +3180,13 @@
   dependencies:
     "@types/prop-types" "*"
     csstype "^3.0.2"
+
+"@types/reactcss@*":
+  version "1.2.12"
+  resolved "https://registry.npmmirror.com/@types/reactcss/-/reactcss-1.2.12.tgz#57f6f046e7aafbe0288689bd96a2d5664378ca7b"
+  integrity sha512-BrXUQ86/wbbFiZv8h/Q1/Q1XOsaHneYmCb/tHe9+M8XBAAUc2EHfdY0DY22ZZjVSaXr5ix7j+zsqO2eGZub8lQ==
+  dependencies:
+    "@types/react" "*"
 
 "@types/semver@^7.3.12":
   version "7.5.8"
@@ -3702,6 +3800,11 @@
     "@babel/plugin-transform-react-jsx-self" "^7.21.0"
     "@babel/plugin-transform-react-jsx-source" "^7.19.6"
     react-refresh "^0.14.0"
+
+"@webgpu/types@^0.1.34", "@webgpu/types@^0.1.6":
+  version "0.1.44"
+  resolved "https://registry.npmmirror.com/@webgpu/types/-/types-0.1.44.tgz#1b264c0bfcb298df59d0943dad8ef02b4ff98d14"
+  integrity sha512-JDpYJN5E/asw84LTYhKyvPpxGnD+bAKPtpW9Ilurf7cZpxaTbxkQcGwOd7jgB9BPBrTYQ+32ufo4HiuomTjHNQ==
 
 accepts@~1.3.5, accepts@~1.3.8:
   version "1.3.8"
@@ -4929,7 +5032,7 @@ d3-binarytree@1:
 
 "d3-color@1 - 3", d3-color@^3.1.0:
   version "3.1.0"
-  resolved "https://registry.npm.alibaba-inc.com/d3-color/download/d3-color-3.1.0.tgz#395b2833dfac71507f12ac2f7af23bf819de24e2"
+  resolved "https://registry.npmmirror.com/d3-color/-/d3-color-3.1.0.tgz#395b2833dfac71507f12ac2f7af23bf819de24e2"
   integrity sha512-zg/chbXyeBtMQ1LbD/WSoW2DpC3I0mpmPdW+ynRTj/x2DAWYrIY7qeZIHidozwV24m4iavr15lNwIwLxRmOxhA==
 
 "d3-dispatch@1 - 2":
@@ -5326,6 +5429,11 @@ dva-loading@^3.0.22:
   integrity sha512-RYbpSjvPj2NF+3YSc9QkDpwM1wO8uRAVfU6VGSgIxA2kA/Xd6yoY+VQM7GDRnvCvT579pESeBZBXk+8WKWOdDA==
   dependencies:
     "@babel/runtime" "^7.0.0"
+
+earcut@^2.2.3:
+  version "2.2.4"
+  resolved "https://registry.npmmirror.com/earcut/-/earcut-2.2.4.tgz#6d02fd4d68160c114825d06890a92ecaae60343a"
+  integrity sha512-/pjZsA1b4RPHbeWZQn66SWS8nZZWLQQ23oE3Eam7aroEFGEvwKAsJfZ9ytiEMycfzXWpca4FA9QIOehf7PocBQ==
 
 eastasianwidth@^0.2.0:
   version "0.2.0"
@@ -7426,7 +7534,7 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
-lodash-es@^4.17.21, lodash-es@^4.17.4:
+lodash-es@^4.17.15, lodash-es@^4.17.21, lodash-es@^4.17.4:
   version "4.17.21"
   resolved "https://registry.npmmirror.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
   integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
@@ -7531,6 +7639,11 @@ makeerror@1.0.12:
   integrity sha512-JmqCvUhmt43madlpFzG4BQzG2Z3m6tvQDNKdClZnO3VbIudJYmxsT0FNJMeiB2+JTSlTQTSbU8QdesVmwJcmLg==
   dependencies:
     tmpl "1.0.5"
+
+material-colors@^1.2.1:
+  version "1.2.6"
+  resolved "https://registry.npmmirror.com/material-colors/-/material-colors-1.2.6.tgz#6d1958871126992ceecc72f4bcc4d8f010865f46"
+  integrity sha512-6qE4B9deFBIa9YSpOc9O0Sgc43zTeVYbgDT5veRKSlB2+ZuHNoVVxA1L/ckMUayV9Ay9y7Z/SZCLcGteW9i7bg==
 
 md5.js@^1.3.4:
   version "1.3.5"
@@ -9261,6 +9374,19 @@ react-base16-styling@^0.6.0:
     lodash.flow "^3.3.0"
     pure-color "^1.2.0"
 
+react-color@^2.19.3:
+  version "2.19.3"
+  resolved "https://registry.npmmirror.com/react-color/-/react-color-2.19.3.tgz#ec6c6b4568312a3c6a18420ab0472e146aa5683d"
+  integrity sha512-LEeGE/ZzNLIsFWa1TMe8y5VYqr7bibneWmvJwm1pCn/eNmrabWDh659JSPn9BuaMpEfU83WTOJfnCcjDZwNQTA==
+  dependencies:
+    "@icons/material" "^0.2.4"
+    lodash "^4.17.15"
+    lodash-es "^4.17.15"
+    material-colors "^1.2.1"
+    prop-types "^15.5.10"
+    reactcss "^1.2.0"
+    tinycolor2 "^1.4.1"
+
 react-dom@18.1.0:
   version "18.1.0"
   resolved "https://registry.npmmirror.com/react-dom/-/react-dom-18.1.0.tgz#7f6dd84b706408adde05e1df575b3a024d7e8a2f"
@@ -9449,7 +9575,7 @@ react@18.1.0:
   dependencies:
     loose-envify "^1.1.0"
 
-reactcss@^1.2.3:
+reactcss@^1.2.0, reactcss@^1.2.3:
   version "1.2.3"
   resolved "https://registry.npmmirror.com/reactcss/-/reactcss-1.2.3.tgz#c00013875e557b1cf0dfd9a368a1c3dab3b548dd"
   integrity sha512-KiwVUcFu1RErkI97ywr8nvx8dNOpT03rbnma0SSalTYjkrPYaEajR4a/MRt6DZ46K6arDRbWMNHF+xH7G7n/8A==

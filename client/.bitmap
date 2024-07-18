@@ -23,6 +23,20 @@
         "mainFile": "iconfont.js",
         "rootDir": "src/assets/node-icons"
     },
+    "components/color-picker": {
+        "name": "components/color-picker",
+        "scope": "geamaker",
+        "version": "0.0.17",
+        "mainFile": "constant/index.ts",
+        "rootDir": "src/components/color-picker"
+    },
+    "components/custom-color-picker": {
+        "name": "components/custom-color-picker",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/components/custom-color-picker"
+    },
     "components/icon-font": {
         "name": "components/icon-font",
         "scope": "geamaker",
@@ -37,12 +51,33 @@
         "mainFile": "index.ts",
         "rootDir": "src/components/icon-loader"
     },
+    "components/icon-picker": {
+        "name": "components/icon-picker",
+        "scope": "geamaker",
+        "version": "0.0.17",
+        "mainFile": "constant/index.ts",
+        "rootDir": "src/components/icon-picker"
+    },
+    "components/user-select": {
+        "name": "components/user-select",
+        "scope": "geamaker",
+        "version": "0.0.4",
+        "mainFile": "index.tsx",
+        "rootDir": "src/components/user-select"
+    },
     "domains-core/graph-analysis/graph-schema/components/array-tabs": {
         "name": "domains-core/graph-analysis/graph-schema/components/array-tabs",
         "scope": "geamaker",
         "version": "0.0.1",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/array-tabs"
+    },
+    "domains-core/graph-analysis/graph-schema/components/canvas-container": {
+        "name": "domains-core/graph-analysis/graph-schema/components/canvas-container",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/canvas-container"
     },
     "domains-core/graph-analysis/graph-schema/components/canvas-sider": {
         "name": "domains-core/graph-analysis/graph-schema/components/canvas-sider",
@@ -58,6 +93,48 @@
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/drawer-handler"
     },
+    "domains-core/graph-analysis/graph-schema/components/filter-segmented": {
+        "name": "domains-core/graph-analysis/graph-schema/components/filter-segmented",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/filter-segmented"
+    },
+    "domains-core/graph-analysis/graph-schema/components/graph-style-setting": {
+        "name": "domains-core/graph-analysis/graph-schema/components/graph-style-setting",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/graph-style-setting"
+    },
+    "domains-core/graph-analysis/graph-schema/components/layout-form": {
+        "name": "domains-core/graph-analysis/graph-schema/components/layout-form",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/layout-form"
+    },
+    "domains-core/graph-analysis/graph-schema/components/layout-form-slider": {
+        "name": "domains-core/graph-analysis/graph-schema/components/layout-form-slider",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/layout-form-slider"
+    },
+    "domains-core/graph-analysis/graph-schema/components/layout-form-xy-input": {
+        "name": "domains-core/graph-analysis/graph-schema/components/layout-form-xy-input",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/layout-form-xy-input"
+    },
+    "domains-core/graph-analysis/graph-schema/components/layout-style-segmented": {
+        "name": "domains-core/graph-analysis/graph-schema/components/layout-style-segmented",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/layout-style-segmented"
+    },
     "domains-core/graph-analysis/graph-schema/components/page-back-arrow": {
         "name": "domains-core/graph-analysis/graph-schema/components/page-back-arrow",
         "scope": "geamaker",
@@ -72,12 +149,33 @@
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/page-title"
     },
+    "domains-core/graph-analysis/graph-schema/components/query-filter-segmented": {
+        "name": "domains-core/graph-analysis/graph-schema/components/query-filter-segmented",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/query-filter-segmented"
+    },
+    "domains-core/graph-analysis/graph-schema/components/query-segmented": {
+        "name": "domains-core/graph-analysis/graph-schema/components/query-segmented",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/query-segmented"
+    },
     "domains-core/graph-analysis/graph-schema/components/schema-field": {
         "name": "domains-core/graph-analysis/graph-schema/components/schema-field",
         "scope": "geamaker",
         "version": "0.0.1",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/schema-field"
+    },
+    "domains-core/graph-analysis/graph-schema/components/view-select": {
+        "name": "domains-core/graph-analysis/graph-schema/components/view-select",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/view-select"
     },
     "domains-core/graph-analysis/graph-schema/constants": {
         "name": "domains-core/graph-analysis/graph-schema/constants",
@@ -92,6 +190,20 @@
         "version": "0.0.1",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/contexts"
+    },
+    "domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value": {
+        "name": "domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.ts",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value"
+    },
+    "domains-core/graph-analysis/graph-schema/hooks/use-schema-tab-container": {
+        "name": "domains-core/graph-analysis/graph-schema/hooks/use-schema-tab-container",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.ts",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/hooks/use-schema-tab-container"
     },
     "domains-core/graph-analysis/graph-schema/interfaces": {
         "name": "domains-core/graph-analysis/graph-schema/interfaces",
@@ -121,12 +233,54 @@
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/translators/env-graph-language-translator"
     },
+    "domains-core/graph-analysis/graph-schema/utils/filter-element-by-property-value": {
+        "name": "domains-core/graph-analysis/graph-schema/utils/filter-element-by-property-value",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.ts",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/filter-element-by-property-value"
+    },
     "domains-core/graph-analysis/graph-schema/utils/get-engine-type-by-env": {
         "name": "domains-core/graph-analysis/graph-schema/utils/get-engine-type-by-env",
         "scope": "geamaker",
         "version": "0.0.1",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/get-engine-type-by-env"
+    },
+    "domains-core/graph-analysis/graph-schema/utils/get-filtered-element-style": {
+        "name": "domains-core/graph-analysis/graph-schema/utils/get-filtered-element-style",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.ts",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/get-filtered-element-style"
+    },
+    "domains-core/graph-analysis/graph-schema/utils/get-label-text-by-style-config": {
+        "name": "domains-core/graph-analysis/graph-schema/utils/get-label-text-by-style-config",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.ts",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/get-label-text-by-style-config"
+    },
+    "domains-core/graph-analysis/graph-schema/utils/get-node-icon-by-style-config": {
+        "name": "domains-core/graph-analysis/graph-schema/utils/get-node-icon-by-style-config",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.ts",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/get-node-icon-by-style-config"
+    },
+    "domains-core/graph-analysis/graph-schema/utils/get-node-size-by-style-config": {
+        "name": "domains-core/graph-analysis/graph-schema/utils/get-node-size-by-style-config",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.ts",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/get-node-size-by-style-config"
+    },
+    "domains-core/graph-analysis/graph-schema/utils/get-operator-list-by-value-type": {
+        "name": "domains-core/graph-analysis/graph-schema/utils/get-operator-list-by-value-type",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.ts",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/get-operator-list-by-value-type"
     },
     "domains-core/graph-analysis/graph-schema/utils/get-schema-by-env": {
         "name": "domains-core/graph-analysis/graph-schema/utils/get-schema-by-env",
@@ -149,12 +303,26 @@
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/resize-canvas"
     },
+    "domains-core/graph-analysis/graph-schema/utils/update-graph-style-options": {
+        "name": "domains-core/graph-analysis/graph-schema/utils/update-graph-style-options",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.ts",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/update-graph-style-options"
+    },
     "pages/graph-schema": {
         "name": "pages/graph-schema",
         "scope": "geamaker",
         "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/pages/graph-schema"
+    },
+    "utils": {
+        "name": "utils",
+        "scope": "geamaker",
+        "version": "0.0.20",
+        "mainFile": "index.ts",
+        "rootDir": "src/utils"
     },
     "$schema-version": "15.0.0"
 }

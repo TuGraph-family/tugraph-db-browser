@@ -1,0 +1,33 @@
+.color-picker {
+  display: flex;
+
+  &-item {
+    width: 20px;
+    border-radius: 4px;
+    height: 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(106 107 113 / 100%);
+
+    &:hover {
+      box-shadow: #f2f2f2 0 0 0 3px;
+    }
+
+    &:not(:last-child) {
+      margin-right: 16px;
+    }
+
+    &__ellipsis {
+      color: rgb(106 107 113 / 100%);
+      border: 1px solid #dddddf;
+    }
+  }
+}
+
+.color-picker-item-popover {
+  .item-popover-content {
+    display: flex;
+  }
+}
