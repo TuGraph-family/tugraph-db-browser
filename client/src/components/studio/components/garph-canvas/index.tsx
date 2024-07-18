@@ -50,6 +50,8 @@ export const GraphCanvas: React.FC<GraphCanvasProps> = (props) => {
     };
     if (graph) {
       graph.on('edge:click', handleClick);
+      /* 解决 g6 4.x版本残影问题 */
+      graph.get('canvas').set('localRefresh', false)
     }
 
     return () => {
