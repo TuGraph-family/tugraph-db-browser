@@ -330,18 +330,18 @@ export const GRAPH_SCHEMA: ISchema = {
                           },
                         },
                       },
-                      TemplateQuery: {
-                        type: 'object',
-                        'x-component': 'TemplateQuery',
-                        'x-reactions': {
-                          dependencies: ['.QuerySegmented'],
-                          fulfill: {
-                            state: {
-                              visible: '{{$deps[0] === "TEMPLATE_QUERY"}}',
-                            },
-                          },
-                        },
-                      },
+                      // TemplateQuery: {
+                      //   type: 'object',
+                      //   'x-component': 'TemplateQuery',
+                      //   'x-reactions': {
+                      //     dependencies: ['.QuerySegmented'],
+                      //     fulfill: {
+                      //       state: {
+                      //         visible: '{{$deps[0] === "TEMPLATE_QUERY"}}',
+                      //       },
+                      //     },
+                      //   },
+                      // },
                       ConfigQuery: {
                         type: 'object',
                         'x-component': 'ConfigQuery',
