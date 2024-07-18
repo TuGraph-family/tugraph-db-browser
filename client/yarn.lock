@@ -599,7 +599,7 @@
     "@antv/g-shader-components" "2.0.0"
     gl-matrix "^3.4.3"
     tslib "^2.5.3"
-
+    
 "@antv/g-plugin-canvas-path-generator@2.0.6":
   version "2.0.6"
   resolved "https://registry.npm.alibaba-inc.com/@antv/g-plugin-canvas-path-generator/download/@antv/g-plugin-canvas-path-generator-2.0.6.tgz#f2d4595de4c33d9e45581869e6c011f0a6cd23cd"
@@ -5032,7 +5032,7 @@ d3-binarytree@1:
 
 "d3-color@1 - 3", d3-color@^3.1.0:
   version "3.1.0"
-  resolved "https://registry.npmmirror.com/d3-color/-/d3-color-3.1.0.tgz#395b2833dfac71507f12ac2f7af23bf819de24e2"
+  resolved "https://registry.npm.alibaba-inc.com/d3-color/download/d3-color-3.1.0.tgz#395b2833dfac71507f12ac2f7af23bf819de24e2"
   integrity sha512-zg/chbXyeBtMQ1LbD/WSoW2DpC3I0mpmPdW+ynRTj/x2DAWYrIY7qeZIHidozwV24m4iavr15lNwIwLxRmOxhA==
 
 "d3-dispatch@1 - 2":
