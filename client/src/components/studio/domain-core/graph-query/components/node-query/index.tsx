@@ -3,10 +3,10 @@ import { Button, Form, Input, InputNumber, Select, Tabs } from 'antd';
 import { filter, find, flatMapDeep, map, toArray } from 'lodash';
 import React from 'react';
 import { useImmer } from 'use-immer';
-import SwitchDrawer from '../../../../components/switch-drawer';
-import { PROPERTY_TYPE, PUBLIC_PERFIX_CLASS } from '../../../../constant';
-import { useVisible } from '../../../../hooks/useVisible';
-import { Condition } from '../../../../interface/query';
+import SwitchDrawer from '@/components/studio/components/switch-drawer';
+import { PROPERTY_TYPE, PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import { useVisible } from '@/components/studio/hooks/useVisible';
+import { Condition } from '@/components/studio/interface/query';
 
 import { getConnectOptions } from '../../utils/getConnectOptions';
 import styles from './index.module.less';

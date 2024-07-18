@@ -12,11 +12,11 @@ import copy from 'copy-to-clipboard';
 import { filter, map } from 'lodash';
 import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import IconFont from '../../../../../../components/icon-font';
-import { TooltipText } from '../../../../../../components/tooltip-text';
-import { PUBLIC_PERFIX_CLASS } from '../../../../../../constant';
-import { EdgeProp, NodeProp } from '../../../../../../interface/schema';
-import { SEGMENTED_OPTIONS } from '../../../../constant';
+import IconFont from '@/components/studio/components/icon-font';
+import { TooltipText } from '@/components/studio/components/tooltip-text';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import { EdgeProp, NodeProp } from '@/components/studio/interface/schema';
+import { SEGMENTED_OPTIONS } from '@/components/studio/domain-core/graph-query/constant';
 
 import styles from './index.module.less';
 
@@ -123,7 +123,7 @@ const EdgeNodeList: React.FC<EdgeNodeListProp> = ({
             <List.Item
               className={styles[`${PUBLIC_PERFIX_CLASS}-edge-node-list-item`]}
             >
-              {item.name}
+              {item.name}({item.type})
               {copyIcon(item.name)}
             </List.Item>
           )}

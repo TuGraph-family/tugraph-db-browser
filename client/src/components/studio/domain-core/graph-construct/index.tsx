@@ -399,6 +399,7 @@ export const GraphConstruct = () => {
   }, [graphCanvasContextValue, onEditShow]);
   const uploadProps: UploadProps = {
     name: 'file',
+    accept:'.json',
     maxCount: 1,
     customRequest(options) {
       // @ts-ignore
