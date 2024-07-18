@@ -1,8 +1,13 @@
+/**
+ * author: Allen
+ * file: graph analyze title
+*/
+
 import React from 'react';
 import styles from './index.less';
 
 interface PageTitleProps {
-  value: any;
+  value: string;
 }
 
 const PageTitle: React.FC<PageTitleProps> = ({ value }) => {

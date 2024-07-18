@@ -3,91 +3,154 @@
 /**
  * The Bitmap file is an auto generated file used by Bit to track all your Bit components. It maps the component to a folder in your file system.
  * This file should be committed to VCS(version control).
- * Components are listed using their component ID (https://bit.dev/docs/components/component-id).
+ * Components are listed using their component ID (https://bit.dev/reference/components/component-id).
  * If you want to delete components you can use the "bit remove <component-id>" command.
- * See the docs (https://bit.dev/docs/components/removing-components) for more information, or use "bit remove --help".
+ * See the docs (https://bit.dev/reference/components/removing-components) for more information, or use "bit remove --help".
  */
 
 {
+    "assets/icons": {
+        "name": "assets/icons",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "iconfont.js",
+        "rootDir": "src/assets/icons"
+    },
     "assets/node-icons": {
+        "name": "assets/node-icons",
         "scope": "geamaker",
         "version": "0.0.1",
         "mainFile": "iconfont.js",
         "rootDir": "src/assets/node-icons"
     },
+    "components/icon-font": {
+        "name": "components/icon-font",
+        "scope": "geamaker",
+        "version": "0.0.2",
+        "mainFile": "index.tsx",
+        "rootDir": "src/components/icon-font"
+    },
     "components/icon-loader": {
+        "name": "components/icon-loader",
         "scope": "geamaker",
         "version": "0.0.1",
         "mainFile": "index.ts",
         "rootDir": "src/components/icon-loader"
     },
     "domains-core/graph-analysis/graph-schema/components/array-tabs": {
+        "name": "domains-core/graph-analysis/graph-schema/components/array-tabs",
         "scope": "geamaker",
         "version": "0.0.1",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/array-tabs"
     },
+    "domains-core/graph-analysis/graph-schema/components/canvas-sider": {
+        "name": "domains-core/graph-analysis/graph-schema/components/canvas-sider",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/canvas-sider"
+    },
+    "domains-core/graph-analysis/graph-schema/components/drawer-handler": {
+        "name": "domains-core/graph-analysis/graph-schema/components/drawer-handler",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/drawer-handler"
+    },
+    "domains-core/graph-analysis/graph-schema/components/page-back-arrow": {
+        "name": "domains-core/graph-analysis/graph-schema/components/page-back-arrow",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/page-back-arrow"
+    },
     "domains-core/graph-analysis/graph-schema/components/page-title": {
+        "name": "domains-core/graph-analysis/graph-schema/components/page-title",
         "scope": "geamaker",
         "version": "0.0.1",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/page-title"
     },
     "domains-core/graph-analysis/graph-schema/components/schema-field": {
+        "name": "domains-core/graph-analysis/graph-schema/components/schema-field",
         "scope": "geamaker",
         "version": "0.0.1",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/schema-field"
     },
     "domains-core/graph-analysis/graph-schema/constants": {
+        "name": "domains-core/graph-analysis/graph-schema/constants",
         "scope": "geamaker",
         "version": "0.0.1",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/constants"
     },
+    "domains-core/graph-analysis/graph-schema/contexts": {
+        "name": "domains-core/graph-analysis/graph-schema/contexts",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.ts",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/contexts"
+    },
     "domains-core/graph-analysis/graph-schema/interfaces": {
+        "name": "domains-core/graph-analysis/graph-schema/interfaces",
         "scope": "geamaker",
         "version": "0.0.1",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/interfaces"
     },
     "domains-core/graph-analysis/graph-schema/root": {
+        "name": "domains-core/graph-analysis/graph-schema/root",
         "scope": "geamaker",
         "version": "0.0.1",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/root"
     },
     "domains-core/graph-analysis/graph-schema/services": {
+        "name": "domains-core/graph-analysis/graph-schema/services",
         "scope": "geamaker",
         "version": "0.0.1",
         "mainFile": "graph-info.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/services"
     },
     "domains-core/graph-analysis/graph-schema/translators/env-graph-language-translator": {
+        "name": "domains-core/graph-analysis/graph-schema/translators/env-graph-language-translator",
         "scope": "geamaker",
         "version": "0.0.1",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/translators/env-graph-language-translator"
     },
     "domains-core/graph-analysis/graph-schema/utils/get-engine-type-by-env": {
+        "name": "domains-core/graph-analysis/graph-schema/utils/get-engine-type-by-env",
         "scope": "geamaker",
         "version": "0.0.1",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/get-engine-type-by-env"
     },
     "domains-core/graph-analysis/graph-schema/utils/get-schema-by-env": {
+        "name": "domains-core/graph-analysis/graph-schema/utils/get-schema-by-env",
         "scope": "geamaker",
         "version": "0.0.1",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/get-schema-by-env"
     },
     "domains-core/graph-analysis/graph-schema/utils/get-styles-from-schema": {
+        "name": "domains-core/graph-analysis/graph-schema/utils/get-styles-from-schema",
         "scope": "geamaker",
         "version": "0.0.1",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/get-styles-from-schema"
     },
+    "domains-core/graph-analysis/graph-schema/utils/resize-canvas": {
+        "name": "domains-core/graph-analysis/graph-schema/utils/resize-canvas",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.ts",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/resize-canvas"
+    },
     "pages/graph-schema": {
+        "name": "pages/graph-schema",
         "scope": "geamaker",
         "version": "0.0.2",
         "mainFile": "index.tsx",
