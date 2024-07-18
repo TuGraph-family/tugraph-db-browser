@@ -1,0 +1,31 @@
+.statictics-filter-container {
+  .statictics-filter-container-form {
+    overflow: auto;
+
+    .img {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+    }
+  }
+
+  .statictics-button-group {
+    display: flex;
+
+    :global {
+      .ant-btn {
+        width: 80px;
+      }
+    }
+  }
+}
+
+.conditionIcon::before {
+  display: inline-block;
+  margin-right: 4px;
+  color: #ff4d4f;
+  font-size: 14px;
+  font-family: SimSun, sans-serif;
+  line-height: 1;
+  content: '*';
+}

@@ -75,11 +75,11 @@ const GraphStyleSetting: React.FC<GraphStyleSettingProps> = ({
   const elementStyleList = Form.useWatch('elementStyleList', form);
   const { graphSchema } = useSchemaFormValue();
   const { nodeOptions, edgeOptions } = useMemo(() => {
-    const nodeOptions = graphSchema.nodes.map((item) => ({
+    const nodeOptions = graphSchema?.nodes?.map((item) => ({
       label: item.nodeType,
       value: item.nodeType,
     }));
-    const edgeOptions = graphSchema.edges.map((item) => ({
+    const edgeOptions = graphSchema?.edges.map((item) => ({
       label: item.edgeType,
       value: item.edgeType,
     }));
@@ -112,10 +112,12 @@ const GraphStyleSetting: React.FC<GraphStyleSettingProps> = ({
     if (elementType) {
       const type = `${elementType}Type` as 'nodeType';
 
-      const schema = graphSchema[`${elementType}s`].find(
-        (element) =>
-          element[type] === elementStyleList?.[firstLevelIndex]?.[type],
-      );
+      const schema = graphSchema
+        ? graphSchema[`${elementType}s`]?.find(
+          (element) =>
+            element[type] === elementStyleList?.[firstLevelIndex]?.[type],
+        )
+        : {};
       const { properties } = schema || {};
       if (properties) {
         propertyOptions = Object.keys(properties).map((item) => ({

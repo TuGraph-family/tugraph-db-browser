@@ -15,10 +15,10 @@ const QuerySegmentedOptions = [
     label: '路径查询',
     value: 'PATH_QUERY',
   },
-  {
-    label: '模版查询',
-    value: 'TEMPLATE_QUERY',
-  },
+  // {
+  //   label: '模版查询',
+  //   value: 'TEMPLATE_QUERY',
+  // },
 ];
 
 const QuerySegmented: React.FC<SegmentedProps> = (props) => {

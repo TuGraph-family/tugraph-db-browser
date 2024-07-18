@@ -15,22 +15,21 @@ import QuerySegmented from '@/domains-core/graph-analysis/graph-schema/component
 import FilterSegmented from '@/domains-core/graph-analysis/graph-schema/components/filter-segmented';
 import LayoutForm from '@/domains-core/graph-analysis/graph-schema/components/layout-form';
 import GraphStyleSetting from '@/domains-core/graph-analysis/graph-schema/components/graph-style-setting';
-// import AttributesFilter from '@/domains-core/graph-analysis/graph-schema/components/attibutes-filter';
-// import ConfigCenter from '@/domains-core/graph-analysis/graph-schema/components/config-center';
-// import configQuery from '@/domains-core/graph-analysis/graph-schema/components/config-query';
-// import ContextMenu from '@/domains-core/graph-analysis/graph-schema/components/context-menu';
-// import ElementInfo from '@/domains-core/graph-analysis/graph-schema/components/element-info';
-// import GraphCanvas from '@/domains-core/graph-analysis/graph-schema/components/graph-canvas';
-// import GraphFilter from '@/domains-core/graph-analysis/graph-schema/components/graph-filter';
-// import languageQuery from '@/domains-core/graph-analysis/graph-schema/components/language-query';
-// import PageLayoutSegmented from '@/domains-core/graph-analysis/graph-schema/components/page-layout-segmented';
-
-// import PathQuery from '@/domains-core/graph-analysis/graph-schema/components/path-query';
-// import StatisticsFilter from '@/domains-core/graph-analysis/graph-schema/components/statistics-filter';
-// import TemplateQuery from '@/domains-core/graph-analysis/graph-schema/components/template-query';
+import AttributesFilter from '@/domains-core/graph-analysis/graph-schema/components/attibutes-filter';
+import ConfigQuery from '@/domains-core/graph-analysis/graph-schema/components/config-query';
+import ContextMenu from '@/domains-core/graph-analysis/graph-schema/components/context-menu';
+import ElementInfo from '@/domains-core/graph-analysis/graph-schema/components/element-info';
+import GraphCanvas from '@/domains-core/graph-analysis/graph-schema/components/graph-canvas';
+import GraphFilter from '@/domains-core/graph-analysis/graph-schema/components/graph-filter';
+import LanguageQuery from '@/domains-core/graph-analysis/graph-schema/components/language-query';
+import PageLayoutSegmented from '@/domains-core/graph-analysis/graph-schema/components/page-layout-segmented';
+import PathQuery from '@/domains-core/graph-analysis/graph-schema/components/path-query';
+import StatisticsFilter from '@/domains-core/graph-analysis/graph-schema/components/statistics-filter';
 import { ArrayCards, ArrayCollapse } from '@formily/antd';
 import { createSchemaField } from '@formily/react';
 import { Divider } from 'antd';
+// import TemplateQuery from '@/domains-core/graph-analysis/graph-schema/components/template-query';
+// import ConfigCenter from '@/domains-core/graph-analysis/graph-schema/components/config-center';
 
 export const SchemaField = createSchemaField({
   components: {
@@ -40,7 +39,7 @@ export const SchemaField = createSchemaField({
     CanvasContainer,
     CanvasSider,
     ViewSelect,
-    // GraphCanvas: GraphCanvas,
+    GraphCanvas,
     Divider,
     QueryFilterSegmented,
     LayoutStyleSegmented,
@@ -48,19 +47,17 @@ export const SchemaField = createSchemaField({
     FilterSegmented,
     LayoutForm,
     GraphStyleSetting,
-    // QuerySegmented: QuerySegmented,
-    // LanguageQuery: languageQuery,
-    // TemplateQuery: TemplateQuery,
-    // GraphFilter: GraphFilter,
-    // ConfigQuery: configQuery,
-    // PathQuery: PathQuery,
-    // AttributesFilter: AttributesFilter,
-    // StatisticsFilter: StatisticsFilter,
-    // ContextMenu: ContextMenu,
+    LanguageQuery,
+    GraphFilter,
+    ConfigQuery,
+    PathQuery,
+    AttributesFilter,
+    StatisticsFilter,
+    ContextMenu,
     ArrayCards,
-    // PageLayoutSegmented: PageLayoutSegmented,
     ArrayCollapse,
-    // ElementInfo: ElementInfo,
+    ElementInfo,
+    PageLayoutSegmented,
     // ConfigCenter: ConfigCenter,
   },
 });
