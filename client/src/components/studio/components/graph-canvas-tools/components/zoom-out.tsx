@@ -1,8 +1,8 @@
 import { GraphinContext } from '@antv/graphin';
 import { Popover } from 'antd';
 import React, { useCallback, useContext } from 'react';
-import { useGraphinContext } from '../../../components/garph-canvas';
-import IconFont from '../../../components/icon-font/index';
+import { useGraphinContext } from '@/components/studio/components/garph-canvas';
+import IconFont from '@/components/studio/components/icon-font/index';
 const ZoomOut: React.FC = () => {
   const { apis } = useGraphinContext();
   const { apis: contextApis } = useContext(GraphinContext);

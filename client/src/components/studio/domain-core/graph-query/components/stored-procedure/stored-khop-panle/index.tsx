@@ -1,8 +1,8 @@
 import { Empty, Input, InputNumber } from 'antd';
 import { join } from 'lodash';
 import React, { useEffect } from 'react';
-import { PUBLIC_PERFIX_CLASS } from '../../../../../constant';
-import { ProcedureItemParams } from '../../../../../interface/procedure';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import { ProcedureItemParams } from '@/components/studio/interface/procedure';
 
 import { useImmer } from 'use-immer';
 import styles from './index.module.less';

@@ -26,26 +26,26 @@ import {
   GraphCanvas,
   GraphCanvasContext,
   GraphCanvasContextInitValue,
-} from '../../../../components/garph-canvas';
-import { GraphCanvasLayout } from '../../../../components/graph-canvas-layout';
-import { GraphCanvasTools } from '../../../../components/graph-canvas-tools';
-import IconFont from '../../../../components/icon-font';
-import IconItem from '../../../../components/icon-item';
-import SwitchDrawer from '../../../../components/switch-drawer';
-import { PROPERTY_TYPE, PUBLIC_PERFIX_CLASS } from '../../../../constant';
-import { useVisible } from '../../../../hooks/useVisible';
+} from '@/components/studio/components/garph-canvas';
+import { GraphCanvasLayout } from '@/components/studio/components/graph-canvas-layout';
+import { GraphCanvasTools } from '@/components/studio/components/graph-canvas-tools';
+import IconFont from '@/components/studio/components/icon-font';
+import IconItem from '@/components/studio/components/icon-item';
+import SwitchDrawer from '@/components/studio/components/switch-drawer';
+import { PROPERTY_TYPE, PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import { useVisible } from '@/components/studio/hooks/useVisible';
 import {
   ExcecuteResultProp,
   FormatDataEdgeProp,
   FormatDataNodeProp,
-} from '../../../../interface/query';
+} from '@/components/studio/interface/query';
 import {
   EXCECUTE_RESULT_TABLE,
   EXCECUTE_RESULT_TABLE_OPTIONS,
 } from '../../constant';
 
-import { useGraphData } from '../../../../hooks/useGraphData';
-import { GraphData, SchemaProperties } from '../../../../interface/schema';
+import { useGraphData } from '@/components/studio/hooks/useGraphData';
+import { GraphData, SchemaProperties } from '@/components/studio/interface/schema';
 import { editEdgeParamsTransform } from '../../utils/editEdgeParamsTransform';
 import styles from './index.module.less';
 import { convertIntToNumber } from '@/translator';

@@ -118,7 +118,7 @@ export interface IVertextParams {
   
   export interface RestFulResponse {
     data?: any;
-    success: number;
+    success: boolean;
     errorMessage?: string;
   }
   

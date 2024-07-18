@@ -3,13 +3,13 @@ import type { ColumnsType } from 'antd/es/table';
 import { cloneDeep, isEmpty, map } from 'lodash';
 import { useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import { PUBLIC_PERFIX_CLASS } from '../../../constant';
-import { DataType, FileData, FileSchema } from '../../../interface/import';
-import { GraphData } from '../../../interface/schema';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import { DataType, FileData, FileSchema } from '@/components/studio/interface/import';
+import { GraphData } from '@/components/studio/interface/schema';
 import {
   graphDataToOptions,
   nodesDataToOptions,
-} from '../../../utils/dataImportTransform';
+} from '@/components/studio/utils/dataImportTransform';
 
 import styles from './index.module.less';
 

@@ -232,7 +232,7 @@ export const StoredForm: React.FC<Prop> = ({
     <>
       <Modal
         title={'新建存储过程'}
-        visible={visible}
+        open={visible}
         onCancel={onCancel}
         width={480}
         destroyOnClose

@@ -4,12 +4,12 @@ import { ColumnsType } from 'antd/es/table';
 import { filter, find, map, uniqueId, xor } from 'lodash';
 import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import { EditTable } from '../../../components/edit-table';
-import SwitchDrawer from '../../../components/switch-drawer';
-import { DATA_TYPE, EditType, PUBLIC_PERFIX_CLASS } from '../../../constant';
-import { useSchema } from '../../../hooks/useSchema';
-import { useVisible } from '../../../hooks/useVisible';
-import { AttrData, IndexData, StartData } from '../../../interface/schema';
+import { EditTable } from '@/components/studio/components/edit-table';
+import SwitchDrawer from '@/components/studio/components/switch-drawer';
+import { DATA_TYPE, EditType, PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import { useSchema } from '@/components/studio/hooks/useSchema';
+import { useVisible } from '@/components/studio/hooks/useVisible';
+import { AttrData, IndexData, StartData } from '@/components/studio/interface/schema';
 
 import styles from './index.module.less';
 

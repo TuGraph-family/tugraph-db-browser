@@ -221,21 +221,34 @@ export const GraphQuery = () => {
     },
     [resultData],
   );
+
+/* 处理查询语句结果 */
+  const updateQueryData = (data,idx)=>{
+    if(data?.success){
+      const id = uniqueId('id_');
+      updateState(draft => {
+        draft.resultData = [...resultData, { ...data, id }];
+        draft.lastResult = { ...lastResult, [IQUIRE_LIST[idx].key]: id };
+      });
+    }else{
+     message.error(`执行失败 ${data?.errorMessage}`)
+    }
+  
+
+  }
   const handleQuery = (
     limit: number,
     conditions: Array<{ property: string; value: string; operator: string }>,
     queryParams: string,
   ) => {
+
+   
     if (activeTab === IQUIRE_LIST[0].key) {
       onStatementQuery({
         graphName: currentGraphName,
         script: editorRef?.current?.codeEditor?.getValue() || script,
       }).then(res => {
-        const id = uniqueId('id_');
-        updateState(draft => {
-          draft.resultData = [...resultData, { ...res, id }];
-          draft.lastResult = { ...lastResult, [IQUIRE_LIST[0].key]: id };
-        });
+        updateQueryData(res,0)
       });
     }
     if (activeTab === IQUIRE_LIST[1].key) {
@@ -245,11 +258,7 @@ export const GraphQuery = () => {
         limit,
         conditions,
       }).then(res => {
-        const id = uniqueId('id_');
-        updateState(draft => {
-          draft.resultData = [...resultData, { ...res, id }];
-          draft.lastResult = { ...lastResult, [IQUIRE_LIST[1].key]: id };
-        });
+        updateQueryData(res,1)
       });
     }
     if (activeTab === IQUIRE_LIST[2].key) {
@@ -259,11 +268,7 @@ export const GraphQuery = () => {
         conditions,
         nodes: queryParams,
       }).then(res => {
-        const id = uniqueId('id_');
-        updateState(draft => {
-          draft.resultData = [...resultData, { ...res, id }];
-          draft.lastResult = { ...lastResult, [IQUIRE_LIST[2].key]: id };
-        });
+        updateQueryData(res,2)
       });
     }
   };
