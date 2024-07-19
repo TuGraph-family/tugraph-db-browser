@@ -86,6 +86,10 @@ export const StoredForm: React.FC<Prop> = ({
     headers: {
       authorization: 'authorization-text',
     },
+    customRequest(options) {
+      // @ts-ignore
+      options.onSuccess(options.filename);
+    },
     onChange(info: UploadChangeParam<UploadFile<any>>) {
       const uid = info.file.uid;
       fileReader(info).then(data => {
