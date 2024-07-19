@@ -35,16 +35,22 @@ const mapUpload = async (params: {
 
   const list = csvData
     ?.splice(head)
-    ?.filter(item => item[0])
+    ?.filter((item, idx) => {
+      if (idx === 0 && item[0]) {
+        /* 兜底判断下首行是否为标题 */
+        return !item.some(itemKey => fileItem.columns?.includes(itemKey));
+      }
+      return item[0];
+    })
     ?.map(itemList => {
       let itemVal = {};
       let columns = fileItem.columns;
 
       columns?.forEach((keys, index) => {
         const itemContent = itemList[index];
-        const type = fileItem?.properties?.find(
-          itemType => itemType.name === keys,
-        )?.type || '';
+        const type =
+          fileItem?.properties?.find(itemType => itemType.name === keys)
+            ?.type || '';
 
         let newKey = keys;
 
@@ -63,7 +69,6 @@ const mapUpload = async (params: {
 
       return itemVal;
     });
-
 
   const cypher =
     fileItem.type === 'vertex'

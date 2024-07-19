@@ -29,7 +29,6 @@ type Props = { open: boolean; onClose: () => void };
 const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
   const {
     onCreateGraph,
-    createGraphLoading,
     onGetGraphList,
     onCreateDemoGraph,
   } = useGraph();
@@ -104,9 +103,12 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
           上一步
         </Button>
         <Button
-          loading={createGraphLoading}
+          loading={loading}
           type="primary"
           onClick={() => {
+            setState(draft => {
+              draft.loading = true;
+            });
             form.validateFields().then(values => {
               const { graphName, description, maxSizeGB } = values;
               if (!active) {
@@ -123,6 +125,9 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                     } else {
                       message.error('创建失败' + res?.errorMessage);
                     }
+                    setState(draft => {
+                      draft.loading = false;
+                    });
                 });
               } else {
                 onCreateDemoGraph({
@@ -139,6 +144,9 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                     } else {
                       message.error('模版创建失败' + res?.errorMessage);
                     }
+                    setState(draft => {
+                      draft.loading = false;
+                    });
                   })
                   .catch(e => {
                     message.error('模版创建失败' + e);

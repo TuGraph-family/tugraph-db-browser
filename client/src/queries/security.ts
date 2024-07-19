@@ -74,14 +74,16 @@ export const queryCyphers = (params: {
   roles: string;
 }) => {
   const { username, password, description, roles } = params;
-  return [
-    // 1.修改密码
-    `CALL dbms.security.changeUserPassword('${username}','${password}')`,
-    // 2. 修改用户描述
+  const cyphers = [
+    //  修改用户描述
     `CALL dbms.security.setUserDesc('${username}', '${description}')`,
-    // 3. 赋予用户角色
+    //  赋予用户角色
     `CALL dbms.security.rebuildUserRoles('${username}', ${roles})`,
-  ];
+ ]
+ if(password){
+   cyphers.unshift(`CALL dbms.security.changeUserPassword('${username}','${password}')`)
+ }
+ return cyphers
 };
 
 /*  创建角色 */
