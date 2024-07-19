@@ -126,11 +126,11 @@ export const Login = () => {
               rules={[
                 {
                   required: true,
-                  message: '请输入数据库地址，示例：bolt://100.88.118.28:27001',
+                  message: '请输入数据库地址，示例：bolt://127.0.0.1:7687',
                 },
               ]}
             >
-              <Input placeholder="数据库地址，示例：bolt://100.88.118.28:27001" />
+              <Input placeholder="数据库地址，示例：bolt://127.0.0.1:7687" />
             </Item>
             <Item
               name="userName"
