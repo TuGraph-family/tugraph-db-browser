@@ -105,7 +105,7 @@ const EditAuthModal: React.FC<Prop> = ({
         form.resetFields();
         onCancel();
       }}
-      visible={open}
+      open={open}
       width={560}
       className={styles[`${PUBLIC_PERFIX_CLASS}-modal`]}
       okText="确定"

@@ -286,6 +286,18 @@ const ExecuteResult: React.FC<ResultProps> = ({
   };
   const editNode = () => {
     form.validateFields().then(val => {
+      const data = {
+        ...currentData,
+        nodes: map(currentData?.nodes, item => {
+          if(item.id == id){
+            return {
+              ...item,
+              properties: { ...val },
+            };
+          }
+          return item
+        }),
+      };
       const primaryKey = find(
         graphData?.nodes,
         node => node.labelName === tagName,
@@ -301,8 +313,16 @@ const ExecuteResult: React.FC<ResultProps> = ({
           message.success('编辑成功');
           setState(draft => {
             draft.formDisable = true;
+            draft.currentData = cloneDeep(data);
           });
           onClose();
+          graphCanvasContextValue?.graph?.read(
+            dealGraphData(dealFormatData(data)),
+          );
+          graphCanvasContextValue?.graph?.updateLayout({
+            type: 'graphin-force',
+            animation: false,
+          });
         } else {
           message.error(res.errorMessage + '编辑失败');
         }
@@ -311,17 +331,33 @@ const ExecuteResult: React.FC<ResultProps> = ({
   };
   const editEdge = () => {
     form.validateFields().then(val => {
-      const primaryKey = find(
-        graphData?.nodes,
-        node => node.labelName === tagName,
-      )?.primaryField;
+      const data = {
+        ...currentData,
+        edges: map(currentData?.edges, item => {
+          if(item.id == id){
+            return {
+              ...item,
+              properties: { ...val },
+            };
+          }
+          return item
+        }),
+      };
       onEditEdge({ ...editEdgeParams, properties: { ...val } }).then(res => {
         if (res.success) {
           message.success('编辑成功');
           setState(draft => {
             draft.formDisable = true;
+            draft.currentData = cloneDeep(data);
           });
           onClose();
+          graphCanvasContextValue?.graph?.read(
+            dealGraphData(dealFormatData(data)),
+          );
+          graphCanvasContextValue?.graph?.updateLayout({
+            type: 'graphin-force',
+            animation: false,
+          });
         } else {
           message.error(res.errorMessage + '编辑失败');
         }
@@ -670,7 +706,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
             >
               {typeof value === 'object'
                 ? JSONBig.stringify(value, null, 2)
-                : value}
+                : value.toString()}
             </pre>
           );
         },

@@ -1,10 +1,10 @@
 /**
  * file: login page
  * author: Allen
-*/
+ */
 
 import { useCallback, useState } from 'react';
-import { Button, Form, Input, message } from 'antd';
+import { Button, Form, Input, Modal, message } from 'antd';
 import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
@@ -22,13 +22,14 @@ import { getLocalData } from '../utils/localStorage';
 
 // style
 import styles from './index.module.less';
+import { dbRecordsTranslator } from '@/translator';
 
 const { Item, useForm } = Form;
+const { confirm } = Modal;
 
 export const Login = () => {
-
   // state
-  const {  setInitialState } = useModel('@@initialState');
+  const { setInitialState } = useModel('@@initialState');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // props
@@ -36,7 +37,7 @@ export const Login = () => {
   const userName = getLocalData(TUGRAPH_USER_NAME);
   const password = getLocalData(TUGRAPH_PASSWORD);
   const uri = getLocalData(TUGRAPH_URI);
-  
+
   // function
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine);
@@ -63,11 +64,31 @@ export const Login = () => {
           },
           dbConfig,
         } as any);
-        setTimeout(() => {
+        const res = await session.run(
+          'CALL dbms.security.isDefaultUserPassword()',
+        );
+        const { isDefaultUserPassword } =
+          dbRecordsTranslator(res)?.data[0] || {};
+
+        if (isDefaultUserPassword) {
+          confirm({
+            title: '当前使用的密码为默认密码，存在安全风险，请前往修改密码！',
+            okText: '修改密码',
+            cancelText: '跳过',
+            mask: false,
+            onOk() {
+              window.location.hash = '/reset';
+            },
+            onCancel() {
+              window.location.hash = '/home';
+            },
+            afterClose() {
+              setIsLoading(false);
+            },
+          });
+        } else {
           window.location.hash = '/home';
-          setIsLoading(false);
-        }, 100);
-        
+        }
       } catch (error: any) {
         setIsLoading(false);
         message.error('登录失败，请检查数据库地址、用户名、密码是否正确');
@@ -76,11 +97,11 @@ export const Login = () => {
   };
 
   /** 判断是否已经登录，若登录则跳转至首页 */
-  if (userName) {
+  if (userName && !isLoading) {
     window.location.hash = '/home';
     return;
   }
-  
+
   return (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-login-container`]}>
       <img
@@ -159,11 +180,7 @@ export const Login = () => {
                 }
               />
             </Item>
-            <Button
-              type="primary"
-              onClick={() => login()}
-              loading={isLoading}
-            >
+            <Button type="primary" onClick={() => login()} loading={isLoading}>
               登录
             </Button>
           </Form>
