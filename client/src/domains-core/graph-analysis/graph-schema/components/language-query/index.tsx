@@ -1,4 +1,4 @@
-import GraphEditor from '@/components/graph-editor/components/isogql';
+import CypherEdit from '@/components/studio/domain-core/graph-query/cypherEditor';
 import { parseSearch } from '@/utils/parseSearch';
 import { useRequest } from 'ahooks';
 import { isEmpty, map } from 'lodash';
@@ -41,7 +41,7 @@ const LanguageQuery: React.FC<ILanguageQueryProps> = ({ height = '320px' }) => {
     editorValue: string;
     hasClear: boolean;
   }>({
-    editorValue: 'MATCH (n: 【NODE_TYPE】 WHERE id(n) = 【ID】) RETURN n',
+    editorValue: 'MATCH (n) RETURN n',
     hasClear: true,
   });
 
@@ -103,12 +103,6 @@ const LanguageQuery: React.FC<ILanguageQueryProps> = ({ height = '320px' }) => {
     });
   };
 
-  const handleChangeLanguageType = (e: RadioChangeEvent) => {
-    setState((draft) => {
-      draft.languageType = e.target.value;
-    });
-  };
-
   const handleReset = () => {
     setState((draft) => {
       draft.editorValue = '';
@@ -119,34 +113,21 @@ const LanguageQuery: React.FC<ILanguageQueryProps> = ({ height = '320px' }) => {
   return (
     <div className={[styles['language-query-container']].join(' ')}>
       <div className={styles['content-container']}>
-        {/* <div>
-          <div className={styles['title-group']}>
-            <span className={styles['text-label-icon']}>查询语言</span>
-            <a
+        <div className={styles['title-group']}>
+          <span className={styles['text-label-icon']}>输入语句</span>
+          <a
               onClick={() => {
                 window.open(
-                  'https://yuque.antfin-inc.com/guppiq/ezloha/pgrayyum1dwnpiga?singleDoc#',
+                  'https://tugraph-db.readthedocs.io/zh-cn/latest/8.query/1.cypher.html?highlight=cypher',
                 );
               }}
             >
               <FileTextOutlined />
               语法说明
             </a>
-          </div>
-
-          <Radio.Group onChange={handleChangeLanguageType} value={languageType}>
-            {map(graphLanguageList, (item, key) => (
-              <Radio key={key} value={item?.value}>
-                {item?.label}
-              </Radio>
-            ))}
-          </Radio.Group>
-        </div> */}
-        <div className={styles['title-group']}>
-          <span className={styles['text-label-icon']}>输入语句</span>
         </div>
         <div className={styles['block-container']}>
-          <GraphEditor
+          {/* <GraphEditor
             height={height}
             isReadOnly={false}
             initialValue={editorValue}
@@ -154,6 +135,11 @@ const LanguageQuery: React.FC<ILanguageQueryProps> = ({ height = '320px' }) => {
             graphEditorRef={dataConfigEditorRef}
             graphId={graphId}
             env={env}
+          /> */}
+          <CypherEdit
+            ref={dataConfigEditorRef}
+            value={editorValue}
+            onChange={(value: string) => handleChangeEditorValue(value)}
           />
         </div>
 
