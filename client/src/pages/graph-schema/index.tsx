@@ -1,22 +1,33 @@
-import '@/assets/node-icons/iconfont.css';
-import {
-  GRAPH_SCHEMA,
-  SchemaField,
-} from '@/domains-core/graph-analysis/graph-schema/root';
-import { Container } from '@/layouts';
-import { parseSearch } from '@/utils/parseSearch';
+/**
+ * author: Allen
+ * file: graph analyze entry
+*/
+
+import React, { useEffect, useMemo } from 'react';
+import { FormProvider } from '@formily/react';
+import { Spin } from 'antd';
 import {
   createForm,
   onFieldValueChange,
   onFormInputChange,
 } from '@formily/core';
-import { FormProvider } from '@formily/react';
-import { Spin } from 'antd';
-import React, { useEffect, useMemo } from 'react';
+import {
+  GRAPH_SCHEMA,
+  SchemaField,
+} from '@/domains-core/graph-analysis/graph-schema/root';
+
+// components
+import { Container } from '@/layouts';
+
+// utils
+import { parseHashRouterParams } from '@/utils/parseHash';
+
+// style
+import '@/assets/node-icons/iconfont.css';
 import styles from './index.less';
 
 const GraphSchema: React.FC = () => {
-  const { env, graphId } = parseSearch(location.search) as any;
+  const { graphName } = parseHashRouterParams(location.hash);
 
   // Todo: by Allen
   // const {
