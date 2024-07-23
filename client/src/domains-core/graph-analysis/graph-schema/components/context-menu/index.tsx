@@ -11,6 +11,8 @@ import { useSchemaTabContainer } from '@/domains-core/graph-analysis/graph-schem
 // import { getStyledGraphData } from '@/domains-core/graph-analysis/graph-schema/utils/get-styled-graph-data';
 // import { getUniqGraphData } from '@/domains-core/graph-analysis/graph-schema/utils/get-uniq-graph-data';
 import styles from './index.less';
+import { useAnalysis } from '@/hooks/useAnalysis';
+import { parseHashRouterParams } from '@/utils/parseHash';
 
 interface ContextMenuProps {
   children?: React.ReactNode;
@@ -18,8 +20,9 @@ interface ContextMenuProps {
 
 const ContextMenu: React.FC<ContextMenuProps> = () => {
   const { graph } = useSchemaGraphContext();
-  const { graphId, env } = parseSearch(location.search);
+  const { graphName } = parseHashRouterParams(location.hash);
   const { graphEngineType, graphSchemaStyle } = useSchemaFormValue();
+  const {onQueryNeighbors} = useAnalysis()
   const { tabContainerField } = useSchemaTabContainer();
   const [state, updateState] = useImmer<{
     menuStyles: {
@@ -72,6 +75,13 @@ const ContextMenu: React.FC<ContextMenuProps> = () => {
       updateState((draft) => {
         draft.menuStyles.display = 'none';
       });
+      onQueryNeighbors({
+        graphName,
+        sep,
+        id:elementId
+      }).then(res=>console.log(res))
+
+
       // runQueryNeighbors({
       //   id: elementId,
       //   sep,

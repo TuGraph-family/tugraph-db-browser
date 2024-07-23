@@ -5,50 +5,50 @@ export const getOperatorListByValueType = (valueType: string = '') => {
   if (type === 'string') {
     return [
       {
-        value: 'CT',
+        value: '⊃',
         label: '⊃',
         text: '包含',
       },
       {
-        value: 'NC',
+        value: '⊅',
         label: '⊅',
         text: '不包含',
       },
       {
-        value: 'EQ',
+        value: '=',
         label: '=',
       },
       {
-        value: 'NE',
+        value: '≠',
         label: '≠',
       },
     ];
   }
 
-  if (type === 'long' || type === 'double' || type === 'int32') {
+  if (['int8', 'int16', 'int32', 'int64', 'double', 'date', 'datetime'].includes(type)) {
     return [
       {
-        value: 'GT',
+        value: '>',
         label: '>',
       },
       {
-        value: 'LT',
+        value: '<',
         label: '<',
       },
       {
-        value: 'EQ',
+        value: '=',
         label: '=',
       },
       {
-        value: 'NE',
+        value: '≠',
         label: '≠',
       },
       {
-        value: 'GE',
+        value: '≥',
         label: '≥',
       },
       {
-        value: 'LE',
+        value: '≤',
         label: '≤',
       },
     ];
@@ -57,11 +57,11 @@ export const getOperatorListByValueType = (valueType: string = '') => {
   if (type === 'boolean') {
     return [
       {
-        value: 'EQ',
+        value: '=',
         label: '=',
       },
       {
-        value: 'NE',
+        value: '≠',
         label: '≠',
       },
     ];
