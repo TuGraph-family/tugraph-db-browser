@@ -37,13 +37,6 @@
         "mainFile": "index.tsx",
         "rootDir": "src/components/custom-color-picker"
     },
-    "components/graph-editor": {
-        "name": "components/graph-editor",
-        "scope": "geamaker",
-        "version": "0.0.16",
-        "mainFile": "index.tsx",
-        "rootDir": "src/components/graph-editor"
-    },
     "components/icon-font": {
         "name": "components/icon-font",
         "scope": "geamaker",
