@@ -12,7 +12,7 @@ export const queryNeighborsCypher = (params: { sep?: number; id?: string }) => {
       break;
   }
 
-  return `MATCH p = (start)-[*1${newSep}]->(end) where id(start) = ${id} RETURN p`;
+  return `MATCH p = (s)-[*1${newSep}]->(e) where id(s) = ${id} RETURN p`;
 };
 
 export const quickQueryCypher = (params: {

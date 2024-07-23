@@ -25,7 +25,17 @@ export const queryNeighbors = async (
   });
   const result = await request({ driver, cypher, graphName });
 
-  return responseFormatter(result);
+  if (!result.success) {
+    return result;
+  }
+  const {
+    data: { formatData = [] },
+  } = QueryResultFormatter(result, cypher) || {};
+
+  return {
+    success: true,
+    graphData: convertIntToNumber(formatData) 
+  }
 };
 
 /* 配置查询 */
@@ -45,12 +55,17 @@ export const quickQuery = async (
     limit,
   });
   const result = await request({ driver, cypher, graphName });
-
+  if (!result.success) {
+    return result;
+  }
   const {
     data: { formatData = [] },
   } = QueryResultFormatter(result, cypher) || {};
 
-  return convertIntToNumber(formatData);
+  return {
+    success: true,
+    graphData: convertIntToNumber(formatData) 
+  }
 };
 
 /* 路径查询 */
