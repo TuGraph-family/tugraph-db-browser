@@ -69,30 +69,8 @@ export const ImportData: React.FC<Prop> = ({
   };
 
   const onImport = () => {
-    const isLengthNotMatch = fileDataList.every((fileData: FileData) => {
-      const {
-        selectedValue,
-        fileSchema: { columns = [], DST_ID, SRC_ID },
-      } = fileData || {};
-      const fileSchemaColumnsLength =
-        columns?.filter((item: any) => item).length || 0;
-      const AdditionalForm =
-        selectedValue?.[0] === 'edge' ? !!(DST_ID && SRC_ID) : true;
-      return (
-        fileSchemaColumnsLength &&
-        columns.every((item: any) => item) &&
-        AdditionalForm
-      );
-    });
-
-    if (!isLengthNotMatch) {
-      return message.error(`请完成所有列的映射`);
-    }
-   
+    
     fileDataList.forEach((item: any) => {
-      item.fileSchema.columns = [...item?.fileSchema?.columns].filter(
-        item => item,
-      );
       if (item?.selectedValue?.[0] === 'edge') {
         const newProperties = [];
         const { DST_ID, SRC_ID,properties } = item?.fileSchema || {};
@@ -119,6 +97,22 @@ export const ImportData: React.FC<Prop> = ({
         message.error('请先上传文件');
         return;
       }
+
+      const {
+        selectedValue,
+        fileSchema: {  DST_ID, SRC_ID },
+      } = fileDataList?.[0] || {};
+      if(!selectedValue){
+        message.error('请选择标签');
+        return
+      }
+
+      const AdditionalForm =
+        selectedValue?.[0] === 'edge' ? !!(DST_ID && SRC_ID) : true;
+      if(!AdditionalForm){
+        message.error('请选择类型');
+        return
+      }
      
 
       // 1. 导入数据
@@ -128,7 +122,6 @@ export const ImportData: React.FC<Prop> = ({
         delimiter: val?.delimiter, //数据分隔符
       };
 
-    
 
       onImportData(params).then(res => {
         if (res?.success) {
