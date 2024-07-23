@@ -23,19 +23,20 @@ import { useSchemaTabContainer } from '@/domains-core/graph-analysis/graph-schem
 import { getOperatorListByValueType } from '@/domains-core/graph-analysis/graph-schema/utils/get-operator-list-by-value-type';
 import { mergeGraphData } from '@/domains-core/graph-analysis/graph-schema/utils/merge-graph-data';
 import styles from './index.less';
+import { useAnalysis } from '@/hooks/useAnalysis';
+import { parseHashRouterParams } from '@/utils/parseHash';
+
 
 const { Option } = Select;
 
 const ConfigQuery: React.FC = () => {
+  const { onQuickQuery,onQuickQueryLoading } = useAnalysis();
   const [form] = Form.useForm();
   const { graphEngineType, graphSchemaStyle, graphSchema } =
     useSchemaFormValue();
   const { tabContainerField } = useSchemaTabContainer();
   const { graph } = useSchemaGraphContext();
-  const { graphId, env } = parseSearch(location.search);
-  // Todo: by Allen
-  const { run: runQuickQueryGraphData, loading: loadingQuickQueryGraphData } =
-    useRequest(async() => {}, { manual: true });
+  const { graphName } = parseHashRouterParams(location.hash);
 
   const [state, setState] = useImmer<{
     currentPropertyType: string;
@@ -54,10 +55,10 @@ const ConfigQuery: React.FC = () => {
     const { label, property } = allValues;
     const currentSchema = find(
       graphSchema?.nodes,
-      (node) => node?.nodeType === label,
+      node => node?.nodeType === label,
     );
     if (currentSchema) {
-      setState((draft) => {
+      setState(draft => {
         draft.currentSchema = cloneDeep(currentSchema);
       });
 
@@ -66,12 +67,12 @@ const ConfigQuery: React.FC = () => {
         const tmpProperty = currentSchema.properties[property];
 
         if (tmpProperty) {
-          setState((draft) => {
+          setState(draft => {
             draft.currentPropertyType = tmpProperty.schemaType;
           });
         }
         // 只有属性选择了 ID 才允许勾选哈希转换
-        setState((draft) => {
+        setState(draft => {
           draft.enableHash = property === 'ID';
         });
       }
@@ -103,37 +104,25 @@ const ConfigQuery: React.FC = () => {
 
   const handleExecQuery = async () => {
     const values = await form.validateFields();
+ 
+
     const { label, property, value, logic, limit = 10, hasClear } = values;
 
     tabContainerField.setComponentProps({
       spinning: true,
     });
 
-    const graphData = await runQuickQueryGraphData(
-      // {
-      //   queryType: 'QUCIK_QUERY',
-      //   limit,
-      //   quickQueryRequests: [
-      //     {
-      //       type: 'NODE', // 暂时仅支持查询节点
-      //       schema: label,
-      //       singleProperties: [
-      //         {
-      //           property,
-      //           operator: logic,
-      //           value,
-      //         },
-      //       ],
-      //       whetherHash: values.whetherHash,
-      //       operator: 'AND',
-      //     },
-      //   ],
-      //   schemaEngineTypeEnum: graphEngineType,
-      //   graphId,
-      //   graphDeployEnvEnum: env,
-      // }
-    );
-
+    const graphData = await onQuickQuery({
+      graphName,
+      limit,
+      rules: {
+        property,
+        logic,
+        value,
+      },
+      node: label,
+    });
+   
     tabContainerField.setComponentProps({
       spinning: false,
     });
@@ -141,6 +130,7 @@ const ConfigQuery: React.FC = () => {
       message.warn('未查询到符合条件的节点');
       return;
     }
+    
     if (hasClear) {
       graph?.setData(graphData as GraphData);
     } else {
@@ -169,7 +159,7 @@ const ConfigQuery: React.FC = () => {
 
   const handleResetForm = () => {
     form.resetFields();
-    setState((draft) => {
+    setState(draft => {
       draft.currentSchema = {};
     });
   };
@@ -321,7 +311,7 @@ const ConfigQuery: React.FC = () => {
             重置
           </Button>
           <Button
-            loading={loadingQuickQueryGraphData}
+            loading={onQuickQueryLoading}
             className={styles['query-button']}
             type="primary"
             onClick={handleExecQuery}

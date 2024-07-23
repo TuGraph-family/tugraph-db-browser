@@ -1,7 +1,7 @@
 /**
  * author: Allen
  * file: graph analyze entry
-*/
+ */
 
 import React, { useEffect, useMemo } from 'react';
 import { FormProvider } from '@formily/react';
@@ -25,10 +25,12 @@ import { parseHashRouterParams } from '@/utils/parseHash';
 // style
 import '@/assets/node-icons/iconfont.css';
 import styles from './index.less';
+import { useAnalysis } from '@/hooks/useAnalysis';
+import { graphSchemaTranslator } from '@/domains-core/graph-analysis/graph-schema/translators/graph-schema-translator';
 
 const GraphSchema: React.FC = () => {
   const { graphName } = parseHashRouterParams(location.hash);
-
+  const { querySchema, querySchemaLoading } = useAnalysis();
   // Todo: by Allen
   // const {
   //   run: runGetGraphProjectDetail,
@@ -36,14 +38,7 @@ const GraphSchema: React.FC = () => {
   // } = useRequest(GraphInfoService.getGraphProjectDetail, { manual: true });
   // const { run: runGetGraphLanguageList, loading: loadingGetGraphLanguageList } =
   //   useRequest(GraphInfoService.getGraphLanguageList, { manual: true });
-  // const { run: runGetGraphSchema, loading: loadingGetGraphSchema } = useRequest(
-  //   GraphInfoService.getGraphSchema,
-  //   { manual: true },
-  // );
-  // const { run: runGetHtapOrderDetail } = useRequest(
-  //   GraphInfoService.getHtapOrderDetail,
-  //   { manual: true },
-  // );
+
   const form = useMemo(() => {
     return createForm({
       effects() {
@@ -73,6 +68,7 @@ const GraphSchema: React.FC = () => {
       },
     });
   }, []);
+
   useEffect(() => {
     // runGetGraphProjectDetail({ env, graphManageId: graphId }).then(data => {
     //   if (data) {
@@ -82,23 +78,19 @@ const GraphSchema: React.FC = () => {
     //     });
     //   }
     // });
-    // runGetGraphSchema({
-    //   graphId,
-    // }).then(data => {
-    //   if (data) {
-    //     const graphSchemaStyle = getStylesFromSchema(
-    //       data.draftVisualModelDataVO,
-    //     );
-    //     const schema = getSchemaByEnv(data, env);
-    //     form.setValuesIn('graphSchema', schema);
-    //     form.setValuesIn('graphSchemaStyle', graphSchemaStyle);
-    //   }
-    // });
-    // runGetHtapOrderDetail({
-    //   graphId,
-    // }).then(data => {
-    //   form.setValuesIn('htapOrderDetail', data);
-    // });
+    querySchema({
+      graphName,
+    }).then(data => {
+      if (data) {
+        const { schema } = data.data?.[0]?.schema || {};
+        // const graphSchemaStyle = getStylesFromSchema(
+        //   data.draftVisualModelDataVO,
+        // );
+
+        form.setValuesIn('graphSchema', graphSchemaTranslator(schema));
+        // form.setValuesIn('graphSchemaStyle', graphSchemaStyle);
+      }
+    });
   }, []);
 
   return (
@@ -107,8 +99,7 @@ const GraphSchema: React.FC = () => {
         spinning={
           // loadingGetGraphProjectDetail ||
           // loadingGetGraphLanguageList ||
-          // loadingGetGraphSchema
-          false
+          querySchemaLoading
         }
       >
         <div className={styles['graph-schema']}>
