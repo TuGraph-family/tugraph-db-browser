@@ -2,7 +2,7 @@
 export const getOperatorListByValueType = (valueType: string = '') => {
   const type = valueType.toLowerCase();
 
-  if (['string', 'date', 'datetime'].includes(type)) {
+  if (type === 'string') {
     return [
       {
         value: '⊃',
@@ -25,7 +25,7 @@ export const getOperatorListByValueType = (valueType: string = '') => {
     ];
   }
 
-  if (['int8', 'int16', 'int32', 'int64', 'double'].includes(type)) {
+  if (['int8', 'int16', 'int32', 'int64', 'double', 'date', 'datetime'].includes(type)) {
     return [
       {
         value: '>',

@@ -1,22 +1,10 @@
-import { AnalysisSchema, Schema, SchemaProperty } from '@/types/services';
-/* properties conversion  */
-const propertiesTranslator = (properties: SchemaProperty[] | undefined) => {
-  const newProperties = {};
-
-  properties?.forEach(item => {
-    newProperties[item.name] = {
-      schemaType: item?.type,
-    };
-  });
-
-  return newProperties;
-};
-
+import { AnalysisSchema, Schema } from '@/types/services';
+import { propertiesTranslator } from '@/domains-core/graph-analysis/graph-schema/translators/properties-translator';
 /* Graph analysis schema data conversion */
 export const graphSchemaTranslator = (schema: Schema[]) => {
   const nodes: AnalysisSchema[] = [];
   const edges: AnalysisSchema[] = [];
-  schema?.map(item => {
+  schema?.forEach(item => {
     if (item?.type === 'VERTEX') {
       nodes.push({
         ...item,
