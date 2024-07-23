@@ -26,23 +26,23 @@ export const STEP_LIST: CollasibleStep[] = [
 
 export const GRAPH_OPERATE = [
   {
-    lable: '添加点',
+    label: '添加点',
     icon: 'icon-tianjiadian',
     value: 'node',
   },
   {
-    lable: '添加边',
+    label: '添加边',
     icon: 'icon-tianjiabian',
     value: 'edge',
   },
   //功能暂时隐藏
   {
-    lable: '导入模型',
+    label: '导入模型',
     icon: 'icon-daorumoxingwenjian',
     value: 'import',
   },
   {
-    lable: '导出模型',
+    label: '导出模型',
     icon: 'icon-daochumoxing',
     value: 'export',
   },

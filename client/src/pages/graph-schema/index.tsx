@@ -102,7 +102,16 @@ const GraphSchema: React.FC = () => {
           querySchemaLoading
         }
       >
-        <div className={styles['graph-schema']}>
+        <div
+          className={`
+            ${styles['graph-schema']}
+            ${
+              form?.fields['Header.HeaderRight.PageLayout']?.value === 'Tab'
+                ? styles['graph-schema-tab']
+                : ''
+            }`
+          }
+        >
           <FormProvider form={form}>
             <SchemaField schema={GRAPH_SCHEMA} />
           </FormProvider>
