@@ -115,7 +115,7 @@ export const ImportData: React.FC<Prop> = ({
       const isProperties = columns.some(key => key);
 
       if (!isProperties) {
-        message.error('至少完成一列的映射');
+        message.error('请至少完成一列的映射');
         return;
       }
 
