@@ -3,7 +3,7 @@
  * author: Allen
  */
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Button, Form, Input, Modal, message } from 'antd';
 import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 import Particles from 'react-tsparticles';
@@ -96,6 +96,7 @@ export const Login = () => {
     }
   };
 
+
   /** 判断是否已经登录，若登录则跳转至首页 */
   if (userName && !isLoading) {
     window.location.hash = '/home';
@@ -150,8 +151,9 @@ export const Login = () => {
                   message: '请输入数据库地址，示例：bolt://127.0.0.1:7687',
                 },
               ]}
+            
             >
-              <Input placeholder="数据库地址，示例：bolt://127.0.0.1:7687" />
+              <Input  placeholder="数据库地址，示例：bolt://127.0.0.1:7687" />
             </Item>
             <Item
               name="userName"
