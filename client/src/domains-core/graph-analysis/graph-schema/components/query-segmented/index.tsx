@@ -11,10 +11,10 @@ const QuerySegmentedOptions = [
     label: '语句查询',
     value: 'LANGUAGE_QUERY',
   },
-  {
-    label: '路径查询',
-    value: 'PATH_QUERY',
-  },
+  // {
+  //   label: '路径查询',
+  //   value: 'PATH_QUERY',
+  // },
   // {
   //   label: '模版查询',
   //   value: 'TEMPLATE_QUERY',
