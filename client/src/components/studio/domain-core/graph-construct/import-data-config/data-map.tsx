@@ -38,7 +38,7 @@ const DataMapConfigHeader = ({
   const onSelect = (val: string, key: string) => {
     const newFileDataList =
       checkFullArray(fileDataList) &&
-      [...fileDataList].map((cur: any) => {
+      fileDataList?.map((cur: any) => {
         if (data?.fileName === cur?.fileName) {
           const fileSchema = cur?.fileSchema;
           return {
@@ -94,7 +94,7 @@ const DataMapConfigHeader = ({
               );
               const newFileDataList =
                 checkFullArray(fileDataList) &&
-                [...fileDataList].map((cur: any) => {
+                fileDataList?.map((cur: any) => {
                   if (data?.fileName === cur?.fileName) {
                     const preFileSchema = data?.fileSchema;
 
@@ -149,7 +149,7 @@ const DataMapConfigHeader = ({
             onChange={value => {
               const newFileDataList =
                 checkFullArray(fileDataList) &&
-                [...fileDataList].map((cur: any) => {
+                fileDataList?.map((cur: any) => {
                   const { header, ...other } = cur?.fileSchema;
                   if (data?.fileName === cur?.fileName) {
                     return {
@@ -225,7 +225,23 @@ const DataMapSelectNav = ({
     const defaulColumns =
       data?.fileSchema?.columns || new Array(state?.columns?.length).fill('');
     setDefaultSelectValue(defaulColumns);
+    const newFileDataList = fileDataList?.map(cur => {
+      if (data?.fileName === cur?.fileName) {
+        return {
+          ...cur,
+          fileSchema: {
+            ...cur?.fileSchema,
+            columns: defaulColumns,
+          },
+        };
+      }
+      return cur;
+    });
+    setFileDataList(newFileDataList);
   }, [state?.nodeType[1]]);
+
+
+ 
 
   /* 边默认有SRC_ID/DST_ID */
   const options = isEdges
@@ -262,8 +278,9 @@ const DataMapSelectNav = ({
               style={{
                 width: 120,
               }}
+              allowClear
               onChange={value => {
-                const newFileDataList = [...fileDataList].map(cur => {
+                const newFileDataList = fileDataList?.map(cur => {
                   if (data?.fileName === cur?.fileName) {
                     const curColumns = Array.isArray(cur?.fileSchema?.columns)
                       ? cur?.fileSchema?.columns

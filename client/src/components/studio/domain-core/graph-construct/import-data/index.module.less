@@ -1,11 +1,18 @@
 @perfix-cls: ant-tugraph;
 .@{perfix-cls}-container {
   // margin-top: 52px;
+  position: relative;
   height: 100%;
   :global {
     .ant-select-selection-item-remove {
       display: none;
     }
+  }
+  &-box{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
   }
   &-content {
     padding: 0 24px 24px;
