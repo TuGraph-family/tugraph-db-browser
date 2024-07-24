@@ -97,7 +97,7 @@ export const Login = () => {
   };
 
   useEffect(()=>{
-    form.setFieldValue('uri', 'bolt://47.109.156.26:7687')
+    form.setFieldValue('uri', `bolt://${window.location.hostname}:7687`)
   },[])
 
   /** 判断是否已经登录，若登录则跳转至首页 */
