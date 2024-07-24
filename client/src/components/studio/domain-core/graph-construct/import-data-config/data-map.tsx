@@ -38,7 +38,7 @@ const DataMapConfigHeader = ({
   const onSelect = (val: string, key: string) => {
     const newFileDataList =
       checkFullArray(fileDataList) &&
-      [...fileDataList].map((cur: any) => {
+      fileDataList?.map((cur: any) => {
         if (data?.fileName === cur?.fileName) {
           const fileSchema = cur?.fileSchema;
           return {
@@ -94,7 +94,7 @@ const DataMapConfigHeader = ({
               );
               const newFileDataList =
                 checkFullArray(fileDataList) &&
-                [...fileDataList].map((cur: any) => {
+                fileDataList?.map((cur: any) => {
                   if (data?.fileName === cur?.fileName) {
                     const preFileSchema = data?.fileSchema;
 
@@ -149,7 +149,7 @@ const DataMapConfigHeader = ({
             onChange={value => {
               const newFileDataList =
                 checkFullArray(fileDataList) &&
-                [...fileDataList].map((cur: any) => {
+                fileDataList?.map((cur: any) => {
                   const { header, ...other } = cur?.fileSchema;
                   if (data?.fileName === cur?.fileName) {
                     return {
@@ -225,7 +225,7 @@ const DataMapSelectNav = ({
     const defaulColumns =
       data?.fileSchema?.columns || new Array(state?.columns?.length).fill('');
     setDefaultSelectValue(defaulColumns);
-    const newFileDataList = [...fileDataList].map(cur => {
+    const newFileDataList = fileDataList?.map(cur => {
       if (data?.fileName === cur?.fileName) {
         return {
           ...cur,
@@ -280,7 +280,7 @@ const DataMapSelectNav = ({
               }}
               allowClear
               onChange={value => {
-                const newFileDataList = [...fileDataList].map(cur => {
+                const newFileDataList = fileDataList?.map(cur => {
                   if (data?.fileName === cur?.fileName) {
                     const curColumns = Array.isArray(cur?.fileSchema?.columns)
                       ? cur?.fileSchema?.columns
