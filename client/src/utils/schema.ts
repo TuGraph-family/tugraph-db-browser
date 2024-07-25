@@ -4,6 +4,7 @@ import {
   IVertextSchemaParams,
   IEdgeSchemaParams,
   RestFulResponse,
+  IDuplicatesData,
 } from '@/types/services';
 
 import { has, isEmpty } from 'lodash';
@@ -218,7 +219,7 @@ export const formatPathResponse = (
 
 
 // 去重函数
-const removeDuplicates = (data) =>{
+const removeDuplicates = (data: IDuplicatesData[]) =>{
   return  data.filter((item, index, self) => {
      return index === self.findIndex(t => t.id === item.id);
    });

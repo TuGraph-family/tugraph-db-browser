@@ -7,8 +7,9 @@ import {
   pathQuery,
   queryNeighbors,
   quickQuery,
+  analysisCypherQuery,
 } from '@/services/analysisi';
-import { queryByGraphLanguage } from '@/services/query';
+
 
 export const useAnalysis = () => {
   const { initialState } = useModel('@@initialState');
@@ -55,7 +56,7 @@ export const useAnalysis = () => {
     runAsync: onAnalysisCypherQuery,
     loading: analysisCypherQueryLoading,
     error: analysisCypherQueryError,
-  } = useRequest(params => queryByGraphLanguage(driver, params), {
+  } = useRequest(params => analysisCypherQuery(driver, params), {
     manual: true,
   });
 

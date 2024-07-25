@@ -8,6 +8,34 @@ import {
 import { QueryResultFormatter, responseFormatter } from '@/utils/schema';
 import { getGraphSchema } from '@/queries/schema';
 import { convertIntToNumber } from '@/translator';
+import { ILanguageQueryParams } from '@/types/services';
+
+
+/* 语句查询 */
+export const analysisCypherQuery =async (
+  driver: Driver,
+  params: ILanguageQueryParams,
+) => {
+  const { graphName, script} = params;
+
+  const result = await request({ driver, cypher:script, graphName });
+
+  console.log(result,'result')
+
+  if (!result.success) {
+    return result;
+  }
+  const {
+    data: { formatData = [] },
+  } = QueryResultFormatter(result, script) || {};
+
+  console.log(formatData,'formatData')
+
+  return {
+    success: true,
+    graphData: convertIntToNumber(formatData) 
+  }
+};
 
 /* 节点扩展 */
 export const queryNeighbors = async (

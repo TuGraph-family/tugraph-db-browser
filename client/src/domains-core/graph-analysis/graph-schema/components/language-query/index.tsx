@@ -1,6 +1,4 @@
 import CypherEdit from '@/components/studio/domain-core/graph-query/cypherEditor';
-import { parseSearch } from '@/utils/parseSearch';
-import { useRequest } from 'ahooks';
 import { isEmpty, map } from 'lodash';
 import { FileTextOutlined } from '@ant-design/icons';
 import { GraphData } from '@antv/g6';
@@ -14,6 +12,8 @@ import { useSchemaTabContainer } from '@/domains-core/graph-analysis/graph-schem
 // import QueryService from '@/domains-core/graph-analysis/graph-schema/services/graph-data';
 import { mergeGraphData } from '@/domains-core/graph-analysis/graph-schema/utils/merge-graph-data';
 import styles from './index.less';
+import { parseHashRouterParams } from '@/utils/parseHash';
+import { useAnalysis } from '@/hooks/useAnalysis';
 
 export interface ILanguageQueryProps {
   height?: string;
@@ -25,14 +25,12 @@ const LanguageQuery: React.FC<ILanguageQueryProps> = ({ height = '320px' }) => {
 
   const { tabContainerField } = useSchemaTabContainer();
   // Todo: by Allen
-  const { run: runExecute, loading: loadingExecute } = useRequest(
-    // QueryService.execute,
-    async() => {},
-    { manual: true },
-  );
+
+  const { onAnalysisCypherQuery, analysisCypherQueryLoading } = useAnalysis();
+
   const { graph } = useSchemaGraphContext();
 
-  const { graphId, env } = parseSearch(location.search) as any;
+  const { graphName } = parseHashRouterParams(location.hash);
 
   const dataConfigEditorRef = useRef<any | null>(null);
 
@@ -49,14 +47,14 @@ const LanguageQuery: React.FC<ILanguageQueryProps> = ({ height = '320px' }) => {
 
   useEffect(() => {
     if (!isEmpty(graphLanguageList)) {
-      setState((draft) => {
+      setState(draft => {
         draft.languageType = graphLanguageList?.[0]?.value;
       });
     }
   }, [graphLanguageList]);
 
   const handleChangeEditorValue = (value: string) => {
-    setState((draft) => {
+    setState(draft => {
       draft.editorValue = value;
     });
   };
@@ -66,15 +64,20 @@ const LanguageQuery: React.FC<ILanguageQueryProps> = ({ height = '320px' }) => {
       spinning: true,
     });
 
-    const graphData = await runExecute(
-      // {
-      //   gql: editorValue,
-      //   languageType,
-      //   schemaEngineTypeEnum: graphEngineType,
-      //   graphId,
-      //   graphDeployEnvEnum: env,
-      // }
-    );
+    const result = await onAnalysisCypherQuery({
+      graphName,
+      script: editorValue,
+    });
+    const { graphData = [], success, errorMessage = '' } = result || {};
+
+    tabContainerField.setComponentProps({
+      spinning: false,
+    });
+
+    if (!success) {
+      message.error(errorMessage);
+      return;
+    }
 
     if (graphData?.nodes?.length === 0) {
       message.warn('未查询到符合条件的节点');
@@ -98,13 +101,13 @@ const LanguageQuery: React.FC<ILanguageQueryProps> = ({ height = '320px' }) => {
   };
 
   const handleChange = (e: RadioChangeEvent) => {
-    setState((draft) => {
+    setState(draft => {
       draft.hasClear = e.target.checked;
     });
   };
 
   const handleReset = () => {
-    setState((draft) => {
+    setState(draft => {
       draft.editorValue = '';
       dataConfigEditorRef?.current?.getEditor()?.setValue('');
     });
@@ -116,15 +119,15 @@ const LanguageQuery: React.FC<ILanguageQueryProps> = ({ height = '320px' }) => {
         <div className={styles['title-group']}>
           <span className={styles['text-label-icon']}>输入语句</span>
           <a
-              onClick={() => {
-                window.open(
-                  'https://tugraph-db.readthedocs.io/zh-cn/latest/8.query/1.cypher.html?highlight=cypher',
-                );
-              }}
-            >
-              <FileTextOutlined />
-              语法说明
-            </a>
+            onClick={() => {
+              window.open(
+                'https://tugraph-db.readthedocs.io/zh-cn/latest/8.query/1.cypher.html?highlight=cypher',
+              );
+            }}
+          >
+            <FileTextOutlined />
+            语法说明
+          </a>
         </div>
         <div className={styles['block-container']}>
           {/* <GraphEditor
@@ -153,7 +156,7 @@ const LanguageQuery: React.FC<ILanguageQueryProps> = ({ height = '320px' }) => {
         </Button>
         <Button
           className={styles['query-button']}
-          loading={loadingExecute}
+          loading={analysisCypherQueryLoading}
           type="primary"
           disabled={!editorValue}
           onClick={handleClickQuery}

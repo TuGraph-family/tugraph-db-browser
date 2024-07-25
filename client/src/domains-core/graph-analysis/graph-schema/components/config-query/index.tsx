@@ -25,6 +25,7 @@ import { mergeGraphData } from '@/domains-core/graph-analysis/graph-schema/utils
 import styles from './index.less';
 import { useAnalysis } from '@/hooks/useAnalysis';
 import { parseHashRouterParams } from '@/utils/parseHash';
+import { IAllValuesParams, IPropertiesParams } from '@/types/services';
 
 const { Option } = Select;
 
@@ -48,7 +49,7 @@ const ConfigQuery: React.FC = () => {
   });
 
   const { currentSchema, currentPropertyType } = state;
-  const handleValueChange = async (changedValue: any, allValues: any) => {
+  const handleValueChange = async (changedValue: IPropertiesParams, allValues: IAllValuesParams) => {
     if(changedValue.label){
       form.setFieldsValue({
         property: undefined,
