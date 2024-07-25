@@ -5,13 +5,16 @@
 
 import React from 'react';
 import styles from './index.less';
+import { parseHashRouterParams } from '@/utils/parseHash';
 
 interface PageTitleProps {
   value: string;
 }
 
 const PageTitle: React.FC<PageTitleProps> = ({ value }) => {
-  return <div className={styles['page-title']}>{value}</div>;
+  const { graphName } = parseHashRouterParams(location.hash);
+  
+  return <div className={styles['page-title']}>{graphName || value}</div>;
 };
 
 export default PageTitle;

@@ -97,7 +97,7 @@ const AttributesFilter: React.FC = () => {
     graphData.nodes?.forEach((node) => {
       const hasMatch = nodeIds.includes(node.id);
       if (hasMatch) {
-        graph?.setElementState(node.id, 'selected', true);
+        graph?.setElementState(node.id, 'active', true);
         graph?.focusElement(node.id);
       }
     });
@@ -105,7 +105,7 @@ const AttributesFilter: React.FC = () => {
     graphData.edges?.forEach((edge) => {
       const hasMatch = edgeIds.includes(edge.id!);
       if (hasMatch) {
-        graph?.setElementState(edge.id!, 'selected', true);
+        graph?.setElementState(edge.id!, 'active', true);
         graph?.focusElement(edge.id!);
       }
     });
