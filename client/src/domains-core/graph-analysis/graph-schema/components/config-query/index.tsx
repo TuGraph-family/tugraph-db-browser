@@ -49,8 +49,11 @@ const ConfigQuery: React.FC = () => {
   });
 
   const { currentSchema, currentPropertyType } = state;
-  const handleValueChange = async (changedValue: IPropertiesParams, allValues: IAllValuesParams) => {
-    if(changedValue.label){
+  const handleValueChange = async (
+    changedValue: IPropertiesParams,
+    allValues: IAllValuesParams,
+  ) => {
+    if (changedValue?.label) {
       form.setFieldsValue({
         property: undefined,
         logic: undefined,
@@ -59,27 +62,28 @@ const ConfigQuery: React.FC = () => {
         draft.currentPropertyType = '';
       });
     }
-      const { label, property } = allValues;
-      const currentSchema = find(
-        graphSchema?.nodes,
-        node => node?.nodeType === label,
-      );
-      if (currentSchema) {
-        setState(draft => {
-          draft.currentSchema = cloneDeep(currentSchema);
-        });
+    const { label, property } = allValues;
+    const currentSchema = find(
+      graphSchema?.nodes,
+      node => node?.nodeType === label,
+    );
+    
+    if (currentSchema) {
+      setState(draft => {
+        draft.currentSchema = cloneDeep(currentSchema);
+      });
 
-        // 设置当前选中的属性值，根据选择的属性值类型，填充不同的逻辑值
-        if (property && changedValue.property) {
-          const tmpProperty = currentSchema.properties[property];
+      // 设置当前选中的属性值，根据选择的属性值类型，填充不同的逻辑值
+      if (property && changedValue.property) {
+        const tmpProperty = currentSchema.properties[property];
 
-          if (tmpProperty) {
-            setState(draft => {
-              draft.currentPropertyType = tmpProperty.schemaType;
-            });
-          }
+        if (tmpProperty) {
+          setState(draft => {
+            draft.currentPropertyType = tmpProperty.schemaType;
+          });
         }
       }
+    }
   };
   useEffect(() => {
     if (isEmpty(graphSchema?.edges) && isEmpty(graphSchema?.nodes)) {
@@ -100,50 +104,54 @@ const ConfigQuery: React.FC = () => {
   // );
 
   const handleExecQuery = async () => {
-    const values = await form.validateFields();
+    try {
+      const values = await form.validateFields();
 
-    const { label, property, value, logic, limit = 10, hasClear } = values;
+      const { label, property, value, logic, limit = 10, hasClear } = values;
 
-    tabContainerField.setComponentProps({
-      spinning: true,
-    });
+      tabContainerField.setComponentProps({
+        spinning: true,
+      });
 
-    const result = await onQuickQuery({
-      graphName,
-      limit,
-      rules: {
-        property,
-        logic,
-        value,
-      },
-      node: label,
-    });
+      const result = await onQuickQuery({
+        graphName,
+        limit,
+        rules: {
+          property,
+          logic,
+          value,
+        },
+        node: label,
+      });
 
-    tabContainerField.setComponentProps({
-      spinning: false,
-    });
+      tabContainerField.setComponentProps({
+        spinning: false,
+      });
 
-    const { success, graphData } = result || {};
+      const { success, graphData } = result || {};
 
-    if (!success) {
-      message.error(result?.errorMessage);
-      return;
+      if (!success) {
+        message.error(result?.errorMessage);
+        return;
+      }
+
+      if (graphData?.nodes?.length === 0) {
+        message.warn('未查询到符合条件的节点');
+        return;
+      }
+
+      if (hasClear) {
+        graph?.setData(graphData as GraphData);
+      } else {
+        // 在画布上叠加数据
+        const originData: any = graph?.getData();
+        const newData = mergeGraphData(originData, graphData);
+        graph?.setData(newData!);
+      }
+      graph?.render();
+    } catch (error) {
+      console.error('Error configure query:', error);
     }
-
-    if (graphData?.nodes?.length === 0) {
-      message.warn('未查询到符合条件的节点');
-      return;
-    }
-
-    if (hasClear) {
-      graph?.setData(graphData as GraphData);
-    } else {
-      // 在画布上叠加数据
-      const originData: any = graph?.getData();
-      const newData = mergeGraphData(originData, graphData);
-      graph?.setData(newData!);
-    }
-    graph?.render();
   };
 
   // const handleTagChange = async (tag: string, checked: boolean) => {
