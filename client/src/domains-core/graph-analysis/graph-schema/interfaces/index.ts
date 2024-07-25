@@ -9,7 +9,7 @@ export interface PathQueryDataSource {
   contentHeight: number;
 }
 
-export type Operator = 'CT' | 'NC' | 'EQ' | 'NE' | 'GT' | 'LT' | 'GE' | 'LE';
+export type Operator = '⊃' | '⊅' | '=' | '≠' | '>' | '<' | '≥' | '≤';
 
 export interface PropertyCondition {
   name: string;

@@ -21,6 +21,7 @@ import LineChart from '@/domains-core/graph-analysis/graph-schema/components/sta
 import PieChart from '@/domains-core/graph-analysis/graph-schema/components/statistics-filter-pie-chart';
 import WordCloudChart from '@/domains-core/graph-analysis/graph-schema/components/statistics-filter-world-cloud-chart';
 import styles from './index.less';
+import { DATA_TYPE, NUMBER_TYPES } from '@/domains-core/graph-analysis/graph-schema/constants/action-bar';
 
 interface AttributeSelectionProps {
   defaultFilterCondition: StatisticsFilterCondition;
@@ -82,7 +83,7 @@ export const AttributeSelect: React.FC<AttributeSelectionProps> = ({
 
     const current = elementProps[value];
     const propertyType = current.schemaType;
-    if (['number', 'int32', 'long', 'double'].includes(propertyType)) {
+    if (NUMBER_TYPES.includes(propertyType)) {
       analyzerType = 'HISTOGRAM';
       setState((draft) => {
         draft.filterCondition = {
@@ -95,7 +96,7 @@ export const AttributeSelect: React.FC<AttributeSelectionProps> = ({
         };
       });
       setEnableChangeChartType(false);
-    } else if (propertyType === 'boolean') {
+    } else if (propertyType === 'BOOL') {
       analyzerType = 'COLUMN';
       setState((draft) => {
         draft.filterCondition = {
@@ -109,7 +110,7 @@ export const AttributeSelect: React.FC<AttributeSelectionProps> = ({
       });
 
       setEnableChangeChartType(false);
-    } else if (propertyType === 'string') {
+    } else if (propertyType === 'STRING') {
       const chartData = getChartData(
         graphData!,
         value,
@@ -159,7 +160,7 @@ export const AttributeSelect: React.FC<AttributeSelectionProps> = ({
         };
       });
       setEnableChangeChartType(true);
-    } else if (propertyType === 'date') {
+    } else if (DATA_TYPE.includes(propertyType)) {
       analyzerType = 'DATE';
       setState((draft) => {
         draft.filterCondition = {
@@ -279,11 +280,12 @@ export const AttributeSelect: React.FC<AttributeSelectionProps> = ({
   return (
     <Form.Item name={index} key={index} noStyle>
       <Space
-        style={{ marginBottom: 8, width: '100%' }}
+        style={{ marginBottom: 12, width: '100%' }}
         align="baseline"
         className={styles['space-statistic-panel']}
       >
         <Form.Item
+         style={{ width: '100%' }}
           name="arrt"
           label="选择属性"
           rules={[{ required: true, message: '请选择属性' }]}

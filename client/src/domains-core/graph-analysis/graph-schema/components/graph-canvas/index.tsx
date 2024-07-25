@@ -84,6 +84,11 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
           degree: 1, // 👈🏻 Activate relations.
           state: 'highlight',
         },
+        {
+          type:  'click-select',
+          degree: 1,
+          state: 'selected',
+        },
       ],
       node: {
         style:{
