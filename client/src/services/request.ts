@@ -26,7 +26,7 @@ export const request = async (params: IRequestParams) => {
     .catch(e => {
       return {
         success: false,
-        errorMessage: e,
+        errorMessage: e?.message || e,
       };
     })
     .finally(() => {

@@ -58,6 +58,20 @@ export interface IPropertiesParams {
   [key: string]: string | number | boolean;
 }
 
+export interface IDuplicatesData {
+  id: string;
+}
+
+export interface IAllValuesParams {
+  attribute?: string;
+  hasClear?: boolean;
+  label?: string;
+  limit?: number;
+  logic?: string;
+  property?: string;
+  value?: string;
+}
+
 // schema 相关
 export interface IVertextSchemaParams {
   label: string;
