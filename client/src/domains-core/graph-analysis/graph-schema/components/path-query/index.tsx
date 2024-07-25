@@ -63,7 +63,7 @@ const PathQuery: React.FC = () => {
   const { isSubGraph, isOnlineMode } = graphProjectInfo;
   const [form] = Form.useForm();
   // const [, setSearchParams] = useSearchParams();
-  const { startId, endId, startIdLabel, endIdLabel, whetherHash, depth } =
+  const { startId, endId, startIdLabel, endIdLabel,  depth } =
     parseSearch(location.search);
   const maxDepth =
     graphEngineType === 'geamaker_geabase' ? edgeMaxHop || 100 : 100;
@@ -153,7 +153,6 @@ const PathQuery: React.FC = () => {
         'startId',
         'endId',
         'depth',
-        'whetherHash',
         'startIdLabel',
         'endIdLabel',
       ]),
@@ -198,10 +197,9 @@ const PathQuery: React.FC = () => {
         endIdLabel,
         startIdLabel,
         depth,
-        whetherHash: whetherHash === 'true',
       });
     }
-  }, [startId, endId, whetherHash]);
+  }, [startId, endId]);
   useEffect(() => {
     if (isOnlineMode) {
       // runQueryEdgeMaxHop({ graphId, env }).then((data) => {
@@ -288,11 +286,6 @@ const PathQuery: React.FC = () => {
               min={2}
               max={maxDepth}
             />
-          </Form.Item>
-          <Form.Item name="whetherHash" valuePropName="checked">
-            <Checkbox checked={form.getFieldValue('whetherHash')}>
-              是否哈希转换
-            </Checkbox>
           </Form.Item>
           <Checkbox checked={hasClear} onChange={onClearDrawChange}>
             清空画布数据

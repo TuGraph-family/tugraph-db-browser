@@ -1,7 +1,7 @@
 import IconFont from '@/components/icon-font';
 import { parseSearch } from '@/utils/parseSearch';
 import { useRequest } from 'ahooks';
-import { cloneDeep, find, isEmpty, map } from 'lodash';
+import { cloneDeep, divide, find, isEmpty, map } from 'lodash';
 import { GraphData } from '@antv/g6';
 import {
   Button,
@@ -25,12 +25,12 @@ import { mergeGraphData } from '@/domains-core/graph-analysis/graph-schema/utils
 import styles from './index.less';
 import { useAnalysis } from '@/hooks/useAnalysis';
 import { parseHashRouterParams } from '@/utils/parseHash';
-
+import { IAllValuesParams, IPropertiesParams } from '@/types/services';
 
 const { Option } = Select;
 
 const ConfigQuery: React.FC = () => {
-  const { onQuickQuery,onQuickQueryLoading } = useAnalysis();
+  const { onQuickQuery, onQuickQueryLoading } = useAnalysis();
   const [form] = Form.useForm();
   const { graphEngineType, graphSchemaStyle, graphSchema } =
     useSchemaFormValue();
@@ -42,28 +42,39 @@ const ConfigQuery: React.FC = () => {
     currentPropertyType: string;
     currentSchema: any;
     selectTag: string;
-    enableHash: boolean; // 只有属性选择了 ID 才允许勾选哈希转换
   }>({
-    enableHash: false,
     currentPropertyType: '',
     currentSchema: {},
     selectTag: '',
   });
 
-  const { currentSchema, currentPropertyType, enableHash } = state;
-  const handleValueChange = async (changedValue: any, allValues: any) => {
+  const { currentSchema, currentPropertyType } = state;
+  const handleValueChange = async (
+    changedValue: IPropertiesParams,
+    allValues: IAllValuesParams,
+  ) => {
+    if (changedValue?.label) {
+      form.setFieldsValue({
+        property: undefined,
+        logic: undefined,
+      });
+      setState(draft => {
+        draft.currentPropertyType = '';
+      });
+    }
     const { label, property } = allValues;
     const currentSchema = find(
       graphSchema?.nodes,
       node => node?.nodeType === label,
     );
+    
     if (currentSchema) {
       setState(draft => {
         draft.currentSchema = cloneDeep(currentSchema);
       });
 
       // 设置当前选中的属性值，根据选择的属性值类型，填充不同的逻辑值
-      if (property) {
+      if (property && changedValue.property) {
         const tmpProperty = currentSchema.properties[property];
 
         if (tmpProperty) {
@@ -71,10 +82,6 @@ const ConfigQuery: React.FC = () => {
             draft.currentPropertyType = tmpProperty.schemaType;
           });
         }
-        // 只有属性选择了 ID 才允许勾选哈希转换
-        setState(draft => {
-          draft.enableHash = property === 'ID';
-        });
       }
     }
   };
@@ -90,12 +97,6 @@ const ConfigQuery: React.FC = () => {
     }
   }, [graphSchema]);
 
-  useEffect(() => {
-    if (enableHash) {
-      form.setFieldsValue({ whetherHash: enableHash });
-    }
-  }, [enableHash]);
-
   // TODO 应该改为后端提供有数据的节点类型
   // const nodeTags = useMemo(
   //   () => map(graphSchema?.nodes, (item) => item?.nodeType)?.slice(0, 4),
@@ -103,43 +104,54 @@ const ConfigQuery: React.FC = () => {
   // );
 
   const handleExecQuery = async () => {
-    const values = await form.validateFields();
- 
+    try {
+      const values = await form.validateFields();
 
-    const { label, property, value, logic, limit = 10, hasClear } = values;
+      const { label, property, value, logic, limit = 10, hasClear } = values;
 
-    tabContainerField.setComponentProps({
-      spinning: true,
-    });
+      tabContainerField.setComponentProps({
+        spinning: true,
+      });
 
-    const graphData = await onQuickQuery({
-      graphName,
-      limit,
-      rules: {
-        property,
-        logic,
-        value,
-      },
-      node: label,
-    });
-   
-    tabContainerField.setComponentProps({
-      spinning: false,
-    });
-    if (graphData?.nodes?.length === 0) {
-      message.warn('未查询到符合条件的节点');
-      return;
+      const result = await onQuickQuery({
+        graphName,
+        limit,
+        rules: {
+          property,
+          logic,
+          value,
+        },
+        node: label,
+      });
+
+      tabContainerField.setComponentProps({
+        spinning: false,
+      });
+
+      const { success, graphData } = result || {};
+
+      if (!success) {
+        message.error(result?.errorMessage);
+        return;
+      }
+
+      if (graphData?.nodes?.length === 0) {
+        message.warn('未查询到符合条件的节点');
+        return;
+      }
+
+      if (hasClear) {
+        graph?.setData(graphData as GraphData);
+      } else {
+        // 在画布上叠加数据
+        const originData: any = graph?.getData();
+        const newData = mergeGraphData(originData, graphData);
+        graph?.setData(newData!);
+      }
+      graph?.render();
+    } catch (error) {
+      console.error('Error configure query:', error);
     }
-    
-    if (hasClear) {
-      graph?.setData(graphData as GraphData);
-    } else {
-      // 在画布上叠加数据
-      const originData: any = graph?.getData();
-      const newData = mergeGraphData(originData, graphData);
-      graph?.setData(newData!);
-    }
-    graph?.render();
   };
 
   // const handleTagChange = async (tag: string, checked: boolean) => {
@@ -231,6 +243,9 @@ const ConfigQuery: React.FC = () => {
                   style={{ width: '20%' }}
                   allowClear
                   options={getOperatorListByValueType(currentPropertyType)}
+                  notFoundContent={
+                    <div style={{ textAlign: 'center' }}>No Data</div>
+                  }
                 />
               </Form.Item>
               <Form.Item
@@ -249,15 +264,6 @@ const ConfigQuery: React.FC = () => {
               style={{ width: '100%' }}
             />
           </Form.Item>
-          {enableHash && (
-            <Form.Item
-              name="whetherHash"
-              valuePropName="checked"
-              wrapperCol={{ span: 16 }}
-            >
-              <Checkbox>是否哈希转换</Checkbox>
-            </Form.Item>
-          )}
           <Form.Item name="hasClear" valuePropName="checked">
             <Checkbox>
               清空画布数据

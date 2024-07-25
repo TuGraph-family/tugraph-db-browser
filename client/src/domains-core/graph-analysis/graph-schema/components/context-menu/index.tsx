@@ -1,18 +1,13 @@
-import { parseSearch } from '@/utils/parseSearch';
-import { useRequest } from 'ahooks';
 import { CanvasEvent, IElementEvent, NodeEvent } from '@antv/g6';
-import { Menu, MenuProps } from 'antd';
+import { Menu, MenuProps, message } from 'antd';
 import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import { useSchemaGraphContext } from '@/domains-core/graph-analysis/graph-schema/contexts';
-import { useSchemaFormValue } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value/';
 import { useSchemaTabContainer } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-tab-container';
-// import QueryService from '@/domains-core/graph-analysis/graph-schema/services/graph-data';
-// import { getStyledGraphData } from '@/domains-core/graph-analysis/graph-schema/utils/get-styled-graph-data';
-// import { getUniqGraphData } from '@/domains-core/graph-analysis/graph-schema/utils/get-uniq-graph-data';
 import styles from './index.less';
 import { useAnalysis } from '@/hooks/useAnalysis';
 import { parseHashRouterParams } from '@/utils/parseHash';
+import { mergeGraphData } from '@/domains-core/graph-analysis/graph-schema/utils/merge-graph-data';
 
 interface ContextMenuProps {
   children?: React.ReactNode;
@@ -21,8 +16,7 @@ interface ContextMenuProps {
 const ContextMenu: React.FC<ContextMenuProps> = () => {
   const { graph } = useSchemaGraphContext();
   const { graphName } = parseHashRouterParams(location.hash);
-  const { graphEngineType, graphSchemaStyle } = useSchemaFormValue();
-  const {onQueryNeighbors} = useAnalysis()
+  const { onQueryNeighbors } = useAnalysis();
   const { tabContainerField } = useSchemaTabContainer();
   const [state, updateState] = useImmer<{
     menuStyles: {
@@ -55,12 +49,8 @@ const ContextMenu: React.FC<ContextMenuProps> = () => {
     ],
   });
   const { menuStyles, menuItems, elementId } = state;
-  // Todo: by Allen
-  const { run: runQueryNeighbors } = useRequest(async() => {}, {
-    manual: true,
-  });
   const hideMemu = () => {
-    updateState((draft) => {
+    updateState(draft => {
       draft.menuStyles.display = 'none';
     });
   };
@@ -72,39 +62,34 @@ const ContextMenu: React.FC<ContextMenuProps> = () => {
       tabContainerField.setComponentProps({
         spinning: true,
       });
-      updateState((draft) => {
+      updateState(draft => {
         draft.menuStyles.display = 'none';
       });
       onQueryNeighbors({
         graphName,
         sep,
-        id:elementId
-      }).then(res=>console.log(res))
+        id: elementId,
+      }).then(res => {
+          const { success, graphData } = res || {};
 
+          if (!success) {
+             message.error(res?.errorMessage);
+             return
+          }
 
-      // runQueryNeighbors({
-      //   id: elementId,
-      //   sep,
-      //   schemaType: nodeType,
-      //   graphId,
-      //   graphDeployEnvEnum: env,
-      //   schemaEngineTypeEnum: graphEngineType,
-      // }).then((data) => {
-      //   if (data && graph) {
-      //     const currentData = graph.getData();
-      //     const styledGraphData = getStyledGraphData({
-      //       graphSchemaStyle,
-      //       graphData: data,
-      //     });
-      //     const graphData = getUniqGraphData(currentData, styledGraphData);
-      //     graph.setData(graphData);
-      //     graph.render();
-      //   }
+          if (graphData && graph) {
+            const currentData = graph.getData();
+            const newData = mergeGraphData(currentData, graphData);
+            graph?.setData(newData);
+            graph?.render();
+          }
+        })
+        .finally(() => {
+          tabContainerField.setComponentProps({
+            spinning: false,
+          });
+        });
 
-      //   tabContainerField.setComponentProps({
-      //     spinning: false,
-      //   });
-      // });
     }
   };
 
@@ -118,7 +103,7 @@ const ContextMenu: React.FC<ContextMenuProps> = () => {
         .getContainer()!
         .getBoundingClientRect();
       if (clientRect && config.id) {
-        updateState((draft) => {
+        updateState(draft => {
           draft.menuStyles.left = e.client.x - clientRect.left + 20;
           draft.menuStyles.top = e.client.y - clientRect.top;
           draft.menuStyles.display = 'block';
