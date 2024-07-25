@@ -147,7 +147,7 @@ export interface INodeDataParams {
 
 export interface RestFulResponse {
   data?: any;
-  success: number;
+  success: number | boolean;
   errorMessage?: string;
 }
 
