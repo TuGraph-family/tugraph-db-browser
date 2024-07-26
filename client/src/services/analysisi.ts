@@ -1,40 +1,40 @@
-import { Driver } from 'neo4j-driver';
-import { request } from './request';
 import {
   pathQueryCypher,
-  quickQueryCypher,
   queryNeighborsCypher,
+  quickQueryCypher,
 } from '@/queries/analysis';
-import { QueryResultFormatter, responseFormatter } from '@/utils/schema';
 import { getGraphSchema } from '@/queries/schema';
 import { convertIntToNumber } from '@/translator';
 import { ILanguageQueryParams } from '@/types/services';
-
+import { QueryResultFormatter, responseFormatter } from '@/utils/schema';
+import { Driver } from 'neo4j-driver';
+import { request } from './request';
 
 /* 语句查询 */
-export const analysisCypherQuery =async (
+export const analysisCypherQuery = async (
   driver: Driver,
   params: ILanguageQueryParams,
 ) => {
-  const { graphName, script} = params;
+  const { graphName, script } = params;
 
-  const result = await request({ driver, cypher:script, graphName });
+  const result = await request({ driver, cypher: script, graphName });
 
-  console.log(result,'result')
+  console.log(result, 'result');
 
   if (!result.success) {
     return result;
   }
   const {
-    data: { formatData = [] },
+    data: { formatData = [], originGraphData },
   } = QueryResultFormatter(result, script) || {};
 
-  console.log(formatData,'formatData')
+  console.log(formatData, 'formatData');
 
   return {
     success: true,
-    graphData: convertIntToNumber(formatData) 
-  }
+    graphData: convertIntToNumber(formatData),
+    originGraphData,
+  };
 };
 
 /* 节点扩展 */
@@ -57,13 +57,14 @@ export const queryNeighbors = async (
     return result;
   }
   const {
-    data: { formatData = [] },
+    data: { formatData = [], originGraphData },
   } = QueryResultFormatter(result, cypher) || {};
 
   return {
     success: true,
-    graphData: convertIntToNumber(formatData) 
-  }
+    graphData: convertIntToNumber(formatData),
+    originGraphData,
+  };
 };
 
 /* 配置查询 */
@@ -87,13 +88,14 @@ export const quickQuery = async (
     return result;
   }
   const {
-    data: { formatData = [] },
+    data: { formatData = [], OriginGraphData },
   } = QueryResultFormatter(result, cypher) || {};
 
   return {
     success: true,
-    graphData: convertIntToNumber(formatData) 
-  }
+    graphData: convertIntToNumber(formatData),
+    originGraphData,
+  };
 };
 
 /* 路径查询 */

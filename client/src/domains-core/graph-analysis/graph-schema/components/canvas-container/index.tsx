@@ -1,9 +1,12 @@
+import {
+  GraphSchemaContextValue,
+  SchemaGraphContext,
+} from '@/domains-core/graph-analysis/graph-schema/contexts';
+import { resizeCanvas } from '@/domains-core/graph-analysis/graph-schema/utils/resize-canvas';
 import { Spin } from 'antd';
 import { Resizable, ResizableProps, ResizeCallback } from 're-resizable';
 import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import { GraphSchemaContextValue, SchemaGraphContext } from '@/domains-core/graph-analysis/graph-schema/contexts';
-import { resizeCanvas } from '@/domains-core/graph-analysis/graph-schema/utils/resize-canvas';
 import styles from './index.less';
 
 interface CanvasContainerProps {

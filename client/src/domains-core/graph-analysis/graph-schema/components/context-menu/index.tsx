@@ -1,13 +1,12 @@
-import { CanvasEvent, IElementEvent, NodeEvent } from '@antv/g6';
-import { Menu, MenuProps, message } from 'antd';
-import React, { useEffect } from 'react';
-import { useImmer } from 'use-immer';
 import { useSchemaGraphContext } from '@/domains-core/graph-analysis/graph-schema/contexts';
 import { useSchemaTabContainer } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-tab-container';
-import styles from './index.less';
 import { useAnalysis } from '@/hooks/useAnalysis';
 import { parseHashRouterParams } from '@/utils/parseHash';
-import { mergeGraphData } from '@/domains-core/graph-analysis/graph-schema/utils/merge-graph-data';
+import { CanvasEvent, IElementEvent, NodeEvent } from '@antv/g6';
+import { Menu, MenuProps } from 'antd';
+import React, { useEffect } from 'react';
+import { useImmer } from 'use-immer';
+import styles from './index.less';
 
 interface ContextMenuProps {
   children?: React.ReactNode;
@@ -17,7 +16,8 @@ const ContextMenu: React.FC<ContextMenuProps> = () => {
   const { graph } = useSchemaGraphContext();
   const { graphName } = parseHashRouterParams(location.hash);
   const { onQueryNeighbors } = useAnalysis();
-  const { tabContainerField } = useSchemaTabContainer();
+  const { tabContainerField, setTabContainerGraphData } =
+    useSchemaTabContainer();
   const [state, updateState] = useImmer<{
     menuStyles: {
       display: 'none' | 'block';
@@ -58,7 +58,6 @@ const ContextMenu: React.FC<ContextMenuProps> = () => {
     const { key } = e;
     if (key.includes('query-neighbor')) {
       const sep = Number(key.split('-')[2]);
-      const nodeType = graph?.getElementData(elementId!)?.label as string;
       tabContainerField.setComponentProps({
         spinning: true,
       });
@@ -70,26 +69,23 @@ const ContextMenu: React.FC<ContextMenuProps> = () => {
         sep,
         id: elementId,
       }).then(res => {
-          const { success, graphData } = res || {};
-
-          if (!success) {
-             message.error(res?.errorMessage);
-             return
-          }
-
-          if (graphData && graph) {
-            const currentData = graph.getData();
-            const newData = mergeGraphData(currentData, graphData);
-            graph?.setData(newData);
-            graph?.render();
-          }
-        })
-        .finally(() => {
-          tabContainerField.setComponentProps({
-            spinning: false,
-          });
+        setTabContainerGraphData({
+          data: {
+            graphData: res.graphData,
+            originQueryData: res.originalData,
+          },
+          ifClearGraphData: false,
         });
-
+        tabContainerField.setComponentProps({
+          spinning: false,
+        });
+      });
+    } else if (key === 'remove-node') {
+      if (elementId) {
+        graph?.removeData({ nodes: [elementId] });
+        graph?.draw();
+        hideMemu();
+      }
     }
   };
 

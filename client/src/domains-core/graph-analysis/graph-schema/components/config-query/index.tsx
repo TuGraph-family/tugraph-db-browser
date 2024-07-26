@@ -1,31 +1,26 @@
 import IconFont from '@/components/icon-font';
-import { parseSearch } from '@/utils/parseSearch';
-import { useRequest } from 'ahooks';
-import { cloneDeep, divide, find, isEmpty, map } from 'lodash';
-import { GraphData } from '@antv/g6';
+import { useSchemaGraphContext } from '@/domains-core/graph-analysis/graph-schema/contexts';
+import { useSchemaFormValue } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value/';
+import { useSchemaTabContainer } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-tab-container';
 import {
   Button,
   Checkbox,
   Form,
   Input,
   InputNumber,
-  message,
   Select,
   Space,
   Tooltip,
 } from 'antd';
+import { cloneDeep, find, isEmpty, map } from 'lodash';
 import React, { memo, useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import { useSchemaGraphContext } from '@/domains-core/graph-analysis/graph-schema/contexts';
-import { useSchemaFormValue } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value/';
-import { useSchemaTabContainer } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-tab-container';
 // import QueryService from '@/domains-core/graph-analysis/graph-schema/services/graph-data';
 import { getOperatorListByValueType } from '@/domains-core/graph-analysis/graph-schema/utils/get-operator-list-by-value-type';
-import { mergeGraphData } from '@/domains-core/graph-analysis/graph-schema/utils/merge-graph-data';
-import styles from './index.less';
 import { useAnalysis } from '@/hooks/useAnalysis';
-import { parseHashRouterParams } from '@/utils/parseHash';
 import { IAllValuesParams, IPropertiesParams } from '@/types/services';
+import { parseHashRouterParams } from '@/utils/parseHash';
+import styles from './index.less';
 
 const { Option } = Select;
 
@@ -34,7 +29,8 @@ const ConfigQuery: React.FC = () => {
   const [form] = Form.useForm();
   const { graphEngineType, graphSchemaStyle, graphSchema } =
     useSchemaFormValue();
-  const { tabContainerField } = useSchemaTabContainer();
+  const { tabContainerField, setTabContainerGraphData } =
+    useSchemaTabContainer();
   const { graph } = useSchemaGraphContext();
   const { graphName } = parseHashRouterParams(location.hash);
 
@@ -67,7 +63,7 @@ const ConfigQuery: React.FC = () => {
       graphSchema?.nodes,
       node => node?.nodeType === label,
     );
-    
+
     if (currentSchema) {
       setState(draft => {
         draft.currentSchema = cloneDeep(currentSchema);
@@ -104,54 +100,36 @@ const ConfigQuery: React.FC = () => {
   // );
 
   const handleExecQuery = async () => {
-    try {
-      const values = await form.validateFields();
+    const values = await form.validateFields();
 
-      const { label, property, value, logic, limit = 10, hasClear } = values;
+    const { label, property, value, logic, limit = 10, hasClear } = values;
 
-      tabContainerField.setComponentProps({
-        spinning: true,
-      });
+    tabContainerField.setComponentProps({
+      spinning: true,
+    });
 
-      const result = await onQuickQuery({
-        graphName,
-        limit,
-        rules: {
-          property,
-          logic,
-          value,
-        },
-        node: label,
-      });
+    const result = await onQuickQuery({
+      graphName,
+      limit,
+      rules: {
+        property,
+        logic,
+        value,
+      },
+      node: label,
+    });
 
-      tabContainerField.setComponentProps({
-        spinning: false,
-      });
+    tabContainerField.setComponentProps({
+      spinning: false,
+    });
 
-      const { success, graphData } = result || {};
-
-      if (!success) {
-        message.error(result?.errorMessage);
-        return;
-      }
-
-      if (graphData?.nodes?.length === 0) {
-        message.warn('未查询到符合条件的节点');
-        return;
-      }
-
-      if (hasClear) {
-        graph?.setData(graphData as GraphData);
-      } else {
-        // 在画布上叠加数据
-        const originData: any = graph?.getData();
-        const newData = mergeGraphData(originData, graphData);
-        graph?.setData(newData!);
-      }
-      graph?.render();
-    } catch (error) {
-      console.error('Error configure query:', error);
-    }
+    setTabContainerGraphData({
+      data: {
+        graphData: result.formatData,
+        originQueryData: result.originalData,
+      },
+      ifClearGraphData: hasClear,
+    });
   };
 
   // const handleTagChange = async (tag: string, checked: boolean) => {

@@ -1,8 +1,13 @@
 import IconFont from '@/components/icon-font';
+import PathChart from '@/domains-core/graph-analysis/graph-schema/components/path-chart';
+import { useSchemaGraphContext } from '@/domains-core/graph-analysis/graph-schema/contexts';
+import { useSchemaFormValue } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value';
+import { useSchemaTabContainer } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-tab-container/';
+import { PathQueryDataSource } from '@/domains-core/graph-analysis/graph-schema/interfaces';
+import { resetGraphActiveStatus } from '@/domains-core/graph-analysis/graph-schema/utils/reset-graph-active-status/';
+import { setGraphActiveStatus } from '@/domains-core/graph-analysis/graph-schema/utils/set-graph-active-status';
 import { parseSearch } from '@/utils/parseSearch';
 import { useRequest } from 'ahooks';
-import { omit } from 'lodash';
-import { GraphData, NodeData } from '@antv/g6';
 import type { RadioChangeEvent } from 'antd';
 import {
   Button,
@@ -11,30 +16,23 @@ import {
   Input,
   InputNumber,
   List,
-  message,
   Segmented,
   Select,
   Space,
   Spin,
 } from 'antd';
 import type { SegmentedValue } from 'antd/lib/segmented';
+import { omit } from 'lodash';
 import React, { useEffect, useMemo } from 'react';
+import { useSearchParams } from 'umi';
 import { useImmer } from 'use-immer';
-import { useSchemaGraphContext } from '@/domains-core/graph-analysis/graph-schema/contexts';
-import { useSchemaFormValue } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value';
-import { useSchemaTabContainer } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-tab-container/';
-import { PathQueryDataSource } from '@/domains-core/graph-analysis/graph-schema/interfaces';
-// import QueryService from '@/domains-core/graph-analysis/graph-schema/services/graph-data';
-// import { mergeGraphData } from '@/domains-core/graph-analysis/graph-schema/utils/merge-graph-data';
-import { resetGraphActiveStatus } from '@/domains-core/graph-analysis/graph-schema/utils/reset-graph-active-status/';
-import { setGraphActiveStatus } from '@/domains-core/graph-analysis/graph-schema/utils/set-graph-active-status';
-import PathChart from '@/domains-core/graph-analysis/graph-schema/components/path-chart';
 import styles from './index.less';
 
 const PathQuery: React.FC = () => {
   const { graphProjectInfo, graphEngineType, graphSchema } =
     useSchemaFormValue();
-  const { tabContainerField } = useSchemaTabContainer();
+  const { tabContainerField, setTabContainerGraphData } =
+    useSchemaTabContainer();
   const { graph } = useSchemaGraphContext();
   const { graphId, env } = parseSearch(location.search);
   const [state, setState] = useImmer<{
@@ -62,38 +60,39 @@ const PathQuery: React.FC = () => {
   } = state;
   const { isSubGraph, isOnlineMode } = graphProjectInfo;
   const [form] = Form.useForm();
-  // const [, setSearchParams] = useSearchParams();
-  const { startId, endId, startIdLabel, endIdLabel,  depth } =
-    parseSearch(location.search);
+  const [, setSearchParams] = useSearchParams();
+  const { startId, endId, startIdLabel, endIdLabel, depth } = parseSearch(
+    location.search,
+  );
   const maxDepth =
     graphEngineType === 'geamaker_geabase' ? edgeMaxHop || 100 : 100;
-    // Todo: by Allen
+  // Todo: by Allen
   const { run: runGetShortestPath, loading: loadingGetShortestPath } =
-    useRequest(async() => {}, { manual: true });
-    // Todo: by Allen
-  const { run: runQueryEdgeMaxHop } = useRequest(async() => {}, {
+    useRequest(async () => {}, { manual: true });
+  // Todo: by Allen
+  const { run: runQueryEdgeMaxHop } = useRequest(async () => {}, {
     manual: true,
   });
   const onClearDrawChange = (e: RadioChangeEvent) => {
-    setState((draft) => {
+    setState(draft => {
       draft.hasClear = e.target.checked;
     });
   };
   const onSegmentedChange = (e: SegmentedValue) => {
-    setState((draft) => {
+    setState(draft => {
       draft.currentShowType = e;
     });
   };
   const { nodeOptions } = useMemo(() => {
     return {
-      nodeOptions: graphSchema?.nodes?.map((item) => ({
+      nodeOptions: graphSchema?.nodes?.map(item => ({
         label: item.nodeType,
         value: item.nodeType,
       })),
     };
   }, [graphSchema]);
   const onQuery = () => {
-    form.validateFields().then((values) => {
+    form.validateFields().then(values => {
       // setSearchParams({
       //   ...parseSearch(location.search),
       //   ...values,
@@ -140,7 +139,7 @@ const PathQuery: React.FC = () => {
     if (currentShowType === 'shortest') {
       const shortestNodesLength = originDataSource[0]?.graphData?.nodes?.length;
       return originDataSource.filter(
-        (item) => item?.graphData?.nodes?.length === shortestNodesLength,
+        item => item?.graphData?.nodes?.length === shortestNodesLength,
       );
     } else return originDataSource;
   }, [originDataSource, currentShowType]);
@@ -170,16 +169,16 @@ const PathQuery: React.FC = () => {
         nodes: nodes as any[],
         edges: edgeIds,
       });
-      setState((draft) => {
+      setState(draft => {
         draft.activeStatus = 'ACTIVE';
       });
     } else {
       resetGraphActiveStatus(graph);
-      setState((draft) => {
+      setState(draft => {
         draft.activeStatus = 'INACTIVE';
       });
     }
-    setState((draft) => {
+    setState(draft => {
       draft.currentPath = pathItem;
     });
   };
@@ -328,7 +327,7 @@ const PathQuery: React.FC = () => {
                 size: 'small',
               }}
               dataSource={shortestDataSource}
-              renderItem={(item) => (
+              renderItem={item => (
                 <List.Item
                   key={item.index}
                   className={[

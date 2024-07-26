@@ -1,10 +1,10 @@
 import IconFont from '@/components/icon-font';
+import { AttributeSelect } from '@/domains-core/graph-analysis/graph-schema/components/statistics-filter-attribute-select';
+import { useSchemaFormValue } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value/';
+import { StatisticsFilterCondition } from '@/domains-core/graph-analysis/graph-schema/interfaces';
 import { CaretRightOutlined } from '@ant-design/icons';
 import { Button, Collapse, Form, Select } from 'antd';
 import React, { useState } from 'react';
-import { useSchemaFormValue } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value/';
-import { StatisticsFilterCondition } from '@/domains-core/graph-analysis/graph-schema/interfaces';
-import { AttributeSelect } from '@/domains-core/graph-analysis/graph-schema/components/statistics-filter-attribute-select';
 import styles from './index.less';
 
 const { Panel } = Collapse;

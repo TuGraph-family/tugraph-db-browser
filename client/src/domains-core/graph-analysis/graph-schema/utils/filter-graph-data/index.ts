@@ -1,5 +1,5 @@
-import { GraphData } from '@antv/g6';
 import { StatisticsFilterCondition } from '@/domains-core/graph-analysis/graph-schema/interfaces';
+import { GraphData } from '@antv/g6';
 /**
  *
  * @param source 筛选前的画布数据

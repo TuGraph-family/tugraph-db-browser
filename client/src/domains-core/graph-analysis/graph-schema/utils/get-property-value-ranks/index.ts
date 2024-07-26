@@ -1,5 +1,5 @@
+import { SPLITTER } from '@/domains-core/graph-analysis/graph-schema/constants';
 import { GraphData } from '@antv/g6';
-import { SPLITTER } from '@/domains-core/graph-analysis/graph-schema/constants/index';
 
 /**
  * 筛选出计算一个属性的所有属性值的排序，若一个属性值是 outlier，则 rank 为 0，即最重要

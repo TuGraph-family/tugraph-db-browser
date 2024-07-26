@@ -68,42 +68,42 @@
     "domains-core/graph-analysis/graph-schema/components/attibutes-filter": {
         "name": "domains-core/graph-analysis/graph-schema/components/attibutes-filter",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/attibutes-filter"
     },
     "domains-core/graph-analysis/graph-schema/components/attributes-filter-form": {
         "name": "domains-core/graph-analysis/graph-schema/components/attributes-filter-form",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/attributes-filter-form"
     },
     "domains-core/graph-analysis/graph-schema/components/canvas-container": {
         "name": "domains-core/graph-analysis/graph-schema/components/canvas-container",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/canvas-container"
     },
     "domains-core/graph-analysis/graph-schema/components/canvas-sider": {
         "name": "domains-core/graph-analysis/graph-schema/components/canvas-sider",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/canvas-sider"
     },
     "domains-core/graph-analysis/graph-schema/components/config-query": {
         "name": "domains-core/graph-analysis/graph-schema/components/config-query",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/config-query"
     },
     "domains-core/graph-analysis/graph-schema/components/context-menu": {
         "name": "domains-core/graph-analysis/graph-schema/components/context-menu",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/context-menu"
     },
@@ -138,28 +138,28 @@
     "domains-core/graph-analysis/graph-schema/components/graph-filter": {
         "name": "domains-core/graph-analysis/graph-schema/components/graph-filter",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/graph-filter"
     },
     "domains-core/graph-analysis/graph-schema/components/graph-style-setting": {
         "name": "domains-core/graph-analysis/graph-schema/components/graph-style-setting",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/graph-style-setting"
     },
     "domains-core/graph-analysis/graph-schema/components/language-query": {
         "name": "domains-core/graph-analysis/graph-schema/components/language-query",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/language-query"
     },
     "domains-core/graph-analysis/graph-schema/components/layout-form": {
         "name": "domains-core/graph-analysis/graph-schema/components/layout-form",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/layout-form"
     },
@@ -180,7 +180,7 @@
     "domains-core/graph-analysis/graph-schema/components/layout-style-segmented": {
         "name": "domains-core/graph-analysis/graph-schema/components/layout-style-segmented",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/layout-style-segmented"
     },
@@ -201,7 +201,7 @@
     "domains-core/graph-analysis/graph-schema/components/page-title": {
         "name": "domains-core/graph-analysis/graph-schema/components/page-title",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/page-title"
     },
@@ -215,14 +215,14 @@
     "domains-core/graph-analysis/graph-schema/components/path-query": {
         "name": "domains-core/graph-analysis/graph-schema/components/path-query",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/path-query"
     },
     "domains-core/graph-analysis/graph-schema/components/query-filter-segmented": {
         "name": "domains-core/graph-analysis/graph-schema/components/query-filter-segmented",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/query-filter-segmented"
     },
@@ -236,77 +236,77 @@
     "domains-core/graph-analysis/graph-schema/components/schema-field": {
         "name": "domains-core/graph-analysis/graph-schema/components/schema-field",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.4",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/schema-field"
     },
     "domains-core/graph-analysis/graph-schema/components/statistics-filter": {
         "name": "domains-core/graph-analysis/graph-schema/components/statistics-filter",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/statistics-filter"
     },
     "domains-core/graph-analysis/graph-schema/components/statistics-filter-attribute-select": {
         "name": "domains-core/graph-analysis/graph-schema/components/statistics-filter-attribute-select",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/statistics-filter-attribute-select"
     },
     "domains-core/graph-analysis/graph-schema/components/statistics-filter-column-chart": {
         "name": "domains-core/graph-analysis/graph-schema/components/statistics-filter-column-chart",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/statistics-filter-column-chart"
     },
     "domains-core/graph-analysis/graph-schema/components/statistics-filter-form": {
         "name": "domains-core/graph-analysis/graph-schema/components/statistics-filter-form",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/statistics-filter-form"
     },
     "domains-core/graph-analysis/graph-schema/components/statistics-filter-histogram-chart": {
         "name": "domains-core/graph-analysis/graph-schema/components/statistics-filter-histogram-chart",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/statistics-filter-histogram-chart"
     },
     "domains-core/graph-analysis/graph-schema/components/statistics-filter-line-chart": {
         "name": "domains-core/graph-analysis/graph-schema/components/statistics-filter-line-chart",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/statistics-filter-line-chart"
     },
     "domains-core/graph-analysis/graph-schema/components/statistics-filter-pie-chart": {
         "name": "domains-core/graph-analysis/graph-schema/components/statistics-filter-pie-chart",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/statistics-filter-pie-chart"
     },
     "domains-core/graph-analysis/graph-schema/components/statistics-filter-world-cloud-chart": {
         "name": "domains-core/graph-analysis/graph-schema/components/statistics-filter-world-cloud-chart",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/statistics-filter-world-cloud-chart"
     },
     "domains-core/graph-analysis/graph-schema/components/view-select": {
         "name": "domains-core/graph-analysis/graph-schema/components/view-select",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/view-select"
     },
     "domains-core/graph-analysis/graph-schema/constants": {
         "name": "domains-core/graph-analysis/graph-schema/constants",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.5",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/constants"
     },
@@ -320,7 +320,7 @@
     "domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value": {
         "name": "domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value"
     },
@@ -355,21 +355,21 @@
     "domains-core/graph-analysis/graph-schema/root": {
         "name": "domains-core/graph-analysis/graph-schema/root",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/root"
     },
     "domains-core/graph-analysis/graph-schema/services": {
         "name": "domains-core/graph-analysis/graph-schema/services",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.3",
         "mainFile": "graph-info.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/services"
     },
     "domains-core/graph-analysis/graph-schema/translators/env-graph-language-translator": {
         "name": "domains-core/graph-analysis/graph-schema/translators/env-graph-language-translator",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.3",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/translators/env-graph-language-translator"
     },
@@ -397,7 +397,7 @@
     "domains-core/graph-analysis/graph-schema/utils/filter-graph-data": {
         "name": "domains-core/graph-analysis/graph-schema/utils/filter-graph-data",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/filter-graph-data"
     },
@@ -418,7 +418,7 @@
     "domains-core/graph-analysis/graph-schema/utils/get-engine-type-by-env": {
         "name": "domains-core/graph-analysis/graph-schema/utils/get-engine-type-by-env",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.3",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/get-engine-type-by-env"
     },
@@ -467,14 +467,14 @@
     "domains-core/graph-analysis/graph-schema/utils/get-property-value-ranks": {
         "name": "domains-core/graph-analysis/graph-schema/utils/get-property-value-ranks",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/get-property-value-ranks"
     },
     "domains-core/graph-analysis/graph-schema/utils/get-schema-by-env": {
         "name": "domains-core/graph-analysis/graph-schema/utils/get-schema-by-env",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.3",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/get-schema-by-env"
     },
@@ -488,14 +488,14 @@
     "domains-core/graph-analysis/graph-schema/utils/get-styles-from-schema": {
         "name": "domains-core/graph-analysis/graph-schema/utils/get-styles-from-schema",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.3",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/get-styles-from-schema"
     },
     "domains-core/graph-analysis/graph-schema/utils/graph-data-2-property-graph": {
         "name": "domains-core/graph-analysis/graph-schema/utils/graph-data-2-property-graph",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/graph-data-2-property-graph"
     },
@@ -516,7 +516,7 @@
     "domains-core/graph-analysis/graph-schema/utils/merge-graph-data": {
         "name": "domains-core/graph-analysis/graph-schema/utils/merge-graph-data",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/merge-graph-data"
     },
@@ -551,7 +551,7 @@
     "domains-core/graph-analysis/graph-schema/utils/update-graph-style-options": {
         "name": "domains-core/graph-analysis/graph-schema/utils/update-graph-style-options",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/update-graph-style-options"
     },

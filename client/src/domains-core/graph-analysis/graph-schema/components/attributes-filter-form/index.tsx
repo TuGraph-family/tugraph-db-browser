@@ -1,4 +1,7 @@
 import IconFont from '@/components/icon-font';
+import { useSchemaFormValue } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value';
+import { SchemaFormValue } from '@/domains-core/graph-analysis/graph-schema/interfaces';
+import { getOperatorListByValueType } from '@/domains-core/graph-analysis/graph-schema/utils/get-operator-list-by-value-type';
 import {
   CaretRightOutlined,
   DeleteOutlined,
@@ -7,9 +10,6 @@ import {
 import type { FormInstance } from 'antd';
 import { Button, Collapse, Form, Input, Select, Tooltip } from 'antd';
 import React, { useState } from 'react';
-import { useSchemaFormValue } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value';
-import { SchemaFormValue } from '@/domains-core/graph-analysis/graph-schema/interfaces';
-import { getOperatorListByValueType } from '@/domains-core/graph-analysis/graph-schema/utils/get-operator-list-by-value-type';
 import styles from './index.less';
 
 const { Panel } = Collapse;

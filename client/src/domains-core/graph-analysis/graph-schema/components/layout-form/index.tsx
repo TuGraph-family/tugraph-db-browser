@@ -1,7 +1,3 @@
-import { cloneDeep, debounce } from 'lodash';
-import { Form, Tooltip } from 'antd';
-import React, { useEffect } from 'react';
-import { useImmer } from 'use-immer';
 import { LAYOUT_FORM_CONFIG } from '@/domains-core/graph-analysis/graph-schema/constants/layout';
 import { useSchemaGraphContext } from '@/domains-core/graph-analysis/graph-schema/contexts';
 import {
@@ -9,6 +5,10 @@ import {
   LayoutFormConfig,
   LayoutFormItem,
 } from '@/domains-core/graph-analysis/graph-schema/interfaces';
+import { Form, Tooltip } from 'antd';
+import { cloneDeep, debounce } from 'lodash';
+import React, { useEffect } from 'react';
+import { useImmer } from 'use-immer';
 import styles from './index.less';
 
 const defaultLayoutConfig: Record<string, DefaultValue> = {};
@@ -60,14 +60,14 @@ const LayoutForm: React.FC<LayoutFormProps> = ({ value }) => {
         const attributes: Record<string, any> = {};
         nodes.forEach((n: any) => {
           attributes[n.label] = {};
-          Object.keys(n.properties || {}).forEach((key) => {
+          Object.keys(n.properties || {}).forEach(key => {
             attributes[n.label][key] = 'string';
           });
         });
 
         const nessesaryDataTypes = new Set(nodes.map((n: any) => n?.label));
         let attributeChoices = {};
-        Object.keys(attributes).forEach((type) => {
+        Object.keys(attributes).forEach(type => {
           if (nessesaryDataTypes.has(type)) {
             attributeChoices = { ...attributeChoices, ...attributes[type] };
           }
@@ -80,20 +80,20 @@ const LayoutForm: React.FC<LayoutFormProps> = ({ value }) => {
         });
         const clusterPropertyName =
           formatLayoutConfigMap.LAYOUT_CLUSTER_DAGRE.items.find(
-            (item) => item.label === 'clusterPropertyName',
+            item => item.label === 'clusterPropertyName',
           );
 
         if (clusterPropertyName) {
           clusterPropertyName.options = attributeList;
         }
       }
-      setState((draft) => {
+      setState(draft => {
         draft.currentLayoutType = value;
       });
     }
     const currentConfig = formatLayoutConfigMap[value];
     if (currentConfig) {
-      setState((draft) => {
+      setState(draft => {
         draft.currentLayout = currentConfig;
         draft.layoutTipInfo = {
           text: currentConfig.title,
@@ -147,7 +147,7 @@ const LayoutForm: React.FC<LayoutFormProps> = ({ value }) => {
         },
       );
       form.setFieldsValue(defaultLayoutConfig);
-      setState((draft) => {
+      setState(draft => {
         draft.content = currentContent;
       });
     }
@@ -159,7 +159,7 @@ const LayoutForm: React.FC<LayoutFormProps> = ({ value }) => {
     allFields: Record<string, DefaultValue>,
   ) => {
     const currentFileds = Object.assign({}, allFields, changedField);
-    Object.keys(currentFileds).forEach((key) => {
+    Object.keys(currentFileds).forEach(key => {
       defaultLayoutConfig[key] = currentFileds[key];
     });
 
@@ -255,7 +255,7 @@ const LayoutForm: React.FC<LayoutFormProps> = ({ value }) => {
         {} as Record<string, LayoutFormConfig>,
       );
 
-      setState((draft) => {
+      setState(draft => {
         draft.layoutConfigMap = resetLayoutConfig;
       });
       form.setFieldsValue(defaultLayoutConfig);

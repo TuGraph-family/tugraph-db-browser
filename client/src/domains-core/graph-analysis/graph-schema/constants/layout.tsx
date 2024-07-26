@@ -1,3 +1,9 @@
+import LayoutFormSlider from '@/domains-core/graph-analysis/graph-schema/components/layout-form-slider';
+import LayoutFormXyInput from '@/domains-core/graph-analysis/graph-schema/components/layout-form-xy-input';
+import {
+  LayoutConfigItem,
+  LayoutFormConfig,
+} from '@/domains-core/graph-analysis/graph-schema/interfaces';
 import {
   ApartmentOutlined,
   BranchesOutlined,
@@ -7,9 +13,6 @@ import {
   ShareAltOutlined,
 } from '@ant-design/icons';
 import { Input, InputNumber, Select, Slider, Switch } from 'antd';
-import LayoutFormSlider from '../components/layout-form-slider';
-import LayoutFormXyInput from '../components/layout-form-xy-input';
-import { LayoutConfigItem, LayoutFormConfig } from '../interfaces';
 
 export const LAYOUT_CONFIG_LIST: LayoutConfigItem[] = [
   {
