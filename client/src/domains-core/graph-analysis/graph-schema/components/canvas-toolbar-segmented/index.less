@@ -1,0 +1,19 @@
+.canvas-toolbar {
+  display: flex;
+  align-items: center;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 12px;
+    background-color: rgba(0, 0, 0, 6%);
+    margin: 0 10px;
+  }
+
+  &-title {
+    color: rgba(152, 152, 157, 100%);
+    margin-right: 6px;
+    white-space: nowrap;
+  }
+}

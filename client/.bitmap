@@ -93,6 +93,13 @@
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/canvas-sider"
     },
+    "domains-core/graph-analysis/graph-schema/components/canvas-toolbar-segmented": {
+        "name": "domains-core/graph-analysis/graph-schema/components/canvas-toolbar-segmented",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/canvas-toolbar-segmented"
+    },
     "domains-core/graph-analysis/graph-schema/components/config-query": {
         "name": "domains-core/graph-analysis/graph-schema/components/config-query",
         "scope": "geamaker",
@@ -155,6 +162,13 @@
         "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/language-query"
+    },
+    "domains-core/graph-analysis/graph-schema/components/lasso-select": {
+        "name": "domains-core/graph-analysis/graph-schema/components/lasso-select",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/lasso-select"
     },
     "domains-core/graph-analysis/graph-schema/components/layout-form": {
         "name": "domains-core/graph-analysis/graph-schema/components/layout-form",
@@ -302,6 +316,13 @@
         "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/view-select"
+    },
+    "domains-core/graph-analysis/graph-schema/components/zoom-in-out": {
+        "name": "domains-core/graph-analysis/graph-schema/components/zoom-in-out",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/zoom-in-out"
     },
     "domains-core/graph-analysis/graph-schema/constants": {
         "name": "domains-core/graph-analysis/graph-schema/constants",
