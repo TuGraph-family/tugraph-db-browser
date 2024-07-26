@@ -324,7 +324,7 @@ export const GraphConstruct = () => {
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-operate`]}>
       {GRAPH_OPERATE.map(item => (
         <div
-          key={item.lable}
+          key={item.label}
           onMouseOver={() => {
             setHoverType(item?.value);
           }}

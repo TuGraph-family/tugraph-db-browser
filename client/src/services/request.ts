@@ -1,10 +1,11 @@
 import { dbRecordsTranslator } from '@/translator';
-import { IRequestParams, ISessionParams } from '@/types/services';
+import { IRequestParams, ISessionParams, RestFulResponse } from '@/types/services';
 
-export const request = async (params: IRequestParams) => {
+export const request = async (params: IRequestParams): Promise<RestFulResponse> => {
   const { driver, cypher, graphName, parameters = {} } = params;
+  
   if (!cypher) {
-    return {};
+    return { success: false };
   }
 
   const sessionParams: ISessionParams = {};

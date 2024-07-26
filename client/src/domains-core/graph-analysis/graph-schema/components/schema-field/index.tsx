@@ -23,7 +23,7 @@ import GraphCanvas from '@/domains-core/graph-analysis/graph-schema/components/g
 import GraphFilter from '@/domains-core/graph-analysis/graph-schema/components/graph-filter';
 import LanguageQuery from '@/domains-core/graph-analysis/graph-schema/components/language-query';
 import PageLayoutSegmented from '@/domains-core/graph-analysis/graph-schema/components/page-layout-segmented';
-import PathQuery from '@/domains-core/graph-analysis/graph-schema/components/path-query';
+// import PathQuery from '@/domains-core/graph-analysis/graph-schema/components/path-query';
 import StatisticsFilter from '@/domains-core/graph-analysis/graph-schema/components/statistics-filter';
 import { ArrayCards, ArrayCollapse } from '@formily/antd';
 import { createSchemaField } from '@formily/react';
@@ -50,7 +50,7 @@ export const SchemaField = createSchemaField({
     LanguageQuery,
     GraphFilter,
     ConfigQuery,
-    PathQuery,
+    // PathQuery,
     AttributesFilter,
     StatisticsFilter,
     ContextMenu,

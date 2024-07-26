@@ -34,7 +34,7 @@ const Editor = forwardRef<any, any>((props, editorRef) => {
           fontSize: 14,
           lineHeight: 20,
           folding: false,
-          wordWrap: 'on',
+          wordWrap: 'off',
           lineDecorationsWidth: 0,
           lineNumbersMinChars: 3,
           readOnly: false,

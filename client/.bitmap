@@ -61,7 +61,7 @@
     "domains-core/graph-analysis/graph-schema/components/array-tabs": {
         "name": "domains-core/graph-analysis/graph-schema/components/array-tabs",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.3",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/array-tabs"
     },
