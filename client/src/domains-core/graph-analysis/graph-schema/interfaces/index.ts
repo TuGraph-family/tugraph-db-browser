@@ -1,4 +1,5 @@
 import { GraphData, LayoutOptions, NodeData } from '@antv/g6';
+import { ISchema } from '@formily/react';
 import type { DefaultOptionType } from 'antd/lib/select';
 
 export interface PathQueryDataSource {
@@ -9,7 +10,7 @@ export interface PathQueryDataSource {
   contentHeight: number;
 }
 
-export type Operator = 'CT' | 'NC' | 'EQ' | 'NE' | 'GT' | 'LT' | 'GE' | 'LE';
+export type Operator = '⊃' | '⊅' | '=' | '≠' | '>' | '<' | '≥' | '≤';
 
 export interface PropertyCondition {
   name: string;
@@ -119,4 +120,25 @@ export interface LayoutFormConfig {
   icon?: any;
   thumbnail?: string;
   id: string;
+}
+
+export interface ConfigCenterOptionProps {
+  pathName: string;
+  propsSchema: ISchema;
+}
+
+export interface ConfigCenterOption {
+  label: string;
+  visiblePathNameList: string[];
+  props?: ConfigCenterOptionProps;
+}
+
+export type ConfigCenterComponentMap = {
+  normal: Array<ConfigCenterOption>;
+  more?: Array<ConfigCenterOption>;
+};
+
+export interface OriginGraphData {
+  graphData?: { nodes?: any[]; edges?: any[] };
+  originQueryData?: Array<any>;
 }

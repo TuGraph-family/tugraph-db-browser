@@ -185,7 +185,7 @@ export const AttributesEditForm: React.FC<props> = ({
                               state.currentProperty?.schemaType,
                             ).map((logic) => {
                               return (
-                                <Option value={logic.key} key={logic.key}>
+                                <Option value={logic.value} key={logic.value}>
                                   {logic.text ? (
                                     <Tooltip title={logic.text}>
                                       {logic.value}

@@ -17,21 +17,21 @@ export const filterByPropertyCondition = (
     formatted = parseInt(value as string, 10);
   }
 
-  if (operator === 'EQ') {
+  if (operator === '=') {
     return data[name] === formatted;
-  } else if (operator === 'NE') {
+  } else if (operator === '≠') {
     return data[name] !== formatted;
-  } else if (operator === 'CT') {
+  } else if (operator === '⊃') {
     return `${data[name]}`.indexOf(`${formatted}`) > -1;
-  } else if (operator === 'NC') {
+  } else if (operator === '⊅') {
     return `${data[name]}`.indexOf(`${formatted}`) === -1;
-  } else if (operator === 'GT') {
+  } else if (operator === '>') {
     return Number(data[name]) > Number(formatted);
-  } else if (operator === 'GE') {
+  } else if (operator === '≥') {
     return Number(data[name]) >= Number(formatted);
-  } else if (operator === 'LT') {
+  } else if (operator === '<') {
     return Number(data[name]) < Number(formatted);
-  } else if (operator === 'LE') {
+  } else if (operator === '≤') {
     return Number(data[name]) <= Number(formatted);
   }
 

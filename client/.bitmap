@@ -131,7 +131,7 @@
     "domains-core/graph-analysis/graph-schema/components/graph-canvas": {
         "name": "domains-core/graph-analysis/graph-schema/components/graph-canvas",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/graph-canvas"
     },
@@ -327,14 +327,14 @@
     "domains-core/graph-analysis/graph-schema/hooks/use-schema-tab-container": {
         "name": "domains-core/graph-analysis/graph-schema/hooks/use-schema-tab-container",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/hooks/use-schema-tab-container"
     },
     "domains-core/graph-analysis/graph-schema/interfaces": {
         "name": "domains-core/graph-analysis/graph-schema/interfaces",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.4",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/interfaces"
     },
@@ -477,6 +477,13 @@
         "version": "0.0.1",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/get-schema-by-env"
+    },
+    "domains-core/graph-analysis/graph-schema/utils/get-styled-graph-data": {
+        "name": "domains-core/graph-analysis/graph-schema/utils/get-styled-graph-data",
+        "scope": "geamaker",
+        "version": "0.0.2",
+        "mainFile": "index.ts",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/get-styled-graph-data"
     },
     "domains-core/graph-analysis/graph-schema/utils/get-styles-from-schema": {
         "name": "domains-core/graph-analysis/graph-schema/utils/get-styles-from-schema",

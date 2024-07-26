@@ -1,10 +1,19 @@
+import { useSchemaGraphContext } from '@/domains-core/graph-analysis/graph-schema/contexts';
+import { useSchemaFormValue } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value';
+import { useSchemaTabContainer } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-tab-container';
+import { registerBreathingNode } from '@/domains-core/graph-analysis/graph-schema/registers/breathing-node/';
+import { registerClusterDagreLayout } from '@/domains-core/graph-analysis/graph-schema/registers/cluster-dagre-layout/';
+import { getStyledGraphData } from '@/domains-core/graph-analysis/graph-schema/utils/get-styled-graph-data';
+import { resizeCanvas } from '@/domains-core/graph-analysis/graph-schema/utils/resize-canvas';
 import { getId } from '@/utils';
+import { cloneDeep } from 'lodash';
 import { Renderer } from '@antv/g-svg';
 import {
   CameraSetting,
   EdgeEvent,
   ExtensionCategory,
   Graph,
+  GraphData,
   GraphEvent,
   IElementEvent,
   NodeEvent,
@@ -17,14 +26,10 @@ import {
   Sphere,
   ZoomCanvas3D,
 } from '@antv/g6-extension-3d';
-import { useForm } from '@formily/react';
+import { onFieldValueChange } from '@formily/core';
+import { useForm, useFormEffects } from '@formily/react';
 import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import { useSchemaGraphContext } from '@/domains-core/graph-analysis/graph-schema/contexts';
-import { useSchemaTabContainer } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-tab-container';
-import { registerBreathingNode } from '@/domains-core/graph-analysis/graph-schema/registers/breathing-node/';
-import { registerClusterDagreLayout } from '@/domains-core/graph-analysis/graph-schema/registers/cluster-dagre-layout/';
-import { resizeCanvas } from '@/domains-core/graph-analysis/graph-schema/utils/resize-canvas';
 import styles from './index.less';
 
 registerBreathingNode();
@@ -49,12 +54,27 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
 }) => {
   const form = useForm();
   const { updateContextValue, graph: contextGraph } = useSchemaGraphContext();
-  const { tabContainerIndex, tabContainerField } = useSchemaTabContainer();
-  const [state] = useImmer<{
+  const { tabContainerIndex, tabContainerField, getTabContainerValue } =
+    useSchemaTabContainer();
+  const { graphSchemaStyle } = useSchemaFormValue();
+  const [state, setState] = useImmer<{
     canvasId: string;
+    graphData: GraphData;
   }>({
     canvasId: getId(),
+    graphData: {},
   });
+  useFormEffects(() => {
+    onFieldValueChange(
+      `CanvasList.${tabContainerIndex}.originGraphData`,
+      (field) => {
+        setState((draft) => {
+          draft.graphData = cloneDeep(field.value?.graphData);
+        });
+      },
+    );
+  });
+
   const containerId = state.canvasId;
   const setElementInfo = (data: any) => {
     form.setValuesIn(
@@ -66,6 +86,14 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
       'ELEMENT_INFO',
     );
   };
+  useEffect(() => {
+    const graphData = getStyledGraphData({
+      graphData: { ...state.graphData },
+      graphSchemaStyle,
+    });
+    contextGraph?.setData({ ...graphData });
+    contextGraph?.render();
+  }, [state.graphData]);
 
   useEffect(() => {
     tabContainerField.setComponentProps({
@@ -77,7 +105,10 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
       data: { ...value?.graphData },
       behaviors: [
         'zoom-canvas',
-        'drag-canvas',
+        {
+          key: 'drag-canvas', //交互 key，即唯一标识
+          type: 'drag-canvas',
+        },
         'drag-element',
         {
           type: 'hover-activate',
@@ -189,6 +220,14 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
       }
     };
   }, [contextGraph]);
+  useEffect(() => {
+    const originGraphData = getTabContainerValue('originGraphData');
+    if (originGraphData?.graphData) {
+      setState((draft) => {
+        draft.graphData = cloneDeep(originGraphData.graphData);
+      });
+    }
+  }, []);
 
   return (
     <div className={[styles['graph-canvas'], 'graph-canvas'].join(' ')}>
