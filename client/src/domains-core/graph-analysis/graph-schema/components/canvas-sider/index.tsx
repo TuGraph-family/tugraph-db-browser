@@ -1,10 +1,10 @@
 import IconFont from '@/components/icon-font';
+import Handler from '@/domains-core/graph-analysis/graph-schema/components/drawer-handler';
+import { useSchemaGraphContext } from '@/domains-core/graph-analysis/graph-schema/contexts';
+import { resizeCanvas } from '@/domains-core/graph-analysis/graph-schema/utils/resize-canvas/';
 import { Resizable, ResizableProps, ResizeCallback } from 're-resizable';
 import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import { useSchemaGraphContext } from '@/domains-core/graph-analysis/graph-schema/contexts';
-import { resizeCanvas } from '@/domains-core/graph-analysis/graph-schema/utils/resize-canvas/';
-import Handler from '@/domains-core/graph-analysis/graph-schema/components/drawer-handler';
 import styles from './index.less';
 
 const MAX_WIDTH = 720;

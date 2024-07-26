@@ -2,6 +2,16 @@ import ColorPicker from '@/components/color-picker';
 import IconFont from '@/components/icon-font';
 import IconPicker from '@/components/icon-picker';
 import {
+  DEFAULT_EDGE_STYLE,
+  DEFAULT_NODE_STYLE,
+  EDGE_WIDTH_MARKS,
+  NODE_SIZE_MARKS,
+} from '@/domains-core/graph-analysis/graph-schema/constants/graph-style';
+import { useSchemaGraphContext } from '@/domains-core/graph-analysis/graph-schema/contexts';
+import { useSchemaFormValue } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value/';
+import { getOperatorListByValueType } from '@/domains-core/graph-analysis/graph-schema/utils/get-operator-list-by-value-type';
+import { updateGraphStyleOptions } from '@/domains-core/graph-analysis/graph-schema/utils/update-graph-style-options';
+import {
   Button,
   Col,
   Collapse,
@@ -15,16 +25,6 @@ import {
 } from 'antd';
 import type { DefaultOptionType } from 'antd/lib/select';
 import React, { useMemo } from 'react';
-import {
-  DEFAULT_EDGE_STYLE,
-  DEFAULT_NODE_STYLE,
-  EDGE_WIDTH_MARKS,
-  NODE_SIZE_MARKS,
-} from '@/domains-core/graph-analysis/graph-schema/constants/graph-style';
-import { useSchemaGraphContext } from '@/domains-core/graph-analysis/graph-schema/contexts';
-import { useSchemaFormValue } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value/';
-import { getOperatorListByValueType } from '@/domains-core/graph-analysis/graph-schema/utils/get-operator-list-by-value-type';
-import { updateGraphStyleOptions } from '@/domains-core/graph-analysis/graph-schema/utils/update-graph-style-options';
 import styles from './index.less';
 
 const { Item } = Form;

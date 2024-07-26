@@ -1,13 +1,12 @@
 import IconFont from '@/components/icon-font';
-import { cloneDeep } from 'lodash';
-import { CloseOutlined } from '@ant-design/icons';
-import { Button, Form, Popconfirm } from 'antd';
-import React, { useState } from 'react';
 import { useSchemaGraphContext } from '@/domains-core/graph-analysis/graph-schema/contexts';
 import { useSchemaFormValue } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value/';
 import { TypePropertyCondition } from '@/domains-core/graph-analysis/graph-schema/interfaces';
 import { filterByTopRule } from '@/domains-core/graph-analysis/graph-schema/utils/filter-by-top-rule';
-import { AttributesEditForm } from '@/domains-core/graph-analysis/graph-schema/components/attributes-filter-form';
+import { CloseOutlined } from '@ant-design/icons';
+import { Button, Form, Popconfirm } from 'antd';
+import { cloneDeep } from 'lodash';
+import React, { useState } from 'react';
 import styles from './index.less';
 
 const AttributesFilter: React.FC = () => {
@@ -32,12 +31,12 @@ const AttributesFilter: React.FC = () => {
       okText="确认"
       cancelText="取消"
       onConfirm={() => {
-        const deleteData = filterdata.filter((item) => item.id !== id);
+        const deleteData = filterdata.filter(item => item.id !== id);
         setFilterData(deleteData);
       }}
     >
       <CloseOutlined
-        onClick={(event) => {
+        onClick={event => {
           event.stopPropagation();
         }}
       />
@@ -57,19 +56,18 @@ const AttributesFilter: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-
     const values = await form.validateFields();
- 
+
     const conditions = getConditions(values);
     // 筛选出符合条件的节点
- 
+
     const graphData = graph?.getData() || {};
 
     let nodeIds: string[] = [];
     let edgeIds: string[] = [];
-    conditions.forEach((condition) => {
+    conditions.forEach(condition => {
       nodeIds = (
-        graphData.nodes?.filter((node) =>
+        graphData.nodes?.filter(node =>
           filterByTopRule(
             {
               id: node.id,
@@ -79,10 +77,10 @@ const AttributesFilter: React.FC = () => {
             condition,
           ),
         ) || []
-      ).map((item) => item.id);
+      ).map(item => item.id);
 
       edgeIds = (
-        graphData.edges?.filter((edge) =>
+        graphData.edges?.filter(edge =>
           filterByTopRule(
             {
               id: edge.id,
@@ -92,9 +90,9 @@ const AttributesFilter: React.FC = () => {
             condition,
           ),
         ) || []
-      ).map((item) => item.id!);
+      ).map(item => item.id!);
     });
-    graphData.nodes?.forEach((node) => {
+    graphData.nodes?.forEach(node => {
       const hasMatch = nodeIds.includes(node.id);
       if (hasMatch) {
         graph?.setElementState(node.id, 'active', true);
@@ -102,7 +100,7 @@ const AttributesFilter: React.FC = () => {
       }
     });
 
-    graphData.edges?.forEach((edge) => {
+    graphData.edges?.forEach(edge => {
       const hasMatch = edgeIds.includes(edge.id!);
       if (hasMatch) {
         graph?.setElementState(edge.id!, 'active', true);
@@ -115,7 +113,7 @@ const AttributesFilter: React.FC = () => {
     <div className={styles['attribute-filter-container']}>
       <div className={styles['attribute-filter-container-form']}>
         <Form form={form} layout="vertical">
-          {filterdata.map((item) => {
+          {filterdata.map(item => {
             return (
               <AttributesEditForm
                 key={item.id}

@@ -1,10 +1,9 @@
 import IconFont from '@/components/icon-font';
-import { getId } from '@/utils/common';
+import { useSchemaGraphContext } from '@/domains-core/graph-analysis/graph-schema/contexts';
 import { renderer } from '@antv/g6-extension-3d';
 import { Select, SelectProps, Space } from 'antd';
 import type { DefaultOptionType } from 'antd/lib/select';
 import React from 'react';
-import { useSchemaGraphContext } from '@/domains-core/graph-analysis/graph-schema/contexts';
 import styles from './index.less';
 
 const viewModeOptions: DefaultOptionType[] = [
@@ -31,19 +30,39 @@ const viewModeOptions: DefaultOptionType[] = [
         <span style={{ fontSize: 14 }}>3D 图谱视图</span>
       </Space>
     ),
-    disabled: true,
+  },
+  {
+    value: 'TABLE',
+    label: (
+      <Space>
+        <IconFont
+          type="icon-liebiaoshituicon"
+          style={{ fontSize: 18, marginTop: 5 }}
+        ></IconFont>
+        <span style={{ fontSize: 14 }}>列表视图</span>
+      </Space>
+    ),
+  },
+  {
+    value: 'JSON',
+    label: (
+      <Space>
+        <IconFont
+          type="icon-JSONshitu1"
+          style={{ fontSize: 18, marginTop: 5 }}
+        ></IconFont>
+        <span style={{ fontSize: 14 }}>JSON 视图</span>
+      </Space>
+    ),
   },
 ];
 
-const ViewSelect: React.FC<SelectProps> = (props) => {
+const ViewSelect: React.FC<SelectProps> = props => {
   const { value } = props;
-  const { graph: prevGraph } = useSchemaGraphContext();
+  const { graph } = useSchemaGraphContext();
   const onChange = (value: string, option: any) => {
     if (value === 'G6_3D_CANVAS') {
-      const container = getId();
-      prevGraph?.setOptions({
-        ...prevGraph.getOptions(),
-        container,
+      graph?.setOptions({
         renderer,
         node: {
           type: 'sphere',
@@ -75,6 +94,7 @@ const ViewSelect: React.FC<SelectProps> = (props) => {
         ],
         behaviors: ['observe-canvas-3d', 'zoom-canvas-3d'],
       });
+      graph?.render();
     }
     props.onChange?.(value, option);
   };

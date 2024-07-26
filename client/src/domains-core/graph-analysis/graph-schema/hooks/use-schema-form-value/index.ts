@@ -1,5 +1,5 @@
-import { useForm } from '@formily/react';
 import { SchemaFormValue } from '@/domains-core/graph-analysis/graph-schema/interfaces';
+import { useForm } from '@formily/react';
 
 export const useSchemaFormValue = () => {
   const form = useForm();

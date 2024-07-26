@@ -1,3 +1,15 @@
+import ColumnChart from '@/domains-core/graph-analysis/graph-schema/components/statistics-filter-column-chart';
+import HistogramChart from '@/domains-core/graph-analysis/graph-schema/components/statistics-filter-histogram-chart';
+import LineChart from '@/domains-core/graph-analysis/graph-schema/components/statistics-filter-line-chart';
+import PieChart from '@/domains-core/graph-analysis/graph-schema/components/statistics-filter-pie-chart';
+import WordCloudChart from '@/domains-core/graph-analysis/graph-schema/components/statistics-filter-world-cloud-chart';
+import { useSchemaGraphContext } from '@/domains-core/graph-analysis/graph-schema/contexts';
+import { useSchemaFormValue } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value';
+import { StatisticsFilterCondition } from '@/domains-core/graph-analysis/graph-schema/interfaces';
+import { getChartData } from '@/domains-core/graph-analysis/graph-schema/utils/get-chart-data';
+import { getHistogramData } from '@/domains-core/graph-analysis/graph-schema/utils/get-histogram-data';
+import { getPropertyValueRanks } from '@/domains-core/graph-analysis/graph-schema/utils/get-property-value-ranks';
+import { graphData2PropertyGraph } from '@/domains-core/graph-analysis/graph-schema/utils/graph-data-2-property-graph';
 import {
   BarChartOutlined,
   DeleteOutlined,
@@ -8,18 +20,6 @@ import {
 import { Button, Col, Dropdown, Form, Menu, Row, Select, Space } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useImmer } from 'use-immer';
-import { useSchemaGraphContext } from '@/domains-core/graph-analysis/graph-schema/contexts';
-import { useSchemaFormValue } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value';
-import { StatisticsFilterCondition } from '@/domains-core/graph-analysis/graph-schema/interfaces';
-import { getChartData } from '@/domains-core/graph-analysis/graph-schema/utils/get-chart-data';
-import { getHistogramData } from '@/domains-core/graph-analysis/graph-schema/utils/get-histogram-data';
-import { getPropertyValueRanks } from '@/domains-core/graph-analysis/graph-schema/utils/get-property-value-ranks';
-import { graphData2PropertyGraph } from '@/domains-core/graph-analysis/graph-schema/utils/graph-data-2-property-graph';
-import ColumnChart from '@/domains-core/graph-analysis/graph-schema/components/statistics-filter-column-chart';
-import HistogramChart from '@/domains-core/graph-analysis/graph-schema/components/statistics-filter-histogram-chart';
-import LineChart from '@/domains-core/graph-analysis/graph-schema/components/statistics-filter-line-chart';
-import PieChart from '@/domains-core/graph-analysis/graph-schema/components/statistics-filter-pie-chart';
-import WordCloudChart from '@/domains-core/graph-analysis/graph-schema/components/statistics-filter-world-cloud-chart';
 import styles from './index.less';
 import { DATA_TYPE, NUMBER_TYPES } from '@/domains-core/graph-analysis/graph-schema/constants/action-bar';
 

@@ -1,9 +1,5 @@
 import IconFont from '@/components/icon-font';
-import { CloseOutlined } from '@ant-design/icons';
-import { GraphData } from '@antv/g6';
-import { Button, Form, Popconfirm } from 'antd';
-import { nanoid } from 'nanoid';
-import React, { useEffect, useState } from 'react';
+import FilterSelection from '@/domains-core/graph-analysis/graph-schema/components/statistics-filter-form';
 import { useSchemaGraphContext } from '@/domains-core/graph-analysis/graph-schema/contexts';
 import { useSchemaFormValue } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-form-value/';
 import {
@@ -13,7 +9,11 @@ import {
 import { filterGraphData } from '@/domains-core/graph-analysis/graph-schema/utils/filter-graph-data';
 import { highlightSubGraph } from '@/domains-core/graph-analysis/graph-schema/utils/highlight-sub-graph';
 import { uniqueElementsBy } from '@/domains-core/graph-analysis/graph-schema/utils/unique-elements-by/';
-import FilterSelection from '@/domains-core/graph-analysis/graph-schema/components/statistics-filter-form';
+import { CloseOutlined } from '@ant-design/icons';
+import { GraphData } from '@antv/g6';
+import { Button, Form, Popconfirm } from 'antd';
+import { nanoid } from 'nanoid';
+import React, { useEffect, useState } from 'react';
 import styles from './index.less';
 
 export interface StatisticsFilterProps {

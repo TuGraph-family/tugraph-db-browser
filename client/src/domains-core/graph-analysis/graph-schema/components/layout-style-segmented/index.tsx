@@ -1,17 +1,26 @@
 import IconFont from '@/components/icon-font';
-import { GraphEvent } from '@antv/g6';
-import { Popover, Segmented, SegmentedProps } from 'antd';
-import type { SegmentedValue } from 'antd/lib/segmented';
-import React, { useEffect } from 'react';
 import { LAYOUT_CONFIG_LIST } from '@/domains-core/graph-analysis/graph-schema/constants/layout';
 import { useSchemaGraphContext } from '@/domains-core/graph-analysis/graph-schema/contexts';
 import { useSchemaTabContainer } from '@/domains-core/graph-analysis/graph-schema/hooks/use-schema-tab-container';
 import { LayoutConfigItem } from '@/domains-core/graph-analysis/graph-schema/interfaces';
+import { GraphEvent } from '@antv/g6';
+import { Popover, Segmented, SegmentedProps } from 'antd';
+import type { SegmentedValue } from 'antd/lib/segmented';
+import { default as React, useEffect, useMemo } from 'react';
 import styles from './index.less';
 
-const LayoutStyleSegmented: React.FC<SegmentedProps> = (props) => {
+interface LayoutStyleSegmentedProps extends SegmentedProps {
+  activeOptions?: string[];
+}
+
+const LayoutStyleSegmented: React.FC<LayoutStyleSegmentedProps> = ({
+  activeOptions = ['LAYOUT', 'STYLE'],
+  ...props
+}) => {
   const { graph } = useSchemaGraphContext();
   const { tabContainerField, setTabContainerValue } = useSchemaTabContainer();
+  const hasOptions = !!activeOptions?.length;
+
   const PopoverItem = ({ id, src, name, options }: LayoutConfigItem) => {
     return (
       <div
@@ -45,6 +54,42 @@ const LayoutStyleSegmented: React.FC<SegmentedProps> = (props) => {
       </div>
     );
   };
+  const LAYOUT_STYLE_OPTIONS = [
+    {
+      label: (
+        <Popover
+          title={null}
+          content={
+            <div className={styles['popoverContent']}>
+              {LAYOUT_CONFIG_LIST.map((item) => {
+                return <PopoverItem key={item?.id} {...item} />;
+              })}
+            </div>
+          }
+          placement="bottom"
+        >
+          <IconFont
+            type="icon-bujuicon"
+            style={{ fontSize: 16, marginRight: 4 }}
+          />
+          布局
+        </Popover>
+      ),
+      value: 'LAYOUT',
+    },
+    {
+      label: (
+        <div>
+          <IconFont
+            type="icon-waiguanyangshi"
+            style={{ fontSize: 16, marginRight: 4 }}
+          />
+          样式
+        </div>
+      ),
+      value: 'STYLE',
+    },
+  ];
   const onChange = (value: SegmentedValue) => {
     props.onChange?.(value);
     if (value !== 'LAYOUT') {
@@ -56,6 +101,11 @@ const LayoutStyleSegmented: React.FC<SegmentedProps> = (props) => {
       );
     }
   };
+  const options = useMemo(() => {
+    return LAYOUT_STYLE_OPTIONS.filter((item) =>
+      activeOptions?.includes(item.value),
+    );
+  }, [activeOptions]);
   useEffect(() => {
     const afterLayout = () => {
       tabContainerField.setComponentProps({
@@ -76,48 +126,12 @@ const LayoutStyleSegmented: React.FC<SegmentedProps> = (props) => {
     };
   }, [graph]);
 
-  return (
-    <Segmented
-      {...props}
-      onChange={onChange}
-      options={[
-        {
-          label: (
-            <Popover
-              title={null}
-              content={
-                <div className={styles['popoverContent']}>
-                  {LAYOUT_CONFIG_LIST.map((item) => {
-                    return <PopoverItem key={item?.id} {...item} />;
-                  })}
-                </div>
-              }
-              placement="bottom"
-            >
-              <IconFont
-                type="icon-bujuicon"
-                style={{ fontSize: 16, marginRight: 4 }}
-              />
-              布局
-            </Popover>
-          ),
-          value: 'LAYOUT',
-        },
-        {
-          label: (
-            <div>
-              <IconFont
-                type="icon-waiguanyangshi"
-                style={{ fontSize: 16, marginRight: 4 }}
-              />
-              样式
-            </div>
-          ),
-          value: 'STYLE',
-        },
-      ]}
-    />
-  );
+  return hasOptions ? (
+    <div className={styles['layout-style']}>
+      <div className={styles['layout-style-title']}>布局样式</div>
+      <Segmented {...props} onChange={onChange} options={options} />
+    </div>
+  ) : null;
 };
 
 export default LayoutStyleSegmented;

@@ -1,6 +1,6 @@
-import { GraphData } from '@antv/g6';
-import { SPLITTER } from '@/domains-core/graph-analysis/graph-schema/constants/index';
+import { SPLITTER } from '@/domains-core/graph-analysis/graph-schema/constants';
 import { GraphSchema } from '@/domains-core/graph-analysis/graph-schema/interfaces';
+import { GraphData } from '@antv/g6';
 
 /**
  * 将图数据转换为属性图，一个属性值为一个节点，边将其连接到对应的 id 属性点上

@@ -6,7 +6,6 @@ import { registerClusterDagreLayout } from '@/domains-core/graph-analysis/graph-
 import { getStyledGraphData } from '@/domains-core/graph-analysis/graph-schema/utils/get-styled-graph-data';
 import { resizeCanvas } from '@/domains-core/graph-analysis/graph-schema/utils/resize-canvas';
 import { getId } from '@/utils';
-import { cloneDeep } from 'lodash';
 import { Renderer } from '@antv/g-svg';
 import {
   CameraSetting,
@@ -28,6 +27,7 @@ import {
 } from '@antv/g6-extension-3d';
 import { onFieldValueChange } from '@formily/core';
 import { useForm, useFormEffects } from '@formily/react';
+import { cloneDeep } from 'lodash';
 import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import styles from './index.less';
@@ -67,8 +67,8 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
   useFormEffects(() => {
     onFieldValueChange(
       `CanvasList.${tabContainerIndex}.originGraphData`,
-      (field) => {
-        setState((draft) => {
+      field => {
+        setState(draft => {
           draft.graphData = cloneDeep(field.value?.graphData);
         });
       },
@@ -117,8 +117,8 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
         },
       ],
       node: {
-        style:{
-          labelText: (d) => d.id,
+        style: {
+          labelText: d => d.id,
         },
         type: 'breathing-node',
         state: {
@@ -144,7 +144,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
       tabContainerField.setComponentProps({
         spinning: false,
       });
-      updateContextValue?.((draft) => {
+      updateContextValue?.(draft => {
         draft.graph = graph;
       });
     });
@@ -201,7 +201,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
   // 从卡片切回标签，强制渲染后，canvas高度为0，需要监听dom变化重置
   useEffect(() => {
     const targetElement = document.getElementById(containerId);
-    const resizeObserver = new ResizeObserver((entries) => {
+    const resizeObserver = new ResizeObserver(entries => {
       for (let entry of entries) {
         const { width, height } = entry.contentRect;
         if (width && height) {
@@ -223,7 +223,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
   useEffect(() => {
     const originGraphData = getTabContainerValue('originGraphData');
     if (originGraphData?.graphData) {
-      setState((draft) => {
+      setState(draft => {
         draft.graphData = cloneDeep(originGraphData.graphData);
       });
     }

@@ -30,6 +30,9 @@ export const GRAPH_SCHEMA: ISchema = {
     htapOrderDetail: {
       type: 'object',
     },
+    ConfigCenter: {
+      'x-component': 'ConfigCenter',
+    },
     // 页面顶部
     Header: {
       type: 'object',
@@ -174,6 +177,10 @@ export const GRAPH_SCHEMA: ISchema = {
           RightSiderContent: {
             type: 'string',
           },
+          // 接口返回的图数据
+          originGraphData: {
+            type: 'object',
+          },
           // 画布容器
           CanvasContainer: {
             type: 'object',
@@ -201,44 +208,19 @@ export const GRAPH_SCHEMA: ISchema = {
                     'x-component': 'ViewSelect',
                     default: 'G6_2D_CANVAS',
                   },
-                  Divider1: {
-                    type: 'void',
-                    'x-component': 'Divider',
-                    'x-component-props': {
-                      type: 'vertical',
-                    },
-                  },
-                  QueryFilterTitle: {
-                    type: 'void',
-                    'x-component': 'div',
-                    'x-component-props': {
-                      children: '查询过滤',
-                      className: 'canvas-header-title',
-                    },
-                  },
                   QueryFilterSegmented: {
                     type: 'string',
                     'x-component': 'QueryFilterSegmented',
                     default: 'QUERY',
                   },
-                  Divider2: {
-                    type: 'void',
-                    'x-component': 'Divider',
-                    'x-component-props': {
-                      type: 'vertical',
-                    },
-                  },
-                  LayoutStyleTitle: {
-                    type: 'void',
-                    'x-component': 'div',
-                    'x-component-props': {
-                      children: '布局样式',
-                      className: 'canvas-header-title',
-                    },
-                  },
                   LayoutStyleSegmented: {
                     type: 'string',
                     'x-component': 'LayoutStyleSegmented',
+                    default: null,
+                  },
+                  CanvasToolbarSegmented: {
+                    type: 'string',
+                    'x-component': 'CanvasToolbarSegmented',
                     default: null,
                   },
                 },
@@ -265,6 +247,14 @@ export const GRAPH_SCHEMA: ISchema = {
                         bottomRight: false,
                         bottomLeft: false,
                         topLeft: false,
+                      },
+                    },
+                    'x-reactions': {
+                      dependencies: ['...LeftSiderContent'],
+                      fulfill: {
+                        state: {
+                          visible: '{{!!$deps[0]}}',
+                        },
                       },
                     },
                     properties: {
@@ -396,11 +386,7 @@ export const GRAPH_SCHEMA: ISchema = {
                   GraphCanvas: {
                     type: 'object',
                     'x-component': 'GraphCanvas',
-                    'x-decorator-props': {
-                      style: {
-                        flex: 1,
-                      },
-                    },
+
                     properties: {
                       GraphFilter: {
                         type: 'string',
@@ -409,6 +395,43 @@ export const GRAPH_SCHEMA: ISchema = {
                       ContextMenu: {
                         type: 'string',
                         'x-component': 'ContextMenu',
+                      },
+                    },
+                    'x-reactions': {
+                      dependencies: ['..CanvasHeader.ViewSelect'],
+                      fulfill: {
+                        state: {
+                          display:
+                            '{{$deps[0] === "G6_3D_CANVAS" || $deps[0] === "G6_2D_CANVAS" ? "visible": "hidden"}}',
+                        },
+                      },
+                    },
+                  },
+                  // 列表视图
+                  GraphTableView: {
+                    type: 'object',
+                    'x-component': 'GraphTableView',
+                    'x-reactions': {
+                      dependencies: ['..CanvasHeader.ViewSelect'],
+                      fulfill: {
+                        state: {
+                          display:
+                            '{{$deps[0] === "TABLE" ? "visible" : "hidden"}}',
+                        },
+                      },
+                    },
+                  },
+                  // JSON视图
+                  GraphJsonView: {
+                    type: 'object',
+                    'x-component': 'GraphJsonView',
+                    'x-reactions': {
+                      dependencies: ['..CanvasHeader.ViewSelect'],
+                      fulfill: {
+                        state: {
+                          display:
+                            '{{$deps[0] === "JSON" ? "visible" : "hidden"}}',
+                        },
                       },
                     },
                   },
