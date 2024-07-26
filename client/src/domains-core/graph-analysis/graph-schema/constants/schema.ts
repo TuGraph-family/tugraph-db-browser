@@ -396,6 +396,10 @@ export const GRAPH_SCHEMA: ISchema = {
                         type: 'string',
                         'x-component': 'ContextMenu',
                       },
+                      ZoomInOut: {
+                        type: 'string',
+                        'x-component': 'ZoomInOut',
+                      },
                     },
                     'x-reactions': {
                       dependencies: ['..CanvasHeader.ViewSelect'],

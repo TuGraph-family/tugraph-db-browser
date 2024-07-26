@@ -4,7 +4,7 @@ import { useAnalysis } from '@/hooks/useAnalysis';
 import { parseHashRouterParams } from '@/utils/parseHash';
 import { CanvasEvent, IElementEvent, NodeEvent } from '@antv/g6';
 import { Menu, MenuProps } from 'antd';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useImmer } from 'use-immer';
 import styles from './index.less';
 
@@ -25,7 +25,7 @@ const ContextMenu: React.FC<ContextMenuProps> = () => {
       left: number;
     };
     menuType: 'node' | 'edge';
-    menuItems: MenuProps['items'];
+    foldedNodes: string[];
     elementId?: string;
   }>({
     menuStyles: {
@@ -34,7 +34,13 @@ const ContextMenu: React.FC<ContextMenuProps> = () => {
       left: 0,
     },
     menuType: 'node',
-    menuItems: [
+    foldedNodes: [],
+  });
+  const { menuStyles, elementId, foldedNodes } = state;
+
+  const menuItems: MenuProps['items'] = useMemo(() => {
+    const model = graph?.getNodeData(elementId!);
+    return [
       {
         label: '扩展节点',
         key: 'query-neighbor',
@@ -44,13 +50,20 @@ const ContextMenu: React.FC<ContextMenuProps> = () => {
           { label: '三级节点', key: 'query-neighbor-3' },
         ],
       },
-      { label: '收起节点', key: 'collapse-node' }, // 菜单项务必填写 key
+      { label: model?.folded ? '展开节点' : '收起节点', key: 'collapse-node' }, // 菜单项务必填写 key
       { label: '删除节点', key: 'remove-node' },
-    ],
-  });
-  const { menuStyles, menuItems, elementId } = state;
+    ];
+  }, [foldedNodes, elementId]);
+
+  const setFoldedNodes = (val: string[]) => {
+    updateState((draft) => {
+      draft.foldedNodes = val;
+    });
+  };
+
+
   const hideMemu = () => {
-    updateState(draft => {
+    updateState((draft) => {
       draft.menuStyles.display = 'none';
     });
   };
@@ -61,7 +74,7 @@ const ContextMenu: React.FC<ContextMenuProps> = () => {
       tabContainerField.setComponentProps({
         spinning: true,
       });
-      updateState(draft => {
+      updateState((draft) => {
         draft.menuStyles.display = 'none';
       });
       onQueryNeighbors({
@@ -80,6 +93,44 @@ const ContextMenu: React.FC<ContextMenuProps> = () => {
           spinning: false,
         });
       });
+    } else if (key.includes('collapse-node')) {
+      const model = graph?.getNodeData(elementId!);
+      const neighborNode = graph?.getNeighborNodesData(elementId!);
+      const neighborEdge = graph?.getRelatedEdgesData(elementId!);
+      const hideNodeIds: string[] = [];
+      const notHideNodeIds: string[] = [];
+      neighborNode?.forEach((item) => {
+        if (graph?.getNeighborNodesData(item.id!).length === 1) {
+          hideNodeIds.push(item.id);
+        } else {
+          notHideNodeIds.push(item.id);
+        }
+      });
+      const hideOrShowElement = (id: string) => {
+        if (model?.folded) {
+          graph?.showElement(id);
+          setFoldedNodes([...foldedNodes, id]);
+        } else {
+          graph?.hideElement(id);
+          setFoldedNodes(foldedNodes.filter((item) => item !== id));
+        }
+      };
+
+      hideNodeIds.forEach((item) => hideOrShowElement(item));
+      neighborEdge?.forEach((item) => {
+        if (!notHideNodeIds.some((nodeId) => item.id?.includes(nodeId))) {
+          hideOrShowElement(item.id!);
+        }
+      });
+      graph?.updateData({
+        nodes: [
+          {
+            ...model!,
+            folded: !model?.folded,
+          },
+        ],
+      });
+      hideMemu();
     } else if (key === 'remove-node') {
       if (elementId) {
         graph?.removeData({ nodes: [elementId] });
@@ -99,7 +150,7 @@ const ContextMenu: React.FC<ContextMenuProps> = () => {
         .getContainer()!
         .getBoundingClientRect();
       if (clientRect && config.id) {
-        updateState(draft => {
+        updateState((draft) => {
           draft.menuStyles.left = e.client.x - clientRect.left + 20;
           draft.menuStyles.top = e.client.y - clientRect.top;
           draft.menuStyles.display = 'block';

@@ -1,8 +1,6 @@
 import IconFont from '@/components/icon-font';
-// import { Behaviors } from '@antv/graphin';
 import { throttle } from '@antv/util';
 import React, { RefObject, useRef } from 'react';
-// const { ZoomCanvas } = Behaviors;
 
 import { onFieldValueChange } from '@formily/core';
 import { useFormEffects } from '@formily/react';
@@ -70,24 +68,7 @@ const ZoomInOut = () => {
       trailing: true,
     },
   );
-  // const [state, setState] = useImmer<{
-  //   visible: boolean;
-  // }>({
-  //   visible: false,
-  // });
-  // const resetEvent = (e) => {
-  //   e.stopPropagation();
-  //   e.preventDefault();
-  // };
-  // useEffect(() => {
-  // const minimap = new Minimap({
-  //   size: [nodeRef.current.width, nodeRef.current.mapHeight],
-  //   container: 'minimap',
-  //   className: 'minimapWrap',
-  // });
-  // register(ExtensionCategory.PLUGIN, 'custom-plugin', minimap);
-  // graph?.setPlugins((plugins) => [...plugins, 'minimap']);
-  // }, [state.visible]);
+ 
 
   if (isHideZoomBtn) return null;
 
@@ -123,37 +104,6 @@ const ZoomInOut = () => {
         realNodeRef.current.style.borderColor = '#e9e9e9';
       }}
     >
-      {/* <ZoomCanvas sensitivity={1} /> */}
-      {/* {!state.visible ? (
-        <div className={styles['map']}>
-          <div
-            id="minimap"
-            onMouseDown={(e) => {
-              resetEvent(e);
-            }}
-          ></div>
-        </div>
-      ) : null}
-      {state.visible ? (
-      //  TODO 按钮将背景图更改为使用IconFont进行优化
-        <div
-          className={styles['hide']}
-          style={{
-            border: '1px solid #e9e9e9',
-          }}
-          onClick={() => {
-            setState({ ...state, visible: false });
-          }}
-        ></div>
-      ) : (
-      //  TODO 按钮将背景图更改为使用IconFont进行优化
-        <div
-          className={styles['show']}
-          onClick={() => {
-            setState({ ...state, visible: true });
-          }}
-        ></div>
-      )} */}
       <div className={styles['toolbar']}>
         <div
           className={[styles['toolbar-item']].join(' ')}
