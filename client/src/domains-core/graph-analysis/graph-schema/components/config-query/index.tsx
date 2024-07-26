@@ -125,8 +125,8 @@ const ConfigQuery: React.FC = () => {
 
     setTabContainerGraphData({
       data: {
-        graphData: result.formatData,
-        originQueryData: result.originalData,
+        graphData: result?.formatData,
+        originQueryData: result?.originalData,
       },
       ifClearGraphData: hasClear,
     });
