@@ -18,7 +18,9 @@ export const useSchemaTabContainer = () => {
     data: OriginGraphData;
     ifClearGraphData?: boolean;
   }) => {
+
     const { data, ifClearGraphData = true } = options;
+
     const { graphData, originQueryData } = data;
     const originGraphData = getTabContainerValue('originGraphData');
     // 清空数据

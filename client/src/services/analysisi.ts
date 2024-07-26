@@ -19,21 +19,18 @@ export const analysisCypherQuery = async (
 
   const result = await request({ driver, cypher: script, graphName });
 
-  console.log(result, 'result');
-
   if (!result.success) {
     return result;
   }
   const {
-    data: { formatData = [], originGraphData },
+    data: { formatData = [], originalData = [] },
   } = QueryResultFormatter(result, script) || {};
 
-  console.log(formatData, 'formatData');
 
   return {
     success: true,
-    graphData: convertIntToNumber(formatData),
-    originGraphData,
+    formatData: convertIntToNumber(formatData),
+    originalData,
   };
 };
 
@@ -57,13 +54,13 @@ export const queryNeighbors = async (
     return result;
   }
   const {
-    data: { formatData = [], originGraphData },
+    data: { formatData = [], originalData = [] },
   } = QueryResultFormatter(result, cypher) || {};
 
   return {
     success: true,
-    graphData: convertIntToNumber(formatData),
-    originGraphData,
+    formatData: convertIntToNumber(formatData),
+    originalData,
   };
 };
 
@@ -88,13 +85,13 @@ export const quickQuery = async (
     return result;
   }
   const {
-    data: { formatData = [], OriginGraphData },
+    data: { formatData = [], originalData = [] },
   } = QueryResultFormatter(result, cypher) || {};
 
   return {
     success: true,
-    graphData: convertIntToNumber(formatData),
-    originGraphData,
+    formatData: convertIntToNumber(formatData),
+    originalData,
   };
 };
 

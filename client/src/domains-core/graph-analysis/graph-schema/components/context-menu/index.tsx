@@ -71,8 +71,8 @@ const ContextMenu: React.FC<ContextMenuProps> = () => {
       }).then(res => {
         setTabContainerGraphData({
           data: {
-            graphData: res.graphData,
-            originQueryData: res.originalData,
+            graphData: res?.formatData,
+            originQueryData: res?.originalData,
           },
           ifClearGraphData: false,
         });

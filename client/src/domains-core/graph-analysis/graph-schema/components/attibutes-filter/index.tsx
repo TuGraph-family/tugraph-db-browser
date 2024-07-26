@@ -8,6 +8,7 @@ import { Button, Form, Popconfirm } from 'antd';
 import { cloneDeep } from 'lodash';
 import React, { useState } from 'react';
 import styles from './index.less';
+import { AttributesEditForm } from '@/domains-core/graph-analysis/graph-schema/components/attributes-filter-form';
 
 const AttributesFilter: React.FC = () => {
   const [form] = Form.useForm();

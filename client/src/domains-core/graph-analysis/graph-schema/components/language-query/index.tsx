@@ -65,7 +65,7 @@ const LanguageQuery: React.FC<ILanguageQueryProps> = ({ height = '320px' }) => {
       graphName,
       script: editorValue,
     });
-    const { graphData = [], originalData } = result || {};
+  
 
     tabContainerField.setComponentProps({
       spinning: false,
@@ -73,8 +73,8 @@ const LanguageQuery: React.FC<ILanguageQueryProps> = ({ height = '320px' }) => {
 
     setTabContainerGraphData({
       data: {
-        graphData: graphData,
-        originQueryData: originalData,
+        graphData: result?.formatData,
+        originQueryData: result?.originalData,
       },
       ifClearGraphData: hasClear,
     });
