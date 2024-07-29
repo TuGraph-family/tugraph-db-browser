@@ -407,6 +407,7 @@ export const GraphQuery = () => {
               <Button
                 type="text"
                 icon={<SaveOutlined />}
+                disabled={!editorKey}
                 onClick={() => {
                   setLocalData(`TUGRAPH_STATEMENT_LISTS`, {
                     ...getLocalData(`TUGRAPH_STATEMENT_LISTS`),
