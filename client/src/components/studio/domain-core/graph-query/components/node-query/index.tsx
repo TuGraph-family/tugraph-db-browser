@@ -80,7 +80,7 @@ export const NodeQuery: React.FC<Prop> = ({ nodes, nodeQuery }) => {
         onClose={onClose}
         position="left"
         className={styles[`${PUBLIC_PERFIX_CLASS}-nodequery-drawer`]}
-        width={280}
+        width={350}
         backgroundColor="#f6f6f6"
         footer={
           <>
@@ -129,34 +129,49 @@ export const NodeQuery: React.FC<Prop> = ({ nodes, nodeQuery }) => {
                 maxTagCount={'responsive'}
               />
             </Item>
-            <Item
-              required
-              label={'属性'}
-              name="propertie"
-              rules={[{ required: true, message: '请选择' }]}
-            >
-              <Select
-                onChange={onSelectPropertie}
-                options={map(properties, item => ({ value: item.name }))}
-                placeholder="请选择"
-              />
+            <Item label="属性条件" required>
+              <Input.Group compact>
+                <Item
+                  noStyle
+                  required
+                  name="propertie"
+                  rules={[{ required: true, message: '请选择图元素属性' }]}
+                >
+                  <Select
+                    onChange={onSelectPropertie}
+                    options={map(properties, item => ({ value: item.name }))}
+                    placeholder="请选择"
+                    style={{ width: '35%' }}
+                    showSearch
+                    allowClear
+                  />
+                </Item>
+                <Item
+                  noStyle
+                  required
+                  name="logic"
+                  rules={[{ required: true, message: '请选择查询逻辑' }]}
+                >
+                  <Select
+                    style={{ width: '20%' }}
+                    options={logics}
+                    allowClear
+                    notFoundContent={
+                      <div style={{ textAlign: 'center' }}>No Data</div>
+                    }
+                  />
+                </Item>
+                <Item
+                  noStyle
+                  required
+                  name="value"
+                  rules={[{ required: true, message: '请输入属性值' }]}
+                >
+                  <Input style={{ width: '45%' }} placeholder="请输入" />
+                </Item>
+              </Input.Group>
             </Item>
-            <Item
-              required
-              label={'逻辑'}
-              name="logic"
-              rules={[{ required: true, message: '请选择' }]}
-            >
-              <Select options={logics} placeholder="请选择" />
-            </Item>
-            <Item
-              required
-              label={'值'}
-              name="value"
-              rules={[{ required: true, message: '请输入' }]}
-            >
-              <Input placeholder="请输入" />
-            </Item>
+
           </Form>
         </div>
       </SwitchDrawer>

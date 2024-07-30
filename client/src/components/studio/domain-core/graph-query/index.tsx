@@ -255,6 +255,7 @@ export const GraphQuery = () => {
       graphName: currentGraphName,
       nodeQuery
     }).then(res => {
+
       const id = uniqueId('id_');
       updateState(draft => {
         draft.resultData = [...resultData, { ...res, id }];
