@@ -1,5 +1,5 @@
-import { hasModuleAuth } from '../../../../components/auth-item';
-import { bigNumberTransform } from '../../../../utils/bigNumberTransform';
+import { hasModuleAuth } from '@/components/studio/components/auth-item';
+import { bigNumberTransform } from '@/components/studio/utils/bigNumberTransform';
 import { compact } from 'lodash';
 export const getProjectDetailTranslator = (res: any) => {
   if (res.success && res.data) {

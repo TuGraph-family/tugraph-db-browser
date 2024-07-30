@@ -83,12 +83,8 @@ const GraphSchema: React.FC = () => {
     }).then(data => {
       if (data) {
         const { schema } = data.data?.[0]?.schema || {};
-        // const graphSchemaStyle = getStylesFromSchema(
-        //   data.draftVisualModelDataVO,
-        // );
 
         form.setValuesIn('graphSchema', graphSchemaTranslator(schema));
-        // form.setValuesIn('graphSchemaStyle', graphSchemaStyle);
       }
     });
   }, []);
@@ -97,8 +93,6 @@ const GraphSchema: React.FC = () => {
     <Container>
       <Spin
         spinning={
-          // loadingGetGraphProjectDetail ||
-          // loadingGetGraphLanguageList ||
           querySchemaLoading
         }
       >

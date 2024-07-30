@@ -3,14 +3,14 @@ import type { UploadProps } from 'antd';
 import { Upload, UploadFile } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { isEmpty, map } from 'lodash';
-import { DataType, FileData } from '../../../interface/import';
-import { GraphData } from '../../../interface/schema';
-import { getFileSizeTransform } from '../../../utils/getFileSizeTransform';
-import { parseCsv } from '../../../utils/parseCsv';
+import { DataType, FileData } from '@/components/studio/interface/import';
+import { GraphData } from '@/components/studio/interface/schema';
+import { getFileSizeTransform } from '@/components/studio/utils/getFileSizeTransform';
+import { parseCsv } from '@/components/studio/utils/parseCsv';
 import {
   cascaderOptionsTransform,
   mergeFileDataList,
-} from '../../../utils/uploadFile';
+} from '@/components/studio/utils/uploadFile';
 
 const { Dragger } = Upload;
 

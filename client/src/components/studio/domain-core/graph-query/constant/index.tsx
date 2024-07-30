@@ -1,7 +1,7 @@
 import { GraphinData } from '@antv/graphin';
 import { Tooltip } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
-import React from 'react';
+
 
 export const EXCECUTE_EFFICIENCY_RESULT_TABLE: ColumnsType<any> = [
   {

@@ -4,11 +4,19 @@ import { ColumnsType } from 'antd/es/table';
 import { filter, map, uniq, xor } from 'lodash';
 import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import { EditTable } from '../../../components/edit-table';
-import SwitchDrawer from '../../../components/switch-drawer';
-import { DATA_TYPE, EditType, PUBLIC_PERFIX_CLASS } from '../../../constant';
-import { useVisible } from '../../../hooks/useVisible';
-import { AttrData, IndexData, StartData } from '../../../interface/schema';
+import { EditTable } from '@/components/studio/components/edit-table';
+import SwitchDrawer from '@/components/studio/components/switch-drawer';
+import {
+  DATA_TYPE,
+  EditType,
+  PUBLIC_PERFIX_CLASS,
+} from '@/components/studio/constant';
+import { useVisible } from '@/components/studio/hooks/useVisible';
+import {
+  AttrData,
+  IndexData,
+  StartData,
+} from '@/components/studio/interface/schema';
 
 import styles from './index.module.less';
 import { getQueryParam } from '@/components/studio/utils/url';
@@ -60,15 +68,15 @@ export const AddNodesEdges: React.FC<Prop> = ({
     return state?.isNode && record?.primaryField;
   };
 
-  const onReset=()=>{
+  const onReset = () => {
     updateState({
       startList: [],
       isNode: true,
       attrList: [],
       configList: [],
       isDocumentEdge: false,
-    })
-  }
+    });
+  };
   useEffect(() => {
     onSwitch?.(onShow, onClose);
   }, []);
@@ -93,7 +101,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
             },
           ];
     });
-  }, [type,visible]);
+  }, [type, visible]);
 
   const propertyList = () => {
     const attrPropertyNames = map(
@@ -102,10 +110,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
     );
     const indexPropertyNames = map(configList, item => item.propertyName);
     return map(
-      filter(
-        xor(attrPropertyNames, indexPropertyNames),
-        item => item ,
-      ),
+      filter(xor(attrPropertyNames, indexPropertyNames), item => item),
       item => ({ label: item, value: item }),
     );
   };
@@ -480,8 +485,8 @@ export const AddNodesEdges: React.FC<Prop> = ({
                     return [item.source, item.target];
                   }),
                 });
-                form.resetFields()
-                onReset()
+                form.resetFields();
+                onReset();
               });
             }}
           >

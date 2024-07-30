@@ -1,7 +1,6 @@
 import { graphDataToOptions } from '@/components/studio/utils/dataImportTransform';
 import { batchSecureDeletion } from '@/components/studio/utils/objectOper';
 import { getProperties } from '@/utils';
-import { ProFormSlider } from '@ant-design/pro-components';
 import { Select, Cascader, InputNumber, Tooltip, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 const { Paragraph } = Typography;

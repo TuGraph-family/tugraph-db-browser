@@ -1,9 +1,9 @@
 import { Form, Modal, Radio, message } from 'antd';
 import { map } from 'lodash';
 import { useImmer } from 'use-immer';
-import { PUBLIC_PERFIX_CLASS, STROED_TYPE } from '../../../../../constant';
-import { useProcedure } from '../../../../../hooks/useProcedure';
-import { downloadFile } from '../../../../../utils/downloadFile';
+import { PUBLIC_PERFIX_CLASS, STROED_TYPE } from '@/components/studio/constant';
+import { useProcedure } from '@/components/studio/hooks/useProcedure';
+import { downloadFile } from '@/components/studio/utils/downloadFile';
 
 import styles from './index.module.less';
 
@@ -32,7 +32,7 @@ export const StoredDownLoad: React.FC<Prop> = ({ demoVisible, onCancel }) => {
     <Modal
       title="Demo下载"
       width={525}
-      visible={demoVisible}
+      open={demoVisible}
       confirmLoading={GetProcedureDemoLoading}
       onOk={() => {
         getDemo(demoValue);

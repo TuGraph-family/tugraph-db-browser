@@ -17,37 +17,37 @@ import {
   GraphCanvas,
   GraphCanvasContext,
   GraphCanvasContextInitValue,
-} from '../../components/garph-canvas';
-import { GraphCanvasLayout } from '../../components/graph-canvas-layout';
-import { CANVAS_LAYOUT } from '../../components/graph-canvas-layout/constant';
-import { GraphCanvasTools } from '../../components/graph-canvas-tools';
+} from '@/components/studio/components/garph-canvas';
+import { GraphCanvasLayout } from '@/components/studio/components/graph-canvas-layout';
+import { CANVAS_LAYOUT } from '@/components/studio/components/graph-canvas-layout/constant';
+import { GraphCanvasTools } from '@/components/studio/components/graph-canvas-tools';
 import { AddNodesEdges } from './add-nodes-edges';
 import { EditNodesEdges } from './edit-nodes-edges';
 import { ImportData } from './import-data';
 import NodesEdgesList from './nodes-edges-list';
 
 /** custom hooks */
-import { useImport } from '../../hooks/useImport';
-import { useSchema } from '../../hooks/useSchema';
-import { SubGraph } from '../../interface/graph';
+import { useImport } from '@/components/studio/hooks/useImport';
+import { useSchema } from '@/components/studio/hooks/useSchema';
+import { SubGraph } from '@/components/studio/interface/graph';
 
 /** type */
-import { GraphConfigData, LabelSchema, LabelType, SchemaProperties } from '../../interface/schema';
+import { GraphConfigData, LabelSchema, LabelType, SchemaProperties } from '@/components/studio/interface/schema';
 
 /** constants */
-import { GRAPH_OPERATE, PUBLIC_PERFIX_CLASS } from '../../constant';
-import demoData from '../../constant/demo-json/schema-demo.json';
+import { GRAPH_OPERATE, PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import demoData from '@/components/studio/constant/demo-json/schema-demo.json';
 
 /** utils */
-import { downloadFile } from '../../utils/downloadFile';
-import { getLocalData } from '../../utils/localStorage';
-import { nodesEdgesListTranslator } from '../../utils/nodesEdgesListTranslator';
-import { schemaTransform } from '../../utils/schemaTransform';
-import { getQueryString } from '../../utils/routeParams';
-import { addQueryParam } from '../../utils/url';
+import { downloadFile } from '@/components/studio/utils/downloadFile';
+import { getLocalData } from '@/components/studio/utils/localStorage';
+import { nodesEdgesListTranslator } from '@/components/studio/utils/nodesEdgesListTranslator';
+import { schemaTransform } from '@/components/studio/utils/schemaTransform';
+import { getQueryString } from '@/components/studio/utils/routeParams';
+import { addQueryParam } from '@/components/studio/utils/url';
 
 /** styles */
-import IconFont from '../../components/icon-font';
+import IconFont from '@/components/studio/components/icon-font';
 import styles from './index.module.less';
 
 export const GraphConstruct = () => {
@@ -366,7 +366,7 @@ export const GraphConstruct = () => {
             type={item.icon}
             style={{ fontSize: '25px', paddingRight: '5px' }}
           />
-          {item.lable}
+          {item.label}
         </div>
       ))}
     </div>

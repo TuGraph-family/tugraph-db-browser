@@ -1,12 +1,12 @@
 import { CaretDownOutlined } from '@ant-design/icons';
 import { Badge, Button, Collapse, Popconfirm, Space, Tooltip } from 'antd';
-import { filter, map } from 'lodash';
-import { PUBLIC_PERFIX_CLASS } from '../../../constant';
-import { FileData } from '../../../interface/import';
-import { GraphData } from '../../../interface/schema';
+import { filter } from 'lodash';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import { FileData } from '@/components/studio/interface/import';
+import { GraphData } from '@/components/studio/interface/schema';
 
 import styles from './index.module.less';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import DataMap from './data-map';
 
 const { Panel } = Collapse;

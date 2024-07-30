@@ -23,8 +23,8 @@ import {
 import { filter, find, isEmpty, join, map, uniqueId } from 'lodash';
 import { useCallback, useEffect, useRef } from 'react';
 import { useImmer } from 'use-immer';
-import IconFont from '../../components/icon-font';
-import { SplitPane } from '../../components/split-panle';
+import IconFont from '@/components/studio/components/icon-font';
+import { SplitPane } from '@/components/studio/components/split-panle';
 import CypherEdit from './cypherEditor';
 import {
   IQUIRE_LIST,
@@ -32,14 +32,14 @@ import {
   STORED_PROCEDURE_DESC,
   STORED_PROCEDURE_RULE,
   USER_HELP_LINK,
-} from '../../constant';
-import { useQuery } from '../../hooks/useQuery';
-import { useSchema } from '../../hooks/useSchema';
-import { SubGraph } from '../../interface/graph';
-import { ExcecuteResultProp } from '../../interface/query';
-import { getLocalData, setLocalData } from '../../utils';
-import { downloadFile } from '../../utils/downloadFile';
-import { nodesEdgesListTranslator } from '../../utils/nodesEdgesListTranslator';
+} from '@/components/studio/constant';
+import { useQuery } from '@/components/studio/hooks/useQuery';
+import { useSchema } from '@/components/studio/hooks/useSchema';
+import { SubGraph } from '@/components/studio/interface/graph';
+import { ExcecuteResultProp } from '@/components/studio/interface/query';
+import { getLocalData, setLocalData } from '@/components/studio/utils';
+import { downloadFile } from '@/components/studio/utils/downloadFile';
+import { nodesEdgesListTranslator } from '@/components/studio/utils/nodesEdgesListTranslator';
 import ExcecuteResultPanle from './components/excecute-result-panle';
 import ModelOverview from './components/model-overview';
 import { NodeQuery } from './components/node-query';
@@ -47,8 +47,9 @@ import { PathQueryPanel } from './components/path-query';
 import { StatementList } from './components/statement-query-list';
 import { StoredProcedureModal } from './components/stored-procedure';
 
-import { getQueryString } from '../../utils/routeParams';
+import { getQueryString } from '@/components/studio/utils/routeParams';
 import styles from './index.module.less';
+import { INodeQuery } from '@/types/services';
 
 const { Option } = Select;
 
@@ -191,13 +192,7 @@ export const GraphQuery = () => {
       });
     }
   }, [activeTab]);
-  // useEffect(() => {
-  //   if (location.hash) {
-  //     updateState(draft => {
-  //       draft.storedVisible = true;
-  //     });
-  //   }
-  // }, []);
+
   const onSplitPaneWidthChange = useCallback((size: number) => {
     updateState(draft => {
       draft.editorWidth = size;
@@ -252,20 +247,20 @@ export const GraphQuery = () => {
         });
       });
     }
-    if (activeTab === IQUIRE_LIST[2].key) {
-      onNodeQuery({
-        graphName: currentGraphName,
-        limit,
-        conditions,
-        nodes: queryParams,
-      }).then(res => {
-        const id = uniqueId('id_');
-        updateState(draft => {
-          draft.resultData = [...resultData, { ...res, id }];
-          draft.lastResult = { ...lastResult, [IQUIRE_LIST[2].key]: id };
-        });
+  };
+
+  /* 节点查询 */
+  const handleNodeQuery = (nodeQuery: INodeQuery) => {
+    onNodeQuery({
+      graphName: currentGraphName,
+      nodeQuery
+    }).then(res => {
+      const id = uniqueId('id_');
+      updateState(draft => {
+        draft.resultData = [...resultData, { ...res, id }];
+        draft.lastResult = { ...lastResult, [IQUIRE_LIST[2].key]: id };
       });
-    }
+    });
   };
 
   const header = (
@@ -674,7 +669,7 @@ export const GraphQuery = () => {
       )}
       {activeTab === IQUIRE_LIST[2].key && (
         <div className={styles[`${PUBLIC_PERFIX_CLASS}-node-content`]}>
-          <NodeQuery nodes={graphData.nodes} nodeQuery={handleQuery} />
+          <NodeQuery nodes={graphData.nodes} nodeQuery={handleNodeQuery} />
           <div className={styles[`${PUBLIC_PERFIX_CLASS}-node-result`]}>
             {resultData.length ? (
               <ExcecuteResultPanle
@@ -699,11 +694,6 @@ export const GraphQuery = () => {
         visible={storedVisible}
         graphName={currentGraphName}
         onCancel={() => {
-          // window.history.replaceState(
-          //   null,
-          //   null,
-          //   `${location.pathname + location.search}`,
-          // );
           updateState(draft => {
             draft.storedVisible = false;
           });

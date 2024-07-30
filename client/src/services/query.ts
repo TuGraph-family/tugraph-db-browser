@@ -8,10 +8,9 @@ import {
 import { QueryResultFormatter, responseFormatter } from '@/utils/schema';
 import {
   generateCypherByConfig,
-  generateCypherByNode,
   generateCypherByPath,
 } from '@/utils/query';
-import { queryNeighborsCypher } from '@/queries/query';
+import { getCypherByNode, queryNeighborsCypher } from '@/queries/query';
 import { request } from './request';
 import { Driver } from 'neo4j-driver';
 
@@ -44,9 +43,9 @@ export const queryByPath = async (driver: Driver, params: IPathQueryParams) => {
  * @param params
  */
 export const queryByNode = async (driver: Driver, params: INodeQueryParams) => {
-  const { graphName } = params;
+  const { graphName,nodeQuery } = params;
 
-  const script = generateCypherByNode(params);
+  const script = getCypherByNode(nodeQuery);
   const result = await request({ driver, cypher: script, graphName });
 
   return QueryResultFormatter(result, script);

@@ -12,9 +12,9 @@ import {
 import { map } from 'lodash';
 import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import DemoCard from '../../../../../components/demo-card';
-import { PUBLIC_PERFIX_CLASS, TUGRAPH_DEOM } from '../../../../../constant';
-import { useGraph } from '../../../../../hooks/useGraph';
+import DemoCard from '@/components/studio/components/demo-card';
+import { PUBLIC_PERFIX_CLASS, TUGRAPH_DEOM } from '@/components/studio/constant';
+import { useGraph } from '@/components/studio/hooks/useGraph';
 
 import EditForm from '../edit-form';
 
@@ -197,7 +197,7 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
             </div>
           ) : (
             <div className={styles[`${PUBLIC_PERFIX_CLASS}-creat-step`]}>
-              <EditForm form={form} />
+              <EditForm form={form} type='add' />
             </div>
           )}
           {current === 0 && <Pagination size="small" total={cardList.length} />}

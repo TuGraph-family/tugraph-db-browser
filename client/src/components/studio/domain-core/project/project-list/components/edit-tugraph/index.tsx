@@ -1,7 +1,7 @@
 import { Form, Modal, message } from 'antd';
 import React, { useEffect } from 'react';
-import { PUBLIC_PERFIX_CLASS } from '../../../../../constant';
-import { useGraph } from '../../../../../hooks/useGraph';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import { useGraph } from '@/components/studio/hooks/useGraph';
 import EditForm from '../edit-form';
 
 import styles from './index.module.less';

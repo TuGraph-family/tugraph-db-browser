@@ -7,15 +7,15 @@ import {
 } from '@ant-design/icons';
 import { Button, Empty, Modal, Popconfirm, message } from 'antd';
 import { filter, find, join, last, map, xorBy } from 'lodash';
-import React, { ReactChild, useCallback, useEffect } from 'react';
+import React, { ReactChild, useCallback } from 'react';
 import { useImmer } from 'use-immer';
 import { useModel } from 'umi';
-import { SplitPane } from '../../../../components/split-panle';
-import TextTabs from '../../../../components/text-tabs';
-import { PUBLIC_PERFIX_CLASS } from '../../../../constant';
-import { useProcedure } from '../../../../hooks/useProcedure';
-import { ProcedureItemParams } from '../../../../interface/procedure';
-import { downloadFile } from '../../../../utils/downloadFile';
+import { SplitPane } from '@/components/studio/components/split-panle';
+import TextTabs from '@/components/studio/components/text-tabs';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import { useProcedure } from '@/components/studio/hooks/useProcedure';
+import { ProcedureItemParams } from '@/components/studio/interface/procedure';
+import { downloadFile } from '@/components/studio/utils/downloadFile';
 import { StoredCheckoutDrawer } from './stored-checkout';
 import { StoredDownLoad } from './stored-download';
 import { StoredKhopPanle } from './stored-khop-panle';
@@ -24,7 +24,7 @@ import { StoredResult } from './stored-result';
 
 import { InitialState } from '@/app';
 
-import IconFont from '../../../../components/icon-font';
+import IconFont from '@/components/studio/components/icon-font';
 import styles from './index.module.less';
 
 type Props = {

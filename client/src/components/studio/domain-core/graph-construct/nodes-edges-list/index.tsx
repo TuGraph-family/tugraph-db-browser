@@ -4,12 +4,12 @@ import copy from 'copy-to-clipboard';
 import { filter, join } from 'lodash';
 import React, { useEffect, useMemo } from 'react';
 import { useImmer } from 'use-immer';
-import IconFont from '../../../components/icon-font';
-import SearchInput from '../../../components/search-input';
-import SwitchDrawer from '../../../components/switch-drawer';
-import TextTabs from '../../../components/text-tabs';
-import { PUBLIC_PERFIX_CLASS } from '../../../constant';
-import { useVisible } from '../../../hooks/useVisible';
+import IconFont from '@/components/studio/components/icon-font';
+import SearchInput from '@/components/studio/components/search-input';
+import SwitchDrawer from '@/components/studio/components/switch-drawer';
+import TextTabs from '@/components/studio/components/text-tabs';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import { useVisible } from '@/components/studio/hooks/useVisible';
 
 import styles from './index.module.less';
 interface NodeProp {

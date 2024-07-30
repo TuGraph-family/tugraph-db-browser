@@ -1,6 +1,6 @@
 import { Form, Input, Modal } from 'antd';
 import React from 'react';
-import { PUBLIC_PERFIX_CLASS } from '../../constant';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
 
 import styles from './index.module.less';
 
@@ -14,7 +14,7 @@ const EditPasswordModal: React.FC<Prop> = ({ open, onCancel }) => {
       cancelText="取消"
       width={560}
       className={styles[`${PUBLIC_PERFIX_CLASS}-edit-password-modal`]}
-      visible={open}
+      open={open}
       onCancel={onCancel}
     >
       <Form layout="vertical">

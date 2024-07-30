@@ -58,14 +58,11 @@ export const ImportData: React.FC<Prop> = ({
   } = state;
 
   // 获取点类型
-  const getType = (graph:GraphData, name: string) => {
-    const { primaryField, properties } = graph?.nodes?.find(
-      itemNode => itemNode?.labelName === name,
-    ) || {};
-    const type = properties?.find(
-      itemType => itemType?.name === primaryField,
-    );
-    return type || {}
+  const getType = (graph: GraphData, name: string) => {
+    const { primaryField, properties } =
+      graph?.nodes?.find(itemNode => itemNode?.labelName === name) || {};
+    const type = properties?.find(itemType => itemType?.name === primaryField);
+    return type || {};
   };
 
   const onImport = () => {
@@ -88,17 +85,17 @@ export const ImportData: React.FC<Prop> = ({
     if (!isLengthNotMatch) {
       return message.error(`请完成所有列的映射`);
     }
-   
+
     fileDataList.forEach((item: any) => {
       item.fileSchema.columns = [...item?.fileSchema?.columns].filter(
         item => item,
       );
       if (item?.selectedValue?.[0] === 'edge') {
         const newProperties = [];
-        const { DST_ID, SRC_ID,properties } = item?.fileSchema || {};
+        const { DST_ID, SRC_ID, properties } = item?.fileSchema || {};
         if (DST_ID === SRC_ID) {
           // 相等只需要取一个类型
-          const type = getType(graphData,DST_ID)
+          const type = getType(graphData, DST_ID);
           newProperties.push(
             { ...type, name: 'SRC_ID' },
             { ...type, name: 'DST_ID' },
@@ -106,11 +103,11 @@ export const ImportData: React.FC<Prop> = ({
         } else {
           // 不相等取两个类型
           newProperties.push(
-            { ...getType(graphData,SRC_ID), name: 'SRC_ID' },
-            { ...getType(graphData,DST_ID), name: 'DST_ID' },
+            { ...getType(graphData, SRC_ID), name: 'SRC_ID' },
+            { ...getType(graphData, DST_ID), name: 'DST_ID' },
           );
         }
-        item.fileSchema.properties = newProperties.concat(properties)
+        item.fileSchema.properties = newProperties.concat(properties);
       }
     });
 
@@ -119,7 +116,6 @@ export const ImportData: React.FC<Prop> = ({
         message.error('请先上传文件');
         return;
       }
-     
 
       // 1. 导入数据
       const params = {
@@ -127,8 +123,6 @@ export const ImportData: React.FC<Prop> = ({
         files: fileSchemaTransform(fileDataList),
         delimiter: val?.delimiter, //数据分隔符
       };
-
-    
 
       onImportData(params).then(res => {
         if (res?.success) {
@@ -167,7 +161,6 @@ export const ImportData: React.FC<Prop> = ({
         <ImportDataResult
           status={resultStatus}
           data={resultData}
-          errorMessage={errorMessage}
           setShowResult={setShowResult}
           graphName={graphName}
           setFileDataList={setFileDataList}
@@ -231,7 +224,7 @@ export const ImportData: React.FC<Prop> = ({
               className={
                 isFullView
                   ? styles[`${PUBLIC_PERFIX_CLASS}-container-full`]
-                  : null
+                  : undefined
               }
             >
               <div

@@ -2,7 +2,7 @@ import { Tooltip } from 'antd';
 import { join, map } from 'lodash';
 import React, { useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import { PUBLIC_PERFIX_CLASS } from '../../constant';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
 
 import styles from './index.module.less';
 

@@ -4,7 +4,7 @@ import { Button, Select } from 'antd';
 import { filter, find, join, last, map } from 'lodash';
 import React from 'react';
 import { useImmer } from 'use-immer';
-import { PUBLIC_PERFIX_CLASS } from '../../../../constant';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
 import { PathModal } from './path-modal';
 
 import styles from './index.module.less';

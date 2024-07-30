@@ -4,11 +4,11 @@ import {
   quickQueryCypher,
 } from '@/queries/analysis';
 import { getGraphSchema } from '@/queries/schema';
-import { convertIntToNumber } from '@/translator';
 import { ILanguageQueryParams } from '@/types/services';
-import { QueryResultFormatter, responseFormatter } from '@/utils/schema';
+import { responseFormatter } from '@/utils/schema';
 import { Driver } from 'neo4j-driver';
 import { request } from './request';
+import { graphDataTranslator } from '@/translator/graph-data-tanslator';
 
 /* 语句查询 */
 export const analysisCypherQuery = async (
@@ -22,16 +22,8 @@ export const analysisCypherQuery = async (
   if (!result.success) {
     return result;
   }
-  const {
-    data: { formatData = [], originalData = [] },
-  } = QueryResultFormatter(result, script) || {};
 
-
-  return {
-    success: true,
-    formatData: convertIntToNumber(formatData),
-    originalData,
-  };
+  return graphDataTranslator(result, script);
 };
 
 /* 节点扩展 */
@@ -53,15 +45,8 @@ export const queryNeighbors = async (
   if (!result.success) {
     return result;
   }
-  const {
-    data: { formatData = [], originalData = [] },
-  } = QueryResultFormatter(result, cypher) || {};
 
-  return {
-    success: true,
-    formatData: convertIntToNumber(formatData),
-    originalData,
-  };
+  return graphDataTranslator(result, cypher);
 };
 
 /* 配置查询 */
@@ -84,15 +69,8 @@ export const quickQuery = async (
   if (!result.success) {
     return result;
   }
-  const {
-    data: { formatData = [], originalData = [] },
-  } = QueryResultFormatter(result, cypher) || {};
 
-  return {
-    success: true,
-    formatData: convertIntToNumber(formatData),
-    originalData,
-  };
+  return graphDataTranslator(result, cypher);
 };
 
 /* 路径查询 */

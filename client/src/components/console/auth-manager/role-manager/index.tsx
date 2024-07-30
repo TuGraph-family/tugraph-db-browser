@@ -1,12 +1,12 @@
 import { Table, Popconfirm, message, Badge } from 'antd';
 import { motion } from "framer-motion";
 import React, { useEffect } from 'react';
-import { PUBLIC_PERFIX_CLASS, PERSSION_COlOR } from '../../constant';
+import { PUBLIC_PERFIX_CLASS, PERSSION_COlOR } from '@/components/console/constant';
 import { useImmer } from 'use-immer';
-import { useRole } from '../..//hooks/useRole';
+import { useRole } from '@/components/console//hooks/useRole';
 import { ColumnsType } from 'antd/lib/table';
 import { map, isEmpty } from 'lodash';
-import { RoleProps } from '../../interface/role';
+import { RoleProps } from '@/components/console/interface/role';
 import EditRoleModal from '../edit-role';
 
 import styles from './index.module.less';
@@ -104,7 +104,7 @@ export const RoleManager: React.FC<Prop> = ({ getRefreshList }) => {
       </>
     );
   const renderPermissions = (permissions: string) => {
-    const renderItem = (name, permissions) => (
+    const renderItem = (name: string | number, permissions: string) => (
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-permissions-tr`]}>
         <Badge color={PERSSION_COlOR[permissions]} />
         <span style={{ margin: '0 14px 0 4px' }}>{name}</span>
@@ -163,7 +163,7 @@ export const RoleManager: React.FC<Prop> = ({ getRefreshList }) => {
   ];
   useEffect(() => {
     getRoleList();
-    getRefreshList(getRoleList);
+    getRefreshList?.(getRoleList);
   }, []);
   
   return (

@@ -11,12 +11,10 @@ import {
   TUGRAPH_PASSWORD,
   TUGRAPH_URI,
   TUGRAPH_USER_NAME,
-  PUBLIC_PERFIX_CLASS
 } from '@/constants';
 import { InitialState } from '@/app';
 
-/** styles */
-import styles from './index.module.less';
+
 
 type Prop = {};
 export const UserCenter: React.FC<Prop> = () => {
