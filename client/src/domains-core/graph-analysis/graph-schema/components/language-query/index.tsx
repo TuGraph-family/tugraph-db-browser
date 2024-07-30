@@ -36,7 +36,7 @@ const LanguageQuery: React.FC<ILanguageQueryProps> = ({ height = '320px' }) => {
     editorValue: string;
     hasClear: boolean;
   }>({
-    editorValue: 'MATCH (n) RETURN n',
+    editorValue: 'MATCH (n) - [r] - () RETURN n, r LIMIT 100',
     hasClear: true,
   });
 
