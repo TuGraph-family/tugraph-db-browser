@@ -31,11 +31,11 @@ interface ListType {
   list?: any[];
 }
 
-const getHasValueObj = (obj?: { [key: string]: any }) => {
+const getHasValueObj = (obj?: Record<string, any>) => {
   if (!obj) {
     return;
   }
-  const newObj: { [key: string]: any } = {};
+  const newObj: Record<string, any> = {};
   for (const key in obj) {
     if (obj[key]) {
       newObj[key] = obj[key];
@@ -51,8 +51,7 @@ const AsyncTable: React.FC<AsyncTableProps> = ({
   tableProps,
   paginationProps,
   requestParams,
-  refreshDeps,
-  serviceFlag,
+  refreshDeps
 }) => {
   const [state, setState] = useImmer<{
     dataSource: any[];
@@ -66,10 +65,9 @@ const AsyncTable: React.FC<AsyncTableProps> = ({
     dataSource: [],
     total: 0,
     ...defaultParams,
-    isFirstLoad: true,
+    isFirstLoad: true
   });
-  const { dataSource, total, body, params, isFirstLoad, } =
-    state;
+  const { dataSource, total, body, params, isFirstLoad } = state;
   const { run: requestData, loading } = useRequest(service, {
     manual: true,
   });
@@ -100,7 +98,7 @@ const AsyncTable: React.FC<AsyncTableProps> = ({
         draft.pageSize = size;
       });
     },
-    [requestParams, requestBody],
+    [requestParams, requestBody]
   );
   const showTotal = useCallback((totalNumber: number) => {
     return `共${totalNumber}条`;
@@ -120,7 +118,7 @@ const AsyncTable: React.FC<AsyncTableProps> = ({
         showTotal: showTotal,
         showQuickJumper: true,
         showSizeChanger: true,
-        ...paginationProps,
+        ...paginationProps
       }}
     />
   );
