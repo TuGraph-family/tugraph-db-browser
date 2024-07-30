@@ -9,16 +9,16 @@ import { motion } from "framer-motion";
 import EditAuthModal from '../edit-user';
 
 /** custom hooks */
-import { useUser } from '../..//hooks/useUser';
+import { useUser } from '@/components/console/hooks/useUser';
 
 /** constants */
-import { PERSSION_COlOR, PUBLIC_PERFIX_CLASS } from '../../constant';
+import { PERSSION_COlOR, PUBLIC_PERFIX_CLASS } from '@/components/console/constant';
 
 /** type */
-import { UserProps } from '../../interface/user';
+import { UserProps } from '@/components/console/interface/user';
 
 /** utils */
-import { getLocalData } from '../../utils/localStorage';
+import { getLocalData } from '@/components/console/utils/localStorage';
 
 /** styles */
 import styles from './index.module.less';

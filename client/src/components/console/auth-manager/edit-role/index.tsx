@@ -7,11 +7,10 @@ import {
   PERSSIONS_ENUM,
   PERSSIONS_ENUM_TEXT,
   PUBLIC_PERFIX_CLASS,
-} from '../../constant';
-import { useGraph } from '../../hooks/useGraph';
-import { useRole } from '../../hooks/useRole';
-import { RoleProps } from '../../interface/role';
-import { getLocalData } from '../../utils/localStorage';
+} from '@/components/console/constant';
+import { useGraph } from '@/components/console/hooks/useGraph';
+import { useRole } from '@/components/console/hooks/useRole';
+import { RoleProps } from '@/components/console/interface/role';
 
 import styles from './index.module.less';
 

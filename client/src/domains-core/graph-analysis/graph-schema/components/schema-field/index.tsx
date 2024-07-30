@@ -28,8 +28,9 @@ import ViewSelect from '@/domains-core/graph-analysis/graph-schema/components/vi
 import { ArrayCards, ArrayCollapse } from '@formily/antd';
 import { createSchemaField } from '@formily/react';
 import { Divider } from 'antd';
-// import TemplateQuery from '@/domains-core/graph-analysis/graph-schema/components/template-query';
-// import ConfigCenter from '@/domains-core/graph-analysis/graph-schema/components/config-center';
+import CanvasToolbarSegmented from '@/domains-core/graph-analysis/graph-schema/components/canvas-toolbar-segmented';
+import ZoomInOut from '@/domains-core/graph-analysis/graph-schema/components/zoom-in-out';
+
 
 export const SchemaField = createSchemaField({
   components: {
@@ -58,6 +59,7 @@ export const SchemaField = createSchemaField({
     ArrayCollapse,
     ElementInfo,
     PageLayoutSegmented,
-    // ConfigCenter: ConfigCenter,
+    CanvasToolbarSegmented: CanvasToolbarSegmented,
+    ZoomInOut: ZoomInOut,
   },
 });

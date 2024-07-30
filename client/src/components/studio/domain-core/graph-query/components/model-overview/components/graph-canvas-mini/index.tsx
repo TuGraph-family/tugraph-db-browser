@@ -5,9 +5,9 @@ import {
   GraphCanvas,
   GraphCanvasContext,
   useGraphinContext,
-} from '../../../../../../components/garph-canvas';
-import { GraphCanvasTools } from '../../../../../../components/graph-canvas-tools';
-import { PUBLIC_PERFIX_CLASS } from '../../../../../../constant';
+} from '@/components/studio/components/garph-canvas';
+import { GraphCanvasTools } from '@/components/studio/components/graph-canvas-tools';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
 
 import styles from './index.module.less';
 

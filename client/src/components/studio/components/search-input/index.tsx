@@ -4,7 +4,7 @@ import type { AutoCompleteProps, InputProps } from "antd";
 import { AutoComplete, Input } from "antd";
 import { useImmer } from "use-immer";
 import IconFont from "../icon-font";
-import { PUBLIC_PERFIX_CLASS } from "../../constant";
+import { PUBLIC_PERFIX_CLASS } from "@/components/studio/constant";
 
 import styles from "./index.module.less";
 

@@ -3,11 +3,11 @@ import { Button, Collapse, Form } from 'antd';
 import { filter, join, map } from 'lodash';
 import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import IconFont from '../../../../../components/icon-font';
-import SearchInput from '../../../../../components/search-input';
-import { PUBLIC_PERFIX_CLASS } from '../../../../../constant';
-import { useProcedure } from '../../../../../hooks/useProcedure';
-import { ProcedureItemParams } from '../../../../../interface/procedure';
+import IconFont from '@/components/studio/components/icon-font';
+import SearchInput from '@/components/studio/components/search-input';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import { useProcedure } from '@/components/studio/hooks/useProcedure';
+import { ProcedureItemParams } from '@/components/studio/interface/procedure';
 import { StoredForm } from './stored-form';
 
 // hooks

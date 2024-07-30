@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 import { Card, Col, message, Row, Skeleton } from 'antd';
 import { forEach, map } from 'lodash';
 import React, { useEffect } from 'react';
@@ -36,13 +36,13 @@ export const DatabaseInfo: React.FC = () => {
   const { systemInfo, databaseInfo } = state;
 
   useEffect(() => {
-    onGetSystemInfo().then((res) => {
+    onGetSystemInfo().then(res => {
       if (res.success) {
-        let info = {};
+        let info: { [key: string]: string } = {};
         forEach(res.data, (item: { name: string; value: string }) => {
           info[item.name] = item.value;
         });
-        updateState((draft) => {
+        updateState(draft => {
           draft.systemInfo = info;
         });
       } else {
@@ -50,9 +50,9 @@ export const DatabaseInfo: React.FC = () => {
       }
     });
 
-    onGetDatabaseInfo().then((res) => {
+    onGetDatabaseInfo().then(res => {
       if (res.success) {
-        updateState((draft) => {
+        updateState(draft => {
           draft.databaseInfo = res.data;
         });
       } else {
@@ -154,7 +154,7 @@ export const DatabaseInfo: React.FC = () => {
       <Card title="数据库配置信息">
         <Skeleton loading={getDatabaseInfoLoading}>
           <Row style={{ width: '100%' }}>
-            {map(databaseInfo, (item) => (
+            {map(databaseInfo, item => (
               <Col
                 key={`col-${item.label}`}
                 className={styles[`${PUBLIC_PERFIX_CLASS}-card-item`]}

@@ -6,16 +6,16 @@ import { useImmer } from 'use-immer';
 import {
   GraphCanvasContext,
   GraphCanvasContextInitValue,
-} from '../../../../components/garph-canvas';
-import TextTabs from '../../../../components/text-tabs';
-import { PUBLIC_PERFIX_CLASS } from '../../../../constant';
-import { useSchema } from '../../../../hooks/useSchema';
-import { nodesEdgesListTranslator } from '../../../../utils/nodesEdgesListTranslator';
-import { MODEL_OVER_VIEW_TABS } from '../../constant';
+} from '@/components/studio/components/garph-canvas';
+import TextTabs from '@/components/studio/components/text-tabs';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import { useSchema } from '@/components/studio/hooks/useSchema';
+import { nodesEdgesListTranslator } from '@/components/studio/utils/nodesEdgesListTranslator';
+import { MODEL_OVER_VIEW_TABS } from '@/components/studio/domain-core/graph-query/constant';
 import EdgeNodeList from './components/edge-node-list';
 import GraphCanvasMini from './components/graph-canvas-mini';
 
-import { GraphConfigData } from '../../../../interface/schema';
+import { GraphConfigData } from '@/components/studio/interface/schema';
 import styles from './index.module.less';
 
 type ModelOverviewProps = {

@@ -1,5 +1,8 @@
 import { compact, join } from 'lodash';
-export const formatTime = (seconds: number) => {
+export const formatTime = (seconds: number | undefined) => {
+  if(!seconds){
+    return seconds
+  }
   const days = Math.floor(seconds / (24 * 60 * 60));
   const hours = Math.floor((seconds % (24 * 60 * 60)) / (60 * 60));
   const minutes = Math.floor((seconds % (60 * 60)) / 60);

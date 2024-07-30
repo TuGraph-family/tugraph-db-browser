@@ -31,11 +31,11 @@ interface ListType {
   list?: any[];
 }
 
-const getHasValueObj = (obj?: { [key: string]: any }) => {
+const getHasValueObj = (obj?: Record<string, any>) => {
   if (!obj) {
     return;
   }
-  const newObj = {};
+  const newObj: Record<string, any> = {};
   for (const key in obj) {
     if (obj[key]) {
       newObj[key] = obj[key];
@@ -51,8 +51,7 @@ const AsyncTable: React.FC<AsyncTableProps> = ({
   tableProps,
   paginationProps,
   requestParams,
-  refreshDeps,
-  serviceFlag,
+  refreshDeps
 }) => {
   const [state, setState] = useImmer<{
     dataSource: any[];
@@ -66,17 +65,9 @@ const AsyncTable: React.FC<AsyncTableProps> = ({
     dataSource: [],
     total: 0,
     ...defaultParams,
-    isFirstLoad: true,
+    isFirstLoad: true
   });
-  const {
-    dataSource,
-    total,
-    pageSize,
-    body,
-    params,
-    isFirstLoad,
-    current,
-  } = state;
+  const { dataSource, total, body, params, isFirstLoad } = state;
   const { run: requestData, loading } = useRequest(service, {
     manual: true,
   });
@@ -89,7 +80,7 @@ const AsyncTable: React.FC<AsyncTableProps> = ({
       !isEqual(hasValueBody, hasValueRequestBody) ||
       !isEqual(hasValueParams, hasValueRequestParams)
     ) {
-      setState((draft) => {
+      setState(draft => {
         draft.body = requestBody;
         draft.params = requestParams;
       });
@@ -102,7 +93,7 @@ const AsyncTable: React.FC<AsyncTableProps> = ({
 
   const onPageChange = useCallback(
     (current: number, size: number) => {
-      setState((draft) => {
+      setState(draft => {
         draft.current = current;
         draft.pageSize = size;
       });
@@ -127,7 +118,7 @@ const AsyncTable: React.FC<AsyncTableProps> = ({
         showTotal: showTotal,
         showQuickJumper: true,
         showSizeChanger: true,
-        ...paginationProps,
+        ...paginationProps
       }}
     />
   );

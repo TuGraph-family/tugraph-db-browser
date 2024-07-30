@@ -15,7 +15,7 @@ import EditAuthModal from './edit-user';
 import { RoleManager } from './role-manager';
 
 /** constants */
-import { PUBLIC_PERFIX_CLASS } from '../constant';
+import { PUBLIC_PERFIX_CLASS } from '@/components/console/constant';
 
 /** styles */
 import styles from './index.module.less';

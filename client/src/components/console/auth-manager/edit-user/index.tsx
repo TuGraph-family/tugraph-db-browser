@@ -2,10 +2,10 @@ import { Form, Input, Modal, Select, message } from 'antd';
 import { filter, find, map } from 'lodash';
 import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import { PUBLIC_PERFIX_CLASS } from '../../constant';
-import { useRole } from '../../hooks/useRole';
-import { useUser } from '../../hooks/useUser';
-import { UserProps } from '../../interface/user';
+import { PUBLIC_PERFIX_CLASS } from '@/components/console/constant';
+import { useRole } from '@/components/console/hooks/useRole';
+import { useUser } from '@/components/console/hooks/useUser';
+import { UserProps } from '@/components/console/interface/user';
 
 import styles from './index.module.less';
 

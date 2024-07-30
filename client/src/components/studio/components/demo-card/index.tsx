@@ -1,5 +1,5 @@
 import React from 'react';
-import { PUBLIC_PERFIX_CLASS } from '../../constant';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
 
 import styles from './index.module.less';
 

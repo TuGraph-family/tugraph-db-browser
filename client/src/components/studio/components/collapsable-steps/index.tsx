@@ -1,7 +1,7 @@
 import { Tooltip } from 'antd';
 import { map } from 'lodash';
 import React from 'react';
-import { PUBLIC_PERFIX_CLASS } from '../../constant';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
 import IconFont from '../icon-font';
 
 import styles from './index.module.less';

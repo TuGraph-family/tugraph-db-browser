@@ -2,7 +2,7 @@ import { Form, Input, Select, Table, TableProps } from 'antd';
 import type { FormInstance } from 'antd/es/form';
 import { cloneDeep } from 'lodash';
 import React, { createContext, useContext, useEffect } from 'react';
-import { EditType } from '../../constant';
+import { EditType } from '@/components/studio/constant';
 
 import styles from './index.module.less';
 

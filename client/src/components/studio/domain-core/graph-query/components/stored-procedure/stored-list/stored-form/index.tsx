@@ -26,7 +26,7 @@ import { UploadChangeParam, UploadFile } from 'antd/lib/upload';
 import { InitialState } from '@/app';
 
 // components
-import { StoredDownLoad } from '../../stored-download';
+import { StoredDownLoad } from '@/components/studio/domain-core/graph-query/components/stored-procedure/stored-download';
 
 // constants
 import { CPP_CODE_TYPE, PUBLIC_PERFIX_CLASS, STORED_OPTIONS } from '@/components/studio/constant/index';

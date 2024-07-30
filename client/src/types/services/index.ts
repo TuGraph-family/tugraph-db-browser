@@ -205,8 +205,14 @@ export interface IPathQueryParams {
 
 export interface INodeQueryParams {
   graphName: string;
-  nodes: string[];
-  conditions: Condition[];
+  nodeQuery: INodeQuery;
+}
+
+export interface INodeQuery {
+  node: string;
+  propertie: string;
+  logic: string;
+  value: string;
   limit: number;
 }
 

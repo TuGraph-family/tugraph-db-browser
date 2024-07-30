@@ -30,15 +30,6 @@ export interface Schema {
   constraints?: string[][];
 }
 
-export interface FileSchema {
-  path: string;
-  format: string;
-  label: string;
-  header: number;
-  SRC_ID: string;
-  DST_ID: string;
-  columns: Array<string>;
-}
 
 export interface FileSchema {
   path: string;
@@ -78,7 +69,7 @@ export interface FileData {
   formateSize: string;
   status: 'success' | 'error' | 'processing';
   file?: RcFile;
-  fileSchema?: FileSchema;
+  fileSchema: FileSchema;
   data?: {
     columns: ColumnsType<DataType>;
     dataSource: DataType[];

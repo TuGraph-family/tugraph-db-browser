@@ -1,10 +1,10 @@
 import { DeleteOutlined, ReloadOutlined } from '@ant-design/icons';
 import { ProCard } from '@ant-design/pro-components';
-import { Card, message, Popconfirm, Spin, Tooltip } from 'antd';
+import { Card, message, Popconfirm, Tooltip } from 'antd';
 import { useImmer } from 'use-immer';
-import IconFont from '../../../../../components/icon-font';
-import { PUBLIC_PERFIX_CLASS, TUGRAPH_DEOM } from '../../../../../constant';
-import { useGraph } from '../../../../../hooks/useGraph';
+import IconFont from '@/components/studio/components/icon-font';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import { useGraph } from '@/components/studio/hooks/useGraph';
 import AddTuGraphModal from '../add-tugraph';
 import EditTuGraphMoadl from '../edit-tugraph';
 import styles from './index.module.less';
@@ -209,13 +209,6 @@ const ProjectCard = ({
                   </div>
                 </div>
                 {isNodeEdgeObj ? (
-                  // getNodeEdgeStatisticsLoading ? (
-                  //   <Spin
-                  //     indicator={<IconFont type="icon-jiazai" />}
-                  //     tip={<span>正在统计中，请稍等片刻</span>}
-                  //     spinning
-                  //   />
-                  // ) : 
                   (
                     <div
                       className={styles[`${PUBLIC_PERFIX_CLASS}-env-node-edge`]}

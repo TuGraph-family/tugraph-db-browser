@@ -254,40 +254,6 @@ const ConfigQuery: React.FC = () => {
             </Checkbox>
           </Form.Item>
         </div>
-        {/* <div className={styles['other-container']}>
-          <span style={{ marginRight: 8 }}>
-            <Space size={4}>
-              快速开始
-              <Tooltip
-                style={{ marginLeft: 4 }}
-                title="默认查询对应点类型的前一百个点。"
-              >
-                <IconFont
-                  type="icon-question-circle"
-                  style={{ cursor: 'pointer' }}
-                />
-              </Tooltip>
-            </Space>
-          </span>
-
-          <Space size={[0, 8]} wrap>
-            {map(nodeTags, (tag, key) => (
-              <CheckableTag
-                key={key}
-                checked={state.selectTag === tag}
-                onChange={(checked) => handleTagChange(tag, checked)}
-                style={{
-                  backgroundColor:
-                    state.selectTag === tag ? '#3056E3' : '#E6EBF6',
-                  borderRadius: 20,
-                }}
-              >
-                {tag}
-              </CheckableTag>
-            ))}
-          </Space>
-        </div> */}
-        <div></div>
       </Form>
       <div className={styles['button-container']}>
         <Space>
