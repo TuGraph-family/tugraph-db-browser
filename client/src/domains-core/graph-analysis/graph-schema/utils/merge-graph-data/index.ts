@@ -8,10 +8,10 @@ export const mergeGraphData = (
 ) => {
   const { nodes = [], edges = [] } = responseData;
   if (
-    data.nodes?.length &&
-    data.edges?.length &&
-    responseData?.nodes?.length &&
-    responseData?.edges?.length
+   ( data.nodes?.length ||
+    data.edges?.length) &&
+    (responseData?.nodes?.length ||
+    responseData?.edges?.length)
   ) {
     const graphData: GraphData = {
       ...data,

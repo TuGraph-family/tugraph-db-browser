@@ -71,6 +71,9 @@ const ConfigQuery: React.FC = () => {
 
       // 设置当前选中的属性值，根据选择的属性值类型，填充不同的逻辑值
       if (property && changedValue.property) {
+        form.setFieldsValue({
+          logic: undefined,
+        });
         const tmpProperty = currentSchema.properties[property];
 
         if (tmpProperty) {
