@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "41238289",
+      "name": "图分析-图例-收起（当前已展开）",
+      "font_class": "a-shouqidangqianyizhankai",
+      "unicode": "e70f",
+      "unicode_decimal": 59151
+    },
+    {
+      "icon_id": "41238288",
+      "name": "图分析-图例-展开（当前未展开）",
+      "font_class": "a-zhankaidangqianweizhankai",
+      "unicode": "e710",
+      "unicode_decimal": 59152
+    },
+    {
       "icon_id": "18149282",
       "name": "客服机器人",
       "font_class": "kefujiqiren",

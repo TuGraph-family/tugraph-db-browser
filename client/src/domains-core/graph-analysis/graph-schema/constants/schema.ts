@@ -223,6 +223,10 @@ export const GRAPH_SCHEMA: ISchema = {
                     'x-component': 'CanvasToolbarSegmented',
                     default: null,
                   },
+                  DownloadCanvans: {
+                    type: 'void',
+                    'x-component': 'DownloadCanvans',
+                  },
                 },
               },
               // 画布中间内容
@@ -395,6 +399,10 @@ export const GRAPH_SCHEMA: ISchema = {
                       ContextMenu: {
                         type: 'string',
                         'x-component': 'ContextMenu',
+                      },
+                      CanvasLegend: {
+                        type: 'string',
+                        'x-component': 'CanvasLegend',
                       },
                       ZoomInOut: {
                         type: 'string',

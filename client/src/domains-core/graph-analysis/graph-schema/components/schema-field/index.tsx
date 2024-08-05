@@ -30,6 +30,8 @@ import { createSchemaField } from '@formily/react';
 import { Divider } from 'antd';
 import CanvasToolbarSegmented from '@/domains-core/graph-analysis/graph-schema/components/canvas-toolbar-segmented';
 import ZoomInOut from '@/domains-core/graph-analysis/graph-schema/components/zoom-in-out';
+import DownloadCanvans from '@/domains-core/graph-analysis/graph-schema/components/download-canvas';
+import CanvasLegend from '@/domains-core/graph-analysis/graph-schema/components/canvas-legend';
 
 
 export const SchemaField = createSchemaField({
@@ -61,5 +63,7 @@ export const SchemaField = createSchemaField({
     PageLayoutSegmented,
     CanvasToolbarSegmented: CanvasToolbarSegmented,
     ZoomInOut: ZoomInOut,
+    DownloadCanvans: DownloadCanvans,
+    CanvasLegend: CanvasLegend,
   },
 });

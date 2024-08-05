@@ -117,9 +117,6 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
         },
       ],
       node: {
-        style: {
-          labelText: d => d.id,
-        },
         type: 'breathing-node',
         state: {
           highlight: {
