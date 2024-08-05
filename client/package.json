@@ -51,6 +51,7 @@
     "re-resizable": "^6.9.17",
     "react-color": "^2.19.3",
     "react-json-view": "^1.21.3",
+    "react-json-view-lite": "^1.4.0",
     "react-router-dom": "^6.11.1",
     "react-split-pane": "^0.1.92",
     "react-syntax-highlighter": "^15.5.0",

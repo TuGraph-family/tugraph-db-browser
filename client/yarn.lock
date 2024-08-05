@@ -9972,6 +9972,11 @@ react-is@^18.0.0, react-is@^18.2.0:
   resolved "https://registry.npmmirror.com/react-is/-/react-is-18.3.1.tgz#e83557dc12eae63a99e003a46388b1dcbb44db7e"
   integrity sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==
 
+react-json-view-lite@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.npmmirror.com/react-json-view-lite/-/react-json-view-lite-1.4.0.tgz#0ff493245f4550abe5e1f1836f170fa70bb95914"
+  integrity sha512-wh6F6uJyYAmQ4fK0e8dSQMEWuvTs2Wr3el3sLD9bambX1+pSWUVXIz1RFaoy3TI1mZ0FqdpKq9YgbgTTgyrmXA==
+
 react-json-view@^1.21.3:
   version "1.21.3"
   resolved "https://registry.npmmirror.com/react-json-view/-/react-json-view-1.21.3.tgz#f184209ee8f1bf374fb0c41b0813cff54549c475"

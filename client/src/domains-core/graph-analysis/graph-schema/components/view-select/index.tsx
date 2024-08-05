@@ -20,18 +20,6 @@ const viewModeOptions: DefaultOptionType[] = [
     ),
   },
   {
-    value: 'G6_3D_CANVAS',
-    label: (
-      <Space>
-        <IconFont
-          type="icon-GI-3D"
-          style={{ fontSize: 18, marginTop: 5 }}
-        ></IconFont>
-        <span style={{ fontSize: 14 }}>3D 图谱视图</span>
-      </Space>
-    ),
-  },
-  {
     value: 'TABLE',
     label: (
       <Space>
@@ -59,43 +47,7 @@ const viewModeOptions: DefaultOptionType[] = [
 
 const ViewSelect: React.FC<SelectProps> = props => {
   const { value } = props;
-  const { graph } = useSchemaGraphContext();
   const onChange = (value: string, option: any) => {
-    if (value === 'G6_3D_CANVAS') {
-      graph?.setOptions({
-        renderer,
-        node: {
-          type: 'sphere',
-        },
-        edge: {
-          type: 'line3d',
-        },
-        plugins: [
-          {
-            type: 'camera-setting',
-            projectionMode: 'orthographic',
-            near: 1,
-            far: 10000,
-            fov: 45,
-            aspect: 1,
-          },
-          {
-            type: '3d-light',
-            directional: {
-              direction: [0, 0, 1],
-            },
-          },
-          {
-            type: 'background',
-            backgroundImage:
-              'url(https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*M_OaRrzIZOEAAAAAAAAAAAAADmJ7AQ/original)',
-            backgroundPosition: 'center',
-          },
-        ],
-        behaviors: ['observe-canvas-3d', 'zoom-canvas-3d'],
-      });
-      graph?.render();
-    }
     props.onChange?.(value, option);
   };
   return (

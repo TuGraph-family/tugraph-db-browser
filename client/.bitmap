@@ -170,12 +170,26 @@
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/graph-filter"
     },
+    "domains-core/graph-analysis/graph-schema/components/graph-json-view": {
+        "name": "domains-core/graph-analysis/graph-schema/components/graph-json-view",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/graph-json-view"
+    },
     "domains-core/graph-analysis/graph-schema/components/graph-style-setting": {
         "name": "domains-core/graph-analysis/graph-schema/components/graph-style-setting",
         "scope": "geamaker",
         "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/graph-style-setting"
+    },
+    "domains-core/graph-analysis/graph-schema/components/graph-table-view": {
+        "name": "domains-core/graph-analysis/graph-schema/components/graph-table-view",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/graph-table-view"
     },
     "domains-core/graph-analysis/graph-schema/components/language-query": {
         "name": "domains-core/graph-analysis/graph-schema/components/language-query",
