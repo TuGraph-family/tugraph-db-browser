@@ -12,7 +12,7 @@
     "assets/icons": {
         "name": "assets/icons",
         "scope": "geamaker",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "iconfont.js",
         "rootDir": "src/assets/icons"
     },
@@ -86,6 +86,20 @@
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/canvas-container"
     },
+    "domains-core/graph-analysis/graph-schema/components/canvas-legend": {
+        "name": "domains-core/graph-analysis/graph-schema/components/canvas-legend",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/canvas-legend"
+    },
+    "domains-core/graph-analysis/graph-schema/components/canvas-legend-pie-chart": {
+        "name": "domains-core/graph-analysis/graph-schema/components/canvas-legend-pie-chart",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/canvas-legend-pie-chart"
+    },
     "domains-core/graph-analysis/graph-schema/components/canvas-sider": {
         "name": "domains-core/graph-analysis/graph-schema/components/canvas-sider",
         "scope": "geamaker",
@@ -113,6 +127,13 @@
         "version": "0.0.3",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/context-menu"
+    },
+    "domains-core/graph-analysis/graph-schema/components/download-canvas": {
+        "name": "domains-core/graph-analysis/graph-schema/components/download-canvas",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/download-canvas"
     },
     "domains-core/graph-analysis/graph-schema/components/drawer-handler": {
         "name": "domains-core/graph-analysis/graph-schema/components/drawer-handler",
@@ -149,12 +170,26 @@
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/graph-filter"
     },
+    "domains-core/graph-analysis/graph-schema/components/graph-json-view": {
+        "name": "domains-core/graph-analysis/graph-schema/components/graph-json-view",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/graph-json-view"
+    },
     "domains-core/graph-analysis/graph-schema/components/graph-style-setting": {
         "name": "domains-core/graph-analysis/graph-schema/components/graph-style-setting",
         "scope": "geamaker",
         "version": "0.0.2",
         "mainFile": "index.tsx",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/components/graph-style-setting"
+    },
+    "domains-core/graph-analysis/graph-schema/components/graph-table-view": {
+        "name": "domains-core/graph-analysis/graph-schema/components/graph-table-view",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/components/graph-table-view"
     },
     "domains-core/graph-analysis/graph-schema/components/language-query": {
         "name": "domains-core/graph-analysis/graph-schema/components/language-query",
@@ -394,6 +429,20 @@
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/translators/env-graph-language-translator"
     },
+    "domains-core/graph-analysis/graph-schema/utils/download-json": {
+        "name": "domains-core/graph-analysis/graph-schema/utils/download-json",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.ts",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/download-json"
+    },
+    "domains-core/graph-analysis/graph-schema/utils/download-png": {
+        "name": "domains-core/graph-analysis/graph-schema/utils/download-png",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.tsx",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/download-png"
+    },
     "domains-core/graph-analysis/graph-schema/utils/filter-by-property-condition": {
         "name": "domains-core/graph-analysis/graph-schema/utils/filter-by-property-condition",
         "scope": "geamaker",
@@ -428,6 +477,13 @@
         "version": "0.0.1",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/filter-graph-data-by-value"
+    },
+    "domains-core/graph-analysis/graph-schema/utils/generate-edge-type-map": {
+        "name": "domains-core/graph-analysis/graph-schema/utils/generate-edge-type-map",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.ts",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/generate-edge-type-map"
     },
     "domains-core/graph-analysis/graph-schema/utils/get-chart-data": {
         "name": "domains-core/graph-analysis/graph-schema/utils/get-chart-data",
@@ -520,6 +576,13 @@
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/graph-data-2-property-graph"
     },
+    "domains-core/graph-analysis/graph-schema/utils/group-and-count-nodes-by-label": {
+        "name": "domains-core/graph-analysis/graph-schema/utils/group-and-count-nodes-by-label",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.ts",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/group-and-count-nodes-by-label"
+    },
     "domains-core/graph-analysis/graph-schema/utils/hex-to-rgba": {
         "name": "domains-core/graph-analysis/graph-schema/utils/hex-to-rgba",
         "scope": "geamaker",
@@ -540,6 +603,13 @@
         "version": "0.0.2",
         "mainFile": "index.ts",
         "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/merge-graph-data"
+    },
+    "domains-core/graph-analysis/graph-schema/utils/pie-chart-edges-translator": {
+        "name": "domains-core/graph-analysis/graph-schema/utils/pie-chart-edges-translator",
+        "scope": "geamaker",
+        "version": "0.0.1",
+        "mainFile": "index.ts",
+        "rootDir": "src/domains-core/graph-analysis/graph-schema/utils/pie-chart-edges-translator"
     },
     "domains-core/graph-analysis/graph-schema/utils/reset-graph-active-status": {
         "name": "domains-core/graph-analysis/graph-schema/utils/reset-graph-active-status",
