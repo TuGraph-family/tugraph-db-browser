@@ -246,9 +246,9 @@ export const createSchema = async (
   properties.forEach((d, key) => {
     const { name, type, optional = false } = d;
     if (key === properties.length - 1) {
-      condition += `['${name}', ${type}, ${optional}]`;
+      condition += `['${name}', '${type}', ${optional}]`;
     } else {
-      condition += `['${name}', ${type}, ${optional}],`;
+      condition += `['${name}', '${type}', ${optional}],`;
     }
   });
 
