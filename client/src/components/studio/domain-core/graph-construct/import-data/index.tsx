@@ -1,7 +1,3 @@
-import { Button, Form, Input, Space, Tooltip, message } from 'antd';
-import { isEmpty, join } from 'lodash';
-import React, { useCallback, useState } from 'react';
-import { useImmer } from 'use-immer';
 import IconFont from '@/components/studio/components/icon-font';
 import SwitchDrawer from '@/components/studio/components/switch-drawer';
 import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
@@ -10,6 +6,10 @@ import { useVisible } from '@/components/studio/hooks/useVisible';
 import { FileData } from '@/components/studio/interface/import';
 import { GraphData } from '@/components/studio/interface/schema';
 import { fileSchemaTransform } from '@/components/studio/utils/dataImportTransform';
+import { Button, Form, Input, Space, Tooltip, message } from 'antd';
+import { isEmpty, join } from 'lodash';
+import React, { useCallback, useState } from 'react';
+import { useImmer } from 'use-immer';
 import { FileUploader } from '../file-uploader';
 import { ImportDataConfig } from '../import-data-config';
 import { ImportDataResult } from '../import-data-result';
@@ -87,9 +87,6 @@ export const ImportData: React.FC<Prop> = ({
     }
 
     fileDataList.forEach((item: any) => {
-      item.fileSchema.columns = [...item?.fileSchema?.columns].filter(
-        item => item,
-      );
       if (item?.selectedValue?.[0] === 'edge') {
         const newProperties = [];
         const { DST_ID, SRC_ID, properties } = item?.fileSchema || {};
@@ -148,35 +145,16 @@ export const ImportData: React.FC<Prop> = ({
     });
   }, [isFullView]);
 
-  if (showResult) {
-    return (
-      <SwitchDrawer
-        visible={visible}
-        onShow={onShow}
-        onClose={onClose}
-        position="right"
-        width={593}
-        className={styles[`${PUBLIC_PERFIX_CLASS}-container`]}
-      >
-        <ImportDataResult
-          status={resultStatus}
-          data={resultData}
-          setShowResult={setShowResult}
-          graphName={graphName}
-          setFileDataList={setFileDataList}
-        />
-      </SwitchDrawer>
-    );
-  } else {
-    return (
-      <SwitchDrawer
-        visible={visible}
-        onShow={onShow}
-        onClose={onClose}
-        position="right"
-        width={593}
-        className={styles[`${PUBLIC_PERFIX_CLASS}-container`]}
-        footer={
+  return (
+    <SwitchDrawer
+      visible={visible}
+      onShow={onShow}
+      onClose={onClose}
+      position="right"
+      width={593}
+      className={styles[`${PUBLIC_PERFIX_CLASS}-container`]}
+      footer={
+        !showResult ? (
           <>
             <Button
               style={{ marginRight: 12 }}
@@ -194,102 +172,115 @@ export const ImportData: React.FC<Prop> = ({
               导入
             </Button>
           </>
-        }
-      >
-        <div className={styles[`${PUBLIC_PERFIX_CLASS}-container-content`]}>
-          <div className={styles[`${PUBLIC_PERFIX_CLASS}-container-header`]}>
-            <span>数据导入</span>
-            <div>
-              命令行导入
-              <a
-                href="https://tugraph-db.readthedocs.io/zh-cn/latest/6.utility-tools/1.data-import.html"
-                target="_blank"
-              >
-                参见文档
-              </a>
-            </div>
-          </div>
+        ) : null
+      }
+    >
+      <div className={styles[`${PUBLIC_PERFIX_CLASS}-container-content`]}>
+        <div className={styles[`${PUBLIC_PERFIX_CLASS}-container-header`]}>
+          <span>数据导入</span>
           <div>
-            <Form layout="vertical" form={form}>
-              <Form.Item
-                // rules={[{ required: true, message: `请输入分隔符` }]}
-                label={`分割符`}
-                name={'delimiter'}
-              >
-                <Input placeholder={`请输入分隔符`} />
-              </Form.Item>
-            </Form>
-
-            <div
-              className={
-                isFullView
-                  ? styles[`${PUBLIC_PERFIX_CLASS}-container-full`]
-                  : undefined
-              }
+            命令行导入
+            <a
+              href="https://tugraph-db.readthedocs.io/zh-cn/latest/6.utility-tools/1.data-import.html"
+              target="_blank"
             >
-              <div
-                className={join(
-                  [
-                    styles[`${PUBLIC_PERFIX_CLASS}-container-header`],
-                    ...(isFullView
-                      ? [styles[`${PUBLIC_PERFIX_CLASS}-container-header-full`]]
-                      : []),
-                  ],
-                  ' ',
-                )}
-              >
-                {isFullView && (
-                  <div>
-                    <ArrowLeftOutlined onClick={onFullView} />
-                    <span>数据对应表</span>
-                  </div>
-                )}
-                {!isFullView && <span>数据对应表</span>}
-                {!isEmpty(fileDataList) && (
-                  <Space size={16}>
-                    {/* <FileUploader
+              参见文档
+            </a>
+          </div>
+        </div>
+        <div>
+          <Form layout="vertical" form={form}>
+            <Form.Item
+              // rules={[{ required: true, message: `请输入分隔符` }]}
+              label={`分割符`}
+              name={'delimiter'}
+            >
+              <Input placeholder={`请输入分隔符`} />
+            </Form.Item>
+          </Form>
+
+          <div
+            className={
+              isFullView
+                ? styles[`${PUBLIC_PERFIX_CLASS}-container-full`]
+                : null
+            }
+          >
+            <div
+              className={join(
+                [
+                  styles[`${PUBLIC_PERFIX_CLASS}-container-header`],
+                  ...(isFullView
+                    ? [styles[`${PUBLIC_PERFIX_CLASS}-container-header-full`]]
+                    : []),
+                ],
+                ' ',
+              )}
+            >
+              {isFullView && (
+                <div>
+                  <ArrowLeftOutlined onClick={onFullView} />
+                  <span>数据对应表</span>
+                </div>
+              )}
+              {!isFullView && <span>数据对应表</span>}
+              {!isEmpty(fileDataList) && (
+                <Space size={16}>
+                  {/* <FileUploader
                       graphData={graphData}
                       type="text"
                       setFileDataList={setFileDataList}
                       fileDataList={fileDataList}
                     /> */}
-                    {!isFullView && (
-                      <Tooltip title={'全屏显示'}>
-                        <IconFont
-                          style={{ fontSize: '24px' }}
-                          size={24}
-                          type={'icon-quanping'}
-                          onClick={onFullView}
-                        />
-                      </Tooltip>
-                    )}
-                  </Space>
-                )}
-              </div>
-              <div
-                style={
-                  !isEmpty(fileDataList)
-                    ? { display: 'none' }
-                    : { display: 'block' }
-                }
-              >
-                <FileUploader
-                  graphData={graphData}
-                  setFileDataList={setFileDataList}
-                  fileDataList={fileDataList}
-                />
-              </div>
-
-              <ImportDataConfig
+                  {!isFullView && (
+                    <Tooltip title={'全屏显示'}>
+                      <IconFont
+                        style={{ fontSize: '24px' }}
+                        size={24}
+                        type={'icon-quanping'}
+                        onClick={onFullView}
+                      />
+                    </Tooltip>
+                  )}
+                </Space>
+              )}
+            </div>
+            <div
+              style={
+                !isEmpty(fileDataList)
+                  ? { display: 'none' }
+                  : { display: 'block' }
+              }
+            >
+              <FileUploader
                 graphData={graphData}
-                fileDataList={fileDataList}
                 setFileDataList={setFileDataList}
-                isFullView={isFullView}
+                fileDataList={fileDataList}
               />
             </div>
+
+            <ImportDataConfig
+              graphData={graphData}
+              fileDataList={fileDataList}
+              setFileDataList={setFileDataList}
+              isFullView={isFullView}
+            />
           </div>
         </div>
-      </SwitchDrawer>
-    );
-  }
+      </div>
+
+      {showResult && (
+        <div className={styles[`${PUBLIC_PERFIX_CLASS}-container-box`]}>
+          <ImportDataResult
+            status={resultStatus}
+            data={resultData}
+            errorMessage={errorMessage}
+            setShowResult={setShowResult}
+            graphName={graphName}
+            setFileDataList={setFileDataList}
+          />
+        </div>
+      )}
+    </SwitchDrawer>
+  );
 };

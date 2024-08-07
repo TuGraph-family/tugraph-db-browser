@@ -123,7 +123,7 @@ const EdgeNodeList: React.FC<EdgeNodeListProp> = ({
             <List.Item
               className={styles[`${PUBLIC_PERFIX_CLASS}-edge-node-list-item`]}
             >
-              {item.name}
+              {item.name}({item.type})
               {copyIcon(item.name)}
             </List.Item>
           )}

@@ -1,3 +1,29 @@
+import {
+  GraphCanvas,
+  GraphCanvasContext,
+  GraphCanvasContextInitValue,
+} from '@/components/studio/components/garph-canvas';
+import { GraphCanvasLayout } from '@/components/studio/components/graph-canvas-layout';
+import { GraphCanvasTools } from '@/components/studio/components/graph-canvas-tools';
+import IconFont from '@/components/studio/components/icon-font';
+import IconItem from '@/components/studio/components/icon-item';
+import SwitchDrawer from '@/components/studio/components/switch-drawer';
+import {
+  PROPERTY_TYPE,
+  PUBLIC_PERFIX_CLASS,
+} from '@/components/studio/constant';
+import { editEdgeParamsTransform } from '@/components/studio/domain-core/graph-query/utils/editEdgeParamsTransform';
+import { useGraphData } from '@/components/studio/hooks/useGraphData';
+import { useVisible } from '@/components/studio/hooks/useVisible';
+import {
+  ExcecuteResultProp,
+  FormatDataEdgeProp,
+  FormatDataNodeProp,
+} from '@/components/studio/interface/query';
+import {
+  GraphData,
+  SchemaProperties,
+} from '@/components/studio/interface/schema';
 import { GraphinContextType, Layout, Utils } from '@antv/graphin';
 import {
   AutoComplete,
@@ -17,32 +43,12 @@ import {
 } from 'antd';
 import copy from 'copy-to-clipboard';
 import JSONBig from 'json-bigint';
-import { cloneDeep, filter, find, isEmpty, map,  uniqBy } from 'lodash';
+import { cloneDeep, filter, find, isEmpty, map, uniqBy } from 'lodash';
 import React, { useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import {
-  GraphCanvas,
-  GraphCanvasContext,
-  GraphCanvasContextInitValue,
-} from '@/components/studio/components/garph-canvas';
-import { GraphCanvasLayout } from '@/components/studio/components/graph-canvas-layout';
-import { GraphCanvasTools } from '@/components/studio/components/graph-canvas-tools';
-import IconFont from '@/components/studio/components/icon-font';
-import IconItem from '@/components/studio/components/icon-item';
-import SwitchDrawer from '@/components/studio/components/switch-drawer';
-import { PROPERTY_TYPE, PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
-import { useVisible } from '@/components/studio/hooks/useVisible';
-import {
-  ExcecuteResultProp,
-  FormatDataEdgeProp,
-  FormatDataNodeProp,
-} from '@/components/studio/interface/query';
 
-import { useGraphData } from '@/components/studio/hooks/useGraphData';
-import { GraphData, SchemaProperties } from '@/components/studio/interface/schema';
-import { editEdgeParamsTransform } from '@/components/studio/domain-core/graph-query/utils/editEdgeParamsTransform';
-import styles from './index.module.less';
 import { convertIntToNumber } from '@/translator';
+import styles from './index.module.less';
 
 const { TabPane } = Tabs;
 
@@ -237,7 +243,6 @@ const ExecuteResult: React.FC<ResultProps> = ({
     nodes: Array<FormatDataNodeProp>;
     edges: Array<FormatDataEdgeProp>;
   }) => {
-  
     const newNodes = map(formatData?.nodes, item => ({
       ...item,
       style: { label: { value: item.properties?.name || item.label } },
@@ -279,6 +284,18 @@ const ExecuteResult: React.FC<ResultProps> = ({
   };
   const editNode = () => {
     form.validateFields().then(val => {
+      const data = {
+        ...currentData,
+        nodes: map(currentData?.nodes, item => {
+          if (item.id == id) {
+            return {
+              ...item,
+              properties: { ...val },
+            };
+          }
+          return item;
+        }),
+      };
       const primaryKey = find(
         graphData?.nodes,
         node => node.labelName === tagName,
@@ -294,8 +311,16 @@ const ExecuteResult: React.FC<ResultProps> = ({
           message.success('编辑成功');
           setState(draft => {
             draft.formDisable = true;
+            draft.currentData = cloneDeep(data);
           });
           onClose();
+          graphCanvasContextValue?.graph?.read(
+            dealGraphData(dealFormatData(data)),
+          );
+          graphCanvasContextValue?.graph?.updateLayout({
+            type: 'graphin-force',
+            animation: false,
+          });
         } else {
           message.error(res.errorMessage + '编辑失败');
         }
@@ -304,17 +329,33 @@ const ExecuteResult: React.FC<ResultProps> = ({
   };
   const editEdge = () => {
     form.validateFields().then(val => {
-      const primaryKey = find(
-        graphData?.nodes,
-        node => node.labelName === tagName,
-      )?.primaryField;
+      const data = {
+        ...currentData,
+        edges: map(currentData?.edges, item => {
+          if (item.id == id) {
+            return {
+              ...item,
+              properties: { ...val },
+            };
+          }
+          return item;
+        }),
+      };
       onEditEdge({ ...editEdgeParams, properties: { ...val } }).then(res => {
         if (res.success) {
           message.success('编辑成功');
           setState(draft => {
             draft.formDisable = true;
+            draft.currentData = cloneDeep(data);
           });
           onClose();
+          graphCanvasContextValue?.graph?.read(
+            dealGraphData(dealFormatData(data)),
+          );
+          graphCanvasContextValue?.graph?.updateLayout({
+            type: 'graphin-force',
+            animation: false,
+          });
         } else {
           message.error(res.errorMessage + '编辑失败');
         }
@@ -643,7 +684,9 @@ const ExecuteResult: React.FC<ResultProps> = ({
   // 表格
   const renderJSONTable = () => {
     if (isEmpty(originalData)) {
-      return <Empty description="no records" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+      return (
+        <Empty description="no records" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+      );
     }
     const keys = Object.keys(originalData?.[0]);
     const columns = keys.map(item => {
@@ -663,7 +706,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
             >
               {typeof value === 'object'
                 ? JSONBig.stringify(value, null, 2)
-                : value}
+                : value.toString()}
             </pre>
           );
         },
@@ -756,7 +799,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
             {copyScript}
             <div className={`canvas`} style={{ height: '100%' }}>
               <GraphCanvas
-                key={excecuteResult?.id}
+                containerId={excecuteResult?.id}
                 data={dealGraphData(dealFormatData(formatData)) || {}}
                 layout={currentLayout}
                 getGraphCanvasContextValue={getGraphCanvasContextValue}

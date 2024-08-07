@@ -1,9 +1,3 @@
-import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Popconfirm, Tooltip, message } from 'antd';
-import { ColumnsType } from 'antd/es/table';
-import { filter, map, uniq, xor } from 'lodash';
-import React, { useEffect } from 'react';
-import { useImmer } from 'use-immer';
 import { EditTable } from '@/components/studio/components/edit-table';
 import SwitchDrawer from '@/components/studio/components/switch-drawer';
 import {
@@ -17,9 +11,15 @@ import {
   IndexData,
   StartData,
 } from '@/components/studio/interface/schema';
+import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Popconfirm, Tooltip, message } from 'antd';
+import { ColumnsType } from 'antd/es/table';
+import { filter, map, uniq, xor } from 'lodash';
+import React, { useEffect } from 'react';
+import { useImmer } from 'use-immer';
 
-import styles from './index.module.less';
 import { getQueryParam } from '@/components/studio/utils/url';
+import styles from './index.module.less';
 
 type Prop = {
   type: 'node' | 'edge';

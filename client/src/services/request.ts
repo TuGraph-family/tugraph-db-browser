@@ -1,9 +1,15 @@
 import { dbRecordsTranslator } from '@/translator';
-import { IRequestParams, ISessionParams, RestFulResponse } from '@/types/services';
+import {
+  IRequestParams,
+  ISessionParams,
+  RestFulResponse,
+} from '@/types/services';
 
-export const request = async (params: IRequestParams): Promise<RestFulResponse> => {
+export const request = async (
+  params: IRequestParams,
+): Promise<RestFulResponse> => {
   const { driver, cypher, graphName, parameters = {} } = params;
-  
+
   if (!cypher) {
     return { success: false };
   }
@@ -14,7 +20,6 @@ export const request = async (params: IRequestParams): Promise<RestFulResponse> 
   }
 
   const session = driver.session(sessionParams);
-
 
   return session
     .run(cypher, parameters)

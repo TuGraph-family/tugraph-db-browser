@@ -6,6 +6,22 @@ import {
   SaveOutlined,
 } from '@ant-design/icons';
 
+import IconFont from '@/components/studio/components/icon-font';
+import { SplitPane } from '@/components/studio/components/split-panle';
+import {
+  IQUIRE_LIST,
+  PUBLIC_PERFIX_CLASS,
+  STORED_PROCEDURE_DESC,
+  STORED_PROCEDURE_RULE,
+  USER_HELP_LINK,
+} from '@/components/studio/constant';
+import { useQuery } from '@/components/studio/hooks/useQuery';
+import { useSchema } from '@/components/studio/hooks/useSchema';
+import { SubGraph } from '@/components/studio/interface/graph';
+import { ExcecuteResultProp } from '@/components/studio/interface/query';
+import { getLocalData, setLocalData } from '@/components/studio/utils';
+import { downloadFile } from '@/components/studio/utils/downloadFile';
+import { nodesEdgesListTranslator } from '@/components/studio/utils/nodesEdgesListTranslator';
 import {
   Button,
   Divider,
@@ -23,33 +39,16 @@ import {
 import { filter, find, isEmpty, join, map, uniqueId } from 'lodash';
 import { useCallback, useEffect, useRef } from 'react';
 import { useImmer } from 'use-immer';
-import IconFont from '@/components/studio/components/icon-font';
-import { SplitPane } from '@/components/studio/components/split-panle';
-import CypherEdit from './cypherEditor';
-import {
-  IQUIRE_LIST,
-  PUBLIC_PERFIX_CLASS,
-  STORED_PROCEDURE_DESC,
-  STORED_PROCEDURE_RULE,
-  USER_HELP_LINK,
-} from '@/components/studio/constant';
-import { useQuery } from '@/components/studio/hooks/useQuery';
-import { useSchema } from '@/components/studio/hooks/useSchema';
-import { SubGraph } from '@/components/studio/interface/graph';
-import { ExcecuteResultProp } from '@/components/studio/interface/query';
-import { getLocalData, setLocalData } from '@/components/studio/utils';
-import { downloadFile } from '@/components/studio/utils/downloadFile';
-import { nodesEdgesListTranslator } from '@/components/studio/utils/nodesEdgesListTranslator';
 import ExcecuteResultPanle from './components/excecute-result-panle';
 import ModelOverview from './components/model-overview';
 import { NodeQuery } from './components/node-query';
 import { PathQueryPanel } from './components/path-query';
 import { StatementList } from './components/statement-query-list';
 import { StoredProcedureModal } from './components/stored-procedure';
+import CypherEdit from './cypherEditor';
 
 import { getQueryString } from '@/components/studio/utils/routeParams';
 import styles from './index.module.less';
-import { INodeQuery } from '@/types/services';
 
 const { Option } = Select;
 
@@ -216,6 +215,19 @@ export const GraphQuery = () => {
     },
     [resultData],
   );
+
+  /* 处理查询语句结果 */
+  const updateQueryData = (data, idx) => {
+    if (data?.success) {
+      const id = uniqueId('id_');
+      updateState(draft => {
+        draft.resultData = [...resultData, { ...data, id }];
+        draft.lastResult = { ...lastResult, [IQUIRE_LIST[idx].key]: id };
+      });
+    } else {
+      message.error(`执行失败 ${data?.errorMessage}`);
+    }
+  };
   const handleQuery = (
     limit: number,
     conditions: Array<{ property: string; value: string; operator: string }>,
@@ -226,11 +238,7 @@ export const GraphQuery = () => {
         graphName: currentGraphName,
         script: editorRef?.current?.codeEditor?.getValue() || script,
       }).then(res => {
-        const id = uniqueId('id_');
-        updateState(draft => {
-          draft.resultData = [...resultData, { ...res, id }];
-          draft.lastResult = { ...lastResult, [IQUIRE_LIST[0].key]: id };
-        });
+        updateQueryData(res, 0);
       });
     }
     if (activeTab === IQUIRE_LIST[1].key) {
@@ -240,28 +248,19 @@ export const GraphQuery = () => {
         limit,
         conditions,
       }).then(res => {
-        const id = uniqueId('id_');
-        updateState(draft => {
-          draft.resultData = [...resultData, { ...res, id }];
-          draft.lastResult = { ...lastResult, [IQUIRE_LIST[1].key]: id };
-        });
+        updateQueryData(res, 1);
       });
     }
-  };
-
-  /* 节点查询 */
-  const handleNodeQuery = (nodeQuery: INodeQuery) => {
-    onNodeQuery({
-      graphName: currentGraphName,
-      nodeQuery
-    }).then(res => {
-
-      const id = uniqueId('id_');
-      updateState(draft => {
-        draft.resultData = [...resultData, { ...res, id }];
-        draft.lastResult = { ...lastResult, [IQUIRE_LIST[2].key]: id };
+    if (activeTab === IQUIRE_LIST[2].key) {
+      onNodeQuery({
+        graphName: currentGraphName,
+        limit,
+        conditions,
+        nodes: queryParams,
+      }).then(res => {
+        updateQueryData(res, 2);
       });
-    });
+    }
   };
 
   const header = (

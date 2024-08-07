@@ -48,7 +48,7 @@ export const ImportDataResult: React.FC<Prop> = ({
       </Button>,
     ],
     error: [
-      <Button onClick={handleClick} type="primary" key="1">
+      <Button onClick={()=> setShowResult(false)} type="primary" key="1">
         重新导入
       </Button>,
     ],

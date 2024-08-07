@@ -1,14 +1,14 @@
+import SwitchDrawer from '@/components/studio/components/switch-drawer';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import { useVisible } from '@/components/studio/hooks/useVisible';
 import { Button, Form, Input, InputNumber, Select } from 'antd';
 import { find, map } from 'lodash';
 import React from 'react';
 import { useImmer } from 'use-immer';
-import SwitchDrawer from '@/components/studio/components/switch-drawer';
-import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
-import { useVisible } from '@/components/studio/hooks/useVisible';
 
-import styles from './index.module.less';
 import { getOperatorListByValueType } from '@/domains-core/graph-analysis/graph-schema/utils/get-operator-list-by-value-type';
 import { INodeQuery } from '@/types/services';
+import styles from './index.module.less';
 
 const { Item } = Form;
 type NodeProp = {
@@ -171,7 +171,6 @@ export const NodeQuery: React.FC<Prop> = ({ nodes, nodeQuery }) => {
                 </Item>
               </Input.Group>
             </Item>
-
           </Form>
         </div>
       </SwitchDrawer>

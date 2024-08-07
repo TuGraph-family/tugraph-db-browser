@@ -70,7 +70,6 @@ export const responseFormatter = (result: RestFulResponse) => {
   return {
     success: true,
     data: resultData,
-    errorCode: result?.errorCode,
   };
 };
 

@@ -47,16 +47,21 @@ export async function getInitialState() {
       if (retain_connection_credentials === 'false') {
         handleSessionClose();
       } else {
-        interval = setInterval(() => {
-          const credential_timeout = dbConfig['browser.credential_timeout'];
-          const latestLoginTime = getLocalData(TUGRPAH_USER_LOGIN_TIME);
-          const isExpired =
-            latestLoginTime + credential_timeout * 1000 < new Date().getTime();
-          if (isExpired) {
-            handleSessionClose();
-            clearInterval(interval);
-          }
-        }, 60000);
+        const credential_timeout = dbConfig['browser.credential_timeout'];
+        const latestLoginTime = getLocalData(TUGRPAH_USER_LOGIN_TIME);
+        const loginExpirationTime = latestLoginTime + credential_timeout * 1000;
+        const isExpiredInit = loginExpirationTime < new Date().getTime();
+        if (isExpiredInit) {
+          handleSessionClose();
+        } else {
+          interval = setInterval(() => {
+            const isExpired = loginExpirationTime < new Date().getTime();
+            if (isExpired) {
+              handleSessionClose();
+              clearInterval(interval);
+            }
+          }, 60000);
+        }
       }
     }
     return {

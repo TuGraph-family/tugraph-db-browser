@@ -3,34 +3,37 @@
  * author: Allen
  */
 
-import { useCallback, useEffect } from 'react';
-import { Button, Form, Input, Select, message } from 'antd';
 import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Modal, Select, message } from 'antd';
+import { useCallback, useEffect } from 'react';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import type { Engine } from 'tsparticles-engine';
 import { useModel } from 'umi';
 
 // constants
-import particlesOptions from './particles-config';
-import { PUBLIC_PERFIX_CLASS } from '../constant';
 import {
   TUGRAPH_HISTORY_URI,
   TUGRAPH_PASSWORD,
   TUGRAPH_URI,
   TUGRAPH_USER_NAME,
 } from '@/constants';
+import { PUBLIC_PERFIX_CLASS } from '../constant';
+import particlesOptions from './particles-config';
 
 // utils
 import { loginDB } from '@/utils';
 import { getLocalData } from '../utils/localStorage';
 
 // style
-import styles from './index.module.less';
+import { dbRecordsTranslator } from '@/translator';
 import { useImmer } from 'use-immer';
+import styles from './index.module.less';
 
 const { Item, useForm } = Form;
 const { Option } = Select;
+
+const { confirm } = Modal;
 
 export const Login = () => {
   // state
@@ -76,12 +79,33 @@ export const Login = () => {
           },
           dbConfig,
         } as any);
-        setTimeout(() => {
-          window.location.hash = '/home';
-          setState(draft => {
-            draft.isLoading = false;
+        const res = await session.run(
+          'CALL dbms.security.isDefaultUserPassword()',
+        );
+        const { isDefaultUserPassword } =
+          dbRecordsTranslator(res)?.data[0] || {};
+
+        if (isDefaultUserPassword) {
+          confirm({
+            title: '当前使用的密码为默认密码，存在安全风险，请前往修改密码！',
+            okText: '修改密码',
+            cancelText: '跳过',
+            mask: false,
+            onOk() {
+              window.location.hash = '/reset';
+            },
+            onCancel() {
+              window.location.hash = '/home';
+            },
+            afterClose() {
+              setState(draft => {
+                draft.isLoading = false;
+              });
+            },
           });
-        }, 100);
+        } else {
+          window.location.hash = '/home';
+        }
       } catch (error: any) {
         setState(draft => {
           draft.isLoading = false;
@@ -92,7 +116,7 @@ export const Login = () => {
   };
 
   /** 判断是否已经登录，若登录则跳转至首页 */
-  if (userName) {
+  if (userName && !isLoading) {
     window.location.hash = '/home';
     return;
   }

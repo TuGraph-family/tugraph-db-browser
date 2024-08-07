@@ -1,3 +1,9 @@
+import { SplitPane } from '@/components/studio/components/split-panle';
+import TextTabs from '@/components/studio/components/text-tabs';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import { useProcedure } from '@/components/studio/hooks/useProcedure';
+import { ProcedureItemParams } from '@/components/studio/interface/procedure';
+import { downloadFile } from '@/components/studio/utils/downloadFile';
 import {
   ArrowLeftOutlined,
   CloseOutlined,
@@ -7,15 +13,9 @@ import {
 } from '@ant-design/icons';
 import { Button, Empty, Modal, Popconfirm, message } from 'antd';
 import { filter, find, join, last, map, xorBy } from 'lodash';
-import React, { ReactChild, useCallback } from 'react';
-import { useImmer } from 'use-immer';
+import React, { ReactNode, useCallback } from 'react';
 import { useModel } from 'umi';
-import { SplitPane } from '@/components/studio/components/split-panle';
-import TextTabs from '@/components/studio/components/text-tabs';
-import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
-import { useProcedure } from '@/components/studio/hooks/useProcedure';
-import { ProcedureItemParams } from '@/components/studio/interface/procedure';
-import { downloadFile } from '@/components/studio/utils/downloadFile';
+import { useImmer } from 'use-immer';
 import { StoredCheckoutDrawer } from './stored-checkout';
 import { StoredDownLoad } from './stored-download';
 import { StoredKhopPanle } from './stored-khop-panle';
@@ -46,7 +46,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
   const [state, updateState] = useImmer<{
     height: number;
     tabs: {
-      text?: ReactChild;
+      text?: ReactNode;
       key?: string;
       result?: any;
       paramValue?: string;
@@ -89,36 +89,42 @@ export const StoredProcedureModal: React.FC<Props> = ({
 
   /** 兼容数据库输入输出不一致，支持映射多种字符 */
   const codeTypeMap = {
-    'cpp': 'CPP',
-    'py': 'PY',
-    'python': 'PY'
+    cpp: 'CPP',
+    py: 'PY',
+    python: 'PY',
   };
 
   /** 统一计算procedure调用参数 */
-  const paramsValue = tabs.find((item) => item.key === selectItem)?.paramValue ?? `{"scan_edges": true,"times": 2}`;
+  const paramsValue =
+    tabs.find(item => item.key === selectItem)?.paramValue ??
+    `{"scan_edges": true,"times": 2}`;
 
   const onSplitPaneHeightChange = useCallback((size: number) => {
-    updateState((draft) => {
+    updateState(draft => {
       draft.height = size;
     });
   }, []);
   const getList = (newList: ProcedureItemParams[]) => {
-    updateState((draft) => {
+    updateState(draft => {
       draft.list = newList;
       if (newList.length > list.length) {
         const diffElements = xorBy(newList, list, 'name');
         const newTab = diffElements.find(element => newList.includes(element));
-        
+
         if (newTab && newTab.name) {
-            draft.tabs = [...(draft.tabs || []), { text: newTab.name, key: newTab.name }];
-            draft.detail = newTab;
-            draft.selectItem = newTab.name;
+          draft.tabs = [
+            ...(draft.tabs || []),
+            { text: newTab.name, key: newTab.name },
+          ];
+          draft.detail = newTab;
+          draft.selectItem = newTab.name;
         } else {
-            console.log("No new element found or new element doesn't have a name property");
+          console.log(
+            "No new element found or new element doesn't have a name property",
+          );
         }
-      }
-      else {
-        console.log("newList is not longer than list");
+      } else {
+        console.log('newList is not longer than list');
       }
     });
   };
@@ -127,16 +133,18 @@ export const StoredProcedureModal: React.FC<Props> = ({
       graphName,
       procedureType: codeTypeMap[detail?.type || detail?.code_type],
       procedureName: detail.name,
-    }).then((res) => {
+    }).then(res => {
       if (res.errorCode === '200' || res?.success) {
-        updateState((draft) => {
+        updateState(draft => {
           /** 需要用utf-8格式再次解码atob的内容 */
           draft.code = new TextDecoder().decode(
-            new Uint8Array(atob(res.data[0]?.plugin_description?.code_base64
-          )
-            .split('')
-            .map(c => c.charCodeAt(0))));
-            draft.drawerVisible = true;
+            new Uint8Array(
+              atob(res.data[0]?.plugin_description?.code_base64)
+                .split('')
+                .map(c => c.charCodeAt(0)),
+            ),
+          );
+          draft.drawerVisible = true;
         });
       }
     });
@@ -145,7 +153,10 @@ export const StoredProcedureModal: React.FC<Props> = ({
     // });
   };
   const downProcedure = () => {
-    downloadFile(code, `${detail.name}.${codeTypeMap[detail?.type || detail?.code_type]}`);
+    downloadFile(
+      code,
+      `${detail.name}.${codeTypeMap[detail?.type || detail?.code_type]}`,
+    );
   };
   const deleteProcedure = () => {
     //TODO: By Allen
@@ -153,28 +164,27 @@ export const StoredProcedureModal: React.FC<Props> = ({
       graphName,
       procedureType: codeTypeMap[detail?.type || detail?.code_type],
       procedureName: detail.name,
-    }).then((res) => {
+    }).then(res => {
       if (res.errorCode === '200' || res?.success) {
         message.success('卸载成功');
         refreshList(codeTypeMap[detail?.type || detail?.code_type]);
-        updateState((draft) => {
-          draft.tabs = filter(tabs, (tab) => tab.key !== detail.name);
+        updateState(draft => {
+          draft.tabs = filter(tabs, tab => tab.key !== detail.name);
           const activekey = last(
-            filter(tabs, (tab) => tab.key !== detail.name)
+            filter(tabs, tab => tab.key !== detail.name),
           )?.key;
           draft.selectItem = activekey;
           draft.detail = find(
             list,
-            (item) =>
-              last(filter(tabs, (tab) => tab.key !== detail.name))?.key ===
-              item.name
+            item =>
+              last(filter(tabs, tab => tab.key !== detail.name))?.key ===
+              item.name,
           );
         });
       }
     });
   };
   const callProcedure = () => {
-
     onCallProcedure(driver, {
       graphName,
       procedureType: codeTypeMap[detail?.type || detail?.code_type],
@@ -183,9 +193,9 @@ export const StoredProcedureModal: React.FC<Props> = ({
       inProcess: true,
       param: paramsValue,
       version: detail.version,
-    }).then((res) => {
-      updateState((draft) => {
-        draft.tabs = tabs.map((item) => {
+    }).then(res => {
+      updateState(draft => {
+        draft.tabs = tabs.map(item => {
           if (item.key === selectItem) {
             return { ...item, result: res };
           }
@@ -255,10 +265,10 @@ export const StoredProcedureModal: React.FC<Props> = ({
     </div>
   );
   const getDetails = (detail: ProcedureItemParams) => {
-    updateState((draft) => {
+    updateState(draft => {
       draft.detail = { ...detail };
       draft.selectItem = detail.name;
-      if (!filter(tabs, (tab) => tab.key === detail.name).length) {
+      if (!filter(tabs, tab => tab.key === detail.name).length) {
         draft.tabs = [
           ...tabs,
           {
@@ -271,8 +281,8 @@ export const StoredProcedureModal: React.FC<Props> = ({
     //TODO: By Allen
   };
   const getParamValue = (value: string) => {
-    updateState((draft) => {
-      draft.tabs = tabs.map((item) => {
+    updateState(draft => {
+      draft.tabs = tabs.map(item => {
         if (item.key === selectItem) {
           return { ...item, paramValue: value };
         }
@@ -281,7 +291,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
     });
   };
   const getTimeout = (val: number) => {
-    updateState((draft) => {
+    updateState(draft => {
       draft.timeout = val;
     });
   };
@@ -304,8 +314,8 @@ export const StoredProcedureModal: React.FC<Props> = ({
           graphName={graphName}
           getDetails={getDetails}
           getList={getList}
-          getRefresh={(refresh) => {
-            updateState((draft) => {
+          getRefresh={refresh => {
+            updateState(draft => {
               draft.refreshList = refresh;
             });
           }}
@@ -317,7 +327,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
               styles[`${PUBLIC_PERFIX_CLASS}-stored-modal-content-right`],
               styles[`${PUBLIC_PERFIX_CLASS}-split-pane`],
             ],
-            ' '
+            ' ',
           )}
         >
           <SplitPane
@@ -341,7 +351,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
                   >
                     <TextTabs
                       type="card"
-                      tabs={map(tabs, (tab) => ({
+                      tabs={map(tabs, tab => ({
                         text: (
                           <div
                             style={{
@@ -352,12 +362,12 @@ export const StoredProcedureModal: React.FC<Props> = ({
                           >
                             <div>{tab.text}</div>
                             <CloseOutlined
-                              onClick={(e) => {
+                              onClick={e => {
                                 e.stopPropagation();
-                                updateState((draft) => {
+                                updateState(draft => {
                                   draft.tabs = filter(
                                     tabs,
-                                    (item) => item.key !== tab.key
+                                    item => item.key !== tab.key,
                                   );
                                   if (tab.key === selectItem) {
                                     draft.selectItem = '';
@@ -372,13 +382,10 @@ export const StoredProcedureModal: React.FC<Props> = ({
                       }))}
                       activeTab={selectItem}
                       autoWidth={false}
-                      onChange={(val) => {
-                        updateState((draft) => {
+                      onChange={val => {
+                        updateState(draft => {
                           draft.selectItem = val;
-                          draft.detail = find(
-                            list,
-                            (item) => item.name === val
-                          );
+                          draft.detail = find(list, item => item.name === val);
                         });
                       }}
                     />
@@ -412,7 +419,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
               }
             >
               <StoredResult
-                result={tabs.find((item) => item.key === selectItem)?.result}
+                result={tabs.find(item => item.key === selectItem)?.result}
               />
             </div>
           </SplitPane>
@@ -421,7 +428,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
           value={code}
           visible={drawerVisible}
           onClose={() => {
-            updateState((draft) => {
+            updateState(draft => {
               draft.drawerVisible = false;
             });
           }}
@@ -429,7 +436,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
         <StoredDownLoad
           demoVisible={demoVisible}
           onCancel={() => {
-            updateState((draft) => {
+            updateState(draft => {
               draft.demoVisible = false;
             });
           }}

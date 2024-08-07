@@ -1,17 +1,17 @@
-import { GraphinContextType, Utils } from '@antv/graphin';
-import { message } from 'antd';
-import { join } from 'lodash';
-import React, { useCallback, useEffect } from 'react';
-import { useImmer } from 'use-immer';
 import {
   GraphCanvasContext,
   GraphCanvasContextInitValue,
 } from '@/components/studio/components/garph-canvas';
 import TextTabs from '@/components/studio/components/text-tabs';
 import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import { MODEL_OVER_VIEW_TABS } from '@/components/studio/domain-core/graph-query/constant';
 import { useSchema } from '@/components/studio/hooks/useSchema';
 import { nodesEdgesListTranslator } from '@/components/studio/utils/nodesEdgesListTranslator';
-import { MODEL_OVER_VIEW_TABS } from '@/components/studio/domain-core/graph-query/constant';
+import { GraphinContextType, Utils } from '@antv/graphin';
+import { message } from 'antd';
+import { join } from 'lodash';
+import React, { useCallback, useEffect } from 'react';
+import { useImmer } from 'use-immer';
 import EdgeNodeList from './components/edge-node-list';
 import GraphCanvasMini from './components/graph-canvas-mini';
 

@@ -67,44 +67,44 @@ export const StoredForm: React.FC<Prop> = ({
   const { onUploadProcedure, UploadProcedureLoading } = useProcedure();
   const { initialState } = useModel('@@initialState');
   const { driver } = initialState as InitialState;
-  const fileReader = (info: any) => {
-    return new Promise((res, rej) => {
-      const reader = new FileReader();
-      reader.readAsText(info.file.originFileObj);
-      reader.onload = result => {
-        try {
-          res(btoa(`${result?.target?.result}`));
-        } catch (err: any) {
-          rej(err);
-          message.error(err);
-        }
-      };
-    });
-  };
   const props: UploadProps = {
     name: 'file',
+    accept: '.cpp,.py',
+    maxCount: 1,
     headers: {
       authorization: 'authorization-text',
     },
-    onChange(info: UploadChangeParam<UploadFile<any>>) {
-      const uid = info.file.uid;
-      fileReader(info).then(data => {
-        const newFileList = info.fileList.map(item => {
-          if (uid === item?.uid) {
-            return { ...item, content: data, status: 'done' };
-          } else {
-            return item;
-          }
+    beforeUpload(file: File) {
+      const fileReader = (file: File) => {
+        return new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => {
+            try {
+              const base64String = reader.result as string;
+              /** 移除 data URL 前缀（如 "data:image/png;base64,"） */
+              const base64Content = base64String.split(',')[1];
+              resolve(base64Content);
+            } catch (err: any) {
+              reject(err);
+              message.error(err.message);
+            }
+          };
+          reader.onerror = (error) => reject(error);
         });
+      };
+    
+      fileReader(file).then(base64Data => {
+        message.success('文件上传成功');
         updateState(draft => {
-          draft.fileLst = newFileList;
+          /** 需要添加name: file.name这句代码，因为name是不可枚举属性，无法解构 */
+          draft.fileLst = [{ ...file, name: file.name, content: base64Data, status: 'done' }];
         });
-        if (info.file.status === 'done') {
-          message.success('文件上传成功');
-        } else if (info.file.status === 'error') {
-          message.error('文件上传失败');
-        }
+      }).catch(error => {
+        console.error('Error reading file:', error);
+        message.error('Failed to read file');
       });
+      return false;
     }
   };
   const [state, updateState] = useImmer<{
@@ -232,7 +232,7 @@ export const StoredForm: React.FC<Prop> = ({
     <>
       <Modal
         title={'新建存储过程'}
-        visible={visible}
+        open={visible}
         onCancel={onCancel}
         width={480}
         destroyOnClose

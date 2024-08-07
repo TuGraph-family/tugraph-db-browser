@@ -1,13 +1,13 @@
-import { CaretDownOutlined } from '@ant-design/icons';
-import { Badge, Button, Collapse, Popconfirm, Space, Tooltip } from 'antd';
-import { filter } from 'lodash';
 import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
 import { FileData } from '@/components/studio/interface/import';
 import { GraphData } from '@/components/studio/interface/schema';
+import { CaretDownOutlined } from '@ant-design/icons';
+import { Badge, Button, Collapse, Popconfirm, Space, Tooltip } from 'antd';
+import { filter } from 'lodash';
 
-import styles from './index.module.less';
 import { useState } from 'react';
 import DataMap from './data-map';
+import styles from './index.module.less';
 
 const { Panel } = Collapse;
 
@@ -100,7 +100,6 @@ export const ImportDataConfig = (prop: ImportDataConfigProps) => {
   const [openKey, setOpenKey] = useState<string[]>(['0']);
 
   const handleDelete = (fileName: string) => {
-   
     const newFileList = filter(
       fileDataList,
       (item: FileData) => item.fileName !== fileName,
