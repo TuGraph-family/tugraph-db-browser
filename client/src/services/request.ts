@@ -16,7 +16,6 @@ export const request = async (params: IRequestParams) => {
 
   const session = driver.session(sessionParams);
 
-  console.log(cypher,'lkm',parameters)
 
   return session
     .run(cypher, parameters)
