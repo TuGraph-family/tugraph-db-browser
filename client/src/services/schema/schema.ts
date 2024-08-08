@@ -243,13 +243,10 @@ export const createSchema = async (
   } = params;
 
   let condition = '';
-  properties.forEach((d, key) => {
+  properties.forEach(d => {
     const { name, type, optional = false } = d;
-    if (key === properties.length - 1) {
-      condition += `['${name}', ${type}, ${optional}]`;
-    } else {
-      condition += `['${name}', ${type}, ${optional}],`;
-    }
+
+    condition += `['${name}', '${type}', ${optional}]`;
   });
 
   let cypher = ``;
@@ -320,7 +317,6 @@ export const deleteSchema = async (
   return responseFormatter(result);
 };
 
-
 /**
  * 导入 Schema 创建图模型
  * @param params
@@ -330,7 +326,7 @@ export const importSchemaMod = async (
   driver: Driver,
   params: ISchemaParams,
 ) => {
-  const { graph: graphName, override = false,schema } = params;
+  const { graph: graphName, override = false, schema } = params;
 
   // 如果是覆盖，则需要先删除原有的 schema
   if (override) {
@@ -349,11 +345,10 @@ export const importSchemaMod = async (
     }
   }
 
-  const result = await importSchema(driver,schema,graphName);
+  const result = await importSchema(driver, schema, graphName);
 
   return result;
 };
-
 
 /* 导入Schema数据 */
 const mapCypher = async (
