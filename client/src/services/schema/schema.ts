@@ -243,10 +243,12 @@ export const createSchema = async (
   } = params;
 
   let condition = '';
-  properties.forEach(d => {
+  properties.forEach((d, key) => {
     const { name, type, optional = false } = d;
 
-    condition += `['${name}', '${type}', ${optional}]`;
+    const ending = key === properties.length - 1 ? '' : ',';
+
+    condition += `['${name}', '${type}', ${optional}]${ending}`;
   });
 
   let cypher = ``;

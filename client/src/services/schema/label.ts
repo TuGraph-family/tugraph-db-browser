@@ -47,7 +47,7 @@ export const addFieldToLabel = async (
   const { graphName, labelType, labelName, properties } = params;
 
   let condition = '';
-  properties.forEach((d) => {
+  properties.forEach((d,index) => {
     const { name, type, optional = false } = d;
     const currentType = DATA_TYPE.find(item => item['value'] === type);
     const isINT = `${type}`.includes('INT');
@@ -59,7 +59,10 @@ export const addFieldToLabel = async (
         ? currentType?.default
         : `'${currentType?.default}'`;
 
-    condition += `['${name}', '${type}', ${defaultValue}, ${optional}]`;
+        const ending = index === properties.length - 1 ? '' : ',';
+
+        condition += `['${name}', '${type}', ${defaultValue}, ${optional}]${ending}`
+      
   });
 
   const type = labelType === 'node' ? 'vertex' : 'edge';
@@ -82,9 +85,12 @@ export const updateFieldToLabel = async (
   const { graphName, labelType, labelName, properties } = params;
 
   let condition = '';
-  properties.forEach((d) => {
+  properties.forEach((d,index) => {
     const { name, type, optional = false } = d;
-      condition += `['${name}', '${type}', ${optional} ]`;
+
+    const ending = index === properties.length - 1 ? '' : ',';
+        
+    condition += `['${name}', '${type}', ${optional} ]${ending}`
   });
 
   const type = labelType === 'node' ? 'vertex' : 'edge';
