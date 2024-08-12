@@ -121,7 +121,7 @@ export const createVertexLabelByJson=(
 )=>{
   return `CALL db.createVertexLabelByJson('${json_data}')`
 }
-
+  
 /* 创建边类型 */
 export const createEdgeLabelByJson=(
   json_data: string
