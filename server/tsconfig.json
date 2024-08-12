@@ -1,9 +1,0 @@
-{
-  "extends": "@eggjs/tsconfig",
-  "exclude": [
-    "app/**/*.ts",
-    "node_modules*",
-    "test/fixtures",
-    "test/fixtures/*",
-  ]
-}
