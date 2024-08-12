@@ -6,3 +6,4 @@
 /src/.umi
 /dist
 package-lock.json
+/src/.umi-production
