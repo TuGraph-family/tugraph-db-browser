@@ -31,7 +31,14 @@ export default defineConfig({
   npmClient: 'npm',
   favicons: ['/assets/favicon.png'],
   esbuildMinifyIIFE: true,
-  plugins: ['@umijs/plugins/dist/initial-state', '@umijs/plugins/dist/model'],
+  plugins: [
+    '@umijs/plugins/dist/initial-state',
+    '@umijs/plugins/dist/model',
+    '@umijs/plugins/dist/antd',
+  ],
   initialState: {},
   model: {},
+  antd: {
+    import: true,
+  },
 });
