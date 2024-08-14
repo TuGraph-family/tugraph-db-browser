@@ -6,7 +6,6 @@ import { registerClusterDagreLayout } from '@/domains-core/graph-analysis/graph-
 import { getStyledGraphData } from '@/domains-core/graph-analysis/graph-schema/utils/get-styled-graph-data';
 import { resizeCanvas } from '@/domains-core/graph-analysis/graph-schema/utils/resize-canvas';
 import { getId } from '@/utils';
-import { Renderer } from '@antv/g-svg';
 import {
   CameraSetting,
   EdgeEvent,
@@ -101,7 +100,6 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
       spinning: true,
     });
     const graph = new Graph({
-      renderer: () => new Renderer(),
       container: containerId,
       data: { ...value?.graphData },
       behaviors: [
@@ -124,9 +122,6 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
           highlight: {
             fill: '#D580FF',
           },
-        },
-        style: {
-          labelText: d => d.id,
         },
       },
       edge: {
