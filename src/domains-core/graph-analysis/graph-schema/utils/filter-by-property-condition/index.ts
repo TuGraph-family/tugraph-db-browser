@@ -19,7 +19,7 @@ export const filterByPropertyCondition = (
 
   if (operator === '=') {
     return data[name] === formatted;
-  } else if (operator === '≠') {
+  } else if (operator === '<>') {
     return data[name] !== formatted;
   } else if (operator === '⊃') {
     return `${data[name]}`.indexOf(`${formatted}`) > -1;
@@ -27,11 +27,11 @@ export const filterByPropertyCondition = (
     return `${data[name]}`.indexOf(`${formatted}`) === -1;
   } else if (operator === '>') {
     return Number(data[name]) > Number(formatted);
-  } else if (operator === '≥') {
+  } else if (operator === '>=') {
     return Number(data[name]) >= Number(formatted);
   } else if (operator === '<') {
     return Number(data[name]) < Number(formatted);
-  } else if (operator === '≤') {
+  } else if (operator === '<=') {
     return Number(data[name]) <= Number(formatted);
   }
 

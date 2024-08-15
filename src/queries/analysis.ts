@@ -23,10 +23,12 @@ export const quickQueryCypher = (params: {
     value: string;
   };
   node: string;
+  type: string;
 }) => {
-  const { limit, rules, node } = params;
+  const { limit, rules, node,type } = params;
   const { property, logic, value } = rules || {};
-  return `match(n:${node}) where n.${property} ${logic} ${value} return n limit ${limit}`;
+  const newValue =  type.toLowerCase() === 'string' ? `'${value}'` : value
+  return `match(n:${node}) where n.${property} ${logic} ${newValue} return n limit ${limit}`;
 };
 
 export const pathQueryCypher = (params: {

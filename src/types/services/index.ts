@@ -214,6 +214,7 @@ export interface INodeQuery {
   logic: string;
   value: string;
   limit: number;
+  type?: string;
 }
 
 export interface INeighborsParams {

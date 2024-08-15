@@ -111,6 +111,8 @@ const ConfigQuery: React.FC = () => {
       spinning: true,
     });
 
+  
+
     const result = await onQuickQuery({
       graphName,
       limit,
@@ -119,6 +121,7 @@ const ConfigQuery: React.FC = () => {
         logic,
         value,
       },
+      type: currentPropertyType,
       node: label,
     });
 

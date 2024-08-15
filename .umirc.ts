@@ -29,7 +29,7 @@ export default defineConfig({
     { path: '/reset', component: 'resetPassword', title: '重置密码' },
   ],
   npmClient: 'npm',
-  favicons: ['/assets/favicon.png'],
+  favicons: ['/resource/assets/favicon.png'],
   esbuildMinifyIIFE: true,
   plugins: [
     '@umijs/plugins/dist/initial-state',
