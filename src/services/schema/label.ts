@@ -54,11 +54,9 @@ export const addFieldToLabel = async (
         isINT || isBOOL || isDOUBLE
           ? currentType?.default
           : `'${currentType?.default}'`;
-      if (index === properties.length - 1) {
-        condition += `['${name}', ${type}, ${defaultValue}, ${optional}]`;
-      } else {
-        condition += `['${name}', ${type}, ${defaultValue}, ${optional}],`;
-      }
+      
+      const ending = index === properties.length - 1 ? '' : ',';
+      condition += `['${name}', '${type}', ${defaultValue}, ${optional}]${ending}`;
     });
   
     const type = labelType === 'node' ? 'vertex' : 'edge';
@@ -83,11 +81,9 @@ export const addFieldToLabel = async (
     let condition = '';
     properties.forEach((d, index) => {
       const { name, type, optional = false } = d;
-      if (index === properties.length - 1) {
-        condition += `['${name}', ${type}, ${optional} ]`;
-      } else {
-        condition += `['${name}', ${type}, ${optional} ],`;
-      }
+      const ending = index === properties.length - 1 ? '' : ',';
+      condition += `['${name}', '${type}', ${optional} ]${ending}`;
+    
     });
   
     const type = labelType === 'node' ? 'vertex' : 'edge';

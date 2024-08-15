@@ -10,7 +10,8 @@ export const queryNeighborsCypher = (params: INeighborsParams) => {
 
 
 export const getCypherByNode = (  nodeQuery: INodeQuery)=>{
-  const {limit, logic, node,propertie,value  } = nodeQuery || {}
+  const {limit, logic, node,propertie,value ,type = '' } = nodeQuery || {};
+  const newValue =  type.toLowerCase() === 'string' ? `'${value}'` : value
   
-  return `match(n:${node}) where n.${propertie} ${logic} ${value} return n limit ${limit}`;
+  return `match(n:${node}) where n.${propertie} ${logic} ${newValue} return n limit ${limit}`;
 }

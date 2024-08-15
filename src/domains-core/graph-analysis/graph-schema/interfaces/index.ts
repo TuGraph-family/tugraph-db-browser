@@ -10,7 +10,7 @@ export interface PathQueryDataSource {
   contentHeight: number;
 }
 
-export type Operator = '⊃' | '⊅' | '=' | '≠' | '>' | '<' | '≥' | '≤';
+export type Operator = '⊃' | '⊅' | '=' | '<>' | '>' | '<' | '>=' | '<=';
 
 export interface PropertyCondition {
   name: string;

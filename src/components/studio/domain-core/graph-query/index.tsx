@@ -49,6 +49,7 @@ import CypherEdit from './cypherEditor';
 
 import { getQueryString } from '@/components/studio/utils/routeParams';
 import styles from './index.module.less';
+import { INodeQuery } from '@/types/services';
 
 const { Option } = Select;
 
@@ -251,16 +252,21 @@ export const GraphQuery = () => {
         updateQueryData(res, 1);
       });
     }
-    if (activeTab === IQUIRE_LIST[2].key) {
-      onNodeQuery({
-        graphName: currentGraphName,
-        limit,
-        conditions,
-        nodes: queryParams,
-      }).then(res => {
-        updateQueryData(res, 2);
+ 
+  };
+
+  /* 节点查询 */
+  const handleNodeQuery = (nodeQuery: INodeQuery) => {
+    onNodeQuery({
+      graphName: currentGraphName,
+      nodeQuery,
+    }).then(res => {
+      const id = uniqueId('id_');
+      updateState(draft => {
+        draft.resultData = [...resultData, { ...res, id }];
+        draft.lastResult = { ...lastResult, [IQUIRE_LIST[2].key]: id };
       });
-    }
+    });
   };
 
   const header = (
@@ -351,14 +357,13 @@ export const GraphQuery = () => {
         >
           返回图构建
         </Button>
-        {/* 暂时功能隐藏 */}
-        {/* <Button
+        <Button
           onClick={() => {
             location.hash = `/analysis?graphName=${currentGraphName}`;
           }}
         >
           前往图分析
-        </Button> */}
+        </Button>
       </Space>
     </div>
   );
