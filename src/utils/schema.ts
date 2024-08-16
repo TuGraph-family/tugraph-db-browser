@@ -283,7 +283,7 @@ export const QueryResultFormatter = (
       success: false,
     };
   }
-  let resultData = formatCypherResult(result.data) ;
+  const resultData = formatCypherResult(result.data) ;
   const responseData = formatCypherResult(formatMultipleResponse(result.data));
 
   const { edges, nodes } = responseData;
