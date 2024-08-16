@@ -1,6 +1,6 @@
 import { RestFulResponse } from '@/types/services';
 import { QueryResultFormatter } from '@/utils/schema';
-import { convertIntToNumber } from '..';
+import { formatCypherResult } from '..';
 import { filter, map } from 'lodash';
 
 /* 图分析 数据转换 */
@@ -12,7 +12,7 @@ export const graphDataTranslator = (
     data: { formatData = [], originalData = [] },
   } = QueryResultFormatter(result, script) || {};
 
-  const newFormatData = convertIntToNumber(formatData);
+  const newFormatData = formatCypherResult(formatData);
 
   const { nodes, edges } = newFormatData;
   const nodeIdList = map(nodes, item => item.id);

@@ -1,4 +1,5 @@
 import { PropertyCondition } from '@/domains-core/graph-analysis/graph-schema/interfaces';
+import moment from 'moment';
 
 export const filterByPropertyCondition = (
   data: Record<string, any>,
@@ -26,13 +27,13 @@ export const filterByPropertyCondition = (
   } else if (operator === '⊅') {
     return `${data[name]}`.indexOf(`${formatted}`) === -1;
   } else if (operator === '>') {
-    return Number(data[name]) > Number(formatted);
+    return Number(data[name]) > Number(formatted) || moment(formatted)?.isBefore(moment(data[name]));
   } else if (operator === '>=') {
-    return Number(data[name]) >= Number(formatted);
+    return Number(data[name]) >= Number(formatted) || moment(formatted)?.isSameOrBefore(moment(data[name]));
   } else if (operator === '<') {
-    return Number(data[name]) < Number(formatted);
+    return Number(data[name]) < Number(formatted) || moment(formatted)?.isAfter(moment(data[name]));
   } else if (operator === '<=') {
-    return Number(data[name]) <= Number(formatted);
+    return Number(data[name]) <= Number(formatted)  || moment(formatted)?.isSameOrAfter(moment(data[name]));
   }
 
   return false;

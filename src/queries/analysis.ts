@@ -25,9 +25,22 @@ export const quickQueryCypher = (params: {
   node: string;
   type: string;
 }) => {
-  const { limit, rules, node,type } = params;
+  const { limit, rules, node, type } = params;
   const { property, logic, value } = rules || {};
-  const newValue =  type.toLowerCase() === 'string' ? `'${value}'` : value
+  let newValue = value;
+  switch (type.toLowerCase()) {
+    case 'string':
+      newValue = `'${value}'`;
+      break;
+    case 'date':
+      newValue = `DATE('${value}')`;
+      break;
+    case 'datetime':
+      newValue = `DATETIME('${value}')`;
+      break;
+    default:
+      break;
+  }
   return `match(n:${node}) where n.${property} ${logic} ${newValue} return n limit ${limit}`;
 };
 

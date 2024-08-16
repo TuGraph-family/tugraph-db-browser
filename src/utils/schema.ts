@@ -6,8 +6,9 @@ import {
   RestFulResponse,
   IDuplicatesData,
 } from '@/types/services';
-
-import { has, isEmpty } from 'lodash';
+import { isNode, isPath, isRelationship } from 'neo4j-driver';
+import { isEmpty } from 'lodash';
+import { formatCypherResult } from '@/translator';
 /**
  * 转换使用 Cypher 查询节点 Schema 返回的数据格式
  * @param params
@@ -216,13 +217,12 @@ export const formatPathResponse = (
   };
 };
 
-
 // 去重函数
-const removeDuplicates = (data: IDuplicatesData[]) =>{
-  return  data.filter((item, index, self) => {
-     return index === self.findIndex(t => t.id === item.id);
-   });
- }
+const removeDuplicates = (data: IDuplicatesData[]) => {
+  return data.filter((item, index, self) => {
+    return index === self.findIndex(t => t.id === item.id);
+  });
+};
 
 /**
  * 转换使用 Cypher 查询节点、边、path等多元素时返回的数据格式
@@ -235,32 +235,36 @@ export const formatMultipleResponse = (params: IMultipleParams[]) => {
   for (const multi of params) {
     for (const key in multi) {
       const current = multi[key];
-      if (current?.__isNode__) {
-        nodes.push({
-          id: current.elementId,
-          label: current.labels[0],
-          ...current,
-        });
-      } else if (current?.__isRelationship__) {
-        edges.push({
-          id: `edges_${current.startNodeElementId}_${current.endNodeElementId}_${current.elementId}`,
-          source: current.startNodeElementId,
-          target: current.endNodeElementId,
-          label: current.type,
-          properties: current.properties,
-        });
-      } else if (current?.__isPath__) {
-        const result = formatMultipleResponse(current.segments);
-        nodes.push(...result.nodes);
-        edges.push(...result.edges);
+
+      switch (true) {
+        case isNode(current):
+          nodes.push({
+            id: current.elementId,
+            label: current.labels[0],
+            ...current,
+          });
+          break;
+        case isRelationship(current):
+          edges.push({
+            id: `edges_${current.startNodeElementId}_${current.endNodeElementId}_${current.elementId}`,
+            source: current.startNodeElementId,
+            target: current.endNodeElementId,
+            label: current.type,
+            properties: current.properties,
+          });
+          break;
+        case isPath(current):
+          const result = formatMultipleResponse(current.segments);
+          nodes.push(...result.nodes);
+          edges.push(...result.edges);
+        default:
+          break;
       }
     }
   }
 
-  
-
-  const newNodes = removeDuplicates(nodes)
-  const newEdges = removeDuplicates(edges)
+  const newNodes = removeDuplicates(nodes);
+  const newEdges = removeDuplicates(edges);
 
   return {
     nodes: newNodes,
@@ -279,14 +283,14 @@ export const QueryResultFormatter = (
       success: false,
     };
   }
-  let resultData = result.data;
-  const responseData = formatMultipleResponse(resultData);
+  let resultData = formatCypherResult(result.data) ;
+  const responseData = formatCypherResult(formatMultipleResponse(result.data));
 
   const { edges, nodes } = responseData;
 
   return {
     data: {
-      originalData: result.data,
+      originalData: resultData,
       formatData:
         isEmpty(edges) && isEmpty(nodes)
           ? {
