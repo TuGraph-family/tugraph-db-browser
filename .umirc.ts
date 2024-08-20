@@ -27,6 +27,7 @@ export default defineConfig({
     { path: '/analysis', component: 'graph-schema/index', title: '图分析' },
     { path: '/query', component: 'query', title: '图查询' },
     { path: '/reset', component: 'resetPassword', title: '重置密码' },
+    {path:'/test',component:'test'}
   ],
   npmClient: 'npm',
   favicons: ['/resource/assets/favicon.png'],
