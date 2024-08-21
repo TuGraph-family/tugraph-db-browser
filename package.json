@@ -40,7 +40,6 @@
     "ahooks": "^3.7.2",
     "antd": "^4.22.8",
     "copy-to-clipboard": "^3.3.3",
-    "cytoscape": "^3.30.2",
     "framer-motion": "^11.3.0",
     "immer": "^9.0.19",
     "json-bigint": "^1.0.0",

@@ -26,8 +26,7 @@ export default defineConfig({
     { path: '/construct', component: 'construct', title: '图构建' },
     { path: '/analysis', component: 'graph-schema/index', title: '图分析' },
     { path: '/query', component: 'query', title: '图查询' },
-    { path: '/reset', component: 'resetPassword', title: '重置密码' },
-    {path:'/test',component:'test'}
+    { path: '/reset', component: 'resetPassword', title: '重置密码' }
   ],
   npmClient: 'npm',
   favicons: ['/resource/assets/favicon.png'],
