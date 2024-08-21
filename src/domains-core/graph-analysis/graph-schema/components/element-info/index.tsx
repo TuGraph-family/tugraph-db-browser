@@ -32,7 +32,7 @@ const ElementInfo: React.FC<ElementInfoProps> = ({ value }) => {
             return (
               <div className={styles['element-info-content-item']} key={item}>
                 <div className={styles['item-label']}>{item}：</div>
-                <div className={styles['item-value']}>{properties[item]}</div>
+                <div className={styles['item-value']}>{`${properties[item]}`}</div>
               </div>
             );
           })}

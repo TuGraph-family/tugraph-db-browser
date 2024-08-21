@@ -229,7 +229,7 @@ export const GraphQuery = () => {
       message.error(`执行失败 ${data?.errorMessage}`);
     }
   };
-  const handleQuery = (
+  const handleQuery =  (
     limit: number,
     conditions: Array<{ property: string; value: string; operator: string }>,
     queryParams: string,
@@ -261,11 +261,7 @@ export const GraphQuery = () => {
       graphName: currentGraphName,
       nodeQuery,
     }).then(res => {
-      const id = uniqueId('id_');
-      updateState(draft => {
-        draft.resultData = [...resultData, { ...res, id }];
-        draft.lastResult = { ...lastResult, [IQUIRE_LIST[2].key]: id };
-      });
+      updateQueryData(res, 2);
     });
   };
 

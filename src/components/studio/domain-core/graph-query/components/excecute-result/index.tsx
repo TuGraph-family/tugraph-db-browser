@@ -47,7 +47,6 @@ import { cloneDeep, filter, find, isEmpty, map, uniqBy } from 'lodash';
 import React, { useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
 
-import { convertIntToNumber } from '@/translator';
 import styles from './index.module.less';
 
 const { TabPane } = Tabs;
@@ -713,7 +712,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
       };
     });
     return (
-      <Table columns={columns} dataSource={convertIntToNumber(originalData)} />
+      <Table columns={columns} dataSource={originalData} />
     );
   };
 
