@@ -84,9 +84,7 @@ export const StoredList: React.FC<Prop> = ({
       graphName,
       procedureType: 'CPP'
     }).then((res: any) => {
-
       if (!res) return;
-
       updateState(draft => {
         const newItems = map(res, item => ({
           ...item.plugin_description,

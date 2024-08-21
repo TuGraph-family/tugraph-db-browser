@@ -155,10 +155,10 @@ export const STORED_OPTIONS = [
       //   value: 'ZIP',
       //   label: 'zip',
       // },
-      // {
-      //   value: 'SO',
-      //   label: 'so',
-      // },
+      {
+        value: 'SO',
+        label: 'so',
+      },
       {
         value: 'CPP',
         label: 'cpp',
@@ -176,7 +176,7 @@ export const STORED_OPTIONS = [
   },
 ];
 // export const CPP_CODE_TYPE = ['ZIP', 'SO', 'CPP'];
-export const CPP_CODE_TYPE = ['CPP'];
+export const CPP_CODE_TYPE = ['CPP','SO'];
 export const PYTHON_CODE_TYPE = ['PY'];
 export const STROED_TYPE = [
   { label: 'cpp_v1', value: 'cpp_v1' },

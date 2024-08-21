@@ -69,7 +69,7 @@ export const StoredForm: React.FC<Prop> = ({
   const { driver } = initialState as InitialState;
   const props: UploadProps = {
     name: 'file',
-    accept: '.cpp,.py',
+    accept: '.cpp,.py,.so',
     maxCount: 1,
     headers: {
       authorization: 'authorization-text',
