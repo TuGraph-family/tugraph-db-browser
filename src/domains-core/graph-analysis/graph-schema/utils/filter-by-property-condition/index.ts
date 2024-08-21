@@ -6,7 +6,6 @@ export const filterByPropertyCondition = (
   expression: PropertyCondition,
 ): boolean => {
   const { name, operator, value } = expression || {};
-  console.log(data[name],value,typeof value,)
   let formatted: string | number | boolean = value;
   let content = data[name];
 
