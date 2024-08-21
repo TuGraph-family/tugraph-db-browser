@@ -7,6 +7,10 @@ export const filterByPropertyCondition = (
 ): boolean => {
   const { name, operator, value } = expression || {};
   let formatted: string | number | boolean = value;
+  
+  /* 时间格式判断 */
+  const regex = /^(\d{4})-(\d{2})-(\d{2})(?: (\d{2}):(\d{2})(?::(\d{2}))?)?$/;
+  const isDate = regex.test(formatted as string) && regex.test(data[name]);
 
   // 原始数据中 boolean 需要转换成字符串比较
   if (typeof data[name] === 'boolean') {
@@ -18,23 +22,32 @@ export const filterByPropertyCondition = (
     formatted = parseInt(value as string, 10);
   }
 
-  if (operator === '=') {
-    return data[name] === formatted;
-  } else if (operator === '<>') {
-    return data[name] !== formatted;
-  } else if (operator === '⊃') {
-    return `${data[name]}`.indexOf(`${formatted}`) > -1;
-  } else if (operator === '⊅') {
-    return `${data[name]}`.indexOf(`${formatted}`) === -1;
-  } else if (operator === '>') {
-    return Number(data[name]) > Number(formatted) || moment(formatted)?.isBefore(moment(data[name]));
-  } else if (operator === '>=') {
-    return Number(data[name]) >= Number(formatted) || moment(formatted)?.isSameOrBefore(moment(data[name]));
-  } else if (operator === '<') {
-    return Number(data[name]) < Number(formatted) || moment(formatted)?.isAfter(moment(data[name]));
-  } else if (operator === '<=') {
-    return Number(data[name]) <= Number(formatted)  || moment(formatted)?.isSameOrAfter(moment(data[name]));
+  switch (true) {
+    case operator === '=':
+      return data[name] === formatted;
+    case operator === '<>':
+      return data[name] !== formatted;
+    case operator === '⊃':
+      return `${data[name]}`.indexOf(`${formatted}`) > -1;
+    case operator === '⊅':
+      return `${data[name]}`.indexOf(`${formatted}`) === -1;
+    case operator === '>' && isDate:
+      return moment(formatted as string)?.isBefore(moment(data[name]));
+    case operator === '>':
+      return Number(data[name]) > Number(formatted);
+    case operator === '>=' && isDate:
+      return moment(formatted as string)?.isSameOrBefore(moment(data[name]));
+    case operator === '>=':
+      return Number(data[name]) >= Number(formatted);
+    case operator === '<' && isDate:
+      return moment(formatted as string)?.isAfter(moment(data[name]));
+    case operator === '<':
+      return Number(data[name]) < Number(formatted);
+    case operator === '<=' && isDate:
+      return moment(formatted as string)?.isSameOrAfter(moment(data[name]));
+    case operator === '<=':
+      return Number(data[name]) <= Number(formatted);
+    default:
+      return false;
   }
-
-  return false;
 };
