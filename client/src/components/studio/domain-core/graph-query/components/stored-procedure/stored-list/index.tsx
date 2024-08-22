@@ -91,19 +91,19 @@ export const StoredList: React.FC<Prop> = ({
         }));
         draft.list[0].items = filter(
           newItems,
-          item => item.code_type !== 'python',
+          item => item.code_type !== 'py',
         );
         draft.list[1].items = filter(
           newItems,
-          item => item.code_type === 'python',
+          item => item.code_type === 'py',
         );
         draft.searchList[0].items = filter(
           newItems,
-          item => item.code_type !== 'python',
+          item => item.code_type !== 'py',
         );
         draft.searchList[1].items = filter(
           newItems,
-          item => item.code_type === 'python',
+          item => item.code_type === 'py',
         );
       });
       return res;

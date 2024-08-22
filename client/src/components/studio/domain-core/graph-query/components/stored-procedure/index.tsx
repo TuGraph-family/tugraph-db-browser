@@ -59,7 +59,6 @@ export const StoredProcedureModal: React.FC<Props> = ({
     list: ProcedureItemParams[];
     refreshList: (type: 'cpp' | 'python' | 'all') => void;
     demoVisible: boolean;
-    codeType: string;
   }>({
     height: 362,
     tabs: [],
@@ -71,7 +70,6 @@ export const StoredProcedureModal: React.FC<Props> = ({
     list: [],
     refreshList: () => {},
     demoVisible: false,
-    codeType: '',
   });
   const {
     height,
@@ -84,7 +82,6 @@ export const StoredProcedureModal: React.FC<Props> = ({
     list,
     refreshList,
     demoVisible,
-    codeType
   } = state;
 
   const { initialState } = useModel('@@initialState');
@@ -95,6 +92,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
     cpp: 'CPP',
     py: 'PY',
     python: 'PY',
+    so: 'CPP'
   };
 
   /** 统一计算procedure调用参数 */
@@ -131,49 +129,46 @@ export const StoredProcedureModal: React.FC<Props> = ({
       }
     });
   };
-  const checkCode = () => {
-    onGetProcedureCode(driver, {
-      graphName,
-      procedureType: codeTypeMap[detail?.type || detail?.code_type],
-      procedureName: detail.name,
-    }).then(res => {
+  const checkCode = async (isDownload = false) => {
+    try {
+      const res = await onGetProcedureCode(driver, {
+        graphName,
+        procedureType: codeTypeMap[detail?.type || detail?.code_type],
+        procedureName: detail.name,
+      });
       if (res.errorCode === '200' || res?.success) {
-        console.log(res);
+        const binaryData = atob(res.data[0]?.plugin_description?.code_base64);
+        const pluginType = res.data[0]?.plugin_description?.code_type;
+        let codeData: Uint8Array | string = '';
+        let isVisible = false;
 
-        //
-
-        //  console.log(res)
-        //   return
+        if (pluginType === 'so') {
+          codeData = new Uint8Array(binaryData.length).map((_, idx) =>
+            binaryData.charCodeAt(idx),
+          );
+        } else {
+          /** 需要用utf-8格式再次解码atob的内容 */
+          codeData = new TextDecoder().decode(
+            new Uint8Array(binaryData.split('').map(c => c.charCodeAt(0))),
+          );
+          isVisible = !isDownload;
+        }
 
         updateState(draft => {
-          const binaryData = atob(res.data[0]?.plugin_description?.code_base64);
-          const pluginType = res.data[0]?.plugin_description?.code_type
-          draft.codeType = pluginType
-          if (pluginType === 'so') {
-            const bytes = new Uint8Array(binaryData.length).map((_, idx) =>
-              binaryData.charCodeAt(idx),
-            );
-            draft.code = bytes;
-            // draft.drawerVisible = true;
-          } else {
-            /** 需要用utf-8格式再次解码atob的内容 */
-            draft.code = new TextDecoder().decode(
-              new Uint8Array(binaryData.split('').map(c => c.charCodeAt(0))),
-            );
-            draft.drawerVisible = true;
-          }
+          draft.code = codeData;
+          draft.drawerVisible = isVisible;
         });
+        return codeData;
       }
-    });
-    // updateState((draft) => {
-    //   draft.drawerVisible = true;
-    // });
+    } catch (error) {
+      console.log('checkCode error: ' + error);
+    }
   };
-  const downProcedure = () => {
-    console.log(detail);
+  const downProcedure = async () => {
+    const codeData = await checkCode(true);
     downloadFile(
-      code,
-      `${detail.name}.${codeType || codeTypeMap[detail?.type || detail?.code_type]}`,
+      codeData,
+      `${detail.name}.${detail?.code_type}`,
     );
   };
   const deleteProcedure = () => {
@@ -250,8 +245,8 @@ export const StoredProcedureModal: React.FC<Props> = ({
         执行
       </Button>
       <Button
-        disabled={selectItem === ''}
-        onClick={checkCode}
+        disabled={selectItem === '' || detail?.code_type === 'so'}
+        onClick={() => checkCode()}
         type="text"
         icon={<EyeOutlined />}
       >
