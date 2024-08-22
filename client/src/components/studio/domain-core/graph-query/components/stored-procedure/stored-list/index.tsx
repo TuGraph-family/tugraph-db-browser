@@ -84,28 +84,26 @@ export const StoredList: React.FC<Prop> = ({
       graphName,
       procedureType: 'CPP'
     }).then((res: any) => {
-
       if (!res) return;
-
       updateState(draft => {
         const newItems = map(res, item => ({
           ...item.plugin_description,
         }));
         draft.list[0].items = filter(
           newItems,
-          item => item.code_type !== 'python',
+          item => item.code_type !== 'py',
         );
         draft.list[1].items = filter(
           newItems,
-          item => item.code_type === 'python',
+          item => item.code_type === 'py',
         );
         draft.searchList[0].items = filter(
           newItems,
-          item => item.code_type !== 'python',
+          item => item.code_type !== 'py',
         );
         draft.searchList[1].items = filter(
           newItems,
-          item => item.code_type === 'python',
+          item => item.code_type === 'py',
         );
       });
       return res;

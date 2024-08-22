@@ -44,7 +44,7 @@ const buildProcedure = async(driver: Driver, params: IProcedureBuildParams) => {
       }
     });
     if (!result?.success) {
-      message.error(result?.errorMessage?.message)
+      message.error(result?.errorMessage)
     }
     return responseFormatter(result);
   }
