@@ -20,6 +20,7 @@ export type ProcedureItemParams = {
   read_only?: string;
   signature?: string;
   type: 'cpp' | 'python';
+  code_type: string;
 };
 export type ProcedureCode = {
   graphName: string;
