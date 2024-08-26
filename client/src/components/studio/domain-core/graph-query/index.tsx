@@ -341,13 +341,6 @@ export const GraphQuery = () => {
             alt=""
             style={{ width: 24, height: 24 }}
             onClick={() => {
-              // window.history.replaceState(
-              //   null,
-              //   null,
-              //   `${
-              //     history.location.pathname + history.location.search
-              //   }#procedure`,
-              // );
               updateState(draft => {
                 draft.storedVisible = true;
               });
@@ -359,7 +352,7 @@ export const GraphQuery = () => {
             location.hash = `/construct?graphName=${currentGraphName}`;
           }}
         >
-          返回图构建
+          前往图构建
         </Button>
         {/* 暂时功能隐藏 */}
         {/* <Button
