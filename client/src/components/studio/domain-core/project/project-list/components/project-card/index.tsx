@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { DeleteOutlined, ReloadOutlined } from '@ant-design/icons';
 import { ProCard } from '@ant-design/pro-components';
 import { Card, message, Popconfirm, Spin, Tooltip } from 'antd';
@@ -7,8 +8,9 @@ import { PUBLIC_PERFIX_CLASS, TUGRAPH_DEOM } from '@/components/studio/constant'
 import { useGraph } from '@/components/studio/hooks/useGraph';
 import AddTuGraphModal from '../add-tugraph';
 import EditTuGraphMoadl from '../edit-tugraph';
+import { StoredProcedureModal } from '@/components/studio/domain-core/graph-query/components/stored-procedure';
+
 import styles from './index.module.less';
-import { useEffect } from 'react';
 
 interface CardProps {
   projectInfo: any;
@@ -35,6 +37,7 @@ const ProjectCard = ({
     nodeEdgeObjList?: Array<{ text: string; value: number | string }>;
     isNodeEdgeObj: boolean;
     isConstruct: boolean;
+    storedVisible: boolean;
   }>({
     drawerVisiable: false,
     isEdit: false,
@@ -47,10 +50,11 @@ const ProjectCard = ({
     ],
     isNodeEdgeObj: true,
     isConstruct: false,
+    storedVisible: false
   });
   const { nodeEdgeObjList, isNodeEdgeObj,isConstruct } = state;
   const getActions = (text: string, status: boolean, href: string) => (
-    <Tooltip title={!status && '功能暂未开放'}>
+    <Tooltip title={!status && '请先进行图构建和导入数据'}>
       <span
         onClick={() => {
           if (status) {
@@ -206,6 +210,18 @@ const ProjectCard = ({
                         }}
                       />
                     </Tooltip>
+                    <Tooltip title="存储过程">
+                      <img
+                        src="https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*kLPaSLhIEmoAAAAAAAAAAAAADgOBAQ/original"
+                        alt=""
+                        style={{ width: 24, height: 24, position: 'relative', left: '-2px' }}
+                        onClick={() => {
+                          updateState(draft => {
+                            draft.storedVisible = true;
+                          });
+                        }}
+                      />
+                    </Tooltip>
                   </div>
                 </div>
                 {isNodeEdgeObj ? (
@@ -299,6 +315,15 @@ const ProjectCard = ({
             draft.isAdd = false;
           });
           onRefreshProjectList();
+        }}
+      />
+      <StoredProcedureModal
+        visible={state.storedVisible}
+        graphName={graphName}
+        onCancel={() => {
+          updateState(draft => {
+            draft.storedVisible = false;
+          });
         }}
       />
     </div>
