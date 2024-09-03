@@ -26,6 +26,17 @@ const ElementInfo: React.FC<ElementInfoProps> = ({ value }) => {
       <div className={styles['element-info-title']}>
         {isNode ? '点' : '边'}类型：{label}
       </div>
+      {
+        !isNode &&
+          <>
+            <div className={styles['element-info-title']}>
+              起点ID：{value?.source}
+            </div>
+            <div className={styles['element-info-title']}>
+              终点ID：{value?.target}
+            </div>
+          </>
+      }
       {propertyKeys.length ? (
         <div className={styles['element-info-content']}>
           {Object.keys(properties).map((item) => {

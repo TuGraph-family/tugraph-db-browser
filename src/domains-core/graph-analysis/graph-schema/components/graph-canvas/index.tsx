@@ -152,7 +152,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
         target: { id },
       } = e;
       const nodeData = graph.getNodeData(id);
-      setElementInfo({ ...nodeData });
+      setElementInfo({ ...nodeData, itemType: 'NODE' });
     };
 
     const onEdgeClick = async (e: IElementEvent) => {
@@ -160,7 +160,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
         target: { id },
       } = e;
       const edgeData = graph.getEdgeData(id);
-      setElementInfo({ ...edgeData });
+      setElementInfo({ ...edgeData, itemType: 'EDGE' });
     };
     const onAfterRender = () => {
       onChange?.({ ...value, graphData: { ...graph?.getData() } });
