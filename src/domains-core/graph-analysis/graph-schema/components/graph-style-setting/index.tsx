@@ -258,14 +258,15 @@ const GraphStyleSetting: React.FC<GraphStyleSettingProps> = ({
                                   <Switch size="small" />
                                 </Item>
                               </Col>
-                              <Col span={12}>
+                              {/* 暂时隐藏，后面会开放 */}
+                              {/* <Col span={12}>
                                 <Item
                                   label="显示别名"
                                   name={[field.name, 'showTypeAlias']}
                                 >
                                   <Switch size="small" />
                                 </Item>
-                              </Col>
+                              </Col> */}
                             </Row>
                             <Item
                               label="文本对应属性"
@@ -390,14 +391,15 @@ const GraphStyleSetting: React.FC<GraphStyleSettingProps> = ({
                                   <Switch size="small" />
                                 </Item>
                               </Col>
-                              <Col span={12}>
+                              {/* 暂时隐藏，后面会开放 */}
+                              {/* <Col span={12}>
                                 <Item
                                   label="显示别名"
                                   name={[field.name, 'showTypeAlias']}
                                 >
                                   <Switch size="small" />
                                 </Item>
-                              </Col>
+                              </Col> */}
                             </Row>
                             <Item
                               label="文本对应属性"

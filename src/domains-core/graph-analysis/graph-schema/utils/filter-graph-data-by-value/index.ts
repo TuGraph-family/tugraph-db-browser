@@ -18,8 +18,9 @@ export const filterGraphDataByValue = (
           break;
         }
       } else if (
-        typeof obj[key] === 'string' &&
-        obj[key].includes(value) &&
+        /** 需要支持 number 和 string 都能查询，把统一转成字符来匹配 */
+        (typeof obj[key] === 'string' || typeof obj[key] === 'number') &&
+        obj[key].toString().includes(value) &&
         key !== 'color'
       ) {
         let fullKey = parentKey ? `${parentKey}.${key}` : key;

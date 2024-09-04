@@ -1,5 +1,6 @@
 import { GraphStyleSettingValue } from '@/domains-core/graph-analysis/graph-schema/components/graph-style-setting';
 import { getFilteredElementStyle } from '@/domains-core/graph-analysis/graph-schema/utils/get-filtered-element-style';
+import { iconLoader } from '@/components/icon-loader';
 
 export const getNodeIconByStyleConfig = (options: {
   styles: GraphStyleSettingValue;
@@ -10,7 +11,7 @@ export const getNodeIconByStyleConfig = (options: {
   if (style && style.nodeIcon) {
     return {
       iconFontFamily: style.nodeIcon.fontFamily,
-      iconText: style.nodeIcon.text,
+      iconText: iconLoader(style.nodeIcon.name),
     };
   } else {
     return {
