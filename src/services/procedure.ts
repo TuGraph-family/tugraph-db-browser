@@ -44,7 +44,10 @@ const buildProcedure = async(driver: Driver, params: IProcedureBuildParams) => {
       }
     });
     if (!result?.success) {
-      message.error(result?.errorMessage?.message)
+      const errorMsg = result?.errorMessage?.includes('No permission to load or delete plugin')
+        ? '为了确保安全性，存储过程编译默认关闭。请设置enable_plugin参数，并注意相关安全风险。'
+        : result?.errorMessage
+      message.error(errorMsg);
     }
     return responseFormatter(result);
   }

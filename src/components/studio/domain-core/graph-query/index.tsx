@@ -48,8 +48,8 @@ import { StoredProcedureModal } from './components/stored-procedure';
 import CypherEdit from './cypherEditor';
 
 import { getQueryString } from '@/components/studio/utils/routeParams';
-import styles from './index.module.less';
 import { INodeQuery } from '@/types/services';
+import styles from './index.module.less';
 
 const { Option } = Select;
 
@@ -229,7 +229,7 @@ export const GraphQuery = () => {
       message.error(`执行失败 ${data?.errorMessage}`);
     }
   };
-  const handleQuery =  (
+  const handleQuery = (
     limit: number,
     conditions: Array<{ property: string; value: string; operator: string }>,
     queryParams: string,
@@ -252,7 +252,6 @@ export const GraphQuery = () => {
         updateQueryData(res, 1);
       });
     }
- 
   };
 
   /* 节点查询 */
@@ -333,13 +332,6 @@ export const GraphQuery = () => {
             alt=""
             style={{ width: 24, height: 24 }}
             onClick={() => {
-              // window.history.replaceState(
-              //   null,
-              //   null,
-              //   `${
-              //     history.location.pathname + history.location.search
-              //   }#procedure`,
-              // );
               updateState(draft => {
                 draft.storedVisible = true;
               });
@@ -351,7 +343,7 @@ export const GraphQuery = () => {
             location.hash = `/construct?graphName=${currentGraphName}`;
           }}
         >
-          返回图构建
+          前往图构建
         </Button>
         <Button
           onClick={() => {

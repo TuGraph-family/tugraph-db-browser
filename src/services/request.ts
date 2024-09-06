@@ -11,7 +11,9 @@ export const request = async (
   const { driver, cypher, graphName, parameters = {} } = params;
 
   if (!cypher) {
-    return { success: false };
+    return {
+      success: false,
+    };
   }
 
   const sessionParams: ISessionParams = {};
@@ -32,7 +34,7 @@ export const request = async (
     .catch(e => {
       return {
         success: false,
-        errorMessage: e?.message || e,
+        errorMessage: e.message,
       };
     })
     .finally(() => {

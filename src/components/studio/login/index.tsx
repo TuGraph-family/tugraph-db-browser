@@ -6,7 +6,7 @@
 import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 import Particles, { initParticlesEngine } from '@tsparticles/react';
 import { Button, Form, Input, Modal, Select, message } from 'antd';
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { loadFull } from 'tsparticles';
 import { useModel } from 'umi';
 // constants
@@ -28,9 +28,9 @@ import { useImmer } from 'use-immer';
 import styles from './index.module.less';
 import particlesOptions from './particles-config';
 
-const { Item, useForm } = Form;
 const { Option } = Select;
 
+const { Item, useForm } = Form;
 const { confirm } = Modal;
 
 export const Login = () => {
@@ -47,11 +47,6 @@ export const Login = () => {
   const userName = getLocalData(TUGRAPH_USER_NAME);
   const password = getLocalData(TUGRAPH_PASSWORD);
   const uri = getLocalData(TUGRAPH_URI);
-
-  // function
-  const particlesInit = useCallback(async (engine: Engine) => {
-    await loadFull(engine);
-  }, []);
 
   const login = async () => {
     setState(draft => {
