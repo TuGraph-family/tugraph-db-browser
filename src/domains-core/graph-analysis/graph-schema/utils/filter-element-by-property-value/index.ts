@@ -1,4 +1,5 @@
 import { PropertyStyleFilter } from '@/domains-core/graph-analysis/graph-schema/components/graph-style-setting';
+import { OPERATOR_MAPPING } from '@/domains-core/graph-analysis/graph-schema/constants';
 
 export const filterElementByPropertyValue = (
   properties: any,
@@ -17,21 +18,22 @@ export const filterElementByPropertyValue = (
     formatted = parseInt(propertyValue as string, 10);
   }
 
-  if (operator === 'EQ') {
+  /** 兼容两种形态，否则可能不生效 */
+  if (operator === 'EQ' || operator === OPERATOR_MAPPING['EQ']) {
     return properties[propertyName] === formatted;
-  } else if (operator === 'NE') {
+  } else if (operator === 'NE' || operator === OPERATOR_MAPPING['NE']) {
     return properties[propertyName] !== formatted;
-  } else if (operator === 'CT') {
+  } else if (operator === 'CT' || operator === OPERATOR_MAPPING['CT']) {
     return `${properties[propertyName]}`.indexOf(`${formatted}`) > -1;
-  } else if (operator === 'NC') {
+  } else if (operator === 'NC' || operator === OPERATOR_MAPPING['NC']) {
     return `${properties[propertyName]}`.indexOf(`${formatted}`) === -1;
-  } else if (operator === 'GT') {
+  } else if (operator === 'GT' || operator === OPERATOR_MAPPING['GT']) {
     return Number(properties[propertyName]) > Number(formatted);
-  } else if (operator === 'GE') {
+  } else if (operator === 'GE' || operator === OPERATOR_MAPPING['GE']) {
     return Number(properties[propertyName]) >= Number(formatted);
-  } else if (operator === 'LT') {
+  } else if (operator === 'LT' || operator === OPERATOR_MAPPING['LT']) {
     return Number(properties[propertyName]) < Number(formatted);
-  } else if (operator === 'LE') {
+  } else if (operator === 'LE' || operator === OPERATOR_MAPPING['LE']) {
     return Number(properties[propertyName]) <= Number(formatted);
   }
 

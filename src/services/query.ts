@@ -43,12 +43,17 @@ export const queryByPath = async (driver: Driver, params: IPathQueryParams) => {
  * @param params
  */
 export const queryByNode = async (driver: Driver, params: INodeQueryParams) => {
-  const { graphName,nodeQuery } = params;
+  try{
+    const { graphName,nodeQuery } = params;
 
-  const script = getCypherByNode(nodeQuery);
-  const result = await request({ driver, cypher: script, graphName });
+    const script = getCypherByNode(nodeQuery);
+    const result = await request({ driver, cypher: script, graphName });
+    return QueryResultFormatter(result, script);
 
-  return QueryResultFormatter(result, script);
+  }catch(e){
+    console.log('queryByNode,' + e)
+  }
+ 
 };
 
 /**

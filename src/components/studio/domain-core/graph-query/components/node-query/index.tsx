@@ -28,11 +28,13 @@ export const NodeQuery: React.FC<Prop> = ({ nodes, nodeQuery }) => {
   const [state, updateState] = useImmer<{
     properties: Array<{ id: string; name: string; type: string }>;
     logics: Array<{ value: string; label: string }>;
+    propertiesType: string;
   }>({
     properties: [],
     logics: [],
+    propertiesType: ''
   });
-  const { properties, logics } = state;
+  const { properties, logics ,propertiesType} = state;
   const [form] = Form.useForm();
 
   /* 节点选择 */
@@ -52,7 +54,10 @@ export const NodeQuery: React.FC<Prop> = ({ nodes, nodeQuery }) => {
   /* 执行查询 */
   const handleNodeQuery = () => {
     form.validateFields().then(val => {
-      nodeQuery(val);
+      nodeQuery({
+        ...val,
+        type:propertiesType
+      });
     });
   };
 
@@ -62,6 +67,7 @@ export const NodeQuery: React.FC<Prop> = ({ nodes, nodeQuery }) => {
     const newLogics = getOperatorListByValueType(type);
     updateState(draft => {
       draft.logics = newLogics;
+      draft.propertiesType = type;
     });
     form.setFieldsValue({
       logic: undefined,

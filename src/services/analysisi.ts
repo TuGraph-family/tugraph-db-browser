@@ -57,14 +57,17 @@ export const quickQuery = async (
     limit?: number;
     rules?: any;
     node: string;
+    type: string;
   },
 ) => {
-  const { graphName, node, rules, limit } = params;
+  const { graphName, node, rules, limit,type } = params;
   const cypher = quickQueryCypher({
     node,
     rules,
     limit,
+    type,
   });
+  
   const result = await request({ driver, cypher, graphName });
   if (!result.success) {
     return result;

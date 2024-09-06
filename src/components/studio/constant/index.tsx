@@ -35,7 +35,6 @@ export const GRAPH_OPERATE = [
     icon: 'icon-tianjiabian',
     value: 'edge',
   },
-  //功能暂时隐藏
   {
     label: '导入模型',
     icon: 'icon-daorumoxingwenjian',

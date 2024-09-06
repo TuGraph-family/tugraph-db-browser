@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react';
 import { MonacoEnvironment, EditorProvider } from '@difizen/cofine-editor-core';
-import cypherLanguage from '@difizen/cofine-language-cypher'
+import cypherLanguage from '@difizen/cofine-language-cypher';
+import './cypherEditor.less';
 
 const Editor = forwardRef<any, any>((props, editorRef) => {
   const { value, onCreated, onChange, language = 'cypher', onInit } = props;

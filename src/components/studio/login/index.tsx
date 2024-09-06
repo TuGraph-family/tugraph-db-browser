@@ -192,13 +192,13 @@ export const Login = () => {
               rules={[
                 {
                   required: true,
-                  message: '请输入数据库地址，示例:100.88.118.28:27001',
+                  message: '请输入数据库地址，示例:172.0.0.1:7687',
                 },
               ]}
             >
               <Input
                 addonBefore={renderAddonBefore}
-                placeholder="数据库地址，示例:100.88.118.28:27001"
+                placeholder="数据库地址，示例:172.0.0.1:7687"
               />
             </Item>
             <Item

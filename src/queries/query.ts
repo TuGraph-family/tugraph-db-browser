@@ -1,4 +1,4 @@
-import { INeighborsParams, INodeQuery } from "@/types/services";
+import { INeighborsParams, INodeQuery } from '@/types/services';
 
 /*  */
 export const queryNeighborsCypher = (params: INeighborsParams) => {
@@ -8,9 +8,22 @@ export const queryNeighborsCypher = (params: INeighborsParams) => {
     : `match p=(n)-[*..${sep}]-(m) WHERE id(n)=${ids[0]} RETURN p LIMIT ${limit}`;
 };
 
+export const getCypherByNode = (nodeQuery: INodeQuery) => {
+  const { limit, logic, node, propertie, value, type = '' } = nodeQuery || {};
+  let newValue = value;
+  switch (type.toLowerCase()) {
+    case 'string':
+      newValue = `'${value}'`;
+      break;
+    case 'date':
+      newValue = `DATE('${value}')`;
+      break;
+    case 'datetime':
+      newValue = `DATETIME('${value}')`;
+      break;
+    default:
+      break;
+  }
 
-export const getCypherByNode = (  nodeQuery: INodeQuery)=>{
-  const {limit, logic, node,propertie,value  } = nodeQuery || {}
-  
-  return `match(n:${node}) where n.${propertie} ${logic} ${value} return n limit ${limit}`;
-}
+  return `match(n:${node}) where n.${propertie} ${logic} ${newValue} return n limit ${limit}`;
+};
