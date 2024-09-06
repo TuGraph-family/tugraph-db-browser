@@ -103,7 +103,7 @@ export const StoredKhopPanle: React.FC<Prop> = ({
                     styles[`${PUBLIC_PERFIX_CLASS}-container-box-text`]
                   }
                 >
-                  存储过程类型：{detail.type}
+                  存储过程类型：{detail.code_type}
                 </div>
                 <div
                   className={

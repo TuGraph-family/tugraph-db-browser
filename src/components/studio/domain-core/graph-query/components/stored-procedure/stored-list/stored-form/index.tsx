@@ -1,4 +1,3 @@
-import React from 'react';
 import { QuestionCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import {
   Button,
@@ -14,22 +13,26 @@ import {
   message,
 } from 'antd';
 import { includes, map } from 'lodash';
+import React from 'react';
 
 // hooks
-import { useImmer } from 'use-immer';
-import { useModel } from 'umi';
 import { useProcedure } from '@/components/studio/hooks/useProcedure';
+import { useModel } from 'umi';
+import { useImmer } from 'use-immer';
 
 // type
-import { FormInstance } from 'antd/es/form';
-import { UploadChangeParam, UploadFile } from 'antd/lib/upload';
 import { InitialState } from '@/app';
+import { FormInstance } from 'antd/es/form';
 
 // components
 import { StoredDownLoad } from '@/components/studio/domain-core/graph-query/components/stored-procedure/stored-download';
 
 // constants
-import { CPP_CODE_TYPE, PUBLIC_PERFIX_CLASS, STORED_OPTIONS } from '@/components/studio/constant/index';
+import {
+  CPP_CODE_TYPE,
+  PUBLIC_PERFIX_CLASS,
+  STORED_OPTIONS,
+} from '@/components/studio/constant/index';
 
 import styles from './index.module.less';
 
@@ -69,7 +72,7 @@ export const StoredForm: React.FC<Prop> = ({
   const { driver } = initialState as InitialState;
   const props: UploadProps = {
     name: 'file',
-    accept: '.cpp,.py',
+    accept: '.cpp,.py,.so',
     maxCount: 1,
     headers: {
       authorization: 'authorization-text',
@@ -90,22 +93,26 @@ export const StoredForm: React.FC<Prop> = ({
               message.error(err.message);
             }
           };
-          reader.onerror = (error) => reject(error);
+          reader.onerror = error => reject(error);
         });
       };
-    
-      fileReader(file).then(base64Data => {
-        message.success('文件上传成功');
-        updateState(draft => {
-          /** 需要添加name: file.name这句代码，因为name是不可枚举属性，无法解构 */
-          draft.fileLst = [{ ...file, name: file.name, content: base64Data, status: 'done' }];
+
+      fileReader(file)
+        .then(base64Data => {
+          message.success('文件上传成功');
+          updateState(draft => {
+            /** 需要添加name: file.name这句代码，因为name是不可枚举属性，无法解构 */
+            draft.fileLst = [
+              { ...file, name: file.name, content: base64Data, status: 'done' },
+            ];
+          });
+        })
+        .catch(error => {
+          console.error('Error reading file:', error);
+          message.error('Failed to read file');
         });
-      }).catch(error => {
-        console.error('Error reading file:', error);
-        message.error('Failed to read file');
-      });
       return false;
-    }
+    },
   };
   const [state, updateState] = useImmer<{
     demoVisible: boolean;
@@ -189,13 +196,12 @@ export const StoredForm: React.FC<Prop> = ({
 
   // 新增存储过程
   const uploadProcedure = () => {
-
     const formatFileContent = (fileList: any[]) => {
-      let formatMap: {[key: string]: string} = {};
+      let formatMap: { [key: string]: string } = {};
       for (let file of fileList) {
         formatMap[file.name] = file.content;
       }
-      return  formatMap;
+      return formatMap;
     };
 
     const result = formatFileContent(state.fileLst);
@@ -213,7 +219,7 @@ export const StoredForm: React.FC<Prop> = ({
         graphName,
         codeType: val.codeType,
         procedureType,
-        content: formatFileContent(state.fileLst)
+        content: formatFileContent(state.fileLst),
       }).then(res => {
         if (res.errorCode === '200' || res.success) {
           message.success('新增成功');

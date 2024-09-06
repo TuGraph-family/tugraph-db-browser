@@ -1,14 +1,13 @@
 import {
-  TUGRAPH_HISTORY_URI,
   TUGRAPH_PASSWORD,
   TUGRAPH_URI,
   TUGRAPH_USER_NAME,
   TUGRPAH_USER_LOGIN_TIME,
 } from '@/constants';
 import { dbConfigRecordsTranslator } from '@/translator';
-import neo4j from 'neo4j-driver';
-import { isEmpty, forEach, map, find, merge } from 'lodash';
 import { IRoleRespons, IUserRespons } from '@/types/services';
+import { find, forEach, isEmpty, map, merge } from 'lodash';
+import neo4j from 'neo4j-driver';
 
 const getLocalData = (key: string) => {
   if (!key) {
@@ -54,8 +53,7 @@ const loginDB = async (params: {
       // 手动登录
       setLocalData(TUGRAPH_USER_NAME, userName);
       setLocalData(TUGRAPH_PASSWORD, password);
-      setLocalData(TUGRAPH_URI, URL);
-      setLocalData(TUGRAPH_HISTORY_URI, { uri, protocol });
+      setLocalData(TUGRAPH_URI, uri);
       setLocalData(TUGRPAH_USER_LOGIN_TIME, new Date().getTime());
       // 一直在这个界面，过期跳转到登录页
       setTimeout(() => {
@@ -155,10 +153,10 @@ const getProperties = (param: {
 };
 
 export {
-  getLocalData,
-  loginDB,
-  userInfoTranslator,
   convertPermissions,
   convertToNumber,
+  getLocalData,
   getProperties,
+  loginDB,
+  userInfoTranslator,
 };

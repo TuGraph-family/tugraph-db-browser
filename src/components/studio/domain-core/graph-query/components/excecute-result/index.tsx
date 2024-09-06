@@ -711,9 +711,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
         },
       };
     });
-    return (
-      <Table columns={columns} dataSource={originalData} />
-    );
+    return <Table columns={columns} dataSource={originalData} />;
   };
 
   return (
