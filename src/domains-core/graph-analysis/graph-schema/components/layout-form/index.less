@@ -1,0 +1,192 @@
+.layoutContainer {
+  z-index: 1;
+  border-radius: 6px;
+  padding: 8px;
+  transition: height 0.3s ease;
+  background-color: #f7f9fc;
+
+  .header {
+    display: inline-flex;
+    width: 100%;
+    margin: 0;
+    cursor: grab;
+
+    .title {
+      color: rgba(0, 0, 0, 85%);
+      font-weight: 500;
+      cursor: grab;
+    }
+
+    .collapseIcon {
+      right: 0;
+      cursor: pointer;
+    }
+  }
+
+  :global {
+    .ant-divider-horizontal {
+      margin: 8px 0 16px;
+      border-top: 1px solid rgb(217, 217, 217);
+    }
+  }
+
+  .contentContainer {
+    height: 69%;
+    margin-top: 16px;
+    // 切换布局slider max x-scroll
+    overflow-x: hidden;
+    overflow-y: scroll;
+    color: rgba(0, 0, 0, 85%);
+
+    .blockContainer {
+      overflow-y: auto;
+
+      :global {
+        .ant-slider-rail {
+          background-color: #e8ecf3;
+        }
+
+        .ant-slider-track {
+          background-color: #1650ff;
+        }
+
+        .ant-slider-handle,
+        .ant-slider-dot-active {
+          border-color: #1650ff;
+        }
+
+        .ant-form-item {
+          margin-bottom: 8px;
+        }
+
+        .ant-form-item-label > label {
+          color: rgba(0, 0, 0, 85%);
+        }
+
+        .ant-form-item-extra {
+          color: rgba(0, 0, 0, 65%);
+        }
+      }
+
+      .algorithmSelector {
+        width: 280px;
+        margin-top: 16px;
+      }
+
+      .advancedSettingContainer {
+        margin-top: 8px;
+        padding: 10px 16px 16px;
+        background-color: #2e3339;
+
+        .seedsInput {
+          margin-top: 8px;
+        }
+
+        .limitContainer {
+          margin-top: 24px;
+
+          .limitInput {
+            margin-top: 8px;
+          }
+        }
+      }
+
+      .advancedSettingSwitch {
+        margin-left: 16px;
+      }
+
+      .description {
+        display: inline-block;
+        color: rgba(0, 0, 0, 65%);
+        font-size: 12px;
+      }
+    }
+
+    .paramInputsContainer {
+      margin-top: 16px;
+
+      .paramInputContainer {
+        margin-bottom: 8px;
+      }
+    }
+
+    :global {
+      .ant-input-number-input {
+        color: rgba(0, 0, 0, 85%);
+      }
+
+      .ant-input-number {
+        border-color: rgba(0, 0, 0, 15%);
+      }
+
+      .ant-input-number-handler-wrap {
+        background-color: #f7f9fb;
+        border-left-color: rgba(0, 0, 0, 15%);
+      }
+
+      .ant-input-number-handler-down {
+        border-top-color: rgba(0, 0, 0, 15%);
+      }
+
+      .ant-select-selection-placeholder {
+        color: rgba(0, 0, 0, 45%);
+      }
+
+      .ant-select-selector {
+        border-color: rgba(0, 0, 0, 15%);
+      }
+
+      .ant-select-arrow {
+        color: rgba(0, 0, 0, 65%);
+      }
+
+      .ant-select-multiple .ant-select-selection-item {
+        border-color: rgba(0, 0, 0, 15%);
+      }
+
+      .ant-select {
+        color: rgba(0, 0, 0, 85%);
+      }
+
+      .ant-select-multiple .ant-select-selection-item-remove {
+        color: rgba(0, 0, 0, 65%);
+      }
+
+      .ant-input {
+        color: rgba(0, 0, 0, 85%);
+        border-color: rgba(0, 0, 0, 15%);
+      }
+    }
+  }
+
+  .buttonContainer {
+    .queryButton {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+    }
+  }
+
+  .description {
+    margin-top: 8px;
+    color: rgba(255, 255, 255, 45%);
+  }
+}
+
+/* 定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸 */
+.logListContainer::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: #fff !important;
+}
+
+/* 定义滚动条轨道 内阴影+圆角 */
+.logListContainer::-webkit-scrollbar-track {
+  background-color: rgb(217, 217, 217) !important;
+  box-shadow: none !important;
+}
+
+/* 定义滑块 内阴影+圆角 */
+.logListContainer::-webkit-scrollbar-thumb {
+  background-color: #fff !important;
+}

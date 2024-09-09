@@ -1,0 +1,111 @@
+.graph-schema {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  overflow: auto;
+  width: 100%;
+
+  :global {
+    .card-canvas-container > .ant-collapse-content > .ant-collapse-content-box {
+      padding: 0;
+    }
+
+    .ant-formily-item-control-content,
+    .ant-formily-item-control {
+      height: 100%;
+    }
+
+    .ant-formily-item {
+      margin-bottom: 0;
+    }
+
+    .ant-tabs {
+      flex: 1;
+      overflow: hidden;
+      height: 100%;
+
+      &-content {
+        height: 100%;
+      }
+
+      &-tabpane {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        &-hidden {
+          display: none;
+        }
+      }
+    }
+
+    .ant-tabs-top > .ant-tabs-nav,
+    .ant-tabs-bottom > .ant-tabs-nav,
+    .ant-tabs-top > div > .ant-tabs-nav,
+    .ant-tabs-bottom > div > .ant-tabs-nav {
+      margin-bottom: 0;
+    }
+
+    .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab-active,
+    .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab-active {
+      background-color: rgba(243, 245, 249, 100%);
+      border: none;
+    }
+
+    .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab,
+    .ant-tabs-card > div > .ant-tabs-nav .ant-tabs-tab {
+      border: none;
+    }
+
+    .schema-header {
+      display: flex;
+      padding: 10px 24px;
+      align-items: center;
+      box-shadow: 0 1px 0 0 rgba(242, 242, 242, 100%);
+      justify-content: space-between;
+
+      .schema-header-left {
+        display: flex;
+        align-items: center;
+        height: 34px;
+      }
+
+      .schema-header-right {
+        display: flex;
+        align-items: center;
+
+        & > * {
+          margin-left: 8px;
+        }
+      }
+    }
+
+    .canvas-header {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background-color: rgba(243, 245, 249, 100%);
+      padding: 4px 0;
+      border-bottom: 1px solid #ddd;
+
+      &-title {
+        color: rgba(152, 152, 157, 100%);
+        margin-right: 6px;
+        white-space: nowrap;
+      }
+    }
+
+    .canvas-center {
+      display: flex;
+
+      .graph-canvas {
+        flex: 1;
+      }
+    }
+
+    .graph-canvas-container {
+      height: 100%;
+    }
+  }
+}

@@ -1,0 +1,68 @@
+@perfix-cls: ant-tugraph;
+.@{perfix-cls}-container {
+  :global {
+    .ant-select-selection-item-remove {
+      display: none;
+    }
+    .anticon-question-circle {
+      margin-left: 4px;
+    }
+    .ant-table-container {
+      border-radius: 8px 0 0 8px;
+      overflow: hidden;
+      table {
+        border-radius: 8px;
+        overflow: hidden;
+      }
+    }
+    .ant-table-cell {
+      font-weight: 400;
+      font-size: 14px;
+      color: #6a6b71;
+    }
+    .ant-form-item-required {
+      color: #363740;
+    }
+  }
+  &-content {
+    padding: 0 24px 24px;
+  }
+  &-header {
+    height: 44px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+    font-size: 14px;
+    color: rgba(54, 55, 64, 1);
+    div {
+      color: rgba(106, 107, 113, 0.85);
+      font-weight: 400;
+      a {
+        color: rgba(22, 80, 255, 1);
+        font-weight: 400;
+        cursor: pointer;
+      }
+    }
+  }
+  &-addbtn {
+    margin: 8px 0 10px 0;
+    &:hover {
+      border: 1px dashed #1650ff;
+    }
+  }
+  &-name:focus {
+    border: 1px solid #1650ff;
+  }
+  &-attr {
+    margin-bottom: 16px;
+  }
+  &-title {
+    font-weight: 400;
+    font-size: 14px;
+    color: rgba(54, 55, 64, 1);
+  }
+  &-attributes {
+    background-color: #1650ff;
+  }
+}

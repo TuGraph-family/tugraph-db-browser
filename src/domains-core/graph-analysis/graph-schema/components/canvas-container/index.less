@@ -1,0 +1,24 @@
+.canvas-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  :global {
+    .ant-spin-nested-loading,
+    .ant-spin-container {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      .canvas-center {
+        flex: 1;
+        overflow: hidden;
+      }
+    }
+
+    .ant-spin-spinning {
+      max-height: 100% !important;
+    }
+  }
+}

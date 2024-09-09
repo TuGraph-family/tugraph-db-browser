@@ -1,0 +1,132 @@
+@perfix-cls: ant-tugraph;
+.@{perfix-cls}-edge-node-list {
+  height: 100%;
+  overflow: auto;
+
+  .@{perfix-cls}-empty {
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: none;
+    padding-top: 30px;
+    :global {
+      .ant-collapse-description {
+        color: rgba(0, 0, 0, 0.25);
+      }
+    }
+  }
+
+  &-search {
+    padding: 2px 0 10px;
+    :global {
+      .ant-segmented {
+        border-radius: 4px;
+      }
+    }
+  }
+
+  &-item-count {
+    font-weight: 400;
+    font-size: 12px;
+    color: #98989d;
+    letter-spacing: 0;
+    line-height: 20px;
+    white-space: nowrap;
+    padding-right: 8px;
+  }
+
+  &-item-description {
+    color: rgba(0, 0, 0, 0.45);
+    font-size: 14px;
+    line-height: 1.5715;
+  }
+
+  .@{perfix-cls}-icon-copy {
+    color: rgba(152, 152, 157, 1);
+    margin-left: 8px;
+    visibility: hidden;
+  }
+
+  .@{perfix-cls}-panel-header-title {
+    align-items: flex-start;
+  }
+
+  .@{perfix-cls}-panel-header:hover {
+    .@{perfix-cls}-icon-copy {
+      visibility: visible;
+    }
+  }
+
+  .@{perfix-cls}-edge-node-list-item:hover {
+    .@{perfix-cls}-icon-copy {
+      visibility: visible;
+    }
+  }
+
+  :global {
+    .ant-list-item {
+      border-bottom: none;
+    }
+
+    .ant-select-selection-search-input {
+      height: 24px;
+      border: none;
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .ant-list {
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .ant-collapse-item-active {
+      border-radius: 6px;
+      background: rgba(251, 251, 251, 1) !important;
+    }
+
+    .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+      padding: 4px 0;
+      border-radius: 6px !important ;
+      display: flex;
+    }
+
+    .ant-collapse > .ant-collapse-item > .ant-collapse-header:hover {
+      background: rgba(237, 237, 238, 1) !important;
+    }
+
+    .ant-collapse-expand-icon {
+      width: 20px;
+    }
+
+    .ant-collapse-content-box {
+      padding: 0 !important;
+    }
+
+    .ant-list-item {
+      height: 32px;
+      border-radius: 6px;
+      padding: 0 0 0 46px;
+      font-weight: 400;
+      font-size: 12px;
+      color: #363740;
+      line-height: 32px;
+    }
+
+    .ant-list-item:hover {
+      background: rgba(237, 237, 238, 1) !important;
+    }
+
+    .ant-input {
+      background-color: rgb(0 10 26 / 0%);
+    }
+
+    .ant-input-suffix {
+      cursor: pointer;
+    }
+
+    .ant-select {
+      width: 100%;
+    }
+  }
+}

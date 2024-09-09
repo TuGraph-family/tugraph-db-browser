@@ -1,0 +1,165 @@
+.guidance {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+
+  .mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #a8b2ce;
+    opacity: 0.35;
+  }
+
+  .welcome,
+  .end {
+    display: flex;
+    justify-content: center; /* 水平垂直居中 */
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+
+    .container {
+      position: relative;
+    }
+
+    .background {
+      max-width: 764px;
+    }
+
+    .startBtnEnd {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      width: 210px;
+      padding-top: 24px;
+      margin: 0 auto;
+      transform: translateX(36px);
+
+      &:hover {
+        .startText {
+          text-shadow: -3px 2px 0 rgba(0, 17, 102, 0.47);
+        }
+      }
+
+      .btnBackground {
+        width: 160px;
+      }
+
+      .startText {
+        position: absolute;
+        font-size: 18px;
+        color: #ffffff;
+        text-shadow: 0 1px 0 rgba(0, 17, 102, 0.15);
+      }
+    }
+    .startBtnStart {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      width: 210px;
+      padding-top: 24px;
+      margin: 0 auto;
+      transform: translateX(4px);
+
+      &:hover {
+        .startText {
+          text-shadow: -3px 2px 0 rgba(0, 17, 102, 0.47);
+        }
+      }
+
+      .btnBackground {
+        width: 160px;
+      }
+
+      .startText {
+        position: absolute;
+        font-size: 18px;
+        color: #ffffff;
+        text-shadow: 0 1px 0 rgba(0, 17, 102, 0.15);
+      }
+    }
+    .close {
+      position: absolute;
+      right: 16px;
+      top: 0px;
+      cursor: pointer;
+    }
+  }
+
+  .query,
+  .spread,
+  .styleBtn,
+  .stylePanel,
+  .filterBtn,
+  .filterPanel,
+  .download {
+    display: inline-block;
+    position: absolute;
+
+    .container {
+      position: relative;
+    }
+
+    .background {
+      position: absolute;
+      max-width: 350px;
+    }
+
+    .gif {
+      position: absolute;
+      max-width: 267px;
+    }
+
+    .btnContainer {
+      position: absolute;
+      display: flex;
+      justify-content: end;
+      align-items: center;
+
+      .nextBtn {
+        margin-top: 12px;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+
+        &:hover {
+          .nextText {
+            text-shadow: -3px 2px 0 rgba(0, 17, 102, 0.47);
+          }
+        }
+
+        .btnBackground {
+          width: 100px;
+        }
+
+        .nextText {
+          position: absolute;
+          font-size: 18px;
+          color: #ffffff;
+        }
+      }
+    }
+
+    .close {
+      position: absolute;
+      right: -32px;
+      top: 72px;
+      cursor: pointer;
+    }
+  }
+
+ 
+}

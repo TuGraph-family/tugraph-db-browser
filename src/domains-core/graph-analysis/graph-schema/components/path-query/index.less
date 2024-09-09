@@ -1,0 +1,102 @@
+.path-query-container {
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  padding: 0 4px;
+  transition: height 0.3s ease;
+  overflow-y: auto;
+
+  .content-container {
+    padding: 16px;
+    background: #fcfdfe;
+    border: 1px solid #fff;
+    border-radius: 8px;
+    opacity: 0.85;
+    margin-bottom: 16px;
+
+    .form-container {
+      width: 100%;
+      margin: 16px 0;
+      display: flex;
+      align-items: center;
+
+      .form-container-left {
+        position: relative;
+        display: flex;
+        justify-content: center;
+
+        .form-container-left-icon {
+          z-index: 1;
+          height: 85px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          align-items: center;
+
+          .form-container-left-start-icon {
+            width: 10px;
+            height: 10px;
+            background: rgb(22, 80, 255);
+            border-radius: 50%;
+          }
+
+          .form-container-left-end-icon {
+            width: 10px;
+            height: 10px;
+            background: rgb(255, 197, 61);
+            border-radius: 50%;
+          }
+        }
+
+        .form-container-left-line {
+          width: 1px;
+          height: 85px;
+          background: #dddddf;
+          position: absolute;
+          top: 0;
+        }
+      }
+
+      .form-container-right {
+        width: 100%;
+        margin-left: 16px;
+      }
+    }
+
+    :global {
+      .ant-form-item {
+        margin-bottom: 16px;
+      }
+    }
+
+    .result-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 8px;
+    }
+
+    .path-item {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 8px;
+      margin-bottom: 8px;
+      border: 1px solid #f3f5f9;
+    }
+
+    .path-item-active {
+      border: 1px solid rgba(22, 80, 255, 60%) !important;
+    }
+
+    .path-item:hover {
+      border: 1px solid rgba(22, 80, 255, 60%) !important;
+    }
+  }
+}
+
+.img {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}

@@ -1,0 +1,125 @@
+@perfix-cls: ant-tugraph;
+
+.@{perfix-cls}-login-container {
+  width: 100%;
+  height: 100vh;
+  background-color: hsl(227, 100%, 96%);
+  position: relative;
+  display: flex;
+
+  &-left {
+    height: 100vh;
+    width: 53%;
+  }
+
+  .@{perfix-cls}-logo-img {
+    position: absolute;
+    width: 122px;
+    top: 1.8%;
+    left: 4.2%;
+  }
+
+  .@{perfix-cls}-particles-container {
+    width: 80%;
+    height: 52%;
+    font-size: 20px;
+    color: #ffffff;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: relative;
+
+    :global {
+      #tsparticles {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .@{perfix-cls}-text {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      left: 50%;
+      top: 50%;
+      text-align: center;
+      font-size: 22px;
+
+      img {
+        width: 540px;
+      }
+    }
+  }
+
+  .@{perfix-cls}-login-form {
+    width: 47%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    background-color: #ffffff;
+
+    .@{perfix-cls}-logo {
+      width: 52%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      .@{perfix-cls}-account-login {
+        font-weight: 500;
+        font-size: 28px;
+        color: rgba(26, 27, 37, 0.88);
+        line-height: 36px;
+        margin-bottom: 4px;
+      }
+
+      .@{perfix-cls}-login-desc {
+        height: 22px;
+        width: 126px;
+        font-weight: 400;
+        font-size: 14px;
+        color: rgba(26, 27, 37, 0.45);
+        line-height: 22px;
+        margin-bottom: 32px;
+      }
+    }
+
+    .@{perfix-cls}-form-style {
+      :global {
+        .ant-input-affix-wrapper {
+          padding: 0 11px;
+        }
+
+        .ant-input {
+          height: 40px;
+        }
+
+        .ant-btn {
+          width: 100%;
+          background-color: rgba(22, 80, 255, 1);
+          height: 40px;
+          font-size: 16px;
+          font-weight: 400;
+          margin-top: 16px;
+        }
+
+        .ant-input-password-icon {
+          font-size: 17px;
+        }
+      }
+      
+      /* 处理input回填默认背景色 */
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover,
+      input:-webkit-autofill:focus,
+      input:-webkit-autofill:active {
+        -webkit-transition-delay: 111111s;
+        -webkit-transition: color 11111s ease-out, background-color 111111s ease-out;
+      }
+    }
+  }
+}

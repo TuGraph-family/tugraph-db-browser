@@ -1,0 +1,41 @@
+.attributes-filter-form {
+  .nodes-edges-options {
+    .img {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+    }
+  }
+
+  .formList {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    margin-left: -2px;
+  }
+
+  .conditionIcon {
+    margin-bottom: 8px;
+  }
+
+  .conditionIcon::before {
+    display: inline-block;
+    margin-right: 4px;
+    color: #ff4d4f;
+    font-size: 14px;
+    font-family: SimSun, sans-serif;
+    line-height: 1;
+    content: '*';
+  }
+
+  :global {
+    .ant-collapse-extra,
+    .anticon-delete {
+      color: #000a1a;
+      opacity: 0.45;
+      margin-left: 8px;
+    }
+  }
+}

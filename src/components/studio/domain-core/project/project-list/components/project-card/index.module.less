@@ -1,0 +1,207 @@
+@perfix-cls: ant-tugraph;
+.@{perfix-cls}-card-box {
+  margin-top: 16px;
+
+  .@{perfix-cls}-card {
+    border-radius: 8px;
+
+    :global {
+      .ant-card-actions {
+        margin: 0 16px;
+      }
+      .ant-spin-spinning {
+        width: 100%;
+        margin: 16px 0;
+        display: flex;
+        line-height: 44px;
+        align-items: center;
+        justify-content: center;
+
+        .ant-spin-dot {
+          transform: rotate(0);
+          animation: antRotate 1.2s infinite linear;
+        }
+
+        .ant-spin-text {
+          font-weight: 400;
+          font-size: 12px;
+          color: #98989d;
+          margin-left: 8px;
+        }
+      }
+    }
+  }
+
+  .@{perfix-cls}-header-right-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .@{perfix-cls}-card:hover {
+    box-shadow: 0 6px 16px 0 rgba(12, 31, 231, 0.08),
+      0 3px 6px -4px rgba(26, 27, 37, 0.12),
+      0 9px 28px 8px rgba(26, 27, 37, 0.05);
+  }
+
+  :global {
+    .ant-card-body {
+      padding: 16px;
+      height: 118px;
+    }
+
+    .ant-card-actions {
+      border-radius: 0 0 8px 8px;
+    }
+  }
+
+  .@{perfix-cls}-create-card {
+    height: 166px;
+    border-radius: 8px;
+    cursor: pointer;
+
+    .@{perfix-cls}-plus-icon {
+      font-size: 16px;
+      margin-bottom: 17px;
+      color: #1650ff;
+    }
+  }
+
+  .@{perfix-cls}-create-card:hover {
+    box-shadow: 0 6px 16px 0 rgba(26, 27, 37, 0.08),
+      0 3px 6px -4px rgba(26, 27, 37, 0.12),
+      0 9px 28px 8px rgba(26, 27, 37, 0.05);
+  }
+
+  .@{perfix-cls}-icon-button:hover {
+    background-color: #fff;
+  }
+
+  .@{perfix-cls}-action-button {
+    color: rgba(22, 80, 255, 1);
+  }
+
+  .@{perfix-cls}-disabled-action-buttonButton {
+    color: rgba(152, 152, 157, 1);
+    cursor: not-allowed;
+  }
+
+  .@{perfix-cls}-card-meta-box {
+    .@{perfix-cls}-meta-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+
+      :global {
+        .ant-tooltip-disabled-compatible-wrapper .ant-btn {
+          color: #dddddf;
+        }
+      }
+
+      .@{perfix-cls}-graph-display-name {
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 280px;
+        vertical-align: bottom;
+        color: #363740;
+        &-container {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+        &-icon {
+          height: 19.5px;
+          width: 19.5px;
+          background-color: #1650ff;
+          color: #fff;
+          line-height: 19.5px;
+          border-radius: 3px;
+          text-align: center;
+        }
+      }
+
+      .@{perfix-cls}-disabledN-node-edge-button {
+        cursor: not-allowed;
+        color: var(--primary-text-color);
+        opacity: 0.26;
+        font-size: 12.5;
+      }
+
+      .@{perfix-cls}-edit-icon {
+        margin-left: 19px;
+        font-size: 12.5;
+      }
+    }
+
+    :global {
+      .ant-card-meta-detail {
+        width: 100%;
+      }
+
+      .ant-card-meta-title {
+        margin-bottom: 0;
+      }
+
+      .ant-btn {
+        width: 16px;
+        height: 16px;
+
+        &:hover {
+          background-color: #fff;
+        }
+
+        color: rgba(152, 152, 157, 1);
+      }
+
+      .ant-tooltip-disabled-compatible-wrapper {
+        .ant-btn {
+          color: rgba(198, 198, 200, 1);
+        }
+      }
+    }
+
+    .@{perfix-cls}-null-env-node-edge {
+      margin: 27px 0;
+      font-size: 14px;
+      color: rgba(152, 152, 157, 1);
+      text-align: center;
+      font-weight: normal;
+    }
+
+    .@{perfix-cls}-env-node-edge {
+      display: flex;
+      justify-content: space-around;
+      margin: 16px 0;
+      cursor: pointer;
+
+      .@{perfix-cls}-tetx-box {
+        text-align: center;
+        width: 40px;
+
+        .@{perfix-cls}-text {
+          font-size: 16px;
+          line-height: 24px;
+          font-weight: 400;
+          color: #363740;
+        }
+
+        .@{perfix-cls}-little-text {
+          font-weight: 400;
+          font-size: 12px;
+          color: #c6c6c8;
+          line-height: 20px;
+        }
+      }
+    }
+
+    .@{perfix-cls}-desc-group {
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+  }
+}
