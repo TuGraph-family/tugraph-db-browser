@@ -34,7 +34,7 @@ export const request = async (
     .catch(e => {
       return {
         success: false,
-        errorMessage: e.message,
+        errorMessage: e?.message || e,
       };
     })
     .finally(() => {
