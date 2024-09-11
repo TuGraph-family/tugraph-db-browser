@@ -1,4 +1,5 @@
 import {
+  TUGRAPH_HISTORY_URI,
   TUGRAPH_PASSWORD,
   TUGRAPH_URI,
   TUGRAPH_USER_NAME,
@@ -53,7 +54,8 @@ const loginDB = async (params: {
       // 手动登录
       setLocalData(TUGRAPH_USER_NAME, userName);
       setLocalData(TUGRAPH_PASSWORD, password);
-      setLocalData(TUGRAPH_URI, uri);
+      setLocalData(TUGRAPH_URI, URL);
+      setLocalData(TUGRAPH_HISTORY_URI, { uri, protocol });
       setLocalData(TUGRPAH_USER_LOGIN_TIME, new Date().getTime());
       // 一直在这个界面，过期跳转到登录页
       setTimeout(() => {
