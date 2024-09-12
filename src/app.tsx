@@ -19,6 +19,12 @@ export interface InitialState {
 }
 
 export async function getInitialState() {
+  const handleStorageReset = () => {
+    setLocalData(TUGRAPH_USER_NAME, null);
+    setLocalData(TUGRAPH_PASSWORD, null);
+    setLocalData(TUGRAPH_URI, null);
+    window.location.hash = '/login';
+  };
   try {
     let interval: any = null;
     const userName = getLocalData(TUGRAPH_USER_NAME);
@@ -30,11 +36,8 @@ export async function getInitialState() {
     });
     console.log('tugraph db auto login success');
     const handleSessionClose = () => {
-      setLocalData(TUGRAPH_USER_NAME, null);
-      setLocalData(TUGRAPH_PASSWORD, null);
-      setLocalData(TUGRAPH_URI, null);
       driver.close();
-      window.location.hash = '/login';
+      handleStorageReset();
     };
     let dbConfig: Record<string, any> = {};
     const config = await session.run('CALL dbms.config.list()').catch(e => {
@@ -75,6 +78,6 @@ export async function getInitialState() {
     };
   } catch (e) {
     console.error(e);
-    window.location.hash = '/login';
+    handleStorageReset();
   }
 }
