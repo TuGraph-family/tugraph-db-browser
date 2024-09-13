@@ -24,7 +24,7 @@ import styles from './index.module.less';
 type Prop = {
   type: 'node' | 'edge';
   data?: any;
-  onFinish?: (value?: any) => void;
+  onFinish?: (value?: any, callback?: () => void) => void;
   onSwitch?: (onShow: () => void, onClose: () => void) => void;
   onVisible?: (visible: boolean) => void;
 };
@@ -55,13 +55,11 @@ export const AddNodesEdges: React.FC<Prop> = ({
     attrList: Array<AttrData>;
     configList: Array<IndexData>;
     isNode: boolean;
-    isDocumentEdge: boolean;
   }>({
     startList: [],
     isNode: true,
     attrList: [],
     configList: [],
-    isDocumentEdge: false,
   });
   const { startList, attrList, configList } = state;
   const isAllow = (record: any): boolean => {
@@ -74,7 +72,6 @@ export const AddNodesEdges: React.FC<Prop> = ({
       isNode: true,
       attrList: [],
       configList: [],
-      isDocumentEdge: false,
     });
   };
   useEffect(() => {
@@ -84,12 +81,10 @@ export const AddNodesEdges: React.FC<Prop> = ({
     onVisible?.(visible);
   }, [visible]);
   useEffect(() => {
-    const at = getQueryParam('at');
-    const isDocumentEdge = `${at}`.includes('document_edge');
+    const isNode = type === 'node';
     updateState(draft => {
-      draft.isNode = type === 'node';
-      draft.isDocumentEdge = isDocumentEdge;
-      draft.attrList = isDocumentEdge
+      draft.isNode = isNode;
+      draft.attrList = !isNode
         ? []
         : [
             {
@@ -471,22 +466,26 @@ export const AddNodesEdges: React.FC<Prop> = ({
                 return message.error('两条边的起点和终点不能相同');
               }
               form.validateFields().then(() => {
-                onFinish?.({
-                  labelType: type,
-                  labelName: form.getFieldValue('name'),
-                  id: form.getFieldValue('name'),
-                  type: 'graphin-circle',
-                  style: {
-                    label: { value: form.getFieldValue('name') },
+                onFinish?.(
+                  {
+                    labelType: type,
+                    labelName: form.getFieldValue('name'),
+                    id: form.getFieldValue('name'),
+                    type: 'graphin-circle',
+                    style: {
+                      label: { value: form.getFieldValue('name') },
+                    },
+                    indexs: configList,
+                    properties: attrList,
+                    edgeConstraints: map(startList, item => {
+                      return [item.source, item.target];
+                    }),
                   },
-                  indexs: configList,
-                  properties: attrList,
-                  edgeConstraints: map(startList, item => {
-                    return [item.source, item.target];
-                  }),
-                });
-                form.resetFields();
-                onReset();
+                  () => {
+                    form.resetFields();
+                    onReset();
+                  },
+                );
               });
             }}
           >

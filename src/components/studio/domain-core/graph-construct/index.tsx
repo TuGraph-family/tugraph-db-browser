@@ -224,7 +224,7 @@ export const GraphConstruct = () => {
     return renderEdges;
   };
 
-  const createLabelSchema = (newSchema: LabelSchema) => {
+  const createLabelSchema = (newSchema: LabelSchema, callback?: () => void) => {
     const labelType = newSchema.labelType;
 
     let params = {
@@ -264,6 +264,7 @@ export const GraphConstruct = () => {
       if (res.success) {
         message.success('创建成功');
         getGraphSchema(currentGraphName);
+        callback?.();
       } else {
         message.error('创建失败' + res.errorMessage);
       }
