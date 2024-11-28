@@ -22,6 +22,13 @@ npm run dev
 
 ## 3. 编译构建
 
+通用环境编译命令
 ```bash
 npm run build
+```
+
+
+cosmos 私有化部署环境编译命令
+```bash
+npm run cosmos-build
 ```

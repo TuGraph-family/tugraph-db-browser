@@ -12,6 +12,7 @@
   "scripts": {
     "dev": "umi dev",
     "build": "NODE_ENV=production && umi build",
+    "cosmos-build": "NODE_ENV=production && umi build cosmos",
     "postinstall": "umi setup",
     "setup": "umi setup",
     "start": "npm run dev",
