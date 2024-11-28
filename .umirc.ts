@@ -1,5 +1,8 @@
 import { defineConfig } from 'umi';
 
+/** 判断是不是 cosmos 私有化部署环境 */
+const isCosmos = process.argv[3] && process.argv[3] === 'cosmos';
+
 export default defineConfig({
   hash: true,
   title: 'TuGraph DB',
@@ -7,7 +10,9 @@ export default defineConfig({
     type: 'hash',
   },
   outputPath: './dist/resource',
-  publicPath: '/resource/',
+  publicPath: isCosmos
+    ? '/proxy/cosmos/tugraph/cluster/tugraph-datafun/33.145.186.53:7070/resource/'
+    : '/resource/',
   theme: {
     '@primary-color': '#1650FF',
     '@border-radius-base': '6px',
