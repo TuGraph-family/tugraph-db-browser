@@ -28,7 +28,7 @@ npm run build
 ```
 
 
-cosmos 私有化部署环境编译命令
+cosmos 私有化部署环境编译命令, 其中 xxx 可以指定拼接的 prefixPath
 ```bash
-npm run cosmos-build
+npm run custom-build xxx
 ```
