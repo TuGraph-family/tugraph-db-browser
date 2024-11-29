@@ -1,7 +1,7 @@
 import { defineConfig } from 'umi';
 
 /** 判断是不是 cosmos 私有化部署环境 */
-const isCosmos = process.argv[3] && process.argv[3] === 'cosmos';
+const customPublicPath = process.argv[3];
 
 export default defineConfig({
   hash: true,
@@ -10,9 +10,7 @@ export default defineConfig({
     type: 'hash',
   },
   outputPath: './dist/resource',
-  publicPath: isCosmos
-    ? '/proxy/cosmos/tugraph/cluster/tugraph-datafun/33.145.186.53:7070/resource/'
-    : '/resource/',
+  publicPath: customPublicPath ? customPublicPath : '/resource/',
   theme: {
     '@primary-color': '#1650FF',
     '@border-radius-base': '6px',
