@@ -340,8 +340,8 @@ export const StoredForm: React.FC<Prop> = ({
             className={styles[`${PUBLIC_PERFIX_CLASS}-readonly-horizontal`]}
           >
             <Group>
-              <Radio value={false}>否</Radio>
-              <Radio value={true}>是</Radio>
+              <Radio value={true}>否</Radio>
+              <Radio value={false}>是</Radio>
             </Group>
           </Item>
 
