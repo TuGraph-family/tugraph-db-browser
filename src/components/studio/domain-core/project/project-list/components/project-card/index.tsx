@@ -92,7 +92,9 @@ const ProjectCard = ({
     });
   };
   useEffect(() => {
-    nodeEdgeStatistics(graphName);
+    if (graphName) {
+      nodeEdgeStatistics(graphName);
+    }
   }, []);
   return (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-card-box`]}>
