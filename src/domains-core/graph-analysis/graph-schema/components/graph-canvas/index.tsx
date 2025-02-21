@@ -128,6 +128,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
         style: {
           labelBackgroundFill: '#FFF',
           labelBackground: true,
+          endArrow: true,
         },
       },
       layout: {
