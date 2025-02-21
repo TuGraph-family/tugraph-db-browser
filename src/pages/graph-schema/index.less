@@ -7,7 +7,7 @@
   width: 100%;
 
   :global {
-    .card-canvas-container > .ant-collapse-content > .ant-collapse-content-box {
+    .card-canvas-container>.ant-collapse-content>.ant-collapse-content-box {
       padding: 0;
     }
 
@@ -40,21 +40,21 @@
       }
     }
 
-    .ant-tabs-top > .ant-tabs-nav,
-    .ant-tabs-bottom > .ant-tabs-nav,
-    .ant-tabs-top > div > .ant-tabs-nav,
-    .ant-tabs-bottom > div > .ant-tabs-nav {
+    .ant-tabs-top>.ant-tabs-nav,
+    .ant-tabs-bottom>.ant-tabs-nav,
+    .ant-tabs-top>div>.ant-tabs-nav,
+    .ant-tabs-bottom>div>.ant-tabs-nav {
       margin-bottom: 0;
     }
 
-    .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab-active,
-    .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab-active {
+    .ant-tabs-card.ant-tabs-top>.ant-tabs-nav .ant-tabs-tab-active,
+    .ant-tabs-card.ant-tabs-top>div>.ant-tabs-nav .ant-tabs-tab-active {
       background-color: rgba(243, 245, 249, 100%);
       border: none;
     }
 
-    .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab,
-    .ant-tabs-card > div > .ant-tabs-nav .ant-tabs-tab {
+    .ant-tabs-card>.ant-tabs-nav .ant-tabs-tab,
+    .ant-tabs-card>div>.ant-tabs-nav .ant-tabs-tab {
       border: none;
     }
 
@@ -75,7 +75,7 @@
         display: flex;
         align-items: center;
 
-        & > * {
+        &>* {
           margin-left: 8px;
         }
       }
@@ -100,6 +100,7 @@
       display: flex;
 
       .graph-canvas {
+        width: 0;
         flex: 1;
       }
     }

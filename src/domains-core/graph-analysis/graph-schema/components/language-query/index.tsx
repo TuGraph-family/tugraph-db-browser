@@ -65,7 +65,7 @@ const LanguageQuery: React.FC<ILanguageQueryProps> = ({ height = '320px' }) => {
       graphName,
       script: editorValue,
     });
-  
+
 
     tabContainerField.setComponentProps({
       spinning: false,
