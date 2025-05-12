@@ -7,26 +7,27 @@ export const mergeGraphData = (
   responseData: any = { nodes: [], edges: [] },
 ) => {
   const { nodes = [], edges = [] } = responseData;
-  if (
-   ( data.nodes?.length ||
-    data.edges?.length) &&
-    (responseData?.nodes?.length ||
-    responseData?.edges?.length)
-  ) {
-    const graphData: GraphData = {
-      ...data,
-      nodes: uniqueElementsBy([...data.nodes!, ...nodes], (a, b) => {
+  // TODO 旧逻辑，暂时注释
+  // if (
+  //  ( data.nodes?.length ||
+  //   data.edges?.length) &&
+  //   (responseData?.nodes?.length ||
+  //   responseData?.edges?.length)
+  // ) {
+  const graphData: GraphData = {
+    ...data,
+    nodes: uniqueElementsBy([...data.nodes!, ...nodes], (a, b) => {
+      return a.id === b.id;
+    }),
+    edges: uniqueElementsBy([...data.edges!, ...edges], (a, b) => {
+      if (a.id && b.id) {
         return a.id === b.id;
-      }),
-      edges: uniqueElementsBy([...data.edges!, ...edges], (a, b) => {
-        if (a.id && b.id) {
-          return a.id === b.id;
-        }
-        return a.source === b.source && a.target === b.target;
-      }),
-    };
-    return graphData;
-  } else {
-    return { ...responseData };
-  }
+      }
+      return a.source === b.source && a.target === b.target;
+    }),
+  };
+  return graphData;
+  // } else {
+  //   return { ...responseData };
+  // }
 };
